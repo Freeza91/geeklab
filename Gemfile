@@ -11,6 +11,7 @@ gem 'jbuilder', '~> 2.0'
 
 gem 'settingslogic'
 gem 'slim-rails'
+gem 'bcrypt'
 
 group :development, :test do
   gem 'byebug'

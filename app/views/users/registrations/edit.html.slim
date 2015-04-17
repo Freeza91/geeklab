@@ -1,0 +1,4 @@
+= form_for @user, url: users_registrations_update_path, method: :put do |f|
+  li 用户名
+  li= f.text_field 'username', placeholder: '用户名'
+  li= f.submit '更新'

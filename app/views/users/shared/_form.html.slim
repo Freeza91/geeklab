@@ -1,0 +1,5 @@
+= form_for @user, url: url do |f|
+  = render partial: '/shared/form_errors', locals: {object: @user}
+  li= f.email_field 'email', placeholder: '邮箱'
+  li= f.password_field 'encrypted_password', placeholder: '密码'
+  li= f.submit "Let's start"

@@ -13,6 +13,10 @@ gem 'settingslogic'
 gem 'slim-rails'
 gem 'bcrypt'
 
+gem 'qiniu'
+gem 'carrierwave'
+gem 'carrierwave-qiniu'
+
 group :development, :test do
   gem 'byebug'
   gem 'web-console', '~> 2.0'

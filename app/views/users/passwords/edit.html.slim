@@ -1,6 +1,6 @@
 li= @user.encrypted_password
 
-= form_tag users_passwords_update_path, method: :put
+= form_tag users_password_path, method: :put
   span 旧密码
   li= password_field_tag 'old_password'
   span 新密码

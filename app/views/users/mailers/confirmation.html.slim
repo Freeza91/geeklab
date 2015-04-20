@@ -1,5 +1,5 @@
 div 确定邮件已经发送到注册邮箱，请验证
 
-= form_tag users_mailer_send_confirmation_path
+= form_tag send_confirmation_users_mailers_path
   li = text_field_tag 'email', nil, placeholder: '验证邮箱'
   li = submit_tag '重新发送'

@@ -16,7 +16,7 @@ class Users::PasswordsController < ApplicationController
   def reset_password
     @user = current_user
     unless @user
-      redirect_to users_sessions_new_path
+      redirect_to new_users_session_path
     end
   end
 
@@ -29,7 +29,7 @@ class Users::PasswordsController < ApplicationController
       @user.password_digest(encrypted_password)
       @user.save(validate: false)
     else
-      redirect_to users_sessions_new_path
+      redirect_to new_users_session_path
     end
   end
 end

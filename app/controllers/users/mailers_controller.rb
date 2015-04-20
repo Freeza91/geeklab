@@ -1,4 +1,4 @@
-class Users::MailerController < ApplicationController
+class Users::MailersController < ApplicationController
 
   def send_confirmation
     user = User.find_by(email: params[:email])
@@ -7,7 +7,7 @@ class Users::MailerController < ApplicationController
     else
       flash[:info] = '不存在此邮箱，请先注册后在验证'
     end
-    render users_mailer_confirmation_path
+    render confirmation_users_mailers_path
   end
 
   def send_reset_password
@@ -16,7 +16,7 @@ class Users::MailerController < ApplicationController
       @user.generate_reset_password_token
       #send_mail
     end
-    render users_mailer_reset_password_path
+    render reset_password_users_mailers_path
   end
 
   def callback_confirmation
@@ -30,13 +30,12 @@ class Users::MailerController < ApplicationController
     if @user
       if @user.reset_password_sent_at + 1.days < Time.now
         #set cookie for this user
-        redirect_to users_passwords_reset_password_path
       else
         flash[:info] = 'token已经过期'
-        render users_passwords_reset_password_path
       end
+      redirect_to reset_password_users_mailers_path
     else
-      redirect_to users_sessions_new_path
+      redirect_to new_users_session
     end
   end
 end

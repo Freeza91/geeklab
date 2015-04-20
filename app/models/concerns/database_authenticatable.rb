@@ -13,7 +13,8 @@ module DatabaseAuthenticatable
   end
 
   def valid_password?(password)
-    encrypted_password == BCrypt::Engine.hash_secret(password, password_salt)
+    secure_compare(encrypted_password,
+                   BCrypt::Engine.hash_secret(password, password_salt))
   end
 
   def password_salt

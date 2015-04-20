@@ -6,7 +6,8 @@ class Users::RegistrationsController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      render text: @user.to_json
+      # render text: @user.to_json
+      redirect_to users_mailer_confirmation_path
     else
       render :new
     end

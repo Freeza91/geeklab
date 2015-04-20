@@ -9,9 +9,14 @@ Rails.application.routes.draw do
     put 'registrations/update'
     get 'passwords/edit'
     put 'passwords/update'
-    get 'mailer/reset_password'
+    get 'passwords/reset_password'
+    post 'passwords/update_reset_password'
     get 'mailer/confirmation'
-    get 'confirmations/new'
+    post 'mailer/send_confirmation'
+    get 'mailer/callback_confirmation'
+    get 'mailer/reset_password'
+    post 'mailer/send_reset_password'
+    get 'mailer/callback_reset_password'
   end
 
   root 'pages#home'

@@ -12,6 +12,11 @@ gem 'jbuilder', '~> 2.0'
 
 gem 'settingslogic'
 gem 'slim-rails'
+gem 'bcrypt'
+
+gem 'qiniu'
+gem 'carrierwave'
+gem 'carrierwave-qiniu'
 
 gem 'font-awesome-rails'
 

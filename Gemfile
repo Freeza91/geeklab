@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '4.2.1'
 gem 'mysql2'
+gem 'bootstrap-sass'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
@@ -16,6 +17,8 @@ gem 'bcrypt'
 gem 'qiniu'
 gem 'carrierwave'
 gem 'carrierwave-qiniu'
+
+gem 'font-awesome-rails'
 
 group :development, :test do
   gem 'byebug'

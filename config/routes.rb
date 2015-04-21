@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  root 'pages#home'
+
   namespace :users do
 
     resources :registrations, except: :destroy
@@ -31,5 +33,7 @@ Rails.application.routes.draw do
 
   end
 
-  root 'pages#home'
+  require 'sidekiq/web'
+  mount Sidekiq::Web, at: '/sidekiq'
+
 end

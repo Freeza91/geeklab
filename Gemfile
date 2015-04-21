@@ -17,6 +17,9 @@ gem 'qiniu'
 gem 'carrierwave'
 gem 'carrierwave-qiniu'
 
+gem 'sidekiq'
+gem 'sinatra', require: false
+
 group :development, :test do
   gem 'byebug'
   gem 'web-console', '~> 2.0'

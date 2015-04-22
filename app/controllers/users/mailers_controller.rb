@@ -3,7 +3,7 @@ class Users::MailersController < ApplicationController
   def send_confirmation
     email = params[:email]
     $redis.set(email, generate_code)
-    $redis.expire(email, 60) # can set 1 hour
+    $redis.expire(email, 1000) # set 10 mintues
     render text: 'nothing'
     # if user
     #   flash[:info] = '邮件已经发送，请查收'

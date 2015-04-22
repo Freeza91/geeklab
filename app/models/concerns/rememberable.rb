@@ -13,7 +13,7 @@ module Rememberable
   # def serialize_from_session
   # end
 
-  def remeber_me
+  def remember_me
     cookies.signed[:id] = {
       value: self.id,
       expires: 10.days.from_now,

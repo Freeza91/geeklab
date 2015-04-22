@@ -7,6 +7,7 @@ class Users::SessionsController < ApplicationController
     email = params[:user][:email]
     @user = User.find_by(email: email)
     if @user && @user.valid_password?(params[:user][:encrypted_password])
+      @user.remember_me
       render text: 'successful'
     else
       @user = User.new(email: email)

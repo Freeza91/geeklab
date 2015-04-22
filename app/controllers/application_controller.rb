@@ -4,12 +4,13 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def current_user
-    # @current_user ||= User.find_by(id: )
+    @current_user ||= User.find_by(id: cookies.signed[:id]) if cookies.signed[:id]
   end
 
   def login?
     unless current_user
-      redirect_to root_path
+      flash[:info] = 'you should login first'
+      redirect_to new_users_session_path
     end
   end
 end

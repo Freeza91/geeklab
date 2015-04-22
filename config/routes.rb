@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   namespace :users do
 
-    resources :registrations, except: :destroy
+    resources :registrations
 
     resources :sessions, only: :new do
       collection do

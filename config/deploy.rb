@@ -4,7 +4,19 @@ require 'mina/git'
 require 'mina/rvm' #rbenv
 
 set :domain, '50.116.16.150'
-set :branch, 'develop'
+
+case ENV['on']
+when 'release'
+  set :branch, 'release'
+when 'master'
+  set :branch, 'master'
+when 'stg'
+  set :branch, 'develop'
+else
+  set :branch, 'develop'
+end
+
+p "#{branch}"
 
 set :user, 'deploy'
 set :forward_agent, true

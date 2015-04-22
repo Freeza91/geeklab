@@ -1,4 +1,8 @@
 class Users::RegistrationsController < ApplicationController
+
+  before_action :logined?, only: [:new, :create]
+  before_action :require_login?, only: [:edit, :update, :destroy]
+
   def new
     @user = User.new
   end
@@ -8,6 +12,8 @@ class Users::RegistrationsController < ApplicationController
     @user = User.new(user_params)
     if value && value == params[:code]
       if @user.save
+        session[:id] = @user.id
+        @user.remember_me(cookies)
         render text: @user.to_json
       else
         flash[:info] = '输入信息有误，请重新输入'
@@ -30,6 +36,12 @@ class Users::RegistrationsController < ApplicationController
       @user.update_attribute(key, value)
     end
     render text: @user.to_json
+  end
+
+  def destroy
+    reset_session
+    flash[:info] = '登出成功'
+    redirect_to new_users_session_path
   end
 
 private

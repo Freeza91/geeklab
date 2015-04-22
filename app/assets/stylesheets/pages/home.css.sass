@@ -1,0 +1,34 @@
+.banner
+  background: #fff image-url('banner/banner_index.png') center center no-repeat
+  height: 795px
+  margin-top: 80px
+  transition: all 1s ease
+  .role
+    text-align: center
+    .btn
+      width: 230px
+      height: 60px
+      font-size: 24px
+      color: #fff
+    .btn:hover
+      opacity: .8
+    p
+      font-size: 14px
+      color: #727071
+      margin-top: 10px
+  .left
+    .btn
+      background-color: #727071
+  .right
+    .btn
+      background-color: #16a0c5
+  .role.active
+    width: 100%
+    transition: width .5s ease
+  .left.active
+    .img-wrp
+      border-width: 0
+.banner.show-left
+  background-position: -21% center
+.banner.show-right
+  background-position: 121% center

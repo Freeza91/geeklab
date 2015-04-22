@@ -4,4 +4,5 @@
 production: # work model
   :concurrency: 20
 :queues:
-  - [mailer, 5]
+  - [mailers, 5]
+  - [test mailer]

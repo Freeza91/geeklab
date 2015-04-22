@@ -1,8 +1,8 @@
 class PagesController < ApplicationController
   def home
-    MailWorker.perform_async
+    UserMailer.welcome.deliver_later
   end
-  
+
   def pm
   end
 

@@ -18,7 +18,7 @@ gem 'qiniu'
 gem 'carrierwave'
 gem 'carrierwave-qiniu'
 
-# gem 'mailchimp-api', require: 'mailchimp'
+gem 'sendgrid'
 gem 'redis'
 
 gem 'sidekiq'

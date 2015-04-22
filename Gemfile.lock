@@ -152,6 +152,8 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (~> 1.1)
+    sendgrid (1.2.0)
+      json
     settingslogic (2.0.9)
     sidekiq (3.3.4)
       celluloid (>= 0.16.0)
@@ -221,6 +223,7 @@ DEPENDENCIES
   rails (= 4.2.1)
   redis
   sass-rails (~> 5.0)
+  sendgrid
   settingslogic
   sidekiq
   sinatra

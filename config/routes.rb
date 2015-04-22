@@ -21,8 +21,8 @@ Rails.application.routes.draw do
 
     resources :mailers, only: [] do
       collection do
-        get 'confirmation'
-        post 'send_confirmation'
+        # get 'confirmation'
+        get 'send_confirmation'
         get 'callback_confirmation'
 
         get 'reset_password'

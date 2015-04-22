@@ -17,6 +17,9 @@ gem 'qiniu'
 gem 'carrierwave'
 gem 'carrierwave-qiniu'
 
+# gem 'mailchimp-api', require: 'mailchimp'
+gem 'redis'
+
 gem 'sidekiq'
 gem 'sinatra', require: false
 

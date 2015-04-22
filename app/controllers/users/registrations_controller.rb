@@ -4,12 +4,20 @@ class Users::RegistrationsController < ApplicationController
   end
 
   def create
+    value = $redis.get(params[:user][:email])
     @user = User.new(user_params)
-    if @user.save
-      render text: @user.to_json
+    if value && value == params[:code]
+      if @user.save
+        render text: @user.to_json
+      else
+        flash[:info] = '输入信息有误，请重新输入'
+        render :new
+      end
     else
+      flash[:info] = '验证码不正确或者已经过期,请重试'
       render :new
     end
+
   end
 
   def edit

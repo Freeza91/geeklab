@@ -213,6 +213,7 @@ DEPENDENCIES
   mysql2
   qiniu
   rails (= 4.2.1)
+  redis
   sass-rails (~> 5.0)
   settingslogic
   sidekiq

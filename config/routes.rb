@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  root 'pages#home'
+
   namespace :users do
 
     resources :registrations, except: :destroy
@@ -19,8 +21,8 @@ Rails.application.routes.draw do
 
     resources :mailers, only: [] do
       collection do
-        get 'confirmation'
-        post 'send_confirmation'
+        # get 'confirmation'
+        get 'send_confirmation'
         get 'callback_confirmation'
 
         get 'reset_password'
@@ -31,7 +33,11 @@ Rails.application.routes.draw do
 
   end
 
+  require 'sidekiq/web'
+  mount Sidekiq::Web, at: '/sidekiq'
+
   root 'pages#home'
   get 'pm' => 'pages#pm'
   get 'tester' => 'pages#tester'
+
 end

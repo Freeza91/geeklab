@@ -1,2 +1,8 @@
-= render partial: '/users/shared/form',
-         locals: { url: users_registrations_path }
+= form_for @user, url: users_registrations_path do |f|
+  = render partial: '/shared/form_errors', locals: {object: @user}
+  li= f.email_field 'email', placeholder: '邮箱'
+  li
+    = text_field_tag 'code', nil, placeholder: '确认码'
+    = link_to '获取验证码', send_confirmation_users_mailers_path + '?email=hehe@qq.com', remote: true
+  li= f.password_field 'encrypted_password', placeholder: '密码'
+  li= f.submit "Let's start"

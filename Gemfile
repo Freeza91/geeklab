@@ -18,6 +18,12 @@ gem 'qiniu'
 gem 'carrierwave'
 gem 'carrierwave-qiniu'
 
+# gem 'mailchimp-api', require: 'mailchimp'
+gem 'redis'
+
+gem 'sidekiq'
+gem 'sinatra', require: false
+
 gem 'font-awesome-rails'
 
 group :development, :test do

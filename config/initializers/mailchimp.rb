@@ -1,0 +1,1 @@
+# ::MailChimp = Mailchimp::API.new(Settings.mailchimp)

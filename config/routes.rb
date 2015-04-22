@@ -32,4 +32,6 @@ Rails.application.routes.draw do
   end
 
   root 'pages#home'
+  get 'pm' => 'pages#pm'
+  get 'tester' => 'pages#tester'
 end

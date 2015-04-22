@@ -6,26 +6,15 @@ module Rememberable
   included do
   end
 
-  # def serialize_into_session
-
-  # end
-
-  # def serialize_from_session
-  # end
-
-  def remember_me
+  def remember_me(cookies)
     cookies.signed[:id] = {
       value: self.id,
-      expires: 10.days.from_now,
-      domain: 'localhost.com'
+      expires: 1.minute.from_now
     }
   end
 
-  def forget_me
-    cookies.delete(:id, domain: 'localhost') if cookies[:id]
+  def forget_me(cookies)
+    cookies.delete(:id) if cookies.signed[:id]
   end
-
-  # def remember_token
-  # end
 
 end

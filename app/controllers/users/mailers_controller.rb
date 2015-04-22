@@ -1,13 +1,16 @@
 class Users::MailersController < ApplicationController
 
   def send_confirmation
-    user = User.find_by(email: params[:email])
-    if user
-      flash[:info] = '邮件已经发送，请查收'
-    else
-      flash[:info] = '不存在此邮箱，请先注册后在验证'
-    end
-    render confirmation_users_mailers_path
+    email = params[:email]
+    $redis.set(email, generate_code)
+    $redis.expire(email, 60) # can set 1 hour
+    render text: 'nothing'
+    # if user
+    #   flash[:info] = '邮件已经发送，请查收'
+    # else
+    #   flash[:info] = '不存在此邮箱，请先注册后在验证'
+    # end
+    # render confirmation_users_mailers_path
   end
 
   def send_reset_password
@@ -37,5 +40,11 @@ class Users::MailersController < ApplicationController
     else
       redirect_to new_users_session
     end
+  end
+
+private
+
+  def generate_code
+    p (('a'..'z').to_a + ('0'..'9').to_a).shuffle[1..6].join
   end
 end

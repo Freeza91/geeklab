@@ -1,34 +1,65 @@
-.banner
+$font_color: #727071
+$btn_bg_gray: #717071
+$btn_bg_blue: #16a0c5
+.btn-gray
+  background-color: $btn_bg_gray
+.btn-blue
+  background-color: $btn_bg_blue
+p
+  color: $font_color
+  font-size: 14px
+.banner_index
   background: #fff image-url('banner/banner_index.png') center center no-repeat
   height: 795px
-  margin-top: 80px
   transition: all 1s ease
   .role
     text-align: center
-    .btn
-      width: 230px
-      height: 60px
-      font-size: 24px
-      color: #fff
-    .btn:hover
-      opacity: .8
     p
-      font-size: 14px
-      color: #727071
       margin-top: 10px
-  .left
-    .btn
-      background-color: #727071
-  .right
-    .btn
-      background-color: #16a0c5
-  .role.active
-    width: 100%
-    transition: width .5s ease
-  .left.active
-    .img-wrp
-      border-width: 0
-.banner.show-left
-  background-position: -21% center
-.banner.show-right
-  background-position: 121% center
+  //.role.active
+    //width: 100%
+    //transition: width .5s ease
+//.banner.show-left
+  //background-position: -21% center
+//.banner.show-right
+  //background-position: 121% center
+
+.banner_pm
+  background-color: #ccc
+.banner_tester
+  background-color: #ccc
+  .topic
+    .title
+      color: #fff
+.steps
+  .step
+    p
+      text-align: center
+      color: $font_color
+    .title
+      font-size: 20px
+.banner
+  .btn
+    width: 230px
+    height: 60px
+    font-size: 24px
+    line-height: 46px
+    color: #fff
+  .btn:hover
+    color: #fff
+    opacity: .8
+.desc
+  float: right
+  .item
+    width: 330px
+    margin-bottom: 25px 
+    padding: 10px 20px
+    background-color: rgba(255, 255, 255, .5)
+    text-align: center
+.topic
+  .title
+    font-size: 24px
+    span
+      margin-right: 10px
+  .btn
+    margin-top: 20px

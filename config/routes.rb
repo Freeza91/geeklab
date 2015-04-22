@@ -36,4 +36,7 @@ Rails.application.routes.draw do
   require 'sidekiq/web'
   mount Sidekiq::Web, at: '/sidekiq'
 
+  get 'pm' => 'pages#pm'
+  get 'tester' => 'pages#tester'
+
 end

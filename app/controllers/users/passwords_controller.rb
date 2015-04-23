@@ -48,6 +48,7 @@ class Users::PasswordsController < ApplicationController
       render :edit_reset
     else
       @user.password_digest(encrypted_password)
+      @user.reset_password_sent_at = Time.now - 1.year
       @user.save(validate: false)
       flash.now[:info] = '修改密码成功'
       render text: 'successful'

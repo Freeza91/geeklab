@@ -2,5 +2,8 @@ header.header
   .container
     a.top-logo href="javascript:void(0)"
       img src="#{image_path('logo/logo.png')}"
-    button.btn.btn-default.login 登录
+    - if controller_name === 'pages' && action_name === 'home'
+      button.btn.btn-default.login 登录
+    - else 
+      button.btn.btn-default.login 登录/注册
 section.layout-fix.for-header

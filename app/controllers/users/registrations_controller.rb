@@ -8,7 +8,7 @@ class Users::RegistrationsController < ApplicationController
   end
 
   def create
-    value = $redis.get(params[:user][:email])
+    p value = $redis.get(params[:user][:email])
     @user = User.new(user_params)
     if value && value == params[:code]
       if @user.save

@@ -2,15 +2,12 @@ class Users::MailersController < ApplicationController
 
   def send_confirmation
     email = params[:email]
-    $redis.set(email, generate_code)
+    code = generate_code
+    $redis.set(email, code)
     $redis.expire(email, 1000) # set 10 mintues
-    render text: 'nothing'
-    # if user
-    #   flash[:info] = '邮件已经发送，请查收'
-    # else
-    #   flash[:info] = '不存在此邮箱，请先注册后在验证'
-    # end
-    # render confirmation_users_mailers_path
+    UserMailer.welcome(email, code).deliver_later
+
+    render template: "/users/registrations/code"
   end
 
   def send_reset_password

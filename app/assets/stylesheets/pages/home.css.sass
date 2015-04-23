@@ -34,6 +34,8 @@ p
     .title
       color: #fff
 .steps
+  .icon
+    text-align: center
   .title
     font-size: 36px
     color: $font_color
@@ -79,3 +81,19 @@ p
       margin-right: 10px
   .btn
     margin-top: 20px
+
+// 响应式
+@media (max-width: 992px)
+  .steps
+    .step
+      margin-bottom: 30px
+    .icon
+      float: left
+    .fa
+      line-height: 104px
+    .conent
+      float: right
+@media (min-width: 992px)
+  .steps
+    .icon
+      margin-bottom: 15px

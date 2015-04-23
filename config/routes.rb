@@ -14,20 +14,17 @@ Rails.application.routes.draw do
 
     resources :passwords, only: [:edit, :update] do
       collection do
-        get 'reset_password'
-        put 'update_reset_password'
+        get 'reset'
+        get 'callback_reset'
+        get 'edit_reset'
+        put 'update_reset'
       end
     end
 
     resources :mailers, only: [] do
       collection do
-        # get 'confirmation'
         get 'send_confirmation'
-        get 'callback_confirmation'
-
-        get 'reset_password'
         post 'send_reset_password'
-        get 'callback_reset_password'
       end
     end
 

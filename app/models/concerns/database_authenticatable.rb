@@ -4,7 +4,7 @@ module DatabaseAuthenticatable
   extend ActiveSupport::Concern
 
   included do
-    before_save :password_digest
+    before_create :password_digest
   end
 
   def password_digest(password=nil)

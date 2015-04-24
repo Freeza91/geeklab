@@ -13,6 +13,9 @@ module Validatable
                         too_short: '密码长度不能低于6位',
                         too_long: '密码长度不要超过20位'
 
+    validates_inclusion_of :role, in: ['tester', 'pm', 'both'],
+                           message: '用户角色不正确'
+
     before_save :email_downcase
   end
 

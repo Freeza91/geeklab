@@ -1,5 +1,5 @@
 div 重置密码
 
-= form_for @user, url: update_reset_password_users_passwords_path, method: :put do |f|
+= form_for @user, url: update_reset_users_passwords_path, method: :put do |f|
   = f.password_field 'encrypted_password'
   = f.submit '更新密码'

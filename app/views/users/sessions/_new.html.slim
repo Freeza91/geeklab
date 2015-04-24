@@ -1,0 +1,19 @@
+/*section.content-box*/
+  /*.container*/
+    /*= render partial: 'users/shared/form',*/
+             /*locals: { url: auth_users_sessions_path }*/
+.modal#login role='dialog'
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close type='button' data-dismiss='modal' aria-label='Close'
+          span aria-hidden='true'
+            | &times
+      .modal-body
+        = render partial: 'users/shared/form'
+        = render partial: 'users/registrations/new'
+      .modal-footer
+        button.btn.btn-default type='submit' name='regist' data-form='#form-regist'
+          | 注册
+        button.btn.btn-default type='submit' name='login' data-form='#form-login'
+          | 登录

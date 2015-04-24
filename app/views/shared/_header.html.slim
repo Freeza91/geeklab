@@ -3,7 +3,8 @@ header.header
     a.top-logo href="javascript:void(0)"
       img src="#{image_path('logo/logo.png')}"
     - if controller_name === 'pages' && action_name === 'home'
-      button.btn.btn-default.login 登录
+      button.btn.btn-default.login data-toggle='modal' data-target='#login'
+        | 登录
     - else 
       button.btn.btn-default.login 登录/注册
 section.layout-fix.for-header

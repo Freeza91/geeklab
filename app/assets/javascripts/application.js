@@ -10,7 +10,12 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+// 引入 jquery
 //= require jquery
 //= require jquery_ujs
+
+// 引入bootstrap插件
+//= require bootstrap.min
+
 //= require turbolinks
 //= require_tree .

@@ -1,8 +1,20 @@
-= form_tag url do |f|
-  = render partial: '/shared/form_errors', locals: {object: @user}
-  li= email_field_tag 'email', @user.email, placeholder: '邮箱'
-  li= password_field_tag 'encrypted_password', nil, placeholder: '密码'
-  li
-    = check_box_tag :remember_me, true, checked: true
-    span 下次自动登录
-  li= submit_tag "Let's start"
+/*= form_tag url do |f|*/
+  /*= render partial: '/shared/form_errors', locals: {object: @user}*/
+  /*li= email_field_tag 'email', @user.email, placeholder: '邮箱'*/
+  /*li= password_field_tag 'encrypted_password', nil, placeholder: '密码'*/
+  /*li*/
+    /*= check_box_tag :remember_me, true, checked: true*/
+    /*span 下次自动登录*/
+  /*li= submit_tag "Let's start"*/
+
+form#form-login
+  .form-group
+    label for='email'邮箱
+    input.form-control#email type='email' name='email' placeholder='请输入邮箱' 
+  .form-group
+    label for='password' 密码
+    input.form-control#password type='password' name='encrypted_password' placeholder='请输入密码' 
+  .checkbox
+    label
+      input type='checkbox' name='remember_me' checked='checked'
+        | 下次自动登录

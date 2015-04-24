@@ -16,7 +16,10 @@ class Users::PasswordsController < ApplicationController
   end
 
   def reset
-    reset_session
+    if current_user
+      current_user.forget_me(cookies)
+      reset_session
+    end
   end
 
   def callback_reset

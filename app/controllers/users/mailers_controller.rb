@@ -4,7 +4,7 @@ class Users::MailersController < ApplicationController
     email = params[:email]
     code = generate_code
     $redis.set(email, code)
-    $redis.expire(email, 1000) # set 10 mintues
+    $redis.expire(email, 3000) # set 10 mintues
     UserMailer.welcome(email, code).deliver_later
 
     render template: "/users/registrations/code"

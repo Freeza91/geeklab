@@ -4,8 +4,12 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def current_user
-    @current_user ||= User.find_by(id: session[:id]) if session[:id]
-    @current_user ||= User.find_by(id: cookies.signed[:id]) if cookies.signed[:id]
+    if session[:id]
+      @current_user ||= User.find_by(id: session[:id])
+    elsif !@current_user && cookies.signed[:id]
+      @current_user ||= User.find_by(id: cookies.signed[:id])
+      session[:id] = @current_user.id if @current_user
+    end
     @current_user
   end
 

@@ -35,6 +35,7 @@ set :shared_paths, [
   'config/database.yml',
   'config/secrets.yml',
   'config/application.yml',
+  'config/newrelic.yml',
   'tmp',
   'log'
 ]
@@ -60,6 +61,7 @@ task setup: :environment do
   queue! %[touch "#{deploy_to}/shared/config/database.yml"]
   queue! %[touch "#{deploy_to}/shared/config/secrets.yml"]
   queue! %[touch "#{deploy_to}/shared/config/application.yml"]
+  queue! %[touch "#{deploy_to}/shared/config/newrelic.yml"]
 end
 
 desc "Deploys the current version to the server."

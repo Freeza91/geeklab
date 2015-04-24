@@ -8,20 +8,24 @@ class Users::RegistrationsController < ApplicationController
   end
 
   def create
-    p value = $redis.get(params[:user][:email])
+    json = { status: 0, code: 1, msg: [] }
+
+    value = $redis.get(params[:user][:email])
     @user = User.new(user_params)
     if value && value == params[:code]
       if @user.save
         session[:id] = @user.id
         @user.remember_me(cookies)
-        render text: @user.to_json
+        render json: json
       else
-        flash[:info] = '输入信息有误，请重新输入'
-        render :new
+        json[:code] = 0
+        json[:msg] += @user.errors.full_messages.map { |msg| msg.split.last }
+        render json: json
       end
     else
-      flash[:info] = '验证码不正确或者已经过期,请重试'
-      render :new
+      json[:code] = 0
+      json[:msg] << '验证码不正确或者已经过期,请重试'
+      render json: json
     end
 
   end
@@ -46,6 +50,6 @@ class Users::RegistrationsController < ApplicationController
 
 private
   def user_params
-    params.require(:user).permit(:email, :encrypted_password, :username) #can add other collum
+    params.require(:user).permit(:email, :encrypted_password, :role) #can add other collum
   end
 end

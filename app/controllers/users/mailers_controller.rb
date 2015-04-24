@@ -4,38 +4,28 @@ class Users::MailersController < ApplicationController
     email = params[:email]
     code = generate_code
     $redis.set(email, code)
-    $redis.expire(email, 1000) # set 10 mintues
+    $redis.expire(email, 3000) # set 10 mintues
     UserMailer.welcome(email, code).deliver_later
 
     render template: "/users/registrations/code"
   end
 
   def send_reset_password
-    @user = current_user
-    unless !@user
-      @user.generate_reset_password_token
-      #send_mail
-    end
-    render reset_password_users_mailers_path
-  end
+    email = params[:email]
+    user = User.find_by(email: email) || current_user
+    if user
+      user.generate_reset_password_token
+      user.save(validate: false)
 
-  def callback_confirmation
-    token = params[:confirmation_token]
-    @user = User.find_by
-  end
+      url = 'http://localhost:3000/users/passwords/callback_reset'
+      url += "?reset_password_token=#{user.reset_password_token}"
 
-  def callback_reset_password
-    token = params[:reset_password_token]
-    @user = User.find_by(reset_password_token: token)
-    if @user
-      if @user.reset_password_sent_at + 1.days < Time.now
-        #set cookie for this user
-      else
-        flash[:info] = 'token已经过期'
-      end
-      redirect_to reset_password_users_mailers_path
+      UserMailer.reset_password(user, url).deliver_later
+
+      render text: 'successful'
     else
-      redirect_to new_users_session
+      flash.now[:info] = '邮箱不存在'
+      render template: '/users/passwords/reset'
     end
   end
 

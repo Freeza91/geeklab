@@ -1,0 +1,5 @@
+section.content-box
+  .container
+    = form_tag send_reset_password_users_mailers_path do |f|
+      = email_field_tag 'email', nil, placeholder: '邮箱'
+      = submit_tag '提交'

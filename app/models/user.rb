@@ -3,7 +3,6 @@ class User < ActiveRecord::Base
   include DatabaseAuthenticatable
   include Validatable
   include Rememberable
-  include Confirmable
-
-
+  include Recoverable
+  include Mobileable
 end

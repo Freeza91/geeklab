@@ -7,17 +7,19 @@ class Users::SessionsController < ApplicationController
   end
 
   def auth
+    json = { status: 0, code: 1, msg: '' }
     email = params[:email]
     @user = User.find_by(email: email)
     if @user && @user.valid_password?(params[:encrypted_password])
       session[:id] = @user.id
       @user.remember_me(cookies) if params[:remember_me] == 'true'
-      flash.now[:info] = '登录成功'
-      render new_users_session_path
+      json[:msg] = '登陆成功'
+      render json: json
     else
       @user = User.new(email: email)
-      flash[:info] = '用户名或者密码错误'
-      render :new
+      json[:code] = 0
+      json[:msg] = '用户名或密码错误，请重试！'
+      render json: json
     end
   end
 

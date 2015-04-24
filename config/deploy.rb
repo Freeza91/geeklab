@@ -35,6 +35,7 @@ set :shared_paths, [
   'config/database.yml',
   'config/secrets.yml',
   'config/application.yml',
+  'config/newrelic.yml',
   'tmp',
   'log'
 ]

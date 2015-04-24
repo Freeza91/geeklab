@@ -1,10 +1,10 @@
 $(function () {
 
-  $('buttoni[name="login"]').on('click', function () {
+  $('button[name="login"]').on('click', function () {
 
     var form = $(this).data('form');
     var $form = $(this).parents('.modal').find(form);
-
+ 
     // 获取表单数据
     var data = {};
     data.email = $form.find('[name="email"]').val();
@@ -18,10 +18,19 @@ $(function () {
       method: 'post',
       data: data
     })
-    .done(function (status, data, xhr) {
-      console.log(status, data);
+    .done(function (data, status, xhr) {
+      if(data.status === 0) {
+        switch(data.code) {
+          case 0:
+            console.log(data.msg);
+          break;
+          case 1:
+            console.log(data.msg);
+          break;
+        }
+      }
     })
-    .error(function (status, errors) {
+    .error(function (errors, status) {
       console.log(errors);
     });
 
@@ -32,16 +41,16 @@ $(function () {
     var form = $(this).data('form');
     var $form = $(this).parents('.modal').find(form);
     
-    var data = {};
-    data.email = $form.find('[name="email"]').val();
-    data.code = $form.find('[name="code"]').val();
-    data.encrypted_password = $form.find('[name="encrypted_password"]').val();
-    data.role = getRole();
+    var user = {};
+    user.email = $form.find('[name="email"]').val();
+    user.code = $form.find('[name="code"]').val();
+    user.encrypted_password = $form.find('[name="encrypted_password"]').val();
+    user.role = getRole();
 
     $.ajax({
       url: '/users/registrations',
       method: 'post',
-      data: data
+      data: {user: user}
     })
     .done(function(status, data, xhr) {
 

@@ -12,7 +12,7 @@ class Users::RegistrationsController < ApplicationController
 
     value = $redis.get(params[:user][:email])
     @user = User.new(user_params)
-    if value && value == params[:code]
+    if value && value == params[:user][:code]
       if @user.save
         session[:id] = @user.id
         @user.remember_me(cookies)

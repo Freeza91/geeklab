@@ -1,6 +1,6 @@
 $font_color: #727071
 $btn_bg_gray: #717071
-$btn_bg_blue: #16a0c5
+$btn_bg_blue: #16a0c6
 .btn-gray
   background-color: $btn_bg_gray
 .btn-blue
@@ -24,20 +24,24 @@ p
 //.banner.show-right
   //background-position: 121% center
 
+.banner_pm,
+.banner_tester
+  height: 640px
+
 .banner_pm
   background: #fff image-url('banner/banner_pm.jpg') center no-repeat
 .banner_tester
   background: #fff image-url('banner/banner_tester.jpg') center center no-repeat
   .topic
     float: left
-    margin-top: 100px
+    margin-top: 150px
     .title
       color: #fff
 .steps
   .icon
     text-align: center
   .title
-    font-size: 36px
+    font-size: 30px
     color: $font_color
     padding-bottom: 30px
     text-align: center
@@ -63,24 +67,27 @@ p
   .item
     width: 400px
     margin-bottom: 50px 
-    padding: 10px 20px
+    padding: 20px 30px 10px
     background-color: rgba(255, 255, 255, .4)
     text-align: center
   p
     font-size: 18px
+    text-align: left
   .title
     font-size: 24px
+    text-align: center
 .topic
   p
     font-size: 18px
     i
       margin-right: 10px
   .title
-    font-size: 36px
+    font-size: 30px
     span
       margin-right: 10px
   .btn
     margin-top: 20px
+    margin-bottom: 12px
 
 // 响应式
 @media (max-width: 992px)

@@ -8,4 +8,15 @@ $(function () {
       $('.header').removeClass('scroll-down');
     } 
   });
+  $('.role-switch').on('click', function () {
+    var currRole = $(this).data('currRole');  
+    switch(currRole) {
+      case 'pm':
+        location.href = '/tester';
+      break;
+      case 'tester':
+        location.href = '/pm';
+      break;
+    }
+  }); 
 });

@@ -26,6 +26,8 @@ gem 'sinatra', require: false
 
 gem 'font-awesome-rails'
 
+gem 'newrelic_rpm'
+
 group :development, :test do
   gem 'byebug'
   gem 'web-console', '~> 2.0'

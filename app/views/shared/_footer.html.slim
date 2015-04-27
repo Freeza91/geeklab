@@ -1,19 +1,25 @@
 footer.footer
   .container
-    .wrp
-      ul.contact.clear-fix
-        li.title
-          span 联系我们
-        li
-          i.fa.fa-envelope-o
-          a href=('mailto:geeklab@geekpark.net') geeklab@geekpark.net
-        li
-          i.fa.fa-wechat
-          span 微信公众号
-      ul.links.clear-fix
-        li.title
-          span 友情链接
-        li
-          a href=('http://www.geekpark.net') 极客公园
-    p Copyright &copy 2015 北京中明万长管理咨询有限公司
+    .row
+      .col-xs-3.col-md-3.col-md-3.col-lg-3
+        h4.title 联系我们
+        ul
+          li
+            a href='mailto:geeklab@geekpark.net'
+              i.fa.fa-envelope-o
+              | geeklab@geekpark.net
+          li
+            a href='javascript:void(0)'
+              i.fa.fa-wechat
+              | 微信公众号
+            .qrcode
+              img src=image_url('qrcodes/geekpark-qrcode.png')
+      .col-xs-3.col-sm-3.col-md-3.col-lg-3
+        h4.title 友情链接
+        ul
+          li
+            a href=('http://www.geekpark.net') target='_blank'
+              | 极客公园
+    .row
+      p Copyright &copy 2015 北京中明万长管理咨询有限公司
     

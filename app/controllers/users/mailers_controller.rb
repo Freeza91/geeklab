@@ -11,6 +11,8 @@ class Users::MailersController < ApplicationController
   end
 
   def send_reset_password
+    json = {msg: '修改密码邮件已经发送', code: 1, status: 0 }
+
     email = params[:email]
     user = User.find_by(email: email) || current_user
     if user
@@ -22,10 +24,12 @@ class Users::MailersController < ApplicationController
 
       UserMailer.reset_password(user, url).deliver_later
 
-      render text: 'successful'
+      render json: json
     else
-      flash.now[:info] = '邮箱不存在'
-      render template: '/users/passwords/reset'
+      json[:code] = 0
+      json[:msg] = '邮箱不存在，请注册后在重置'
+
+      render json: json
     end
   end
 

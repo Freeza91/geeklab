@@ -11,7 +11,7 @@ class Users::MailersController < ApplicationController
   end
 
   def send_reset_password
-    json = {msg: '修改密码邮件已经发送', code: 1, status: 0 }
+    json = {msg: '', code: 1, status: 0 }
 
     email = params[:email]
     user = User.find_by(email: email) || current_user
@@ -23,6 +23,7 @@ class Users::MailersController < ApplicationController
       url += "?reset_password_token=#{user.reset_password_token}"
 
       UserMailer.reset_password(user, url).deliver_later
+      json[:mgs] = email_target email
 
       render json: json
     else
@@ -37,5 +38,15 @@ private
 
   def generate_code
     p (('a'..'z').to_a + ('0'..'9').to_a).shuffle[1..6].join
+  end
+
+  def email_target(email)
+    _, domain = email.match(/\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i).captures
+    domains = %w(qq.com 163.com 126.com sohu.com sina.com gmail.com 21cn.com)
+    if domians.include? domain
+      "http://mail.#{domain}/"
+    else
+      ""
+    end
   end
 end

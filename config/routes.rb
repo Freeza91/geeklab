@@ -27,8 +27,10 @@ Rails.application.routes.draw do
         post 'send_reset_password'
       end
     end
-
   end
+
+  resources :pms, only: :new
+  resources :testers, only: :new
 
   require 'sidekiq/web'
   mount Sidekiq::Web, at: '/sidekiq'

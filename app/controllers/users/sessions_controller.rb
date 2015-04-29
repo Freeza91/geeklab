@@ -7,13 +7,20 @@ class Users::SessionsController < ApplicationController
   end
 
   def auth
-    json = { status: 0, code: 1, msg: '' }
+    json = { status: 0, code: 1, msg: '', url: '' }
     email = params[:email]
     @user = User.find_by(email: email)
-    if @user && @user.valid_password?(params[:encrypted_password])
-      session[:id] = @user.id
-      @user.remember_me(cookies) if params[:remember_me] == 'true'
+    if true #@user && @user.valid_password?(params[:encrypted_password])
+      # session[:id] = @user.id
+      # @user.remember_me(cookies) if params[:remember_me] == 'true'
       json[:msg] = '登陆成功'
+      json[:url] =
+        if @user.try :role == 'tester'
+          new_tester_path
+        else
+          new_pm_path
+        end
+
       render json: json
     else
       @user = User.new(email: email)

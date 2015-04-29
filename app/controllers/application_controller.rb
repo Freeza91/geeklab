@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   def require_login?
     unless current_user
       flash[:info] = 'you should login first'
-      redirect_to new_users_session_path
+      redirect_to root_path
     end
   end
 

@@ -37,11 +37,7 @@ class Users::PasswordsController < ApplicationController
     end
   end
 
-  def edit_reset
-    @user = User.new
-  end
-
-  def edit_reset
+ def edit_reset
     @user = User.new
   end
 

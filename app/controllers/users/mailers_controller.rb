@@ -4,7 +4,7 @@ class Users::MailersController < ApplicationController
     email = params[:email]
     code = generate_code
     $redis.set(email, code)
-    $redis.expire(email, 3000) # set 10 mintues
+    $redis.expire(email, 1800) # set 30 mintues
     UserMailer.welcome(email, code).deliver_later
 
     render template: "/users/registrations/code"
@@ -19,12 +19,15 @@ class Users::MailersController < ApplicationController
       user.generate_reset_password_token
       user.save(validate: false)
 
-      url = 'http://localhost:3000/users/passwords/callback_reset'
+      url = if Rails.env.production?
+              'http://50.116.16.150/users/passwords/callback_reset'
+            else Rails.env.development? || Rails.env.test?
+              'http://localhost:3000/users/passwords/callback_reset'
+            end
       url += "?reset_password_token=#{user.reset_password_token}"
-      p user.reset_password_token
       UserMailer.reset_password(user, url).deliver_later
       json[:msg] = email_target email
-      
+
       render json: json
     else
       json[:code] = 0

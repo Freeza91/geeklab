@@ -8,7 +8,7 @@ class Users::RegistrationsController < ApplicationController
   end
 
   def create
-    json = { status: 0, code: 1, msg: [] }
+    json = { status: 0, code: 1, msg: [], url: ''}
 
     value = $redis.get(params[:user][:email])
     @user = User.new(user_params)
@@ -16,18 +16,23 @@ class Users::RegistrationsController < ApplicationController
       if @user.save
         session[:id] = @user.id
         @user.remember_me(cookies)
-        render json: json
+
+        json[:url] =
+          if @user.role == 'tester'
+            new_tester_path
+          else
+            new_pm_path
+          end
       else
         json[:code] = 2
         json[:msg] += @user.errors.full_messages.map { |msg| msg.split.last }
-        render json: json
       end
     else
       json[:code] = 3
       json[:msg] << '验证码不正确或者已经过期,请重试'
-      render json: json
     end
 
+    render json: json
   end
 
   def edit

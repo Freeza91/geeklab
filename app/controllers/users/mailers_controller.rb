@@ -21,10 +21,10 @@ class Users::MailersController < ApplicationController
 
       url = 'http://localhost:3000/users/passwords/callback_reset'
       url += "?reset_password_token=#{user.reset_password_token}"
-
+      p user.reset_password_token
       UserMailer.reset_password(user, url).deliver_later
-      json[:mgs] = email_target email
-
+      json[:msg] = email_target email
+      
       render json: json
     else
       json[:code] = 0
@@ -43,7 +43,7 @@ private
   def email_target(email)
     _, domain = email.match(/\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i).captures
     domains = %w(qq.com 163.com 126.com sohu.com sina.com gmail.com 21cn.com)
-    if domians.include? domain
+    if domains.include? domain
       "http://mail.#{domain}/"
     else
       ""

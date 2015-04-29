@@ -38,6 +38,7 @@ $(function () {
                 $this.text(count-- + '秒后重新发送邮件');
               } else {
                 $this.text('发送邮件').removeClass('disabled btn-gray').addClass('btn-blue');
+                $form.find('.hind').addClass('hidden');
               } 
             }
             setInterval(emailCountDown, 1000)
@@ -65,7 +66,6 @@ $(function () {
     var user = {};
     user.encrypted_password = $form.find('[name="password"]').val();
     
-    console.log(user);
     $.ajax({
       url: '/users/passwords/update_reset',
       method: 'put',
@@ -76,7 +76,7 @@ $(function () {
       var count = 5;
       setInterval(function () {
         if(count >= 0) {
-          $form.find('span').text(count--);
+          $form.find('.hint span').text(count--);
         } else {
           location.href = '/';
         }  

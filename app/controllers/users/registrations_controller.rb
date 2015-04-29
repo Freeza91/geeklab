@@ -18,12 +18,12 @@ class Users::RegistrationsController < ApplicationController
         @user.remember_me(cookies)
         render json: json
       else
-        json[:code] = 0
+        json[:code] = 2
         json[:msg] += @user.errors.full_messages.map { |msg| msg.split.last }
         render json: json
       end
     else
-      json[:code] = 0
+      json[:code] = 3
       json[:msg] << '验证码不正确或者已经过期,请重试'
       render json: json
     end

@@ -17,5 +17,4 @@
 // 引入bootstrap插件
 //= require bootstrap.min
 
-//= require turbolinks
 //= require_tree .

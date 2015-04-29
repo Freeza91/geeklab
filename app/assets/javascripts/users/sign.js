@@ -69,6 +69,7 @@ $(function () {
       if(data.status === 0) {
         switch(data.code) {
           case 1:
+            location.href = '/';
           break;
           case 2:
             $form.find('.hind').text('邮箱已被注册').removeClass('hidden');

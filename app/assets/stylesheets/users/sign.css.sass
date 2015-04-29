@@ -1,0 +1,58 @@
+$color_blue: #16a0c6
+$color_gray: #717071
+.sign
+  .modal-content
+    border-radius: 0
+  .logo,
+  p
+    text-align: center 
+  .flip-trigger
+    margin-left: 7px
+  .modal-form
+    padding: 0 22%
+    input,
+    label,
+    a
+      color: $color_gray
+      cursor: pointer
+    a:hover
+      color: #333
+    a.blue
+      color: $color_blue
+  .input-group-addon
+    border-radius: 0
+    background-color: $color_blue
+    color: #fff
+    cursor: pointer
+  .input-group-addon.disabled
+    background-color: $color_gray
+  .input-group-addon:hover
+    opacity: .8
+  .input-group-addon.disabled:hover
+    opacity: 1
+.form-button
+  .btn
+    width: 100%
+
+// 翻转动画
+.flip
+  position: relative
+  transform-style: preverse-3d
+  .front,
+  .back
+    position: absolute
+    top: 0
+    left: 0
+    backface-visibility: hidden
+    transition: all .7s cubic-bezier(0.22, 0.61, 0.36, 1)
+  @media (min-width: 768px)
+    .front,
+    .back
+      width: 600px
+  .back
+    transform: rotateY(180deg)
+.flip.fliped
+  .front
+    transform: rotateY(180deg)
+  .back
+    transform: rotateY(0)

@@ -10,4 +10,7 @@ html lang=session[:locale]
     = render '/shared/flash'
     = yield
     = render '/shared/footer'
-    = render '/users/sessions/new'
+    - if controller_name == 'pages' && action_name == 'home'
+      = render '/users/sessions/new'
+    - else 
+      = render '/users/registrations/new'

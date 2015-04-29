@@ -1,0 +1,9 @@
+form.normal-form#form-email
+  .form-group
+    label.sr-only for='email' 邮箱
+    input.form-control#email type='email' name='email' placeholder='请输入邮箱'
+    span.glyphicon.glyphicon-ok.form-control-feedback.sr-only aria-hidden="true"
+    span.glyphicon.glyphicon-remove.form-control-feedback.sr-only aria-hidden="true"
+  .form-button
+    button.btn.btn-blue type='submit' name='send-email' data-form='#form-email'
+      | 发送邮件

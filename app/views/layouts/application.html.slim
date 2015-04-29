@@ -1,13 +1,18 @@
 doctype html
 html lang=session[:locale]
   head 
-    title GeekLab
+    title 极客实验室
     = stylesheet_link_tag 'application', media: 'all'
     = javascript_include_tag 'application'
     = csrf_meta_tags
   body class=(controller_name + ' ' + controller_name + '_' + action_name + ' ' + locale.to_s)
-    = render '/shared/header'
-    = render '/shared/flash'
+    - if controller_name != 'passwords' 
+      = render '/shared/header'
+      = render '/shared/flash'
     = yield
-    = render '/shared/footer'
-    = render '/users/sessions/new'
+    - if controller_name != 'passwords'
+      = render '/shared/footer'
+      - if controller_name == 'pages' && action_name == 'home'
+        = render '/users/sessions/new'
+      - else 
+        = render '/users/registrations/new'

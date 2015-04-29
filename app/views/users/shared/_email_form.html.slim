@@ -1,0 +1,14 @@
+form.normal-form.valid#form-email
+  p.hint.hidden
+    span 邮件已发送
+    a.link.hidden href='javascript:void(0)' target='_blank'
+      i.fa.fa-hand-o-right
+      | 进入邮箱
+  .form-group.has-feedback
+    label.sr-only for='email' 邮箱
+    input.form-control#email type='email' name='email' placeholder='请输入邮箱'
+    span.glyphicon.glyphicon-ok.form-control-feedback.sr-only aria-hidden="true"
+    span.glyphicon.glyphicon-remove.form-control-feedback.sr-only aria-hidden="true"
+  .form-button
+    button.btn.btn-gray.disabled type='submit' name='send-email' data-form='#form-email'
+      | 发送邮件

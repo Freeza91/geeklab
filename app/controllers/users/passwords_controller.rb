@@ -1,6 +1,6 @@
 class Users::PasswordsController < ApplicationController
 
-  before_action :require_login?, except: [:callback_reset, :reset]
+  before_action :require_login?, only: [:edit, :update]
 
   def edit
     @user = User.find_by(email: 'useyes91@gmail.com')
@@ -24,7 +24,6 @@ class Users::PasswordsController < ApplicationController
 
   def callback_reset
     @user = User.find_by(reset_password_token: params[:reset_password_token])
-
     if @user
       if @user.reset_password_sent_at + 1.days >= Time.now
         cookies.signed[:reset_password_token] = params[:reset_password_token]
@@ -38,13 +37,13 @@ class Users::PasswordsController < ApplicationController
     end
   end
 
-  def edit_reset
+ def edit_reset
     @user = User.new
   end
 
   def update_reset
     json = { msg: '密码修改成功', status: 0, code: 1 }
-    @user = current_user
+    @user = current_user || User.find_by(reset_password_token: cookies.signed[:reset_password_token])
     encrypted_password = params[:user][:encrypted_password]
     if encrypted_password.size < 6 ||
         encrypted_password.size > 20

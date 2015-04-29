@@ -1,0 +1,19 @@
+form.modal-form#form-regist
+  p.hint.hidden 
+  .form-group.has-feedback
+    label.sr-only for='email'
+    input.form-control#email type='email' name='email' placeholder='请输入邮箱' 
+    span.glyphicon.glyphicon-ok.form-control-feedback.sr-only aria-hidden="true"
+    span.glyphicon.glyphicon-remove.form-control-feedback.sr-only aria-hidden="true"
+  .form-group
+    .input-group
+      input.form-control#code type='text' name='code' placeholder='请输入验证码'
+      .input-group-addon.get-code 获取验证码
+  .form-group.has-feedback
+    label.sr-only for='password'
+    input.form-control#password type='password' name='encrypted_password' placeholder='请输入密码' 
+    span.glyphicon.glyphicon-ok.form-control-feedback.sr-only aria-hidden="true"
+    span.glyphicon.glyphicon-remove.form-control-feedback.sr-only aria-hidden="true"
+  .form-button
+    button.btn.btn-gray type='submit' name='regist' data-form='#form-regist'
+      | 注册

@@ -1,7 +1,7 @@
 header.header
   .container
     a.top-logo href="javascript:void(0)"
-      img src="#{image_path('logo/logo.png')}"
+      img src=image_path('logo/logo.png')
     <!-- 角色切换按钮 -->
     - if controller_name == 'pages' && action_name == 'pm'
       button.btn.btn-blue.role-switch data-curr-role=action_name 
@@ -14,5 +14,6 @@ header.header
       button.btn.btn-blue.login data-toggle='modal' data-target='#login'
         | 登录
     - else 
-      button.btn.btn-blue.login 登录/注册
+      button.btn.btn-blue.login data-toggle='modal' data-target='#signup' 
+        | 登录/注册
 section.layout-fix.for-header

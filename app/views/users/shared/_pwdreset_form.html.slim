@@ -1,0 +1,15 @@
+form.normal-form#form-reset
+  p.hint.success.hidden
+    | 密码重置成功，
+    span
+    | 秒后跳转到首页。如果没有自动跳转，请点击
+    a href='/' target='_blank'
+      | 这里
+  .form-group.has-feedback
+    label.sr-only for='password' 邮箱
+    input.form-control#password type='password' name='password' placeholder='请输入新密码'
+    span.glyphicon.glyphicon-ok.form-control-feedback.sr-only aria-hidden="true"
+    span.glyphicon.glyphicon-remove.form-control-feedback.sr-only aria-hidden="true"
+  .form-button
+    button.btn.btn-gray type='submit' name='reset' data-form='#form-reset'
+      | 重置密码

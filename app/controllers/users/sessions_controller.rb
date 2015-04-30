@@ -10,12 +10,12 @@ class Users::SessionsController < ApplicationController
     json = { status: 0, code: 1, msg: '', url: '' }
     email = params[:email]
     @user = User.find_by(email: email)
-    if true #@user && @user.valid_password?(params[:encrypted_password])
-      # session[:id] = @user.id
-      # @user.remember_me(cookies) if params[:remember_me] == 'true'
+    if @user && @user.valid_password?(params[:encrypted_password])
+      session[:id] = @user.id
+      @user.remember_me(cookies) if params[:remember_me] == 'true'
       json[:msg] = '登陆成功'
       json[:url] =
-        if @user.try :role == 'tester'
+        if @user.role == 'tester'
           new_tester_path
         else
           new_pm_path

@@ -16,6 +16,7 @@ class Users::PasswordsController < ApplicationController
   end
 
   def reset
+    cookies.signed[:redirect_path] = params[:redirect_path]
     if current_user
       current_user.forget_me(cookies)
       reset_session
@@ -42,7 +43,9 @@ class Users::PasswordsController < ApplicationController
   end
 
   def update_reset
-    json = { msg: '密码修改成功', status: 0, code: 1 }
+    json = { msg: '密码修改成功', status: 0, code: 1, redirect_to: '' }
+    json[:redirect_to] = cookies.signed[:redirect_path] ? cookies.signed[:redirect_path] : root_path
+
     @user = current_user || User.find_by(reset_password_token: cookies.signed[:reset_password_token])
     encrypted_password = params[:user][:encrypted_password]
     if encrypted_password.size < 6 ||

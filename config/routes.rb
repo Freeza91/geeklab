@@ -4,7 +4,11 @@ Rails.application.routes.draw do
 
   namespace :users do
 
-    resources :registrations
+    resources :registrations do
+      collection do
+        get 'is_emails_exist'
+      end
+    end
 
     resources :sessions, only: :new do
       collection do

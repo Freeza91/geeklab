@@ -53,6 +53,14 @@ class Users::RegistrationsController < ApplicationController
     redirect_to new_users_session_path
   end
 
+  def is_emails_exist
+    json = { code: 1, status: 0 }
+    unless User.find_by(email: params[:email])
+      json[:code] = 0
+    end
+    render json: json
+  end
+
 private
   def user_params
     params.require(:user).permit(:email, :encrypted_password, :role) #can add other collum

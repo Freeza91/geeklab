@@ -26,11 +26,16 @@ $(function () {
           case 0:
           // 邮箱不存在
             $form.find('.hint').removeClass('hidden success').find('span').text('该邮箱未注册');
+            $form.find('.link').addClass('hidden');
           break;
           case 1:
           // 邮件已发送
             $form.find('.hint').removeClass('hidden').addClass('success').find('span').text('邮件已发送');
-            $form.find('.link').attr('href', data.msg);
+            if(data.msg !== '') {
+              $form.find('.link').attr('href', data.msg).removeClass('hidden');
+            } else {
+              $form.find('.link').addClass('hidden');
+            }
             var count = 60;
             $this.removeClass('btn-blue').addClass('disabled btn-gray');
             function emailCountDown() {
@@ -64,21 +69,35 @@ $(function () {
     }
 
     var user = {};
-    user.encrypted_password = $form.find('[name="password"]').val();
+    var $pwd = $form.find('[name="password"]').parent();
+    var passwordReg = /[0-9a-zA-Z_]{6,16}/;
+
+    user.encrypted_password = $pwd.find('input').val();
     
+    if(user.encrypted_password === '') {
+      $pwd.addClass('has-error').find('.form-control-feedback').text('请输入密码');
+      return false;
+    } else if(!passwordReg.test(user.encrypted_password)) {
+      $pwd.addClass('has-error').find('.form-control-feedback').text('格式错误');
+      return false;
+    } else {
+      $pwd.removeClass('has-error').find('.form-control-feedback').text('');
+    }
     $.ajax({
       url: '/users/passwords/update_reset',
       method: 'put',
       data: {user: user}
     })
     .done(function(data, status, xhr) {
-      $form.find('.hint').removeClass('hidden');
+      $('#form-reset').addClass('hidden');
+      $('.info').removeClass('hidden');
+      console.log(data);
       var count = 5;
       setInterval(function () {
         if(count >= 0) {
-          $form.find('.hint span').text(count--);
+          $('.info').find('.count').text(count--);
         } else {
-          location.href = '/';
+          location.href = data.redirect_to;
         }  
       }, 1000);
     })

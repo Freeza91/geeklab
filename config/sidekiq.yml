@@ -1,6 +1,7 @@
 ---
 :concurrency: 5
 :pidfile: tmp/pids/sidekiq.pid
+:logfile: ./log/sidekiq.log
 production: # work model
   :concurrency: 20
 :queues:

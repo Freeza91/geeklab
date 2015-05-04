@@ -125,10 +125,10 @@ $(function () {
             location.href = '/';
           break;
           case 2:
-            $form.find('.hind').text('邮箱已被注册').removeClass('hidden');
+            $form.find('.hint').text('邮箱已被注册').removeClass('hidden');
           break;
           case 3:
-            $form.find('.hind').text('验证码错误或已过期').removeClass('hidden');
+            $form.find('.hint').text('验证码错误或已过期').removeClass('hidden');
           break;
         }
       }  

@@ -37,11 +37,10 @@ Rails.application.routes.draw do
   resources :testers, only: :new
 
   require 'sidekiq/web'
-  mount Sidekiq::Web, at: '/sidekiq'
-
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|
-      username == ENV['sidekiq_username'] && password == ENV['sidekiq_password']
+      username == Settings.sidekiq_username && password == Settings.sidekiq_password
   end if Rails.env.production?
+  mount Sidekiq::Web, at: '/sidekiq'
 
   get 'pm' => 'pages#pm'
   get 'tester' => 'pages#tester'

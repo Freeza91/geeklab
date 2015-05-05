@@ -4,16 +4,16 @@ header.header
       img src=image_path('logo/logo.png')
     <!-- 角色切换按钮 -->
     - if controller_name == 'pages' && action_name == 'pm'
-      button.btn.btn-blue.role-switch data-curr-role=action_name 
+      button.btn.btn-blue.role-switch data-curr-role=action_name
         | 切换到测试用户
     - if controller_name == 'pages' && action_name == 'tester'
-      button.btn.btn-blue.role-switch data-curr-role=action_name 
+      button.btn.btn-blue.role-switch data-curr-role=action_name
         | 切换到产品经理
     <!-- 角色切换按钮结束 -->
     - if controller_name == 'pages' && action_name == 'home'
       button.btn.btn-blue.login data-toggle='modal' data-target='#login'
         | 登录
-    - else 
-      button.btn.btn-blue.login data-toggle='modal' data-target='#signup' 
+    - else
+      button.btn.btn-blue.login data-toggle='modal' data-target='#signup'
         | 登录/注册
 section.layout-fix.for-header

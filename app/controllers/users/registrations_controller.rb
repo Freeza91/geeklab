@@ -47,12 +47,6 @@ class Users::RegistrationsController < ApplicationController
     render text: @user.to_json
   end
 
-  def destroy
-    reset_session
-    flash[:info] = '登出成功'
-    redirect_to new_users_session_path
-  end
-
   def is_emails_exist
     json = { code: 1, status: 0 }
     unless User.find_by(email: params[:email])

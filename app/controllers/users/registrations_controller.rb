@@ -1,7 +1,7 @@
 class Users::RegistrationsController < ApplicationController
 
   before_action :logined?, only: [:new, :create]
-  before_action :require_login?, only: [:edit, :update, :destroy]
+  before_action :require_login?, only: [:edit, :update]
 
   def new
     @user = User.new

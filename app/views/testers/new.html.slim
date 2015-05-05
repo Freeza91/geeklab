@@ -1,3 +1,50 @@
 section.content-box
   .container
-    div 这里可以填写测试用户表单
+    form.form-horizontal.info-form
+      fieldset.row 
+        legend.col-md-2
+          | 完善基本信息
+        .col-md-10
+          .form-group
+            label 昵称
+            input type='text' 
+          .checkbox
+            label 性别
+            label.checkbox-inline
+              input type='checkbox'
+              | 男
+            label.checkbox-inline
+              input type='checkbox'
+              | 女
+          select.form-control
+            option 1
+            option 2
+            option 3
+          .checkbox
+            label 我的常用设备
+            label.checkbox-inline
+              input type='checkbox'
+              | IOS
+            label.checkbox-inline
+              input type='checkbox'
+              | Android
+      fieldset.row
+        legend.col-md-2
+          | 填写详细资料
+        .col-md-10
+      fieldset.row
+        legend.col-md-2
+          | 您的联系方式
+        .col-md-10
+          .form-group
+            label 邮箱
+            input type='text' 
+          .form-group
+            label 手机
+            input type='text' 
+          .form-group
+            label 微信
+            input type='text' 
+          .form-group
+            label 支付宝
+            input type='text' 

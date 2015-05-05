@@ -1,4 +1,4 @@
-$(function () { 
+$(function () {
   $(document).on('scroll', function (event) {
     var $this = $(this);
     var scrollTop = $this.scrollTop();
@@ -6,17 +6,17 @@ $(function () {
       $('.header').addClass('scroll-down');
     } else {
       $('.header').removeClass('scroll-down');
-    } 
+    }
   });
   $('.role-switch').on('click', function () {
-    var currRole = $(this).data('currRole');  
+    var currRole = $(this).data('currRole');
     switch(currRole) {
       case 'pm':
-        location.href = '/tester';
+        location.href = '/page-tester';
       break;
       case 'tester':
-        location.href = '/pm';
+        location.href = '/page-pm';
       break;
     }
-  }); 
+  });
 });

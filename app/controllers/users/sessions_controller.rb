@@ -30,4 +30,10 @@ class Users::SessionsController < ApplicationController
     end
   end
 
+  def destroy
+    reset_session
+    flash[:info] = '登出成功'
+    redirect_to new_users_session_path
+  end
+
 end

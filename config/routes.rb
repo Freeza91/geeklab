@@ -4,13 +4,13 @@ Rails.application.routes.draw do
 
   namespace :users do
 
-    resources :registrations do
+    resources :registrations, except: :destroy do
       collection do
         get 'is_emails_exist'
       end
     end
 
-    resources :sessions, only: :new do
+    resources :sessions, only: [:new, :destroy] do
       collection do
         post 'auth'
       end
@@ -33,8 +33,8 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :pms, only: :new
-  resources :testers, only: :new
+  resources :pms
+  resources :testers
 
   require 'sidekiq/web'
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|
@@ -42,7 +42,7 @@ Rails.application.routes.draw do
   end if Rails.env.production?
   mount Sidekiq::Web, at: '/sidekiq'
 
-  get 'pm' => 'pages#pm'
-  get 'tester' => 'pages#tester'
+  get 'page-pm' => 'pages#pm'
+  get 'page-tester' => 'pages#tester'
 
 end

@@ -10,7 +10,7 @@ class Users::RegistrationsController < ApplicationController
   def create
     json = { status: 0, code: 1, msg: [], url: ''}
 
-    value = $redis.get(params[:user][:email])
+    value = $redis.get(params[:user][:email]) if $redis.exists params[:user][:email]
     @user = User.new(user_params)
     if value && value == params[:user][:code]
       if @user.save
@@ -45,12 +45,6 @@ class Users::RegistrationsController < ApplicationController
       @user.update_attribute(key, value)
     end
     render text: @user.to_json
-  end
-
-  def destroy
-    reset_session
-    flash[:info] = '登出成功'
-    redirect_to new_users_session_path
   end
 
   def is_emails_exist

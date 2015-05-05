@@ -1,3 +1,9 @@
 section.content-box
   .container
     div 这里可以填写测试用户表单
+
+    = form_for @tester do |f|
+      = f.label 'username', '昵称'
+      = f.text_field 'username', placeholder: '昵称'
+
+      = f.submit '保存'

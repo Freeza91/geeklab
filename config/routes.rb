@@ -33,8 +33,8 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :pms, only: :new
-  resources :testers, only: :new
+  resources :pms
+  resources :testers
 
   require 'sidekiq/web'
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|

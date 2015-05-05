@@ -1,7 +1,7 @@
 class Users::SessionsController < ApplicationController
-
+  
   before_action :logined?, only: [:new, :auth]
-
+  
   def new
     @user = User.new
   end
@@ -32,9 +32,9 @@ class Users::SessionsController < ApplicationController
 
   def destroy
     reset_session
-    current_user.forget(cookies) if current_user
+    current_user.forget_me(cookies) if current_user
     flash[:info] = '登出成功'
-    redirect_to new_users_session_path
+    redirect_to root_path
   end
 
 end

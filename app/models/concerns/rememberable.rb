@@ -15,6 +15,8 @@ module Rememberable
 
   def forget_me(cookies)
     cookies.delete(:id) if cookies.signed[:id]
+    p cookies.signed[:id]
+    byebug
   end
 
 end

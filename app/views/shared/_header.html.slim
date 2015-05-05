@@ -10,9 +10,9 @@ header.header
       button.btn.btn-blue.role-switch data-curr-role=action_name
         | 切换到产品经理
     <!-- 角色切换按钮结束 -->
-    -if current_user
-      div 您已经登录
-    -else
+    - if current_user
+      = link_to '退出', users_session_path(current_user.id), method: :delete
+    - else 
       - if controller_name == 'pages' && action_name == 'home'
         button.btn.btn-blue.login data-toggle='modal' data-target='#login'
           | 登录
@@ -20,3 +20,6 @@ header.header
         button.btn.btn-blue.login data-toggle='modal' data-target='#signup'
           | 登录/注册
 section.layout-fix.for-header
+
+
+li = console

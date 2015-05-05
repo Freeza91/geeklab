@@ -55,7 +55,7 @@ $(function () {
             //$form.find('.form-group').addClass('has-error').find('.glyphicon-remove').removeClass('sr-only');
           break;
           case 1:
-            console.log(data.msg);
+            location.href = data.url;
           break;
         }
       }
@@ -370,20 +370,20 @@ $(function () {
   });
 
   // 忘记密码跳转，需要保存当前url至服务器
-  $('.pwd-forget').click(function () {
-    var href= '/users/passwords/reset';
-    var currUrl = location.href;
-    $.ajax({
-      url: href,
-      data: {redirect_path: currUrl}
-    })
-    .done(function (data, status, xhr) {
-      location.href = href;
-    })
-    .error(function (errors, status) {
-      console.log(errors);
-    })
-  });
+  //$('.pwd-forget').click(function () {
+    //var href= '/users/passwords/reset';
+    //var currUrl = location.href;
+    //$.ajax({
+      //url: href,
+      //data: {redirect_path: currUrl}
+    //})
+    //.done(function (data, status, xhr) {
+      //location.href = href;
+    //})
+    //.error(function (errors, status) {
+      //console.log(errors);
+    //})
+  //});
 
   $('[name="send-email"]').on('click', function (event) {
 
@@ -478,8 +478,7 @@ $(function () {
     })
     .done(function(data, status, xhr) {
       $('#form-reset').addClass('hidden');
-      $('.info').removeClass('hidden');
-      console.log(data);
+      $('.info').removeClass('hidden').find('a').attr('href', data.redirect_to);
       var count = 5;
       setInterval(function () {
         if(count >= 0) {

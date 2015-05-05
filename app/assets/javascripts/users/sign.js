@@ -85,57 +85,52 @@ $(function () {
 
     var valided = true;
     // 验证表单所填信息是否完整
-    if(user.email === '') {
-      $('#form-regist #email').blur();
-      valided = false;
-    }
-    if(user.code === '') {
-      $form.find('[name="code"]').parent().addClass('has-error');
-      valided = false;
-    } else {
-      $form.find('[name="code"]').parent().removeClass('has-error');
-    }
-    if(user.encrypted_password === ''){
-      var $pwd = $form.find('[name="encrypted_password"]').parent();
-      $pwd.removeClass('has-success').addClass('has-error').find('.form-control-feedback').text('请输入密码');
-      $pwd.find('.glyphicon-ok').addClass('sr-only');
-      valided = false;
-    } else if(!formValid(user.encrypted_password, 'password')) {
-      var $pwd = $form.find('[name="encrypted_password"]').parent();
-      $pwd.removeClass('has-success').addClass('has-error').find('.form-control-feedback').text('格式错误');
-      $pwd.find('.glyphicon-ok').addClass('sr-only');
-      valided = false;
-    } else {
-      var $pwd = $form.find('[name="encrypted_password"]').parent();
-      $pwd.removeClass('has-error').addClass('has-success').find('.form-control-feedback').text('');
-      $pwd.find('.glyphicon-ok').removeClass('sr-only');
-    }
-    if(!valided) {
-      return false;
-    }
-    $.ajax({
-      url: '/users/registrations',
-      method: 'post',
-      data: {user: user}
-    })
-    .done(function(data, status, xhr) {
-      if(data.status === 0) {
-        switch(data.code) {
-          case 1:
-            location.href = '/';
-          break;
-          case 2:
-            $form.find('.hint').text('邮箱已被注册').removeClass('hidden');
-          break;
-          case 3:
-            $form.find('.hint').text('验证码错误或已过期').removeClass('hidden');
-          break;
+    var $email = $form.find('[name="email"]');
+    var $pwd = $form.find('[name="encrypted_password"]');
+    if(emailValid(user.email, $email)) {
+      emailRegisted(user.email, $email, function () {
+        if(user.code === '') {
+          $form.find('[name="code"]').parent().addClass('has-error');
+          valided = false;
+        } else {
+          $form.find('[name="code"]').parent().removeClass('has-error');
         }
-      }  
-    })
-    .error(function(errors, status) {
-      console.log(data); 
-    });
+        if(!passwordValid(user.encrypted_password, $pwd)) {
+          valided = false;
+        }
+        if(!valided) {
+          $form.find('.hint').addClass('hidden');
+          return false;
+        }
+        $.ajax({
+          url: '/users/registrations',
+          method: 'post',
+          data: {user: user}
+        })
+        .done(function(data, status, xhr) {
+          if(data.status === 0) {
+            switch(data.code) {
+              case 1:
+                location.href = '/';
+              break;
+              case 2:
+                $form.find('.hint').text('邮箱已被注册').removeClass('hidden');
+              break;
+              case 3:
+                $form.find('.hint').text('验证码错误或已过期').removeClass('hidden');
+              break;
+            }
+          }  
+        })
+        .error(function(errors, status) {
+          console.log(data); 
+        });
+      });
+    }
+  });
+  $('input').on('focus', function () {
+    $(this).parent().removeClass('has-success has-error').find('.glyphicon').addClass('sr-only');
+    $(this).parent().find('.form-control-feedback.text').text('');
   });
 
   // 关闭modal时清除所有验证状态
@@ -170,7 +165,8 @@ $(function () {
     var email = $('#form-regist').find('[name="email"]').val();
     if(email === '') {
       // 触发邮箱输入框的验证，显示提示信息
-      $('#form-regist #email').blur();
+      var $email = $('#form-regist').find('[name="email"]');
+      emailValid(email, $email);
       return false;
     } 
     // TODO 邮箱验证
@@ -200,12 +196,32 @@ $(function () {
   });
   
   // 注册邮箱是否可用的检测
-  $('#form-regist #email').on('blur', function () {
+  $('[type="email"]').on('blur', function () {
 
     var $this = $(this);
-    var $root = $this.parent();
     var email = $this.val();
     
+    if(email === '') {
+      return false;
+    }
+    if($this.parents('form').attr('id') === 'form-regist') {
+      emailValid(email, $this) && emailRegisted(email, $this);
+    } else {
+      emailValid(email, $this);
+    }
+  });
+  $('#form-regist #password').on('blur', function () {
+    
+    var $this = $(this);
+    var password = $this.val();
+
+    if(password === '') {
+      return false;
+    }
+    passwordValid(password, $this);
+  });
+  function emailValid(email, $el) {
+    var $root = $el.parent();
     // 清理目前显示的提示信息
     $root.removeClass('has-success has-error').find('.glyphicon-ok').addClass('sr-only');
     $root.find('.form-control-feedback.text').text('');
@@ -217,28 +233,51 @@ $(function () {
       $root.addClass('has-error').find('.form-control-feedback.text').text('格式错误');
       return false;
     }
-    $.ajax({
-      url: '/users/registrations/is_emails_exist',
-      data: {email: email}
-    })
-    .done(function (data, status, xhr) {
-      if(data.status === 0) {
-        switch(data.code) {
-          case 0:
-            // 可用
-            $root.addClass('has-success').find('.glyphicon-ok').removeClass('sr-only');
-          break;
-          case 1:
-            // 不可用，已被注册
-            $root.addClass('has-error').find('.form-control-feedback.text').text('邮箱已注册');
+    return true;
+  }
+  function emailRegisted(email, $el, callback) {
+    var $root = $el.parent();
+      $.ajax({
+        url: '/users/registrations/is_emails_exist',
+        data: {email: email}
+      })
+      .done(function (data, status, xhr) {
+        if(data.status === 0) {
+          switch(data.code) {
+            case 0:
+              // 可用
+              $root.addClass('has-success').find('.glyphicon-ok').removeClass('sr-only');
+              if(callback !== undefined) {
+                callback();
+              }
+            break;
+            case 1:
+              // 不可用，已被注册
+              $root.addClass('has-error').find('.form-control-feedback.text').text('邮箱已注册');
+              break;
+          }
         }
-      }
-    })
-    .error(function (errors, status) {
-      console.log(errors);
-    });
-  });
+      })
+      .error(function (errors, status) {
+        console.log(errors);
+      });
+  }
+  function passwordValid(password, $el) {
 
+    var $root = $el.parent();
+    // 清理目前显示的提示信息
+    $root.removeClass('has-success has-error').find('.glyphicon-ok').addClass('sr-only');
+    $root.find('.form-control-feedback.text').text('');
+    if(password === '') {
+      $root.addClass('has-error').find('.form-control-feedback.text').text('请输入密码');
+      return false;
+    }
+    if(!formValid(password, 'password')) {
+      $root.addClass('has-error').find('.form-control-feedback.text').text('格式错误');
+      return false;
+    }
+    return true;
+  }
   $('.input-valid').on('blur', function (event) {
     var $this = $(this);
     var $root = $this.parent();
@@ -344,5 +383,114 @@ $(function () {
     .error(function (errors, status) {
       console.log(errors);
     })
+  });
+
+  $('[name="send-email"]').on('click', function (event) {
+
+    event.preventDefault();
+    
+    var $this = $(this);
+    if($this.hasClass('disabled')) {
+      return false;
+    }
+    var form = $this.data('form');
+    var $form = $this.parents(form);
+
+    var data = {};
+    data.email = $form.find('[name="email"]').val();
+    var $email = $form.find('[name="email"]');
+
+    if(!emailValid(data.email, $email)) {
+      return false;
+    }
+    $.ajax({
+      url: '/users/mailers/send_reset_password',
+      method: 'post',
+      data: data
+    })
+    .done(function (data, status, xhr) {
+      if(data.status === 0) {
+        switch(data.code) {
+          case 0:
+          // 邮箱不存在
+            $form.find('.hint').removeClass('hidden success').find('span').text('该邮箱未注册');
+            $form.find('.link').addClass('hidden');
+          break;
+          case 1:
+          // 邮件已发送
+            $form.find('.hint').removeClass('hidden').addClass('success').find('span').text('邮件已发送');
+            if(data.msg !== '') {
+              $form.find('.link').attr('href', data.msg).removeClass('hidden');
+            } else {
+              $form.find('.link').addClass('hidden');
+            }
+            var count = 60;
+            $this.removeClass('btn-blue').addClass('disabled btn-gray');
+            function emailCountDown() {
+              if(count >= 0) {
+                $this.text(count-- + '秒后重新发送邮件');
+              } else {
+                $this.text('发送邮件').removeClass('disabled btn-gray').addClass('btn-blue');
+                $form.find('.hind').addClass('hidden');
+              } 
+            }
+            setInterval(emailCountDown, 1000)
+          break;
+        }
+      }
+    })
+    .error(function (errors, status) {
+      console.log(errors, status);
+    });
+  });
+
+  $('[name="reset"]').on('click', function (event) {
+    
+    event.preventDefault();
+
+    var $this = $(this);
+    var form = $this.data('form');
+    var $form = $this.parents(form);
+
+    if($this.hasClass('disabled')) {
+      return false;
+    }
+
+    var user = {};
+    var $pwd = $form.find('[name="password"]').parent();
+    var passwordReg = /[0-9a-zA-Z_]{6,16}/;
+
+    user.encrypted_password = $pwd.find('input').val();
+    
+    if(user.encrypted_password === '') {
+      $pwd.addClass('has-error').find('.form-control-feedback').text('请输入密码');
+      return false;
+    } else if(!passwordReg.test(user.encrypted_password)) {
+      $pwd.addClass('has-error').find('.form-control-feedback').text('格式错误');
+      return false;
+    } else {
+      $pwd.removeClass('has-error').find('.form-control-feedback').text('');
+    }
+    $.ajax({
+      url: '/users/passwords/update_reset',
+      method: 'put',
+      data: {user: user}
+    })
+    .done(function(data, status, xhr) {
+      $('#form-reset').addClass('hidden');
+      $('.info').removeClass('hidden');
+      console.log(data);
+      var count = 5;
+      setInterval(function () {
+        if(count >= 0) {
+          $('.info').find('.count').text(count--);
+        } else {
+          location.href = data.redirect_to;
+        }  
+      }, 1000);
+    })
+    .error(function(errors, status) {
+      
+    });
   });
 });

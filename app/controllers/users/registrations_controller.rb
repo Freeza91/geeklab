@@ -10,7 +10,7 @@ class Users::RegistrationsController < ApplicationController
   def create
     json = { status: 0, code: 1, msg: [], url: ''}
 
-    value = $redis.get(params[:user][:email])
+    value = $redis.get(params[:user][:email]) if $redis.exists params[:user][:email]
     @user = User.new(user_params)
     if value && value == params[:user][:code]
       if @user.save

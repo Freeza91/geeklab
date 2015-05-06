@@ -38,12 +38,14 @@ $color_gray: #717071
 .flip
   position: relative
   transform-style: preverse-3d
+  -webkit-transform-style: preverse-3d
   .front,
   .back
     position: absolute
     top: 0
     left: 0
     backface-visibility: hidden
+    -webkit-backface-visibility: hidden
     transition: all .7s cubic-bezier(0.22, 0.61, 0.36, 1)
   @media (min-width: 768px)
     .front,
@@ -51,8 +53,14 @@ $color_gray: #717071
       width: 600px
   .back
     transform: rotateY(180deg)
+    -webkit-transform: rotateY(180deg)
+    -moz-transform: rotateY(180deg)
 .flip.fliped
   .front
     transform: rotateY(180deg)
+    -webkit-transform: rotateY(180deg)
+    -moz-transform: rotateY(180deg)
   .back
     transform: rotateY(0)
+    -webkit-transform: rotateY(0)
+    -moz-transform: rotateY(180deg)

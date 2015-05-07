@@ -90,10 +90,10 @@ $(function () {
     if(emailValid(user.email, $email)) {
       emailRegisted(user.email, $email, function () {
         if(user.code === '') {
-          $form.find('[name="code"]').parent().addClass('has-error');
+          $form.find('[name="code"]').parent().addClass('has-error').find('.form-control-feedback.text').text('请输入验证码');
           valided = false;
         } else {
-          $form.find('[name="code"]').parent().removeClass('has-error');
+          $form.find('[name="code"]').parent().removeClass('has-error').find('.form-control-feedback.text').text('');
         }
         if(!passwordValid(user.encrypted_password, $pwd)) {
           valided = false;

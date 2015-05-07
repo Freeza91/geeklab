@@ -163,36 +163,36 @@ $(function () {
     }
     // 获取邮箱
     var email = $('#form-regist').find('[name="email"]').val();
-    if(email === '') {
-      // 触发邮箱输入框的验证，显示提示信息
-      var $email = $('#form-regist').find('[name="email"]');
-      emailValid(email, $email);
-      return false;
-    } 
-    // TODO 邮箱验证
-    $.ajax({
-      url: '/users/mailers/send_confirmation',
-      data: {
-        email: email
-      }
-    })
-    .done(function (data, status, xhr) {
-      // 显示 30s 倒计时
-      var count = 30;
-      $this.addClass('disabled');
-      (function countDown() {
-        if(count >= 0) {
-          $this.text(count-- + 's后重发');
-          setTimeout(countDown, 1000);
-        } else {
-          $this.text('获取验证码');
-          $this.removeClass('disabled');
-        }
-      })();
-    })
-    .error(function(errors, status) {
-      console.log(errors); 
-    });
+    var $email = $('#form-regist').find('[name="email"]');
+    if(!emailValid(email, $email)) {
+        return false;
+    } else { 
+      emailRegisted(email, $email, function () {
+        $.ajax({
+          url: '/users/mailers/send_confirmation',
+          data: {
+            email: email
+          }
+        })
+        .done(function (data, status, xhr) {
+          // 显示 30s 倒计时
+          var count = 30;
+          $this.addClass('disabled');
+          (function countDown() {
+            if(count >= 0) {
+              $this.text(count-- + 's后重发');
+              setTimeout(countDown, 1000);
+            } else {
+              $this.text('获取验证码');
+              $this.removeClass('disabled');
+            }
+          })();
+        })
+        .error(function(errors, status) {
+          console.log(errors); 
+        });
+      });
+    }
   });
   
   // 注册邮箱是否可用的检测

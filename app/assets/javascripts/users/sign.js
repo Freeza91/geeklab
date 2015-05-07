@@ -413,8 +413,9 @@ $(function () {
         switch(data.code) {
           case 0:
           // 邮箱不存在
-            $form.find('.hint').removeClass('hidden success').find('span').text('该邮箱未注册');
-            $form.find('.link').addClass('hidden');
+            //$form.find('.hint').removeClass('hidden success').find('span').text('该邮箱未注册');
+            //$form.find('.link').addClass('hidden');
+            $email.parent().addClass('has-error').find('.form-control-feedback.text').text('该邮箱未注册');
           break;
           case 1:
           // 邮件已发送

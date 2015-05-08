@@ -2,22 +2,26 @@ section.content-box
   .container
     form.form-horizontal.info-form
       fieldset.row
-        legend.col-md-2.title
-          | 完善基本信息
+        .col-md-2
+          legend.title
+            | 完善基本信息
         .col-md-10.info-box
-          .form-group
-            label.info-title 昵称
+          .form-group data-type='text'
+            label.info-title data-name='username'
+              | 昵称
             input type='text'
-          .form-group
-            label.info-title 性别
-            label.checkbox-inline
-              input type='checkbox'
+          .form-group data-type='radio'
+            label.info-title data-name='sex'
+              | 性别
+            label.radio-inline
+              input type='radio' name='sex' value='male'
               | 男
-            label.checkbox-inline
-              input type='checkbox'
+            label.radio-inline
+              input type='radio' name='sex' value='female'
               | 女
-          .form-group
-            label.info-title 生日
+          .form-group data-type='select'
+            label.info-title data-name='birthday'
+              | 生日
             select
               option 1
               option 2
@@ -33,8 +37,9 @@ section.content-box
               option 2
               option 3
             span 日
-          .form-group
-            label.info-title 出生地
+          .form-group data-type='select'
+            label.info-title data-name='birthplace'
+              | 出生地
             select
               option 1
               option 2
@@ -43,8 +48,9 @@ section.content-box
               option 1
               option 2
               option 3
-          .form-group
-            label.info-title 居住地
+          .form-group data-type='select'
+            label.info-title data-name='livingplace'
+              | 居住地
             select
               option 1
               option 2
@@ -53,8 +59,9 @@ section.content-box
               option 1
               option 2
               option 3
-          .form-group
-            label.info-title 我的常用设备
+          .form-group data-type='checkbox'
+            label.info-title data-name='device'
+              | 我的常用设备
             label.checkbox-inline
               input type='checkbox'
               | IOS
@@ -65,26 +72,30 @@ section.content-box
         legend.col-md-2.title
           | 填写详细资料
         .col-md-10.info-box
-          .form-group
-            label.info-title 感情状况
+          .form-group data-type='select'
+            label.info-title data-name='emotional_status'
+              | 感情状况
             select
               option 1
               option 2
               option 3
-          .form-group
-            label.info-title 性取向
+          .form-group data-type='select'
+            label.info-title data-name='sex_orientation'
+              | 性取向
             select
               option 1
               option 2
               option 3
-          .form-group
-            label.info-title 教育程度
+          .form-group data-type='select'
+            label.info-title data-name='education'
+              | 教育程度
             select
               option 1
               option 2
               option 3
-          .form-group
-            label.info-title 职业信息
+          .form-group data-type='select'
+            label.info-title data-name='profession'
+              | 职业信息
             select
               option 1
               option 2
@@ -93,14 +104,16 @@ section.content-box
               option 1
               option 2
               option 3
-          .form-group
-            label.info-title 年收入
+          .form-group data-type='select'
+            label.info-title data-name='income'
+              | 年收入
             select
               option 1
               option 2
               option 3
-          .form-group
-            label.info-title 性格(可多选)
+          .form-group data-type='checkbox'
+            label.info-title data-name='personality'
+              | 性格(可多选)
             label.checkbox-inline
               input type='checkbox'
               | 1
@@ -119,8 +132,9 @@ section.content-box
             label.checkbox-inline
               input type='checkbox'
               | 1
-          .form-group
-            label.info-title 兴趣爱好(可多选)
+          .form-group data-type='checkbox'
+            label.info-title data-name='interest'
+              | 兴趣爱好(可多选)
             label.checkbox-inline
               input type='checkbox'
               | 1
@@ -143,15 +157,22 @@ section.content-box
         legend.col-md-2.title
           | 您的联系方式
         .col-md-10.info-box
-          .form-group
-            label.info-title 邮箱
+          .form-group data-type='text'
+            label.info-title data-name='email_contract'
+              | 邮箱
             input type='text'
-          .form-group
-            label.info-title 手机
+          .form-group data-type='text' 
+            label.info-title data-name='mobile_phone'
+              | 手机
             input type='text'
-          .form-group
-            label.info-title 微信
+          .form-group data-type='text' 
+            label.info-title data-name='wechat'
+              | 微信
             input type='text'
-          .form-group
-            label.info-title 支付宝
+          .form-group data-type='text' 
+            label.info-title data-name='ali_pay'
+              | 支付宝
             input type='text'
+      .row
+        button.btn-blue.submit
+          | 提交

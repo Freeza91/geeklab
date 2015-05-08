@@ -7,8 +7,12 @@ class TestersController < ApplicationController
 
   def create
     json = { status: 0, code: 1, msg: '创建成功' }
-    @tester_infor = TesterInfor.new.tap(&:new_model_block)
-    json['code'] == 0 unless @tester_infor.save
+    @tester_infor = TesterInfor.new.tap &new_model_block
+
+    unless @tester_infor.save
+      json['code'] = 0
+      json['msg'] = @tester_infor.errors.full_messages
+    end
 
     render json: json
   end
@@ -22,8 +26,7 @@ class TestersController < ApplicationController
 private
 
   def new_model_block
-    Pro.new do |infor|
-      pry
+    Proc.new do |infor|
       infor.tester_id = current_user.id
       infor.username = params['username']
       infor.birthday = parse_birthday(params['birthday'])
@@ -38,7 +41,7 @@ private
       infor.income = params['income']
       infor.personality = params['personality']
       infor.interest = params['interest']
-      info.email_contract = params['email_contract']
+      infor.email_contract = params['email_contract']
       infor.mobile_phone = params['mobile_phone']
       infor.wechat = params['wechat']
       infor.ali_pay = params['ali_pay']

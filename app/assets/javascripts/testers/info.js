@@ -32,7 +32,7 @@ $(function () {
           $selectSet.each(function (index, select) {
             if(index > 0){
               value += '-';
-            } 
+            }
             value += $(select).val();
           });
         break;
@@ -41,7 +41,7 @@ $(function () {
     });
     console.log(data);
     $.ajax({
-      url: '/testers/create',
+      url: '/testers',
       method: 'post',
       data: data
     })

@@ -2,7 +2,7 @@ form.modal-form.valid#form-login
   p.hint.hidden 用户名或密码错误, 请重试!
   .form-group.has-feedback
     label.sr-only for='email' 邮箱
-    input.form-control#email type='email' name='email' placeholder='邮箱' 
+    input.form-control#email type='email' name='email' placeholder='邮箱' autocomplete='off' 
     /*span.glyphicon.glyphicon-ok.form-control-feedback.sr-only aria-hidden="true"*/
     /*span.glyphicon.glyphicon-remove.form-control-feedback.sr-only aria-hidden="true"*/
     span.form-control-feedback.text for='email' aria-hidden="true"
@@ -17,7 +17,6 @@ form.modal-form.valid#form-login
       input type='checkbox' name='remember_me' checked='checked'
         | 下次自动登录
     a.place-right.pwd-forget href='/users/passwords/reset' target='_blank'
-      i.fa.fa-hand-o-right
       | 忘记密码？
   .form-button
     button.btn.btn-blue type='submit' name='login' data-form='#form-login'

@@ -9,6 +9,7 @@ class UserMailer < ApplicationMailer
 
   def reset_password(user, url)
     @url = url
+    @email = user.email
     sendgrid_category "Reset Password "
     mail to: user.email, subject: "GeekLabs Reset Password"
 

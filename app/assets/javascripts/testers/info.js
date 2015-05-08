@@ -40,5 +40,16 @@ $(function () {
       data[key] = value;
     });
     console.log(data);
+    $.ajax({
+      url: '/testers/create',
+      method: 'post',
+      data: data
+    })
+    .done(function (data, status, xhr) {
+      console.log(data);
+    })
+    .error(function (errors, status) {
+      console.log(errors);
+    })
   });
 });

@@ -2,177 +2,148 @@ section.content-box
   .container
     form.form-horizontal.info-form
       fieldset.row
-        .col-md-2
+        .col-xs-2.col-sm-2.col-md-2.col-lg-2
           legend.title
             | 完善基本信息
-        .col-md-10.info-box
-          .form-group data-type='text'
-            label.info-title data-name='username'
+        .col-xs-10.col-sm-10.col-md-10.col-lg-10.info-box
+          .form-group.required.has-feedback data-type='text'
+            label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='username'
               | 昵称
-            input type='text'
-          .form-group data-type='radio'
-            label.info-title data-name='sex'
+            .col-xs-4.col-sm-4.col-md-4.col-lg-4
+              input.form-control type='text' data-info-name='nickname'
+              span.form-control-feedback.text.sr-only 请输入昵称
+          .form-group.required.has-feedback data-type='radio'
+            label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='sex'
               | 性别
-            label.radio-inline
-              input type='radio' name='sex' value='male'
-              | 男
-            label.radio-inline
-              input type='radio' name='sex' value='female'
-              | 女
-          .form-group data-type='select'
-            label.info-title data-name='birthday'
+            .col-xs-7.col-sm-7.col-md-7.col-lg-7
+              label.radio-inline
+                input type='radio' name='sex' value='male'
+                | 男
+              label.radio-inline
+                input type='radio' name='sex' value='female'
+                | 女
+              span.form-control-feedback.text.sr-only 请选择性别
+          .form-group.required.has-feedback#birth data-type='select'
+            label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='birthday'
               | 生日
-            select
-              option 1
-              option 2
-              option 3
-            span 年
-            select
-              option 1
-              option 2
-              option 3
-            span 月
-            select
-              option 1
-              option 2
-              option 3
-            span 日
-          .form-group data-type='select'
-            label.info-title data-name='birthplace'
+            .col-xs-7.col-sm-7.col-md-7.col-lg-7
+              select.year
+              span 年
+              select.month
+              span 月
+              select.date
+              span 日
+              span.form-control-feedback.text.sr-only 请选择生日
+          .form-group.required.has-feedback#birthplace data-type='select'
+            label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='birthplace'
               | 出生地
-            select
-              option 1
-              option 2
-              option 3
-            select
-              option 1
-              option 2
-              option 3
-          .form-group data-type='select'
-            label.info-title data-name='livingplace'
+            .col-xs-7.col-sm-7.col-md-7.col-lg-7
+              select.prov.margin-right
+              select.city disabled='disabled'
+              span.form-control-feedback.text.sr-only 请选择出生地
+          .form-group.required.has-feedback#livingplace data-type='select'
+            label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='livingplace'
               | 居住地
-            select
-              option 1
-              option 2
-              option 3
-            select
-              option 1
-              option 2
-              option 3
-          .form-group data-type='checkbox'
-            label.info-title data-name='device'
+            .col-xs-7.col-sm-7.col-md-7.col-lg-7
+              select.prov.margin-right
+              select.city disabled='disabled'
+              span.form-control-feedback.text.sr-only 请选择居住地
+          .form-group.required.has-feedback data-type='checkbox'
+            label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='device'
               | 我的常用设备
-            label.checkbox-inline
-              input type='checkbox'
-              | IOS
-            label.checkbox-inline
-              input type='checkbox'
-              | Android
+            .col-xs-7.col-sm-7.col-md-7.col-lg-7
+              - for device in @devices
+                label.checkbox-inline
+                  input type='checkbox' value=device
+                    = device
+              span.form-control-feedback.text.sr-only 至少选择一个设备
       fieldset.row
-        legend.col-md-2.title
-          | 填写详细资料
-        .col-md-10.info-box
-          .form-group data-type='select'
-            label.info-title data-name='emotional_status'
+        .col-xs-2.col-sm-2.col-md-2.col-lg-2
+          legend.title
+            | 填写详细资料
+        .col-xs-10.col-sm-10.col-md-10.col-lg-10.info-box
+          .form-group.required.has-feedback#emotion data-type='select'
+            label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='emotional_status'
               | 感情状况
-            select
-              option 1
-              option 2
-              option 3
-          .form-group data-type='select'
-            label.info-title data-name='sex_orientation'
+            .col-xs-7.col-sm-7.col-md-7.col-lg-7
+              select.prov
+              span.form-control-feedback.text.sr-only 请选择感情状况
+          .form-group.required.has-feedback#sex_orientation data-type='select'
+            label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='sex_orientation'
               | 性取向
-            select
-              option 1
-              option 2
-              option 3
-          .form-group data-type='select'
-            label.info-title data-name='education'
+            .col-xs-7.col-sm-7.col-md-7.col-lg-7
+              select.prov
+              span.form-control-feedback.text.sr-only 请选择性取向
+          .form-group.required.has-feedback#education data-type='select'
+            label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='education'
               | 教育程度
-            select
-              option 1
-              option 2
-              option 3
-          .form-group data-type='select'
-            label.info-title data-name='profession'
+            .col-xs-7.col-sm-7.col-md-7.col-lg-7
+              select.prov
+              span.form-control-feedback.text.sr-only 请选择教育程度
+          .form-group.required.has-feedback#profession data-type='select'
+            label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='profession'
               | 职业信息
-            select
-              option 1
-              option 2
-              option 3
-            select
-              option 1
-              option 2
-              option 3
-          .form-group data-type='select'
-            label.info-title data-name='income'
+            .col-xs-7.col-sm-7.col-md-7.col-lg-7
+              select.prov.margin-right
+              select.city disabled='disabled'
+              span.form-control-feedback.text.sr-only 请选择职业信息
+          .form-group.required.has-feedback#income data-type='select'
+            label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='income'
               | 年收入
-            select
-              option 1
-              option 2
-              option 3
+            .col-xs-7.col-sm-7.col-md-7.col-lg-7
+              select.prov
+              span.form-control-feedback.text.sr-only 请选择年收入
           .form-group data-type='checkbox'
-            label.info-title data-name='personality'
+            label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='personality'
               | 性格(可多选)
-            label.checkbox-inline
-              input type='checkbox'
-              | 1
-            label.checkbox-inline
-              input type='checkbox'
-              | 1
-            label.checkbox-inline
-              input type='checkbox'
-              | 1
-            label.checkbox-inline
-              input type='checkbox'
-              | 1
-            label.checkbox-inline
-              input type='checkbox'
-              | 1
-            label.checkbox-inline
-              input type='checkbox'
-              | 1
+            .col-xs-7.col-sm-7.col-md-7.col-lg-7
+              - for personal in @personality
+                label.checkbox-inline
+                  input type='checkbox' value=personal
+                    = personal
           .form-group data-type='checkbox'
-            label.info-title data-name='interest'
+            label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='interest'
               | 兴趣爱好(可多选)
-            label.checkbox-inline
-              input type='checkbox'
-              | 1
-            label.checkbox-inline
-              input type='checkbox'
-              | 1
-            label.checkbox-inline
-              input type='checkbox'
-              | 1
-            label.checkbox-inline
-              input type='checkbox'
-              | 1
-            label.checkbox-inline
-              input type='checkbox'
-              | 1
-            label.checkbox-inline
-              input type='checkbox'
-              | 1
+            .col-xs-7.col-sm-7.col-md-7.col-lg-7
+              - for interest in @interests
+                label.checkbox-inline
+                  input type='checkbox' value=interest
+                    = interest
       fieldset.row
-        legend.col-md-2.title
-          | 您的联系方式
-        .col-md-10.info-box
-          .form-group data-type='text'
-            label.info-title data-name='email_contract'
+        .col-xs-2.col-sm-2.col-md-2.col-lg-2
+          legend.title
+            | 您的联系方式
+        .col-xs-10.col-sm-10.col-md-10.col-lg-10.info-box
+          .form-group.required.has-feedback data-type='text'
+            label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='email_contract'
               | 邮箱
-            input type='text'
-          .form-group data-type='text' 
-            label.info-title data-name='mobile_phone'
+            .col-xs-4.col-sm-4.col-md-4.col-lg-4
+              input.input-valid.form-control type='email' data-info-name='email'
+              span.form-control-feedback.text
+          .form-group.required.has-feedback data-type='text' 
+            label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='mobile_phone'
               | 手机
-            input type='text'
+            .col-xs-4.col-sm-4.col-md-4.col-lg-4
+              input.input-valid.form-control type='text' data-info-name='mobile_phone'
+              span.form-control-feedback.text
           .form-group data-type='text' 
-            label.info-title data-name='wechat'
+            label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='wechat'
               | 微信
-            input type='text'
+            .col-xs-4.col-sm-4.col-md-4.col-lg-4
+              input.form-control type='text'
+              span.glyphicon.glyphicon-ok.form-control-feedback.sr-only aria-hidden="true"
+              span.form-control-feedback.text
           .form-group data-type='text' 
-            label.info-title data-name='ali_pay'
+            label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='ali_pay'
               | 支付宝
-            input type='text'
+            .col-xs-4.col-sm-4.col-md-4.col-lg-4
+              input.form-control type='text'
+              span.glyphicon.glyphicon-ok.form-control-feedback.sr-only aria-hidden="true"
+              span.form-control-feedback.text
       .row
-        button.btn-blue.submit
-          | 提交
+        .col-xs-2.col-sm-2.col-md-2.col-lg-2
+        .col-xs-10.col-sm-10.col-md-10.col-lg-10.info-box
+          .col-xs-3.col-sm-3.col-md-3.col-lg-3
+          .col-xs-4.col-sm-4.col-md-4.col-lg-4
+            button.btn.btn-blue.submit
+              | 提交

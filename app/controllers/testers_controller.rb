@@ -1,8 +1,12 @@
 class TestersController < ApplicationController
 
-  before_action :require_login?
+  #before_action :require_login?
 
   def new
+    @devices = ['Andoriod', 'IOS']
+    @personality = [1, 2, 3, 4, 5]
+    @interests = [1, 2, 3, 4, 5]
+    render '/testers/new'
   end
 
   def create

@@ -129,8 +129,8 @@ $(function () {
     }
   });
   $('input').on('focus', function () {
-    $(this).parent().removeClass('has-success has-error').find('.glyphicon').addClass('sr-only');
-    $(this).parent().find('.form-control-feedback.text').text('');
+    $(this).parents('.form-group').removeClass('has-success has-error').find('.glyphicon').addClass('sr-only');
+    $(this).parents('.form-group').find('.form-control-feedback.text').text('');
   });
 
   // 关闭modal时清除所有验证状态
@@ -220,91 +220,91 @@ $(function () {
     }
     passwordValid(password, $this);
   });
-  function emailValid(email, $el) {
-    var $root = $el.parent();
-    // 清理目前显示的提示信息
-    $root.removeClass('has-success has-error').find('.glyphicon-ok').addClass('sr-only');
-    $root.find('.form-control-feedback.text').text('');
-    if(email === '') {
-      $root.addClass('has-error').find('.form-control-feedback.text').text('请输入邮箱');
-      return false;
-    }
-    if(!formValid(email, 'email')) {
-      $root.addClass('has-error').find('.form-control-feedback.text').text('格式错误');
-      return false;
-    }
-    return true;
-  }
-  function emailRegisted(email, $el, callback) {
-    var $root = $el.parent();
-      $.ajax({
-        url: '/users/registrations/is_emails_exist',
-        data: {email: email}
-      })
-      .done(function (data, status, xhr) {
-        if(data.status === 0) {
-          switch(data.code) {
-            case 0:
-              // 可用
-              $root.addClass('has-success').find('.glyphicon-ok').removeClass('sr-only');
-              if(callback !== undefined) {
-                callback();
-              }
-            break;
-            case 1:
-              // 不可用，已被注册
-              $root.addClass('has-error').find('.form-control-feedback.text').text('邮箱已注册');
-              break;
-          }
-        }
-      })
-      .error(function (errors, status) {
-        console.log(errors);
-      });
-  }
-  function passwordValid(password, $el) {
+  //function emailValid(email, $el) {
+    //var $root = $el.parent();
+    //// 清理目前显示的提示信息
+    //$root.removeClass('has-success has-error').find('.glyphicon-ok').addClass('sr-only');
+    //$root.find('.form-control-feedback.text').text('');
+    //if(email === '') {
+      //$root.addClass('has-error').find('.form-control-feedback.text').text('请输入邮箱');
+      //return false;
+    //}
+    //if(!formValid(email, 'email')) {
+      //$root.addClass('has-error').find('.form-control-feedback.text').text('格式错误');
+      //return false;
+    //}
+    //return true;
+  //}
+  //function emailRegisted(email, $el, callback) {
+    //var $root = $el.parent();
+      //$.ajax({
+        //url: '/users/registrations/is_emails_exist',
+        //data: {email: email}
+      //})
+      //.done(function (data, status, xhr) {
+        //if(data.status === 0) {
+          //switch(data.code) {
+            //case 0:
+              //// 可用
+              //$root.addClass('has-success').find('.glyphicon-ok').removeClass('sr-only');
+              //if(callback !== undefined) {
+                //callback();
+              //}
+            //break;
+            //case 1:
+              //// 不可用，已被注册
+              //$root.addClass('has-error').find('.form-control-feedback.text').text('邮箱已注册');
+              //break;
+          //}
+        //}
+      //})
+      //.error(function (errors, status) {
+        //console.log(errors);
+      //});
+  //}
+  //function passwordValid(password, $el) {
 
-    var $root = $el.parent();
-    // 清理目前显示的提示信息
-    $root.removeClass('has-success has-error').find('.glyphicon-ok').addClass('sr-only');
-    $root.find('.form-control-feedback.text').text('');
-    if(password === '') {
-      $root.addClass('has-error').find('.form-control-feedback.text').text('请输入密码');
-      return false;
-    }
-    if(!formValid(password, 'password')) {
-      $root.addClass('has-error').find('.form-control-feedback.text').text('格式错误');
-      return false;
-    }
-    return true;
-  }
-  $('.input-valid').on('blur', function (event) {
-    var $this = $(this);
-    var $root = $this.parent();
-    var $form = $this.parents('form');
-    var value = $this.val();
-    var type = $this.attr('type');
-    if(value.length == 0 || type === 'text') {
-      return false;
-    }
-    var result = formValid(value, type);
-    if(result) {
-      if($root.hasClass('has-error')) {
-        $root.removeClass('has-error');
-        $root.find('.glyphicon-remove').addClass('sr-only')
-      }
-      $root.addClass('has-success');
-      $root.find('.glyphicon-ok').removeClass('sr-only')
-    } else {
-      if($root.hasClass('has-success')) {
-        $root.removeClass('has-success');
-        $root.find('.glyphicon-ok').addClass('sr-only')
-      }
-      $root.addClass('has-error');
-      $root.find('.glyphicon-remove').removeClass('sr-only')
-    }
-    //enableSubmit($form);
-  });
+    //var $root = $el.parent();
+    //// 清理目前显示的提示信息
+    //$root.removeClass('has-success has-error').find('.glyphicon-ok').addClass('sr-only');
+    //$root.find('.form-control-feedback.text').text('');
+    //if(password === '') {
+      //$root.addClass('has-error').find('.form-control-feedback.text').text('请输入密码');
+      //return false;
+    //}
+    //if(!formValid(password, 'password')) {
+      //$root.addClass('has-error').find('.form-control-feedback.text').text('格式错误');
+      //return false;
+    //}
+    //return true;
+  //}
+  //$('.input-valid').on('blur', function (event) {
+    //var $this = $(this);
+    //var $root = $this.parent();
+    //var $form = $this.parents('form');
+    //var value = $this.val();
+    //var type = $this.attr('type');
+    //if(value.length == 0 || type === 'text') {
+      //return false;
+    //}
+    //var result = formValid(value, type);
+    //if(result) {
+      //if($root.hasClass('has-error')) {
+        //$root.removeClass('has-error');
+        //$root.find('.glyphicon-remove').addClass('sr-only')
+      //}
+      //$root.addClass('has-success');
+      //$root.find('.glyphicon-ok').removeClass('sr-only')
+    //} else {
+      //if($root.hasClass('has-success')) {
+        //$root.removeClass('has-success');
+        //$root.find('.glyphicon-ok').addClass('sr-only')
+      //}
+      //$root.addClass('has-error');
+      //$root.find('.glyphicon-remove').removeClass('sr-only')
+    //}
+    ////enableSubmit($form);
+  //});
   // 获取用户角色
   function getRole() {
     var $body = $('body');
@@ -320,20 +320,20 @@ $(function () {
   }
 
   // form valid
-  function formValid (value, type) {
-    var result;
-    switch(type){
-      case 'email':
-        var emailReg = /^[0-9a-zA-Z_-]+@([0-9a-zA-Z]+.)+[a-z]$/;
-        result = emailReg.test(value);
-      break; 
-      case 'password':
-        var passwordReg = /[0-9a-zA-Z_]{6,16}/;
-        result = passwordReg.test(value);
-      break;
-    }
-    return result;
-  }
+  //function formValid (value, type) {
+    //var result;
+    //switch(type){
+      //case 'email':
+        //var emailReg = /^[0-9a-zA-Z_-]+@([0-9a-zA-Z]+.)+[a-z]$/;
+        //result = emailReg.test(value);
+      //break; 
+      //case 'password':
+        //var passwordReg = /[0-9a-zA-Z_]{6,16}/;
+        //result = passwordReg.test(value);
+      //break;
+    //}
+    //return result;
+  //}
 
   // enable form submit button
   function enableSubmit ($form) {

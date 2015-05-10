@@ -127,7 +127,7 @@ $(function () {
           if($item.hasClass('required')) {
             $el = $item.find('input');
             infoName = $item.find('input').data('infoName'); 
-            textValid($el, infoName);
+            valided = textValid($el, infoName);
           }
         break;
         case 'radio':
@@ -174,6 +174,7 @@ $(function () {
     });
     console.log(data);
 
+    console.log(valided);
     if(!valided) {
       return false;
     }
@@ -214,7 +215,7 @@ $(function () {
         $root.addClass('has-error').find('.form-control-feedback').removeClass('sr-only').text('请输入手机号');
         result = false;
       } else {
-        result = formValid('mobile_phone');
+        result = formValid(value, 'mobile_phone');
         if(!result) {
           $root.addClass('has-error').find('.form-control-feedback').removeClass('sr-only').text('格式错误');
         }
@@ -224,7 +225,7 @@ $(function () {
     return result;
   }
 
-  // 让title垂直居中:w
+  // 让title垂直居中
   function verticalMiddleTitle() {
     var titleSet = $('.info-form .title'); 
     titleSet.each(function(index, title) {

@@ -434,9 +434,10 @@ $(function () {
               } else {
                 $this.text('发送邮件').removeClass('disabled btn-gray').addClass('btn-blue');
                 $form.find('.hind').addClass('hidden');
+                clearInterval(interval);
               } 
             }
-            setInterval(emailCountDown, 1000)
+            var interval = setInterval(emailCountDown, 1000)
           break;
         }
       }

@@ -55,7 +55,8 @@ $(function () {
             //$form.find('.form-group').addClass('has-error').find('.glyphicon-remove').removeClass('sr-only');
           break;
           case 1:
-            location.href = data.url;
+            //location.href = data.url;
+            location.href = location.href
           break;
         }
       }
@@ -111,7 +112,7 @@ $(function () {
           if(data.status === 0) {
             switch(data.code) {
               case 1:
-                location.href = '/';
+                location.href = data.url;
               break;
               case 2:
                 $form.find('.hint').text('邮箱已被注册').removeClass('hidden');

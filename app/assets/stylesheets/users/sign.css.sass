@@ -52,11 +52,15 @@ $color_gray: #717071
   vertical-align: middle
   display: inline-block
 
+// 将添加了flip动画的dialog高度固定，使其能够居中
+#sign-flip
+  height: 359px
+
 // 翻转动画
 .flip
   position: relative
-  transform-style: preverse-3d
-  -webkit-transform-style: preverse-3d
+  transform-style: preserve-3d
+  -webkit-transform-style: preserve-3d
   .front,
   .back
     position: absolute

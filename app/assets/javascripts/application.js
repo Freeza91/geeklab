@@ -14,6 +14,14 @@
 //= require jquery
 //= require jquery_ujs
 
+// 引入 cityselect
+//= require jquery.cityselect
+
+// 引入 dateselect
+//= require jquery.dateselect
+// 引入 表单验证
+//= require form.valid
+
 // 引入bootstrap插件
 //= require bootstrap.min
 

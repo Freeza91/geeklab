@@ -1,22 +1,8 @@
-<!--<!DOCTYPE html>-->
-<!--<html>-->
-  <!--<head>-->
-    <!--<meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />-->
-  <!--</head>-->
-  <!--<body>-->
-    <!--<h1>Welcome to GeekLabs </h1>-->
-    <!--<p>-->
-      <!--您的验证码是：-->
-
-      <!--<%= @code %>-->
-    <!--</p>-->
-  <!--</body>-->
-<!--</html>-->
 table width='600' style='color: #313131; box-shadow: 0 0 7px #eeeeee; margin: 5px'
   thead
     tr style='text-align: center'
-    td style='padding-bottom: 20px; padding-top: 40px'
-    img src=image_url('logo/logo.png') alt='极客实验室'
+      td style='padding-bottom: 20px; padding-top: 40px'
+        = image_tag 'logo/logo.png', alt: '极客实验室', title: '极客实验室'
   tbody style='font-size: 14px'
     tr
       td style='padding-bottom: 20px; font-size:16px'

@@ -2,6 +2,7 @@ require 'mina/bundler'
 require 'mina/rails'
 require 'mina/git'
 require 'mina/rvm' #rbenv
+require 'mina_sidekiq/tasks'
 
 set :domain, '50.116.16.150'
 
@@ -30,6 +31,7 @@ set :repository, 'git@github.com:GeekPark/GeekLab.git'
 set :keep_releases, 20
 
 set :unicorn_pid, lambda { "#{deploy_to}/#{shared_path}/tmp/pids/unicorn.pid" }
+set :sidekiq_pid, lambda { "#{deploy_to}/#{shared_path}/tmp/pids/sidekiq.pid" }
 
 set :shared_paths, [
   'config/database.yml',
@@ -67,6 +69,7 @@ end
 desc "Deploys the current version to the server."
 task deploy: :environment do
   deploy do
+    invoke :'sidekiq:quiet'
     invoke :'git:clone'
     invoke :'deploy:cleanup'
     invoke :'deploy:link_shared_paths'
@@ -77,6 +80,7 @@ task deploy: :environment do
     to :launch do
       invoke :'unicorn:restart'
       queue "touch #{deploy_to}/tmp/restart.txt"
+      invoke :'sidekiq:restart'
     end
   end
 end

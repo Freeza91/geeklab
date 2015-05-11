@@ -2,6 +2,9 @@ class TestersController < ApplicationController
 
   before_action :require_login?
 
+  def index
+  end
+
   def new
     @devices = ['Andoriod', 'IOS']
     @personality = [1, 2, 3, 4, 5]
@@ -10,10 +13,13 @@ class TestersController < ApplicationController
   end
 
   def create
-    json = { status: 0, code: 1, msg: '创建成功' }
+    json = { status: 0, code: 1, msg: '创建成功', url: testers_path }
     @tester_infor = TesterInfor.new.tap &new_model_block
 
-    unless @tester_infor.save
+    if @tester_infor.save
+      @tester = current_user
+      @tester.update_attribute(:approved, true)
+    else
       json['code'] = 0
       json['msg'] = @tester_infor.errors.full_messages
     end

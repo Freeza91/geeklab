@@ -6,5 +6,6 @@ ActionMailer::Base.smtp_settings = {
   password:             Settings.sendgrid_password,
   authentication:       'plain',
   enable_starttls_auto: true
-
 }
+
+Rails.application.config.action_mailer.asset_host = 'http://50.116.16.150'

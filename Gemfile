@@ -35,6 +35,7 @@ group :development, :test do
   gem 'spring'
 
   gem 'mina'
+  gem 'mina-sidekiq'
 end
 
 group :production do

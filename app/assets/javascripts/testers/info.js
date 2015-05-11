@@ -134,6 +134,7 @@ $(function () {
           value = $item.find('input:radio:checked').val();
           if(value === undefined) {
             $item.addClass('has-error').find('.form-control-feedback').removeClass('sr-only');
+            valided = false;
           }
         break;
         case 'checkbox':
@@ -151,6 +152,7 @@ $(function () {
           $selectSet = $item.find('select');
           for(var i = 0; i < $selectSet.length; i++) {
             var $select = $($selectSet[i]);
+            console.log($select.val());
             if($select.val() === '') {
               valided = false;
               $item.addClass('has-error').find('.form-control-feedback').removeClass('sr-only');
@@ -162,12 +164,6 @@ $(function () {
               value += $select.val();
             }
           }
-          //$selectSet.each(function (index, select) {
-            //if(index > 0){
-              //value += '-';
-            //} 
-            //value += $(select).val();
-          //});
         break;
       }
       data[key] = value;

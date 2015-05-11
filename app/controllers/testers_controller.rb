@@ -1,6 +1,6 @@
 class TestersController < ApplicationController
 
-  #before_action :require_login?
+  before_action :require_login?
 
   def new
     @devices = ['Andoriod', 'IOS']
@@ -40,7 +40,7 @@ private
       infor.sex = params['sex']
       infor.emotional_status = params['emotional_status']
       infor.sex_orientation = params['sex_orientation']
-      infor.eduction = params['eduction']
+      infor.education = params['education']
       infor.profession = params['profession']
       infor.income = params['income']
       infor.personality = params['personality']

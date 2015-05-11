@@ -24,7 +24,7 @@ $(function () {
   var profession = {
     "citylist": [
       {
-        "p": "职业1", 
+        "p": "职业1",
         "c": [
           {"n": 1},
           {"n": 2},
@@ -34,7 +34,7 @@ $(function () {
         ]
       },
       {
-        "p": "职业2", 
+        "p": "职业2",
         "c": [
           {"n": 1},
           {"n": 2},
@@ -44,7 +44,7 @@ $(function () {
         ]
       },
       {
-        "p": "职业3", 
+        "p": "职业3",
         "c": [
           {"n": 1},
           {"n": 2},
@@ -54,7 +54,7 @@ $(function () {
         ]
       },
       {
-        "p": "职业4", 
+        "p": "职业4",
         "c": [
           {"n": 1},
           {"n": 2},
@@ -126,7 +126,7 @@ $(function () {
           value = $item.find('input').val();
           if($item.hasClass('required')) {
             $el = $item.find('input');
-            infoName = $item.find('input').data('infoName'); 
+            infoName = $item.find('input').data('infoName');
             valided = textValid($el, infoName);
           }
         break;
@@ -174,7 +174,7 @@ $(function () {
     if(!valided) {
       return false;
     }
-    
+
     $.ajax({
       url: '/testers',
       method: 'post',
@@ -195,7 +195,7 @@ $(function () {
     var $root = $el.parents('.form-group');
     switch(type) {
       case 'email':
-        result = emailValid(value, $el); 
+        result = emailValid(value, $el);
         if(!result) {
           $root.find('.form-control-feedback').removeClass('sr-only');
         }
@@ -223,7 +223,7 @@ $(function () {
 
   // 让title垂直居中
   function verticalMiddleTitle() {
-    var titleSet = $('.info-form .title'); 
+    var titleSet = $('.info-form .title');
     titleSet.each(function(index, title) {
       var $title = $(title);
       var $root = $title.parents('fieldset');

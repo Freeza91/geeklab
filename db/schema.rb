@@ -11,32 +11,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150504065811) do
+ActiveRecord::Schema.define(version: 20150511023709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "tester_infors", force: :cascade do |t|
     t.integer  "tester_id"
-    t.string   "username",         default: "tester-102"
+    t.string   "username",         default: "tester-6"
     t.string   "sex"
-    t.datetime "birthday"
-    t.string   "birthplace",                                           array: true
-    t.string   "livingplace",                                          array: true
-    t.string   "device",                                               array: true
+    t.string   "birthday"
+    t.string   "birthplace"
+    t.string   "livingplace"
+    t.string   "device",                                             array: true
     t.string   "emotional_status"
     t.string   "sex_orientation"
-    t.string   "eduction"
-    t.string   "profession",                                           array: true
+    t.string   "education"
+    t.string   "profession"
     t.float    "income"
-    t.string   "personality",                                          array: true
-    t.string   "interest",                                             array: true
+    t.string   "personality",                                        array: true
+    t.string   "interest",                                           array: true
     t.string   "email_contract"
     t.string   "mobile_phone"
     t.string   "wechat"
     t.string   "ali_pay"
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
   end
 
   create_table "users", force: :cascade do |t|

@@ -3,11 +3,11 @@ header.header.navbar.navbar-static
     a.top-logo href="javascript:void(0)"
       img src=image_path('logo/logo.png')
     <!-- 角色切换按钮 -->
-    - if controller_name == 'pages' && action_name == 'pm'
-      button.btn.btn-blue.role-switch data-curr-role=action_name
-        | 切换到测试用户
-    - if controller_name == 'pages' && action_name == 'tester'
-      button.btn.btn-blue.role-switch data-curr-role=action_name
+    - if controller_name == 'pms'
+      button.btn.btn-blue.role-switch data-curr-role='pm'
+          | 切换到测试用户
+    - if controller_name == 'testers'
+      button.btn.btn-blue.role-switch data-curr-role='tester'
         | 切换到产品经理
     <!-- 角色切换按钮结束 -->
     - if current_user

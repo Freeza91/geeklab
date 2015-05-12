@@ -12,10 +12,10 @@ $(function () {
     var currRole = $(this).data('currRole');
     switch(currRole) {
       case 'pm':
-        location.href = '/page-tester';
+        location.href = '/testers';
       break;
       case 'tester':
-        location.href = '/page-pm';
+        location.href = '/pms';
       break;
     }
   });

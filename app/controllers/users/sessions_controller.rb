@@ -35,7 +35,27 @@ class Users::SessionsController < ApplicationController
     reset_session   # reset session must behide delete cookies
 
     flash[:info] = '登出成功'
-    redirect_to root_path
+
+    redirect_to direct_to_url
+  end
+
+
+private
+
+  def direct_to_url
+    refer_url =
+      begin
+        URI.parse(request.referer).path
+      rescue
+        '/'
+      end
+    if refer_url.include? "testers"
+      testers_url
+    elsif refer_url.include? "pms"
+      pms_url
+    else
+      root_url
+    end
   end
 
 end

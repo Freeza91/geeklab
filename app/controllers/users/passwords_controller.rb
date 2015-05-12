@@ -19,7 +19,7 @@ class Users::PasswordsController < ApplicationController
     current_user.forget_me(cookies) if current_user
     reset_session
 
-    from = [root_path, page_pm_path, page_tester_path]
+    from = [root_path, pms_path, testers_path]
     path = URI.parse(request.referer || root_url).path
     referer = from.include?(path) ? path : root_path
     session[:redirect_path] = referer

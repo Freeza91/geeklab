@@ -143,7 +143,7 @@ $(function () {
       var $item = $(item);
       $item.removeClass('has-error has-success');
       $item.find('input').val('');
-      $item.find('glyphicon').addClass('sr-only');
+      $item.find('.glyphicon').addClass('sr-only');
       // 清除每个输入框的提示信息
       $item.find('.form-control-feedback').text('');
     });

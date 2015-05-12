@@ -1,7 +1,11 @@
 header.header.navbar.navbar-static
   .container
-    a.top-logo href="javascript:void(0)"
-      img src=image_path('logo/logo.png')
+    - if controller_name == 'testers'
+      a.top-logo href=testers_path
+        img src=image_path('logo/logo.png')
+    - else
+      a.top-logo href="javascript:void(0)"
+        img src=image_path('logo/logo.png')
     <!-- 角色切换按钮 -->
     - if controller_name == 'pms'
       button.btn.btn-blue.role-switch data-curr-role='pm'
@@ -18,7 +22,7 @@ header.header.navbar.navbar-static
             ul.dropdown-menu role='menu'
               - if  controller_name == 'testers'
                 li
-                  a href='testers/new'
+                  a href='/testers/new'
                     | 个人信息
               li
                 = link_to '退出', users_session_path(current_user.id), method: :delete
@@ -29,4 +33,5 @@ header.header.navbar.navbar-static
       - else
         button.btn.btn-blue.login data-toggle='modal' data-target='#signup'
           | 登录/注册
+         
 section.layout-fix.for-header

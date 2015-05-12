@@ -39,8 +39,11 @@ group :development, :test do
 
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'meta_request'
+  # gem 'meta_request'
 
+  gem 'quiet_assets'
+
+  gem 'guard-livereload', '~> 2.4', require: false
 end
 
 group :production do

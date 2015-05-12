@@ -36,6 +36,11 @@ group :development, :test do
 
   gem 'mina'
   gem 'mina-sidekiq'
+
+  gem 'better_errors'
+  gem 'binding_of_caller'
+  gem 'meta_request'
+
 end
 
 group :production do

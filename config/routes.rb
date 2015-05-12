@@ -42,7 +42,5 @@ Rails.application.routes.draw do
   end if Rails.env.production?
   mount Sidekiq::Web, at: '/sidekiq'
 
-  get 'page-pm' => 'pages#pm'
-  get 'page-tester' => 'pages#tester'
 
 end

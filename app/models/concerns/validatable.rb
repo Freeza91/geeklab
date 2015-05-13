@@ -9,7 +9,7 @@ module Validatable
                         message: '邮箱格式不正确'
     validates :email, presence: {message: '邮箱不能为空'}
 
-    validates_length_of :encrypted_password, within: 6..20,
+    validates_length_of :encrypted_password, within: 6..64,
                         too_short: '密码长度不能低于6位',
                         too_long: '密码长度不要超过20位'
 

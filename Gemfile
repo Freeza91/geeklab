@@ -1,4 +1,4 @@
-source 'https://ruby.taobao.org'
+source 'https://rubygems.org/'
 
 gem 'rails', '4.2.1'
 gem 'pg'
@@ -28,7 +28,7 @@ gem 'font-awesome-rails'
 
 gem 'newrelic_rpm'
 
-gem 'rails_admin'#, :git => 'git://github.com/sferik/rails_admin.git'
+gem 'rails_admin', :git => 'git://github.com/sferik/rails_admin.git'
 
 group :development, :test do
   gem 'byebug'

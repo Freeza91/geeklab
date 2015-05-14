@@ -274,11 +274,13 @@ $(function () {
       data: data
     })
     .done(function (data, status, xhr) {
-      console.log(data);
       if(data.status === 0 && data.code === 1) {
         var $modal = $('#info-modal');
         $modal.find('.title').text('个人信息已保存');
         $modal.find('.content').text('新手任务已发送至你的邮箱，完成任务即可成为体验师');
+        $modal.on('hide.bs.modal', function () {
+          location.href = '/testers';
+        });
         $modal.modal();
       }
     })

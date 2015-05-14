@@ -18,7 +18,6 @@ class TestersController < ApplicationController
 
     if @tester_infor.save
       @tester = current_user
-      @tester.update_attribute(:approved, true)
     else
       json['code'] = 0
       json['msg'] = @tester_infor.errors.full_messages

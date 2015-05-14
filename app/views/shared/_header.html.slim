@@ -1,4 +1,4 @@
-header.header.navbar.navbar-static
+header.header.navbar.navbar-static.clear-fix
   .container
     - if controller_name == 'testers'
       a.top-logo href=testers_path
@@ -15,7 +15,7 @@ header.header.navbar.navbar-static
         | 切换到产品经理
     <!-- 角色切换按钮结束 -->
     - if current_user
-      ul.nav.navbar-nav.navbar-right
+      ul.nav.navbar-nav.login
         li.dropdown
           a role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'
             =current_user.email

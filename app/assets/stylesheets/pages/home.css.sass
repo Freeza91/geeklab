@@ -31,6 +31,8 @@ p
     margin-top: 150px
     .title
       color: #fff
+
+
 .steps
   .icon
     text-align: center
@@ -53,6 +55,9 @@ p
     font-size: 24px
     line-height: 46px
     color: #fff
+
+  .wtf
+    font-size: 24px
 .desc
   float: right
   .item
@@ -80,17 +85,58 @@ p
     margin-top: 20px
     margin-bottom: 12px
 
-// 响应式
+// 适配移动端
 @media (max-width: 992px)
   .steps
     .step
       margin-bottom: 30px
-    .icon
-      float: left
+    //.icon
+      //float: left
     .fa
       line-height: 104px
     .conent
       float: right
+
+  .desc
+    float: none
+    .item
+      margin-bottom: 0
+
+  .banner
+    .btn
+      width: 300px
+      height: 80px
+      line-height: 68px
+
+    .wtf
+      margin-left: 30px
+      margin-top: 20px
+
+  .topic
+    float: none
+    position: absolute
+    left: 50%
+    bottom: -40px
+    text-align: center
+
+  .banner_tester
+    background-image: image-url('banner/banner_tester_mobile.jpg')
+    position: relative
+    .topic
+      margin-left: -220px
+
+  .banner_pm
+    background-image: image-url('banner/banner_pm_mobile.jpg')    
+    position: relative
+    .topic
+      margin-left: -150px
+
+  .banner_index
+    background-image: image-url('banner/banner_index_mobile.png')
+    height: 1180px
+
+    .role
+      margin-top: 260px
 @media (min-width: 992px)
   .steps
     .icon

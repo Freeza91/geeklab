@@ -2,7 +2,7 @@ table width='600' style='color: #313131; box-shadow: 0 0 7px #eeeeee'
   thead
     tr style='text-align: center'
       td style='padding-bottom: 20px; padding-top: 40px'
-        img src=image_url('logo/logo.png', host: '50.116.16.150') alt='极客实验室' title='极客实验室'
+        img src=image_url('logo/logo.png') alt='极客实验室' title='极客实验室'
   tbody style='font-size: 14px'
     tr
       td style='padding-bottom: 20px; font-size:16px'
@@ -11,15 +11,13 @@ table width='600' style='color: #313131; box-shadow: 0 0 7px #eeeeee'
     tr
       td style='padding-bottom: 20px; font-size: 14px; line-height: 24px'
         span
-          | 您好，您正在使用极客实验室的"密码重置"功能，请点击下面的链接完成后续步骤（如果您不想重置密码或没有请求重置密码，请忽略本邮件)
-    tr
-      td style='font-size: 12px; color: #17a0c6; padding-bottom: 10px'
-        a href=@url
-           = @url
+          | 您好，新手任务请查看附件，完成新手任务并将视频用邮件的形式发送给我们，就能够成为极客实验室的体验师了。
     tr
       td style='padding-bottom: 20px; font-size: 14px; line-height: 24px'
         span
-          | 如果链接无法直接点击，请复制以上地址在浏览器中打开（链接有效期为一天） 
+          | 邮件请回复到
+          a href='mailto:geeklab@geekpark.net'
+            | geeklab@geekpark.net
     tfoot style='text-align: center'
       tr
         td style='padding-bottom: 10px; font-size: 14px'

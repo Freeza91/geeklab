@@ -10,7 +10,7 @@ main role='main'
             a.btn.btn-blue href=new_tester_path
               | 填写信息
           - else
-            button.btn.btn-blue.temp
+            button.btn.btn-blue.temp data-approved=current_user.approved
               | 体验产品
         - else
           button.btn.btn-blue data-target='#signup' data-toggle='modal'

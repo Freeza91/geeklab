@@ -16,4 +16,12 @@ class UserMailer < ApplicationMailer
 
     render 'user_mailer/reset_password', layout: false
   end
+
+  def novice_task(email)
+    attachments['新手任务.pdf'] = File.read("#{Rails.root.to_s}/public/新手任务.pdf")
+    @email = email
+    sendgrid_category "novice task send"
+    mail to: email, subject: "新手任务"
+    render 'user_mailer/novice_task', layout: false
+  end
 end

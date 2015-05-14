@@ -15,8 +15,10 @@ RailsAdmin.config do |config|
   # config.audit_with :paper_trail, 'User', 'PaperTrail::Version' # PaperTrail >= 3.0.0
 
   config.authorize_with do
-    authenticate_or_request_with_http_basic('GeekLabs Admin Systems') do |username, password|
-      username == Settings.admin_username && password == Settings.admin_password
+    if Rails.env.production?
+      authenticate_or_request_with_http_basic('GeekLabs Admin Systems') do |username, password|
+        username == Settings.admin_username && password == Settings.admin_password
+      end
     end
   end
   ### More at https://github.com/sferik/rails_admin/wiki/Base-configuration

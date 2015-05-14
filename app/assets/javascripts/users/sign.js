@@ -50,7 +50,7 @@ $(function () {
       if(data.status === 0) {
         switch(data.code) {
           case 0:
-            $form.find('.hint').removeClass('hidden');
+            $form.find('.hint').slideDown();
             //$form.find('.form-group').removeClass('has-success').find('.glyphicon-ok').addClass('sr-only');
             //$form.find('.form-group').addClass('has-error').find('.glyphicon-remove').removeClass('sr-only');
           break;
@@ -100,7 +100,7 @@ $(function () {
           valided = false;
         }
         if(!valided) {
-          $form.find('.hint').addClass('hidden');
+          $form.find('.hint').slideUp();
           return false;
         }
         $.ajax({
@@ -115,10 +115,10 @@ $(function () {
                 location.href = data.url;
               break;
               case 2:
-                $form.find('.hint').text('邮箱已被注册').removeClass('hidden');
+                $form.find('.hint').text('邮箱已被注册').slideDown();
               break;
               case 3:
-                $form.find('.hint').text('验证码错误或已过期').removeClass('hidden');
+                $form.find('.hint').text('验证码错误或已过期').slideDown();
               break;
             }
           }  
@@ -149,7 +149,7 @@ $(function () {
     });
 
     // 隐藏提示信息
-    $form.find('.hint').addClass('hidden');
+    $form.find('.hint').slideUp();
 
     // 将提交按钮置为disabled
     //$form.find('button[type="submit"]').removeClass('btn-blue').addClass('btn-gray disabled');
@@ -420,7 +420,7 @@ $(function () {
           break;
           case 1:
           // 邮件已发送
-            $form.find('.hint').removeClass('hidden').addClass('success').find('span').text('邮件已发送');
+            $form.find('.hint').addClass('success').slideDown().find('span').text('邮件已发送');
             if(data.msg !== '') {
               $form.find('.link').attr('href', data.msg).removeClass('hidden');
             } else {

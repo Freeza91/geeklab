@@ -1,5 +1,6 @@
 form.modal-form.valid#form-login
-  p.hint.hidden 用户名或密码错误, 请重试!
+  p.hint
+    | 用户名或密码错误, 请重试!
   .form-group.has-feedback
     label.sr-only for='email' 邮箱
     input.form-control#email type='email' name='email' placeholder='邮箱' autocomplete='off' 
@@ -15,7 +16,7 @@ form.modal-form.valid#form-login
   .checkbox
     label
       input type='checkbox' name='remember_me' checked='checked'
-        | 下次自动登录
+        | 30天内免登陆
     a.place-right.pwd-forget href='/users/passwords/reset' target='_blank'
       | 忘记密码？
   .form-button

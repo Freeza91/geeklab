@@ -17,8 +17,7 @@ class TestersController < ApplicationController
     @tester_infor = TesterInfor.new.tap &new_model_block
 
     if @tester_infor.save
-      @tester = current_user
-      UserMailer.novice_task(@tester.email_contract).deliver_later
+      UserMailer.novice_task(@tester_infor.email_contract || current_user.email).deliver_later
     else
       json['code'] = 0
       json['msg'] = @tester_infor.errors.full_messages

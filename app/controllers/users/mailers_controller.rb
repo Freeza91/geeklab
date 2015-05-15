@@ -1,13 +1,14 @@
 class Users::MailersController < ApplicationController
 
   def send_confirmation
+    json = { status: 0, code: 1, email: '' }
     email = params[:email]
     code = generate_code
     $redis.set(email, code)
     $redis.expire(email, 1800) # set 30 mintues
     UserMailer.welcome(email, code).deliver_later
-
-    render template: "/users/registrations/code"
+    json[:email] = email_target(email)
+    render json: json
   end
 
   def send_reset_password
@@ -54,13 +55,4 @@ private
     p (('a'..'z').to_a + ('0'..'9').to_a).shuffle[1..6].join
   end
 
-  def email_target(email)
-    _, domain = email.match(/\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i).captures
-    domains = %w(qq.com 163.com 126.com sohu.com sina.com gmail.com 21cn.com)
-    if domains.include? domain
-      "http://mail.#{domain}/"
-    else
-      ""
-    end
-  end
 end

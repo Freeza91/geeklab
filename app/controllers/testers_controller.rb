@@ -18,7 +18,7 @@ class TestersController < ApplicationController
 
     if @tester_infor.save
       if current_user.role == 'pm'
-        current_user.update_attirbute(:role, 'both')
+        current_user.update_attribute(:role, 'both')
       end
       UserMailer.novice_task(@tester_infor.email_contract || current_user.email).deliver_later
     else

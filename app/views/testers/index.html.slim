@@ -8,10 +8,13 @@ main role='main'
         - if current_user
           - if current_user.to_tester.try(:tester_infors).blank?
             a.btn.btn-blue href=new_tester_path
-              | 填写信息
+              | 成为体验师
           - else
-            button.btn.btn-blue.temp data-approved=current_user.approved
-              | 体验产品
+            button.btn.btn-blue.temp data-approved="#{current_user.approved}"
+              - if current_user.approved
+                | 体验产品
+              - else
+                | 成为体验师
         - else
           button.btn.btn-blue data-target='#signup' data-toggle='modal'
             | 成为体验师

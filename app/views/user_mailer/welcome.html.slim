@@ -3,32 +3,36 @@ table width='600' style='color: #313131; box-shadow: 0 0 7px #eeeeee; margin: 5p
     tr style='text-align: center'
       td style='padding-bottom: 20px; padding-top: 40px'
         img src=image_url('logo/logo.png') alt='极客实验室' title='极客实验室'
-  tbody style='font-size: 14px'
+  tbody style='font-size: 14px padding-left: 10px'
     tr
-      td style='padding-bottom: 20px; font-size:16px'
+      td style='padding: 0 0 20px 30px; font-size:16px'
         span
-          | 亲爱的#{@email}用户：
+          | 亲爱的
+          a href=('mailto:' + @email) style='font-size: 14px;
+          font-weight:bold; text-decoration:none; color: #17a0c6'
+            = @email
+          | 用户
     tr
-      td style='padding-bottom: 20px; font-size: 14px; line-height: 24px'
+      td style='padding: 0 0 20px 30px; font-size: 14px; line-height: 24px'
         span
           | 您好，您正在使用该邮箱注册极客实验室，您的验证码是
     tr
-      td style='font-size: 12px; color: #17a0c6; padding-bottom: 10px'
-        a
+      td style='padding: 0 0 20px 30px; font-size: 18px; font-weight: bold; color: #17a0c6'
+        span  
           = @code
     tr
-      td style='padding-bottom: 20px; font-size: 14px; line-height: 24px'
+      td style='padding: 0 0 20px 30px; font-size: 16px; line-height: 24px'
         span
-          | 请在30分钟内完成注册操作
-    tfoot style='text-align: center'
+          | 验证码有效期为30分钟，请在30分钟内完成注册操作
+    tfoot style='text-align: center; padding-top: 40px'
       tr
-        td style='padding-bottom: 10px; font-size: 14px'
+        td style='padding-bottom: 10px; padding-top: 40px; font-size: 14px'
           span
             | 此邮件由系统发出，不接受回信。
       tr
         td style='padding-bottom: 40px; font-size: 14px'
           span
             | 如有任何疑问，请发邮件至
-            a href='mailto:geeklab@geekpark.net'
+            a href='mailto:geeklab@geekpark.net' style='font-weight:bold; text-decoration:none; color: #17a0c6'
               | geeklab@geeklab.net
             | 与我们联系

@@ -8,6 +8,11 @@ form.modal-form.valid#form-regist
     span.form-control-feedback.text
   .form-group
     label.sr-only 验证码
+    p.hint.success
+      span 验证码已发送
+      a.link.hidden href='javascript:void(0)' target='_blank'
+        i.fa.fa-hand-o-right
+        | 进入邮箱
     .input-group
       input.form-control type='text' name='code' placeholder='验证码'
       .input-group-addon.get-code 获取验证码

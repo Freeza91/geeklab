@@ -10,7 +10,7 @@ main role='main'
             a.btn.btn-blue href=new_tester_path
               | 成为体验师
           - else
-            button.btn.btn-blue.temp data-approved=current_user.approved
+            button.btn.btn-blue.temp data-approved="#{current_user.approved}"
               - if current_user.approved
                 | 体验产品
               - else

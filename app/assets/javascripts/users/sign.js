@@ -112,7 +112,8 @@ $(function () {
           if(data.status === 0) {
             switch(data.code) {
               case 1:
-                location.href = data.url;
+                //location.href = data.url;
+                location.href = location.href
               break;
               case 2:
                 $form.find('.hint').text('邮箱已被注册').slideDown();
@@ -312,10 +313,10 @@ $(function () {
     if($body.hasClass('pages_home')) {
       return 'both';
     }
-    if($body.hasClass('pages_pm')) {
+    if($body.hasClass('pms')) {
       return 'pm';
     }
-    if($body.hasClass('pages_tester')) {
+    if($body.hasClass('testers')) {
       return 'tester';
     }
   }

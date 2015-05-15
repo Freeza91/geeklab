@@ -30,6 +30,7 @@ Rails.application.routes.draw do
       collection do
         get 'send_confirmation'
         post 'send_reset_password'
+        get 'send_novice_task'
       end
     end
   end

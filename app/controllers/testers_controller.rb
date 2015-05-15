@@ -17,6 +17,9 @@ class TestersController < ApplicationController
     @tester_infor = TesterInfor.new.tap &new_model_block
 
     if @tester_infor.save
+      if current_user.role == 'pm'
+        current_user.update_attirbute(:role, 'both')
+      end
       UserMailer.novice_task(@tester_infor.email_contract || current_user.email).deliver_later
     else
       json['code'] = 0

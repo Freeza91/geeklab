@@ -1,7 +1,7 @@
 APP_DIR = File.expand_path("../../", __FILE__)
 
 preload_app true
-worker_processes 4
+worker_processes 2
 working_directory APP_DIR
 
 listen "/tmp/unicorn.sock", backlog: 64

@@ -163,6 +163,8 @@ $(function () {
     if($this.hasClass('disabled')) {
       return false;
     }
+    var $hint = $this.parents('.form-group').find('.hint');
+    $this.parents('.form-group').find('.hint').slideUp().find('a').addClass('.hidden');
     // 获取邮箱
     var email = $('#form-regist').find('[name="email"]').val();
     var $email = $('#form-regist').find('[name="email"]');
@@ -177,18 +179,25 @@ $(function () {
           }
         })
         .done(function (data, status, xhr) {
-          // 显示 30s 倒计时
-          var count = 30;
-          $this.addClass('disabled');
-          (function countDown() {
-            if(count >= 0) {
-              $this.text(count-- + 's后重发');
-              setTimeout(countDown, 1000);
-            } else {
-              $this.text('获取验证码');
-              $this.removeClass('disabled');
+          if(data.status === 0 && data.code === 1) {
+            console.log(!!data.email);
+            if(data.email) {
+              $hint.find('a').attr('href', data.email).removeClass('hidden')
             }
-          })();
+            $hint.slideDown();
+            // 显示 30s 倒计时
+            var count = 30;
+            $this.addClass('disabled');
+            (function countDown() {
+              if(count >= 0) {
+                $this.text(count-- + 's后重发');
+                setTimeout(countDown, 1000);
+              } else {
+                $this.text('获取验证码');
+                $this.removeClass('disabled');
+              }
+            })();
+          }
         })
         .error(function(errors, status) {
           console.log(errors); 

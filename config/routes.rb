@@ -36,7 +36,13 @@ Rails.application.routes.draw do
   end
 
   resources :pms
-  resources :testers
+
+  resources :testers do
+    resources :assignments do
+      post 'callback_from_qiniu'
+      get 'upload_token'
+    end
+  end
 
   require 'sidekiq/web'
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|

@@ -1,7 +1,7 @@
 class AssignmentsController < ApplicationController
 
-  before_action :require_login?, except: :callback
-  skip_before_filter :verify_authenticity_token, :only => [:callback]
+  before_action :require_login?, except: :callback_from_qiniu
+  skip_before_filter :verify_authenticity_token, :only => [:callback_from_qiniu]
 
   def index
     @assignments = Assignment.all
@@ -31,7 +31,7 @@ class AssignmentsController < ApplicationController
 
   def callback_from_qiniu
     json = { status: 0, code: 0, msg: '上传文件不成功' }
-    id = $redis.get(params[:autu_token])
+    id = $redis.get(params[:auth_token])
     if id && tester = Tester.find_by(id: id)
       assignment = Assignment.find_by(id: params[:assignment_id])
       if assignment.try(:tester_id) == tester.id
@@ -47,12 +47,12 @@ class AssignmentsController < ApplicationController
 private
 
   def generate_token(id)
-    autu_token = generate_qiniu_auth_token
-    $redis.set(autu_token, current_user.id)
-    $redis.expire(autu_token, 1.days)
+    auth_token = generate_qiniu_auth_token
+    $redis.set(auth_token, current_user.id)
+    $redis.expire(auth_token, 1.days)
 
     key_name = generate_key_name
-    callback_path = "/testers/0/assignments/0/callback_from_qiniu"
+    callback_path = "/testers/0/assignments/1/callback_from_qiniu"
 
     callbackUrl = if Rails.env.development?
       "#{Settings.ngork_domain}#{callback_path}"
@@ -61,11 +61,13 @@ private
     end
 
     put_policy = {
-      scope: "#{Settings.qiniu_bucket}:#{key_name}",
+      scope: "#{Settings.qiniu_bucket}",
+      saveKey: "#{key_name}",
       callbackUrl: callbackUrl,
       callbackBody: "auth_token=#{auth_token}&key_name=#{key_name}&assignment_id=#{id}",
-      deadline: 1.days.from_now
+      deadline: 1.days.from_now.to_i
     }
+    p put_policy
     Qiniu::Auth.generate_uptoken(put_policy)
   end
 

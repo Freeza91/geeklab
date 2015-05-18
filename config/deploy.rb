@@ -4,20 +4,22 @@ require 'mina/git'
 require 'mina/rvm' #rbenv
 require 'mina_sidekiq/tasks'
 
-set :domain, '50.116.16.150'
 
 case ENV['on']
 when 'release'
   set :branch, 'release'
 when 'master'
+  set :domain, '123.59.40.194'
   set :branch, 'master'
 when 'stg'
+  set :domain, '50.116.16.150'
   set :branch, 'develop'
 else
+  set :domain, '50.116.16.150'
   set :branch, 'develop'
 end
 
-p "#{branch}"
+p "将要部署：#{branch}"
 
 set :user, 'deploy'
 set :forward_agent, true
@@ -28,7 +30,7 @@ set :current_path, 'current'
 set :app_path,  "#{deploy_to}/#{current_path}"
 
 set :repository, 'git@github.com:GeekPark/GeekLab.git'
-set :keep_releases, 20
+set :keep_releases, 5
 
 set :unicorn_pid, lambda { "#{deploy_to}/#{shared_path}/tmp/pids/unicorn.pid" }
 set :sidekiq_pid, lambda { "#{deploy_to}/#{shared_path}/tmp/pids/sidekiq.pid" }
@@ -89,10 +91,17 @@ namespace :unicorn do
   desc "Start Unicorn"
   task start: :environment do
     queue 'echo "-----> Start Unicorn"'
-    queue! %{
-      cd #{app_path}
-      bundle exec unicorn_rails -E production -c config/unicorn.rb -D
-    }
+    if ENV['on'] == 'develop' or ENV['on'] == ''
+      queue! %{
+        cd #{app_path}
+        bundle exec unicorn_rails -E production -c config/unicorn_test.rb -D
+      }
+    else
+      queue! %{
+        cd #{app_path}
+        bundle exec unicorn_rails -E production -c config/unicorn_master.rb -D
+      }
+    end
   end
 
   desc "Stop Unicorn"
@@ -109,14 +118,5 @@ namespace :unicorn do
     invoke :'unicorn:stop'
     invoke :'unicorn:start'
   end
-end
 
-namespace :assets do
-  desc "assets clear"
-  task clear: :environment do
-    queue  %{
-      cd #{app_path}
-      bundle exec rake assets:clobber RAILS_ENV=production
-    }
-  end
 end

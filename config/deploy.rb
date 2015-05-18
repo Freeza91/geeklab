@@ -19,7 +19,7 @@ else
   set :branch, 'develop'
 end
 
-p "将要部署：#{branch}"
+p "将要部署到：#{branch}"
 
 set :user, 'deploy'
 set :forward_agent, true
@@ -91,12 +91,12 @@ namespace :unicorn do
   desc "Start Unicorn"
   task start: :environment do
     queue 'echo "-----> Start Unicorn"'
-    if ENV['on'] == 'develop' or ENV['on'] == ''
+    if branch == 'develop'
       queue! %{
         cd #{app_path}
         bundle exec unicorn_rails -E production -c config/unicorn_test.rb -D
       }
-    else
+    elsif branch == 'master'
       queue! %{
         cd #{app_path}
         bundle exec unicorn_rails -E production -c config/unicorn_master.rb -D

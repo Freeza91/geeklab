@@ -1,1 +1,5 @@
-index.slim
+-@assignments.each do |a|
+  li= a.project_id
+  li= a.tester_id
+  li= a.status
+  li= get_qiniu_source a.video

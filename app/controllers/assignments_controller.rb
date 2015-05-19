@@ -17,10 +17,17 @@ class AssignmentsController < ApplicationController
 
   def update
     @assignment = Assignment.find_by(id: params[:id])
+    render :edit unless @assignment.tester == current_user.id
   end
 
   def destroy
     @assignment = Assignment.find_by(id: params[:id])
+    if @assignment.tester == current_user.id
+      @assignment.update_attribute(:status, "delete")
+      render text: '删除？？'
+    else
+      render text: '你没有权限操作'
+    end
   end
 
   def upload_token
@@ -67,7 +74,6 @@ private
       callbackBody: "auth_token=#{auth_token}&key_name=#{key_name}&assignment_id=#{id}",
       deadline: 1.days.from_now.to_i
     }
-    p put_policy
     Qiniu::Auth.generate_uptoken(put_policy)
   end
 

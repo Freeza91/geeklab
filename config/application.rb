@@ -32,5 +32,7 @@ module Geeklab
 
     config.active_job.queue_adapter = :sidekiq
 
+    # redirect error url
+    config.exceptions_app = self.routes
   end
 end

@@ -1,6 +1,6 @@
 class Assignment < ActiveRecord::Base
 
-  scope :all,           -> { where(status: "all") }
+  scope :all_task,      -> { where.not(status: "delete") }
   scope :wait_upload,   -> { where(status: "wait_upload") }
   scope :wait_check,    -> { where(status: "wait_check") }
   scope :checking,      -> { where(status: "checking") }

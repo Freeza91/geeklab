@@ -20,6 +20,7 @@ class TestersController < ApplicationController
       if current_user.role == 'pm'
         current_user.update_attribute(:role, 'both')
       end
+      Assignment.create(project_id: 0, tester_id: current_user.id)
       UserMailer.novice_task(@tester_infor.email_contract || current_user.email).deliver_later
     else
       json['code'] = 0

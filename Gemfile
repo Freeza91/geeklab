@@ -25,6 +25,8 @@ gem 'redis'
 gem 'sidekiq'
 gem 'sinatra', require: false
 
+gem 'whenever', :require => false
+
 gem 'font-awesome-rails'
 
 gem 'newrelic_rpm'

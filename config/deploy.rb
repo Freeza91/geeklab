@@ -2,7 +2,9 @@ require 'mina/bundler'
 require 'mina/rails'
 require 'mina/git'
 require 'mina/rvm' #rbenv
+require 'mina/whenever'
 require 'mina_sidekiq/tasks'
+
 
 
 case ENV['on']
@@ -78,6 +80,7 @@ task deploy: :environment do
     invoke :'bundle:install'
     invoke :'rails:db_migrate'
     invoke :'rails:assets_precompile'
+    invoke :'whenever:update'
 
     to :launch do
       invoke :'unicorn:restart'

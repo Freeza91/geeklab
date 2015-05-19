@@ -1,11 +1,5 @@
 Rails.application.routes.draw do
 
-  get 'errors/file_not_found'
-
-  get 'errors/unprocessable'
-
-  get 'errors/internal_server_error'
-
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   root 'pages#home'
 
@@ -55,6 +49,12 @@ Rails.application.routes.draw do
       username == Settings.sidekiq_username && password == Settings.sidekiq_password
   end if Rails.env.production?
   mount Sidekiq::Web, at: '/sidekiq'
+
+  resources :errors, only: [] do
+    get 'file_not_found'
+    get 'unprocessable'
+    get 'internal_server_error'
+  end
 
   match '/404', to: 'errors#file_not_found', via: :all
   match '/422', to: 'errors#unprocessable', via: :all

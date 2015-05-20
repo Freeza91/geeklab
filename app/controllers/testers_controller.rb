@@ -31,15 +31,25 @@ class TestersController < ApplicationController
   end
 
   def edit
+    @devices = ['iPhone', 'iPad', 'Andoriod Phone', 'Andoriod Pad']
+    @personality = ['温柔', '粗犷', '活泼', '老城', '内向', '开朗', '豪爽', '沉默', '急躁', '稳重']
+    @interests = ['足球', '健身', '旅游', '二次元', '音乐', '看书', '电影', '星座']
+    @tester_infor = @current_user.to_tester.tester_infors[0]
+    render 'testers/edit'
   end
 
   def update
     json = { status: 0, code: 1, msg: '创建成功', url: testers_path }
-    @tester_infor = TesterInfor.find_by(id: params[:id]).tap &model_block
-
-    unless @tester_infor.save
-      json['code'] = 0
-      json['msg'] = @tester_infor.errors.full_messages
+    tester = Tester.find_by(id: params[:id])
+    if tester && tester_infors = tester.tester_infors 
+      @tester_infor = tester_infors.last.tap &model_block
+      unless @tester_infor.save
+        json[:code] = 0
+        json[:msg] = @tester_infor.errors.full_messages
+      end
+    else
+      json[:code] = 0
+      json[:msg] = '没有找到相关的testerinfors'
     end
 
     render json: json

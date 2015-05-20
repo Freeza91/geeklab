@@ -34,13 +34,22 @@ class TestersController < ApplicationController
   end
 
   def update
+    json = { status: 0, code: 1, msg: '创建成功', url: testers_path }
+    @tester_infor = TesterInfor.find_by(id: params[:id]).tap &model_block
+
+    unless @tester_infor.save
+      json['code'] = 0
+      json['msg'] = @tester_infor.errors.full_messages
+    end
+
+    render json: json
   end
 
 private
 
-  def new_model_block
+  def model_block
     Proc.new do |infor|
-      infor.tester_id = current_user.id
+      infor.tester_id = current_user.id if infor.tester_id
       infor.username = params['username']
       infor.birthday = parse_birthday(params['birthday'])
       infor.birthplace = params['birthplace']

@@ -8,6 +8,7 @@ $(function () {
       $('.header').removeClass('scroll-down');
     }
   });
+
   $('.role-switch').on('click', function () {
     var currRole = $(this).data('currRole');
     switch(currRole) {

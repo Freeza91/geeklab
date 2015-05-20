@@ -1,37 +1,53 @@
 header.header.navbar.navbar-static.clear-fix
   .container
-    - if controller_name == 'testers'
-      a.top-logo href=testers_path
-        img src=image_path('logo/logo.png')
-    - else
-      a.top-logo href="javascript:void(0)"
-        img src=image_path('logo/logo.png')
-    <!-- 角色切换按钮 -->
-    - if controller_name == 'pms'
-      button.btn.btn-blue.role-switch data-curr-role='pm'
-          | 切换到测试用户
-    - if controller_name == 'testers'
-      button.btn.btn-blue.role-switch data-curr-role='tester'
-        | 切换到产品经理
-    <!-- 角色切换按钮结束 -->
-    - if current_user
-      ul.nav.navbar-nav.login
-        li.dropdown
-          a role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'
-            =current_user.email
-            ul.dropdown-menu role='menu'
-              - if  controller_name == 'testers'
-                li
-                  a href='/testers/new'
-                    | 个人信息
-              li
-                = link_to '退出', users_session_path(current_user.id), method: :delete
-    - else
-      - if controller_name == 'pages' && action_name == 'home'
-        button.btn.btn-blue.login data-toggle='modal' data-target='#login'
-          | 登录
+    .navbar-header
+      - if controller_name == 'testers'
+        a.top-logo href=testers_path
+          img src=image_path('logo/logo.png')
       - else
-        button.btn.btn-blue.login data-toggle='modal' data-target='#signup'
-          | 登录/注册
+        a.top-logo href="javascript:void(0)"
+          img src=image_path('logo/logo.png')
+    /<!-- 角色切换按钮 -->
+    /- if controller_name == 'pms'
+      /button.btn.btn-blue.role-switch data-curr-role='pm'
+          /| 切换到测试用户
+    /- if controller_name == 'testers'
+      /button.btn.btn-blue.role-switch data-curr-role='tester'
+        /| 切换到产品经理
+    /<!-- 角色切换按钮结束 -->
+    <!-- 出错页面不显示用户信息 -->
+    .navbar-collapse.collapse
+      ul.nav.navbar-nav
+        li
+          - if controller_name == 'pms'
+            button.btn.btn-blue.role-switch data-curr-role='pm'
+                | 切换到测试用户
+          - if controller_name == 'testers'
+            button.btn.btn-blue.role-switch data-curr-role='tester'
+              | 切换到产品经理
+      - if controller_name != "errors"
+        - if current_user
+          ul.nav.navbar-nav.login
+            li.dropdown
+              a role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'
+                =current_user.email
+                span.caret
+              ul.dropdown-menu role='menu'
+                - if  controller_name == 'testers'
+                  li
+                    a href='/testers/new'
+                      i.fa.fa-user
+                      | 个人信息
+                li
+                  a rel="noflow" data-method="delete" href=users_session_path(current_user.id)
+                    i.fa.fa-power-off
+                    | 退出登录
+        - else
+          - if controller_name == 'pages' && action_name == 'home'
+            button.btn.btn-blue.login data-toggle='modal' data-target='#login'
+              | 登录
+          - else
+            button.btn.btn-blue.login data-toggle='modal' data-target='#signup'
+              | 登录/注册
          
 section.layout-fix.for-header

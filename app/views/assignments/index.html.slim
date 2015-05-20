@@ -1,13 +1,80 @@
-div 这里是任务列表
+/div 这里是任务列表
 
-.container
-  -@assignments.each do |a|
-    li= a.project_id
-    li= a.tester_id
-    li= a.status
-    li= get_qiniu_source a.video
+/.container
+  /-@assignments.each do |a|
+    /li= a.project_id
+    /li= a.tester_id
+    /li= a.status
+    /li= get_qiniu_source a.video
+    /.container
+      /li
+        /div 点击弹框之后，Ajax获取详细任务列表
+        /= render 'show'
+
+main role="main"
+  section.assignment.content-box
     .container
-      li
-        div 点击弹框之后，Ajax获取详细任务列表
-        = render 'show'
+      .row
+        .col-sm-12.col-md-6
+          .card
+            header
+              h1.title
+                |测试任务名称
+                span.close
+                  | &times
+              p.describle
+                | 注意:请将使用产品的过程录制成视频,录制 过程中请尽可能的大声说出你的感受,遇到困 难时不要感到羞愧,因为一切问题都是产品设计的问题 
+            .content
+              .operator
+                .icon-wrp
+                  i.fa.fa-file-video-o.fa-3x
+                  .outer
+                    .inner
+                .button-wrp.single
+                  button.btn.btn-blue data-toggle='modal' data-target='#video-upload'
+                    | 上传视频
+              .status.success
+                p
+                  | 审核未通过
+            footer
+              .timer
+                p
+                  | 距离任务结束 
+                  span.time
+                    | 10:09:02
+              .score
+                i.fa.fa-diamond
+                span.number
+                  | 10
+        .col-sm-12.col-md-6
+          .card
+            header
+              h1.title
+                |测试任务名称
+                span.close
+                  | &times
+              p.describle
+                | 注意:请将使用产品的过程录制成视频,录制 过程中请尽可能的大声说出你的感受,遇到困 难时不要感到羞愧,因为一切问题都是产品设计的问题 
+            .content
+              .operator
+                .icon-wrp
+                  i.fa.fa-file-video-o.fa-3x
+                .button-wrp.single
+                  button.btn.btn-blue data-toggle='modal' data-target='#video-upload'
+                    | 上传视频
+              .status.success
+                p
+                  | 审核未通过
+            footer
+              .timer
+                p
+                  | 距离任务结束 
+                  span.time
+                    | 10:09:02
+              .score
+                i.fa.fa-diamond
+                span.number
+                  | 10
 
+= render partial: 'assignments/shared/upload_modal'
+>>>>>>> Stashed changes

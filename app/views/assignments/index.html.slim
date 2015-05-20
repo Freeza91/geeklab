@@ -1,1 +1,13 @@
-index.slim
+div 这里是任务列表
+
+.container
+  -@assignments.each do |a|
+    li= a.project_id
+    li= a.tester_id
+    li= a.status
+    li= get_qiniu_source a.video
+    .container
+      li
+        div 点击弹框之后，Ajax获取详细任务列表
+        = render 'show'
+

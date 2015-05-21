@@ -2,8 +2,9 @@ class Assignment < ActiveRecord::Base
 
   scope :my_task, -> { joins(:tester).where("users.email = ? and status = ?", 'rudy@geekpark.net', 'hello') }     # testers is not table, this just a example
 
-  # scope :expired,      -> { joins(:project).where("projects.expired_at > ?", Time.now - 10.minutes) }
-  # scope :not_expired,  -> { joins(:project).where("projects.expired_at > ?", Time.now - 10.minutes) }
+  # scope :expired,      -> { joins(:project).where("projects.expired_at < ?", Time.now - 10.minutes) }
+  # scope :not_expired,  -> { joins(:project).where("projects.expired_at > ?", Time.now + 10.minutes) }
+  # scope :not_view,       ->(last_view){ joins(:project).where("projects.expired_at > ?", last_view) }
 
   scope :not_take_part,-> { where(status: "new") }
   scope :ing,  -> { where('status in (?)', ['wait_check', 'checking', 'not_accept']) }
@@ -25,13 +26,21 @@ class Assignment < ActiveRecord::Base
       # expired.not_take_part
     end
 
+    def missing_num
+      # expired.not_take_part
+    end
+
     def new_tasks
       # not_expired.not_take_part
     end
 
+    def missing_num
+      # expired.not_view.size
+    end
+
     def test
       assignments = User.find(1).to_tester.assignments
-      assignments.ing + assignments.done + assignments.not_take_part
+      (assignments.ing + assignments.done + assignments.not_take_part).size
     end
 
   end

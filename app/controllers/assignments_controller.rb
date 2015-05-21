@@ -21,13 +21,24 @@ class AssignmentsController < ApplicationController
   end
 
   def destroy
+    json = { status: 0, code: 1, msg: '删除成功' }
+
     @assignment = Assignment.find_by(id: params[:id])
-    if @assignment.tester == current_user.id
-      @assignment.update_attribute(:status, "delete")
-      render text: '删除？？'
+    if @assignment.tester.id == current_user.id
+      code, result, response_headers = Qiniu::Storage.delete(
+          Settings.qiniu_bucket,
+          @assignment.try(:video)
+      )
+      if code == 200
+        @assignment.update_attributes(status: "delete", video: '')
+      else
+        json[:code], json[:msg] = 0, '没有找到资源'
+      end
     else
-      render text: '你没有权限操作'
+      json[:code], json[:msg] = 0, '你没有权限操作'
     end
+
+    render json: json
   end
 
   def upload_token

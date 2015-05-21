@@ -1,8 +1,17 @@
-.modal.fade#video-upload
+.modal.fade#video-upload role="dialog" data-backdrop="stick"
   .modal-dialog
     .modal-content
       .modal-header
-        h1
-          | 上传视频
+        button.close type="type" data-dismiss="modal" aria-label="Close"
+          span aria-hidden="true"
+            | &times
+        .logo
+          img src=image_path("logo/logo.png")
       .modal-body
-      .modal-footer
+        form
+          .form-group
+            label for="video"
+              | 上传视频
+            input type="file" id="video"
+            p.help-block
+              | help info here

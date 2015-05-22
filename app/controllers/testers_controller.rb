@@ -20,7 +20,8 @@ class TestersController < ApplicationController
       if current_user.role == 'pm'
         current_user.update_attribute(:role, 'both')
       end
-      Assignment.create(project_id: 0, tester_id: current_user.id)
+      # default: project.first is new tester task
+      Assignment.create(project_id: Project.first.id, tester_id: current_user.id)
       UserMailer.novice_task(@tester_infor.email_contract || current_user.email).deliver_later
     else
       json['code'] = 0
@@ -41,7 +42,7 @@ class TestersController < ApplicationController
   def update
     json = { status: 0, code: 1, msg: '创建成功', url: testers_path }
     tester = Tester.find_by(id: params[:id])
-    if tester && tester_infors = tester.tester_infors 
+    if tester && tester_infors = tester.tester_infors
       @tester_infor = tester_infors.last.tap &model_block
       unless @tester_infor.save
         json[:code] = 0

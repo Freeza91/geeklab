@@ -14,7 +14,7 @@ class TestersController < ApplicationController
 
   def create
     json = { status: 0, code: 1, msg: '创建成功', url: testers_path }
-    @tester_infor = TesterInfor.new.tap &new_model_block
+    @tester_infor = TesterInfor.new.tap &model_block
 
     if @tester_infor.save
       if current_user.role == 'pm'
@@ -60,7 +60,7 @@ private
 
   def model_block
     Proc.new do |infor|
-      infor.tester_id = current_user.id if infor.tester_id
+      infor.tester_id = current_user.id unless infor.tester_id
       infor.username = params['username']
       infor.birthday = parse_birthday(params['birthday'])
       infor.birthplace = params['birthplace']

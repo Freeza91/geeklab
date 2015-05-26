@@ -24,4 +24,11 @@ class UserMailer < ApplicationMailer
     mail to: email, subject: "新手任务"
     render 'user_mailer/novice_task', layout: false
   end
+
+  def novice_task_approved(email)
+    @email = email
+    sendgrid_category "novice task approved send"
+    mail to: email, subject: "新手任务通过通知"
+    render 'user_mailer/novice_task_approved', layout: false
+  end
 end

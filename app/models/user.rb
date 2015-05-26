@@ -13,4 +13,16 @@ class User < ActiveRecord::Base
   def to_pm
     Pm.find_by(id: id)
   end
+
+  after_update :deliver_approved_email
+
+  def deliver_approved_email
+    if approved
+      p 'fasong'
+      UserMailer.novice_task_approved(email).deliver_later
+    else
+      p "meiyou fasong "
+    end
+  end
+
 end

@@ -14,6 +14,7 @@ gem 'therubyracer'
 gem 'settingslogic'
 gem 'slim-rails'
 gem 'bcrypt'
+gem 'kaminari'
 
 gem 'qiniu'
 gem 'carrierwave'

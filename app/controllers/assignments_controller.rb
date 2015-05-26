@@ -4,7 +4,8 @@ class AssignmentsController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => [:callback_from_qiniu]
 
   def index
-    @assignments = Assignment.all
+    tester = current_user.to_tester
+    @assignments = tester.assignments.new_tasks.page(params[:page])
   end
 
   def show

@@ -7,11 +7,11 @@ class User < ActiveRecord::Base
   include Mobileable
 
   def to_tester
-    Tester.find_by(id: id)
+    @tester ||= Tester.find_by(id: id)
   end
 
   def to_pm
-    Pm.find_by(id: id)
+    @pm ||= Pm.find_by(id: id)
   end
 
   after_update :deliver_approved_email

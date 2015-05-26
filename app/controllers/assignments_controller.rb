@@ -4,7 +4,15 @@ class AssignmentsController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => [:callback_from_qiniu]
 
   def index
-    @assignments = Assignment.all
+    tester = current_user.to_tester
+    assignments = tester.assignments
+    if tester.approved
+      @assignments = assignments.new_tasks.page(params[:page])
+      @num = assignments.not_view_num(tester.last_view_time)
+    else
+      @assignments = assignments.test_task
+      @num = nil
+    end
   end
 
   def show
@@ -18,6 +26,19 @@ class AssignmentsController < ApplicationController
   def update
     @assignment = Assignment.find_by(id: params[:id])
     render :edit unless @assignment.tester == current_user.id
+  end
+
+  def miss
+    tester = current_user.to_tester
+    assignments = tester.assignments
+    p @assignments =  assignments.missing
+  end
+
+  def join
+    tester = current_user.to_tester
+    assignments = tester.assignments
+    @assignments_ing =  assignments.take_part_ing
+    @assignments_done = assignments.take_part_done
   end
 
   def destroy
@@ -53,8 +74,9 @@ class AssignmentsController < ApplicationController
     if id && tester = Tester.find_by(id: id)
       assignment = Assignment.find_by(id: params[:assignment_id])
       if assignment.try(:tester_id) == tester.id
-        assignment.update_attribute(:video, params[:key_name])
+        assignment.update_attribute(:video, params[:key_name], status: "wait_check")
         json[:code] = 1
+        json[:video_url] = Settings.qiniu_bucket_domain + "/#{assignment.video}"
         json[:msg] = '上传文件成功'
       end
     end

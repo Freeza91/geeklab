@@ -320,6 +320,7 @@ DEPENDENCIES
   guard-livereload (~> 2.4)
   jbuilder (~> 2.0)
   jquery-rails
+  kaminari
   meta_request
   mina
   mina-sidekiq

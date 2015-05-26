@@ -41,6 +41,10 @@ Rails.application.routes.draw do
     resources :assignments do
       post 'callback_from_qiniu'
       get 'upload_token'
+      collection do
+        get 'miss'
+        get 'join'
+      end
     end
   end
 

@@ -74,8 +74,9 @@ class AssignmentsController < ApplicationController
     if id && tester = Tester.find_by(id: id)
       assignment = Assignment.find_by(id: params[:assignment_id])
       if assignment.try(:tester_id) == tester.id
-        assignment.update_attribute(:video, params[:key_name])
+        assignment.update_attribute(:video, params[:key_name], status: "wait_check")
         json[:code] = 1
+        json[:video_url] = Settings.qiniu_bucket_domain + "/#{assignment.video}"
         json[:msg] = '上传文件成功'
       end
     end

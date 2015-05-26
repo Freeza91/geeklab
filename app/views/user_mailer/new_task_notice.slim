@@ -1,0 +1,36 @@
+table width='600' style='color: #313131; box-shadow: 0 0 7px #eeeeee'
+  thead
+    tr style='text-align: center'
+      td style='padding-bottom: 20px; padding-top: 40px'
+        img src=image_url('logo/logo.png') alt='极客实验室' title='极客实验室'
+  tbody style='font-size: 14px'
+    tr
+      td style='padding-bottom: 20px; font-size:16px'
+        span
+          | 亲爱的
+          a href=('mailto:' + @email) style='font-size: 14px;
+          font-weight:bold; text-decoration:none; color: #17a0c6'
+            = @email
+          | 用户
+    tr
+      td style='padding-bottom: 20px; font-size: 16px; line-height: 24px'
+        span 新任务到达，请查看相关详情
+    tr
+      td style='font-size: 16px; padding-bottom: 10px'
+        span
+          | 邮件请发送至
+          a href='mailto:geeklab@geekpark.net' style='font-size: 14px;
+          font-weight:bold; text-decoration:none; color: #17a0c6'
+            | geeklab@geekpark.net
+    tfoot style='text-align: center'
+      tr
+        td style='padding-bottom: 10px; padding-top: 40px; font-size: 14px'
+          span
+            | 此邮件由系统发出，不接受回信。
+      tr
+        td style='padding-bottom: 40px; font-size: 14px'
+          span
+            | 如有任何疑问，请发邮件至
+            a href='mailto:geeklab@geekpark.net' style='font-weight:bold; text-decoration:none; color: #17a0c6'
+              | geeklab@geeklab.net
+            | 与我们联系

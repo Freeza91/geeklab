@@ -17,12 +17,7 @@ class User < ActiveRecord::Base
   after_update :deliver_approved_email
 
   def deliver_approved_email
-    if approved
-      p 'fasong'
-      UserMailer.novice_task_approved(email).deliver_later
-    else
-      p "meiyou fasong "
-    end
+    UserMailer.novice_task_approved(email).deliver_later if approved
   end
 
 end

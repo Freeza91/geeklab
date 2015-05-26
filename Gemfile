@@ -1,4 +1,4 @@
-source 'https://ruby.taobao.org/'
+source 'http://ruby.taobao.org/'
 
 gem 'rails', '4.2.1'
 gem 'pg'

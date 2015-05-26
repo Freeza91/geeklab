@@ -5,4 +5,5 @@ class Project < ActiveRecord::Base
             presence: true
 
   has_many :assignments
+  has_many :tasks
 end

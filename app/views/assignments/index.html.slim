@@ -1,80 +1,52 @@
-/div 这里是任务列表
-
-/.container
-  /-@assignments.each do |a|
-    /li= a.project_id
-    /li= a.tester_id
-    /li= a.status
-    /li= get_qiniu_source a.video
-    /.container
-      /li
-        /div 点击弹框之后，Ajax获取详细任务列表
-        /= render 'show'
-
 main role="main"
-  section.assignment.content-box
+  nav.assignments-nav
     .container
-      .row
-        .col-sm-12.col-md-6
-          .card
-            header
-              h1.title
-                |测试任务名称
-                span.close
-                  | &times
-              p.describle
-                | 注意:请将使用产品的过程录制成视频,录制 过程中请尽可能的大声说出你的感受,遇到困 难时不要感到羞愧,因为一切问题都是产品设计的问题 
-            .content
-              .operator
-                .icon-wrp
-                  i.fa.fa-file-video-o.fa-3x
-                  .outer
-                    .inner
-                .button-wrp.single
-                  button.btn.btn-blue data-toggle='modal' data-target='#video-upload'
-                    | 上传视频
-              .status.success
-                p
-                  | 审核未通过
-            footer
-              .timer
-                p
-                  | 距离任务结束 
-                  span.time
-                    | 10:09:02
-              .score
-                i.fa.fa-diamond
-                span.number
-                  | 10
-        .col-sm-12.col-md-6
-          .card
-            header
-              h1.title
-                |测试任务名称
-                span.close
-                  | &times
-              p.describle
-                | 注意:请将使用产品的过程录制成视频,录制 过程中请尽可能的大声说出你的感受,遇到困 难时不要感到羞愧,因为一切问题都是产品设计的问题 
-            .content
-              .operator
-                .icon-wrp
-                  i.fa.fa-file-video-o.fa-3x
-                .button-wrp.single
-                  button.btn.btn-blue data-toggle='modal' data-target='#video-upload'
-                    | 上传视频
-              .status.success
-                p
-                  | 审核未通过
-            footer
-              .timer
-                p
-                  | 距离任务结束 
-                  span.time
-                    | 10:09:02
-              .score
-                i.fa.fa-diamond
-                span.number
-                  | 10
-
+      ul.nav.nav-pills
+        li.current
+          a href=tester_assignments_path(current_user.id)
+            | 新任务
+        li
+          a href="javaScript:void(0)"
+            | 我参与的
+  section.assignments-list.content-box data-tester-id="#{@current_user.to_tester.id}"
+    .container
+      .assignments-wrp.clear-fix
+        - for assignment in @assignments
+          .card data-assignment-id="#{assignment.id}"
+            .inner
+              header
+                h1.title 
+                  span action="getAssignmentDetail"
+                    |测试任务名称
+                  span.close.assignment-del
+                    | &times
+                p.describle
+                  | 15字产品简介
+              .content
+                img
+                .operator
+                  .icon-wrp
+                    i.fa.fa-file-video-o.fa-3x
+                  .button-wrp.single
+                    button.btn.btn-blue.video-upload
+                      | 上传视频
+                .status.status-success
+                  p
+                    | 审核未通过
+              footer
+                .timer
+                  p
+                    | 距离任务结束 
+                    span.time data-deadline="2015-5-22 17:26:00"
+                      | 00:00:00
+                .score
+                  i.fa.fa-diamond
+                  span.number
+                    | 10
+      .load-more
+        p
+          | 加载更多
+      
+= render partial: 'shared/confirm_modal'
 = render partial: 'assignments/shared/upload_modal'
-= render partial: 'assignments/shared/assignment'
+= render partial: 'assignments/shared/assignment_detail'

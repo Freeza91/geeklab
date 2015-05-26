@@ -1,9 +1,50 @@
 .assignments_index
   background-color: #eee
+
+// 任务列表导航
+.assignments-nav
+  background-color: #f9f9f9
+  .nav-pills
+    > li
+      width: 50%
+      text-align: center
+      > a
+        font-size: 16px
+        color: #313131
+      > a:hover
+        color: #727071
+        background-color: #f9f9f9
+    > li + li
+      margin-left: 0
+    > li.current::after
+      position: absolute
+      bottom: 0
+      left: 50%
+      margin-left: -8px
+      content: ''
+      display: block
+      width: 0
+      height: 0
+      border-right: 8px solid transparent
+      border-bottom: 8px solid #eee
+      border-left: 8px solid transparent
+
+.assignments-list
+  .container
+    padding-left: 100px
+    padding-right: 100px
 .card
-  box-shadow: 0 0 5px #ccc
-  width: 90%
-  margin: 0 auto 20px
+  width: 50%
+  padding: 14px
+  float: left
+  .inner
+    box-shadow: 0 0 5px #ccc
+
+  .btn
+    width: 90px
+    height: 38px
+  .fa-file-video-o
+    color: #a0a0a0
 
   p
     margin: 0
@@ -17,13 +58,18 @@
     .title
       font-size: 20px
       font-weight: normal
+      cursor: pointer
+    .title:hover
+      text-decoration: underline
 
   .content
     height: 200px
-    background-color: #f2f2f2
+    background-color: #f9f9f9
     position: relative
-    .outer
-    .inner
+    .operator
+      position: absolute
+      width: 100%
+      top: 0
     .icon-wrp
       text-align: center
       padding: 30px 0
@@ -37,11 +83,17 @@
       p
         text-align: center
         color: #fff
-    .status.success
-      background-color: rgba(16, 160, 198, .5)
+    .status.status-past
+      background-color: rgba(160, 160, 160, .8)
+    .status.status-success
+      background-color: rgba(16, 160, 198, .8)
 
   footer
     position: relative
+    .timer p,
+    .score
+      font-size: 16px
+      color: #313131
     .timer
       padding: 10px 15px
       .time
@@ -49,6 +101,103 @@
     .score
       position: absolute
       top: 10px
-      right: 15px
+      right: 20px
       .fa
         margin-right: 8px
+
+
+// 加载更多
+.load-more
+  cursor: pointer
+  p
+    text-align: center
+
+// assignment detail modal
+#assignment-detail
+  .modal-header
+    background-color: #f9f9f9
+    border-bottom: none
+    .title
+      margin: 0
+      font-size: 16px
+      font-weight: normal
+      color: #313131
+      text-align: left
+      text-transform: uppercase
+      .fa
+        margin-right: 10px
+  .modal-content
+    border-radius: 0
+  .qrcode
+    position: absolute
+    top: 15px
+    right: 15px
+    padding: 10px
+    img
+      width: 120px
+      height: 120px
+
+.table
+  background-color: #fff
+  border: 1px solid #eee
+  color: #313131
+  font-size: 14px
+  > tbody
+    > tr
+      border-bottom: 1px solid #eee
+      > td
+        height: 54px
+        border-right: 1px solid #eee
+        text-align: left
+        vertical-align: middle
+      td:first-child
+        width: 100px
+        background-color: #f9f9f9
+        text-align: center
+      td:last-child
+        border-right: none 
+      td:not(:first-child)
+        padding-left: 20px
+    tr:last-child
+      border-bottom: none
+  ul
+    list-style: none
+    margin: 0
+    padding: 0
+    .fa
+      margin-right: 8px
+
+// confirm modal
+#confirm-modal
+  .modal-dialog
+    width: 520px
+  .modal-body
+    margin-top: 20px
+    .content
+      font-size: 16px
+      color: #313131
+      margin-bottom: 60px
+
+// modal中的操作按钮
+.modal
+  .modal-body
+    .tools
+      margin-bottom: 30px
+      text-align: center
+    .btn
+      width: 90px
+      height: 38px
+      font-size: 16px
+    .btn + .btn
+      margin-left: 90px
+
+// 上传视频表单
+#upload-form
+  padding: 0 50px
+  margin: 30px 0
+  text-align: left
+  color: #313131
+  label,
+  .help-block
+    font-size: 16px
+    font-weight: normal

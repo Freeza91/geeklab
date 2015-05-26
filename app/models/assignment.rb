@@ -4,6 +4,7 @@ class Assignment < ActiveRecord::Base
   scope :not_expired,  -> { joins(:project).where("projects.expired_at > ?", Time.now + 1.minutes) }
   scope :not_view,     -> (last_view){ joins(:project).where("projects.expired_at > ?", last_view) }
 
+  scope :test,         -> { where(status: 'test') }
   scope :not_take_part,-> { where(status: "new") }
   scope :ing,          -> { where('status in (?)', ['wait_check', 'checking', 'not_accept']) }
   scope :done,         -> { where(status: "success") }
@@ -31,6 +32,10 @@ class Assignment < ActiveRecord::Base
 
     def not_view_num(last_view_time)
       expired.not_take_part.not_view(last_view_time).size
+    end
+
+    def test_task
+      test
     end
 
   end

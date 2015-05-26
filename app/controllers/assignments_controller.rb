@@ -5,7 +5,14 @@ class AssignmentsController < ApplicationController
 
   def index
     tester = current_user.to_tester
-    @assignments = tester.assignments.new_tasks.page(params[:page])
+    assignments = tester.assignments
+    if tester.approved
+      @assignments = assignments.new_tasks.page(params[:page])
+      @num = assignments.not_view_num(tester.last_view_time)
+    else
+      @assignments = assignments.test_task
+      @num = nil
+    end
   end
 
   def show
@@ -19,6 +26,19 @@ class AssignmentsController < ApplicationController
   def update
     @assignment = Assignment.find_by(id: params[:id])
     render :edit unless @assignment.tester == current_user.id
+  end
+
+  def miss
+    tester = current_user.to_tester
+    assignments = tester.assignments
+    p @assignments =  assignments.missing
+  end
+
+  def join
+    tester = current_user.to_tester
+    assignments = tester.assignments
+    @assignments_ing =  assignments.take_part_ing
+    @assignments_done = assignments.take_part_done
   end
 
   def destroy

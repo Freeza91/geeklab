@@ -14,13 +14,14 @@ class TestersController < ApplicationController
 
   def create
     json = { status: 0, code: 1, msg: '创建成功', url: testers_path }
-    @tester_infor = TesterInfor.new.tap &new_model_block
+    @tester_infor = TesterInfor.new.tap &model_block
 
     if @tester_infor.save
       if current_user.role == 'pm'
         current_user.update_attribute(:role, 'both')
       end
-      Assignment.create(project_id: 0, tester_id: current_user.id)
+      # default: project.first is new tester task
+      Assignment.create(project_id: Project.first.try(:id), tester_id: current_user.id)
       UserMailer.novice_task(@tester_infor.email_contract || current_user.email).deliver_later
     else
       json['code'] = 0
@@ -41,7 +42,7 @@ class TestersController < ApplicationController
   def update
     json = { status: 0, code: 1, msg: '创建成功', url: testers_path }
     tester = Tester.find_by(id: params[:id])
-    if tester && tester_infors = tester.tester_infors 
+    if tester && tester_infors = tester.tester_infors
       @tester_infor = tester_infors.last.tap &model_block
       unless @tester_infor.save
         json[:code] = 0
@@ -59,7 +60,7 @@ private
 
   def model_block
     Proc.new do |infor|
-      infor.tester_id = current_user.id if infor.tester_id
+      infor.tester_id = current_user.id unless infor.tester_id
       infor.username = params['username']
       infor.birthday = parse_birthday(params['birthday'])
       infor.birthplace = params['birthplace']

@@ -49,6 +49,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :stores
+
   require 'sidekiq/web'
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|
       username == Settings.sidekiq_username && password == Settings.sidekiq_password

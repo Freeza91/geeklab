@@ -44,9 +44,12 @@ Rails.application.routes.draw do
       collection do
         get 'miss'
         get 'join'
+        get 'not_interest'
       end
     end
   end
+
+  resources :stores
 
   require 'sidekiq/web'
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|

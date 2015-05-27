@@ -8,7 +8,7 @@ class TesterInfor < ActiveRecord::Base
             :mobile_phone,
             presence: true
 
-  belongs_to :tester
+  belongs_to :tester, inverse_of: :tester_infors
 
   def to_json
     time = birthday.to_datetime

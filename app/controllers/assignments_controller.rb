@@ -13,10 +13,26 @@ class AssignmentsController < ApplicationController
       @assignments = assignments.test_task
       @num = nil
     end
+
+    respond_to do |format|
+      format.html
+      format.json do
+        json = {assignments: []}
+        json[:assignments] += @assignments.each.collect { |a| a.project.to_json }
+
+        render json: json
+      end
+    end
   end
 
   def show
-    @assignment = Assignment.find_by(id: params[:id])
+    assignment = Assignment.find_by(id: params[:id])
+    json = {}
+    project = assignment.project
+    json[:project] = project.to_json
+    json[:tasks] = []
+    project.tasks.each { |t| json[:tasks] << t.to_json }
+    render json: json
   end
 
   def edit
@@ -30,8 +46,14 @@ class AssignmentsController < ApplicationController
 
   def miss
     tester = current_user.to_tester
+    tester.update_attribute(:last_view_time, Time.now)
     assignments = tester.assignments
-    p @assignments =  assignments.missing
+    @assignments =  assignments.missing
+  end
+
+  def not_interest
+    current_user.update_attribute(:last_view_time, Time.now)
+    render json: { status: 0, code: 1 }
   end
 
   def join

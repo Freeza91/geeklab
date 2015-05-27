@@ -5,20 +5,19 @@ require 'mina/rvm' #rbenv
 require 'mina/whenever'
 require 'mina_sidekiq/tasks'
 
-
-
 case ENV['on']
 when 'release'
   set :branch, 'release'
+  set :domain, '119.254.100.115'
 when 'master'
-  set :domain, '123.59.40.194'
+  set :domain, '119.254.101.120'
   set :branch, 'master'
 when 'stg'
-  set :domain, '50.116.16.150'
-  set :branch, 'develop'
+  set :domain, '119.254.101.120'
+  set :branch, 'master'
 else
-  set :domain, '50.116.16.150'
-  set :branch, 'develop'
+  set :domain, '119.254.101.120'
+  set :branch, 'master'
 end
 
 p "将要部署到：#{branch}"

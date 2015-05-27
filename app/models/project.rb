@@ -6,4 +6,18 @@ class Project < ActiveRecord::Base
 
   has_many :assignments,  inverse_of: :project
   has_many :tasks,        inverse_of: :project
+
+  def to_json_with_tasks
+    {
+      name: name,
+      profile: profile,
+      device: device,
+      requirement: requirement,
+      qr_code: qr_code,
+      platform: platform,
+      desc: desc,
+      tasks: self.tasks
+    }
+
+  end
 end

@@ -39,4 +39,14 @@ class Assignment < ActiveRecord::Base
     end
 
   end
+
+
+  def to_json_with_project
+    {
+      status: status,
+      video: video,
+      id: id,
+      project: self.project
+    }
+  end
 end

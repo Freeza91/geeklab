@@ -17,9 +17,10 @@ class AssignmentsController < ApplicationController
     respond_to do |format|
       format.html
       format.json do
-        json = {assignments: []}
-        json[:assignments] += @assignments.each.collect { |a| a.project.to_json }
-
+        json = {status: 0, code: 1, assignment: [] }
+        @assignments.each do |a|
+          json[:assignment] << a.to_json_with_project
+        end
         render json: json
       end
     end
@@ -27,11 +28,9 @@ class AssignmentsController < ApplicationController
 
   def show
     assignment = Assignment.find_by(id: params[:id])
-    json = {}
+    json = { status: 0, code: 1 }
     project = assignment.project
-    json[:project] = project.to_json
-    json[:tasks] = []
-    project.tasks.each { |t| json[:tasks] << t.to_json }
+    json[:project] = project.to_json_with_tasks
     render json: json
   end
 

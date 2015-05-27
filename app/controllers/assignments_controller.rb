@@ -13,12 +13,26 @@ class AssignmentsController < ApplicationController
       @assignments = assignments.test_task
       @num = nil
     end
+
+    respond_to do |format|
+      format.html
+      format.json do
+        json = {assignments: []}
+        json[:assignments] += @assignments.each.collect { |a| a.project.to_json }
+
+        render json: json
+      end
+    end
   end
 
   def show
     assignment = Assignment.find_by(id: params[:id])
-    @project = assignment.project
-    @tasks = @project.tasks
+    json = {}
+    project = assignment.project
+    json[:project] = project.to_json
+    json[:tasks] = []
+    project.tasks.each { |t| json[:tasks] << t.to_json }
+    render json: json
   end
 
   def edit

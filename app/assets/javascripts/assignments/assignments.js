@@ -1,5 +1,5 @@
 $(function () {
-  if(!$('body').hasClass('assignments_index')) {
+  if(!$('body').hasClass('assignments')) {
     return false;
   }
   // function list
@@ -17,6 +17,7 @@ $(function () {
   var testerId = $('.assignment-list').data('testerId');
   var assignmentId = 0; // 当前执行操作的任务id
   var $card; // 当前执行操作的任务卡片
+  var page = 1 //分页获取任务列表
 
 
   // 瀑布流加载，监听window滚动事件
@@ -29,9 +30,12 @@ $(function () {
     var scrollTop = $(window).scrollTop();
      //滚动到底部时自动加载新任务
     if((viewHeight + scrollTop) > (pageHeight - 10)) {
-      //getAssignmentPaging(function (assignments) {
-        appendAssignments();
-      //});
+      // 页数自增
+      page++;
+      getAssignmentPaging(page, function (data) {
+        console.log(data);
+        //appendAssignments();
+      });
     }
   });
   $('.load-more').on('click', function () {
@@ -54,16 +58,31 @@ $(function () {
     assignmentId = $form.data('assignmentId');
 
     if(file) {
-      getUploadToken(testerId, assignmentId, function (token) {
-        if(token) {
-          uploadVideo(file, token, function (msg) {
-            // 上传成功后的回调
-            console.log(msg);
-            $card.find('.content img').attr('src', '/assets/logo/logo.png');
-            $('#video-upload').modal('hide');
-          });
-        }
-      });
+      // 判断所选文件的类型是否为video
+      if(file.type.split('/')[0] === 'video') {
+        // 关闭模态框
+        $('#video-upload').modal('hide');
+        // 切换operator
+        $card.find('.operator.uploading').fadeIn();
+        $card.find('.operator.wait-upload').fadeOut();
+
+        getUploadToken(testerId, assignmentId, function (token) {
+          if(token) {
+            uploadVideo(file, token, function (data) {
+              // 上传成功后的回调
+              var imageUrl = data.video_url + '?/vsample/png/offset/0/w/480/h/200'
+              $card.find('.content img').attr('src', imageUrl);
+
+              // 上传成功后跳转至正在进行中的任务页面
+              //location.href = '/testers/' + testerId + '/assignments/join';
+            });
+          }
+        });
+      } else {
+        $form.find('.help-block').text('只能上传视频');
+      }
+    } else {
+      $form.find('.help-block').text('请选择要上传的视频');
     }
   });
 
@@ -72,11 +91,12 @@ $(function () {
   $('.assignments-wrp').on('click', '[action="getAssignmentDetail"]', function () {
     var $this = $(this);
     var assignmentId = $this.parents('.card').data('assignmentId');
-    //getAssignmentDetail(testerId, assignmentId, function (assignmentDetail) {
+    getAssignmentDetail(testerId, assignmentId, function (data) {
       // 测试assignment detail modal view
-      var assignmentDetail = 'test';
-      showAssignmentDetail(assignmentDetail);
-    //});
+      //var assignmentDetail = 'test';
+      //showAssignmentDetail(assignmentDetail);
+      console.log(data);
+    });
   });
 
   // 上传视频按钮的click事件处理函数
@@ -138,9 +158,10 @@ $(function () {
       data: formData,
       cache: false,
       processData: false, //Dont't process the file
-      contentType: false
+      contentType: false,
       // Set content type to false as jQuery will tell the server its a query string request.
       // 不太懂是什么意思，先写着
+      xhr: customeXhr
     })
     .done(function(data, status) {
       if(data.status === 0) {
@@ -149,8 +170,7 @@ $(function () {
             alert('上传失败');
             break;
           case 1:
-            var msg = data.msg;
-            callback(msg);
+            callback(data);
             break;
 
         }
@@ -266,8 +286,7 @@ $(function () {
     })
     .done(function (data, status) {
       if(data.status === 0 && data.code === 1) {
-        console.log(data);
-        callback();
+        callback(data);
       }
     })
     .error(function (errors, status) {
@@ -295,8 +314,9 @@ $(function () {
 
     assignmentDeadline[index] = new Date(deadline);
     var times = assignmentDeadline[index] - now;
+    var max_times = 60 * 60 * 24 * 100;
 
-    if(times <= 0) {
+    if(times <= 0 || times > max_times) {
       return false;
     }
 
@@ -324,7 +344,8 @@ $(function () {
   }
 
   function getAssignmentPaging (page, callback) {
-    var url = '';
+    console.log(page);
+    var url = '/testers/' + testerId + '/assignments?page=' + page;
 
     $.ajax({
       url: url
@@ -360,5 +381,48 @@ $(function () {
     $assignmentsWrp.append(cards.join(''));
   }
   
+  // 自定义xhr对象获取上传进度
+  function customeXhr () {
+    var xhr = $.ajaxSettings.xhr();
+    // 监听上传进度
+    xhr.upload.addEventListener('progress', function (event) {
+      if(event.lengthComputable) {
+        var progressPercent = Math.floor((event.loaded / event.total) * 100);
+        showUploadProgress(progressPercent);
+      }
+    }, false);
+    return xhr;
+  }
+
+  // 显示上传进度
+  function showUploadProgress (progressPercent) {
+    var deg = progressPercent * 3.6;
+    var $progressCircle = $card.find('.progressCircle')
+    var transform = '';
+    if(deg <= 180) {
+      transform = 'rotate(' + deg + 'deg)';
+      $progressCircle.find('.right .inner').css({
+        'transform': transform,
+        '-o-transform': transform,
+        '-moz-transform': transform,
+        '-webkit-transform': transform
+      });
+    } else {
+      transform = 'rotate(' + (deg-180) + 'deg)';
+      $progressCircle.find('.right .inner').css({
+        'transform': 'rotate(180deg)',
+        '-o-transform': 'rotate(180deg)',
+        '-moz-transform': 'rotate(180deg)',
+        '-webkit-transform': 'rotate(180deg)'
+      });
+      $progressCircle.find('.left .inner').css({
+        'transform': transform,
+        '-o-transform': transform,
+        '-moz-transform': transform,
+        '-webkit-transform': transform
+      });
+    }
+    $progressCircle.find('.progressCount').text(progressPercent + '%');
+  }
+
 });
-    // 值一个card

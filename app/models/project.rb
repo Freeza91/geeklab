@@ -4,6 +4,6 @@ class Project < ActiveRecord::Base
             :contact_name, :phone, :email, :company,
             presence: true
 
-  has_many :assignments
-  has_many :tasks
+  has_many :assignments,  inverse_of: :project
+  has_many :tasks,        inverse_of: :project
 end

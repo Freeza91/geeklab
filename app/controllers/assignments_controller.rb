@@ -16,7 +16,9 @@ class AssignmentsController < ApplicationController
   end
 
   def show
-    @assignment = Assignment.find_by(id: params[:id])
+    assignment = Assignment.find_by(id: params[:id])
+    @project = assignment.project
+    @tasks = @project.tasks
   end
 
   def edit
@@ -30,8 +32,14 @@ class AssignmentsController < ApplicationController
 
   def miss
     tester = current_user.to_tester
+    tester.update_attribute(:last_view_time, Time.now)
     assignments = tester.assignments
-    p @assignments =  assignments.missing
+    @assignments =  assignments.missing
+  end
+
+  def not_interest
+    current_user.update_attribute(:last_view_time, Time.now)
+    render json: { status: 0, code: 1 }
   end
 
   def join

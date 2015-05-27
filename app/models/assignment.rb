@@ -9,8 +9,8 @@ class Assignment < ActiveRecord::Base
   scope :ing,          -> { where('status in (?)', ['wait_check', 'checking', 'not_accept']) }
   scope :done,         -> { where(status: "success") }
 
-  belongs_to :tester
-  belongs_to :project
+  belongs_to :tester,  inverse_of: :assignments
+  belongs_to :project, inverse_of: :assignments
 
   class << self
 

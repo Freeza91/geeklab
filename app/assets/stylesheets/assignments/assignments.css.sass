@@ -66,6 +66,10 @@
     height: 200px
     background-color: #f9f9f9
     position: relative
+
+    img[src]
+      width: 100%
+      height: 100%
     .status
       position: absolute
       bottom: 0
@@ -74,10 +78,18 @@
       p
         text-align: center
         color: #fff
-    .status.status-past
+
+    // 不同状态的提示
+    .status.status_wait_check
+      background-color: rgba(23, 160, 198, .8)
+    .status.status_checking
+      background-color: rgba(255, 241, 0, .8)
+    .status_not_accept
+      background-color: rgba(235, 97, 0, .8)
+    .status.status_failed
       background-color: rgba(160, 160, 160, .8)
-    .status.status-success
-      background-color: rgba(16, 160, 198, .8)
+    .status.status_success
+      background-color: rgba(50, 177, 188, .8)
 
   footer
     position: relative
@@ -249,7 +261,18 @@
     width: 100%
   .btn
     cursor: pointer
+  .icon-wrp
+    text-align: center
+    margin-top: 25px
+  .button-wrp.single
+    bottom: 55px
+  .status-info
+    text-align: center
+    color: #313131
+    font-size: 16px
+
 .operator.wait-upload
+
 .operator.uploading
   .progressCircle
     left: 50%
@@ -264,19 +287,31 @@
     width: 100%
     position: absolute
     top: 110px
+
 .operator.wait-check
-.icon-wrp
-  text-align: center
-  margin-top: 25px
-.button-wrp.single
-  bottom: 55px
-.status-info
-  text-align: center
-  color: #313131
-  font-size: 16px
+  .button-wrp
+    padding: 20px 20px 0
+    .btn:first-child
+      float: left
+    .btn:last-child
+      float: right
+  .icon-wrp
+    margin-top: 60px
+    .fa-play-circle-o
+      opacity: .5
+      color: #fff
+      cursor: pointer
+    .fa-play-circle-o:hover
+      opacity: 1
+
 
 
 // 不同状态洗的operator 切换
 .assignments_index
   .operator.uploading
+    display: none
+
+// 我参与的任务--operator
+.assignments_join
+  .operator
     display: none

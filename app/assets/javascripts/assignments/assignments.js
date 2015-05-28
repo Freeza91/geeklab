@@ -14,7 +14,7 @@ $(function () {
     // 瀑布流加载
     
   // 保存testId
-  var testerId = $('.assignment-list').data('testerId');
+  var testerId = $('.assignments-list').data('testerId');
   var assignmentId = 0; // 当前执行操作的任务id
   var $card; // 当前执行操作的任务卡片
   var page = 1 //分页获取任务列表
@@ -53,9 +53,7 @@ $(function () {
     event.preventDefault(); 
 
     var $form = $(event.target);
-
     var file = $form.find('[type="file"]')[0].files[0];
-    assignmentId = $form.data('assignmentId');
 
     if(file) {
       // 判断所选文件的类型是否为video
@@ -63,16 +61,22 @@ $(function () {
         // 关闭模态框
         $('#video-upload').modal('hide');
         // 切换operator
+        $card.find('.operator').fadeOut();
         $card.find('.operator.uploading').fadeIn();
-        $card.find('.operator.wait-upload').fadeOut();
+        // 删除视频截图
+        $card.find('img').removeAttr('src');
 
-        getUploadToken(testerId, assignmentId, function (token) {
+        var filename = file.name
+
+        getUploadToken(testerId, assignmentId, filename, function (token) {
           if(token) {
             uploadVideo(file, token, function (data) {
               // 上传成功后的回调
-              var imageUrl = data.video_url + '?/vsample/png/offset/0/w/480/h/200'
+              var imageUrl = data.video_url + '?vframe/png/offset/0/w/480/h/200'
               $card.find('.content img').attr('src', imageUrl);
-
+              // 切换operator
+              $card.find('.operator.wait-check').fadeIn();
+              $card.find('.operator.uploading').fadeOut();
               // 上传成功后跳转至正在进行中的任务页面
               //location.href = '/testers/' + testerId + '/assignments/join';
             });
@@ -104,13 +108,12 @@ $(function () {
     var $this = $(this);
     // 设置当前操作的卡片
     $card = $this.parents('.card');
+    assignmentId = $card.data('assignmentId');
 
-    assignmentId = $this.parents('card').data('assignmentId');
     $('#video-upload').modal();
   });
 
   // 删除任务按钮的click事件处理函数
-  // 在 .assignments-wrp 做事件代理
   $('.assignments-wrp').on('click', '.assignment-del', function () {
 
     var $this = $(this);
@@ -128,9 +131,15 @@ $(function () {
   });
 
   // 删除视频 click event
-  $('.video-del').on('click', function () {
+  $('.assignments-wrp').on('click', '.video-del', function () {
+
+    var $this = $(this);
+    $card = $this.parents('.card');
+    assignmentId = $card.data('assignmentId');
+
     var options = {
       title: '确认删除视频?',
+      content: '确认删除视频?',
       eventName: 'deleteVideo'
     };
     showInfoModal(options);
@@ -182,10 +191,13 @@ $(function () {
   }
 
   // 获取上传视屏的token
-  function getUploadToken(userId, assignmentId, callback) {
+  function getUploadToken(userId, assignmentId, filename, callback) {
     var url = '/testers/' + userId + '/assignments/' + assignmentId +'/upload_token/';
     $.ajax({
-      url: url
+      url: url,
+      data: {
+        name: filename
+      }
     })
     .done(function (data, status) {
       if(data.status === 0 && data.code === 1) {
@@ -229,6 +241,13 @@ $(function () {
       break;
       case 'deleteVideo':
         // 删除视频
+        deleteVideo(testerId, assignmentId, function (data) {
+          console.log(data);
+          $card.find('.operator.wait-check').fadeOut();
+          $card.find('.operator.wait-upload').fadeIn();
+          $card.find('img').removeAttr('src');
+          $card.find('status').hide();
+        });
       break;
       case 'deleteAssignment':
         // 删除任务
@@ -264,14 +283,14 @@ $(function () {
 
   // 删除视频
   function deleteVideo (testerId, assignmentId, callback) {
-    var url = 'http://rs.qiniu.com/delete/' + token;
+    var url = '/testers/' + testerId + '/assignments/' + assignmentId + '/delete_video';
     $.ajax({
       url: url,
-      method: 'post'
+      method: 'delete'
     })
     .done(function (data, status) {
       if(data.status === 0 && data.code === 1) {
-        callback();
+        callback(data);
       }
     })
     .error(function (errors, status) {
@@ -423,6 +442,39 @@ $(function () {
       });
     }
     $progressCircle.find('.progressCount').text(progressPercent + '%');
+  }
+
+  function initOperators () {
+    var $cards = $('.card');
+    $cards.each(function (index, card) {
+      var $card = $(card);
+      var status = $card.data('status');
+      showOperator(status, $card);
+    });
+  }
+
+  // 我参与的任务中，根据状态显示不同的operator
+  function showOperator (status, $card) {
+    switch(status) {
+      case 'upload_failed':
+        $card.find('.operator.upload-failed').fadeIn();
+      case 'wait_check':
+        $card.find('.operator.wait-check').fadeIn();
+      break;
+      case 'checking':
+        $card.find('.operator.wait-check').fadeIn().find('.button-wrp').hide();
+      break;
+      case 'not_accept':
+        $card.find('.operator.wait-check').fadeIn();
+      break;
+      case 'delete':
+        $card.find('.operator.wait-upload').fadeIn();
+      break;
+    } 
+  }
+
+  if($('body').hasClass('assignments_join')) {
+    initOperators(); 
   }
 
 });

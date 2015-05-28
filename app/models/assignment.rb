@@ -6,7 +6,7 @@ class Assignment < ActiveRecord::Base
 
   scope :test,         -> { where(status: 'test') }
   scope :not_take_part,-> { where(status: "new") }
-  scope :ing,          -> { where('status in (?)', ['wait_check', 'checking', 'not_accept']) }
+  scope :ing,          -> { where('status in (?)', ['wait_check', 'checking', 'not_accept', 'delete']) }
   scope :done,         -> { where(status: "success") }
 
   belongs_to :tester,  inverse_of: :assignments

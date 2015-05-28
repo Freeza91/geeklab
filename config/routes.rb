@@ -41,6 +41,7 @@ Rails.application.routes.draw do
     resources :assignments do
       post 'callback_from_qiniu'
       get 'upload_token'
+      delete 'delete_video'
       collection do
         get 'miss'
         get 'join'

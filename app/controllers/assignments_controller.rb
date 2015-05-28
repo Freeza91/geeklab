@@ -63,9 +63,19 @@ class AssignmentsController < ApplicationController
   end
 
   def destroy
-    json = { status: 0, code: 1, msg: '删除成功' }
+    assignment = current_user.to_tester.assignments.find_by(id: params[:id])
+    json = { status: 0, code: 1, msg: '删除任务成功' }
+    unless assignment && assignment.destroy
+      json[:code], json[:msg] = 0, '没有权限删除这个任务'
+    end
 
-    @assignment = Assignment.find_by(id: params[:id])
+    render json: json
+  end
+
+  def delete_video
+    json = { status: 0, code: 1, msg: '删除视频成功' }
+
+    @assignment = Assignment.find_by(id: params[:assignment_id])
     if @assignment.tester.id == current_user.id
       code, result, response_headers = Qiniu::Storage.delete(
           Settings.qiniu_bucket,

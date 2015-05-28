@@ -1,3 +1,5 @@
+require 'base64'
+
 class AssignmentsController < ApplicationController
 
   before_action :require_login?, except: :callback_from_qiniu
@@ -113,10 +115,18 @@ class AssignmentsController < ApplicationController
     if id && tester = Tester.find_by(id: id)
       assignment = Assignment.find_by(id: params[:assignment_id])
       if assignment.try(:tester_id) == tester.id
-        assignment.update_attribute(:video, params[:key_name], status: "wait_check")
-        json[:code] = 1
-        json[:video_url] = Settings.qiniu_bucket_domain + "/#{assignment.video}"
-        json[:msg] = '上传文件成功'
+        # delete origin file
+        code, result, response_headers = Qiniu::Storage.delete(
+          Settings.qiniu_bucket,
+          params[:video]
+        )
+        if code == 200
+          video = Base64.urlsafe_encode64
+          assignment.update_attributes(video: video, status: "wait_check")
+          json[:code] = 1
+          json[:video_url] = Settings.qiniu_bucket_domain + "/#{assignment.video}"
+          json[:msg] = '上传文件成功'
+        end
       end
     end
 
@@ -144,7 +154,8 @@ private
       saveKey: "#{key_name}",
       callbackUrl: callbackUrl,
       callbackBody: "auth_token=#{auth_token}&key_name=#{key_name}&assignment_id=#{id}",
-      deadline: 1.days.from_now.to_i
+      deadline: 1.days.from_now.to_i,
+      persistentOps: "avthumb/mp4"
     }
     Qiniu::Auth.generate_uptoken(put_policy)
   end

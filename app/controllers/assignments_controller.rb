@@ -79,7 +79,7 @@ class AssignmentsController < ApplicationController
     if @assignment.tester.id == current_user.id
       code, result, response_headers = Qiniu::Storage.delete(
           Settings.qiniu_bucket,
-          @assignment.try(:video)
+          @assignment.try(:video).to_s
       )
       if code == 200
         @assignment.update_attributes(status: "delete", video: '')

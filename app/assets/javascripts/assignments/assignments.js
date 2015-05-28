@@ -33,15 +33,15 @@ $(function () {
       // 页数自增
       page++;
       getAssignmentPaging(page, function (data) {
-        console.log(data);
-        //appendAssignments();
+        appendAssignments(data.assignments);
       });
     }
   });
   $('.load-more').on('click', function () {
-    //getAssignmentPaging(function (assignments) {
-      appendAssignments();
-    //});
+    page++;
+    getAssignmentPaging(page, function (data) {
+      appendAssignments(data.assignments);
+    });
   });
 
   // 上传视频表单的submit事件处理
@@ -179,7 +179,6 @@ $(function () {
           case 1:
             callback(data);
             break;
-
         }
       }
     })
@@ -249,12 +248,10 @@ $(function () {
       break;
       case 'deleteAssignment':
         // 删除任务
-        console.log('assignment deleted');
-        $card.remove();
-        //deleteAssigment (testerId, assignmentId, function () {
+        deleteAssigment (testerId, assignmentId, function () {
           // 删除任务后的回调， 将当前卡片重页面上移除  
-          //$card.remove();
-        //});
+          $card.remove();
+        });
       break;
     }
     $('#confirm-modal').modal('hide');
@@ -273,7 +270,7 @@ $(function () {
           callback();
         }
       })
-      .errors(function (errors, status) {
+      .error(function (errors, status) {
         console.log(errors);
       });
     } 
@@ -339,34 +336,39 @@ $(function () {
   // 任务过期时间倒计时
   var countDownInterval = []; // 倒计时interval id list
   var assignmentDeadline = []; // 任务截止事时间
-  $('.time').each(function (index, item) {
-    //countDownInterval[index] = setInterval(assignmentTimeCountDown(deadline, $ele));
-    var $ele = $(item),
-        deadline = $ele.data('deadline');
-        now = new Date();
+  // 处理新加载任务的倒计时
+  // 每次新加载时候清理之前所有的倒计时，重新初始化
+  // 处理方式太暴力了，以后优化
+  function assignmentTimeCountDownInit () {
+    $('.time').each(function (index, item) {
+      //countDownInterval[index] = setInterval(assignmentTimeCountDown(deadline, $ele));
+      var $ele = $(item),
+          deadline = $ele.data('deadline');
+          now = new Date();
 
-    assignmentDeadline[index] = new Date(deadline);
-    var times = assignmentDeadline[index] - now;
-    var max_times = 60 * 60 * 24 * 100;
+      assignmentDeadline[index] = new Date(deadline);
+      var times = assignmentDeadline[index] - now;
+      var max_times = 60 * 60 * 24 * 100;
 
-    if(times <= 0 || times > max_times) {
-      return false;
-    }
-
-    assignmentTimeCountDown(times, $ele);
-
-    // 周期执行倒计时函数，周期为1s
-    countDownInterval[index] = setInterval(function () {
-      var deadline = assignmentDeadline[index],
-          now = new Date(),
-          times = deadline - now;
-      if(times <= 0) {
-        clearInterval(countDownInterval[index]);
+      if(times <= 0 || times > max_times) {
         return false;
       }
+
       assignmentTimeCountDown(times, $ele);
-    }, 1000);
-  });
+
+      // 周期执行倒计时函数，周期为1s
+      countDownInterval[index] = setInterval(function () {
+        var deadline = assignmentDeadline[index],
+            now = new Date(),
+            times = deadline - now;
+        if(times <= 0) {
+          clearInterval(countDownInterval[index]);
+          return false;
+        }
+        assignmentTimeCountDown(times, $ele);
+      }, 1000);
+    });
+  }
 
   function assignmentTimeCountDown(count, $ele) {
     var days = ~~ (count / (24 * 60 * 60 * 1000)), //天
@@ -376,12 +378,15 @@ $(function () {
     $ele.text(days + '天' + hours + ':' + minutes + ':' + seconds);
   }
 
+  // 倒计时初始化
+  assignmentTimeCountDownInit();
+
   function getAssignmentPaging (page, callback) {
-    console.log(page);
     var url = '/testers/' + testerId + '/assignments?page=' + page;
 
     $.ajax({
-      url: url
+      url: url,
+      dataType: 'json'
     })
     .done(function (data, status) {
       if(data.status === 0 && data.code === 1) {
@@ -404,14 +409,24 @@ $(function () {
     // 复制一个card作为模板
     var $assignmentCard = $('.card:last').clone();
     var cards = [];
-    for(var i = 0; i < 5; i++) {
-      $assignmentCard.find('.title span:first').text(i);;
+    assignments.forEach(function(assignment, index) {
+      console.log(assignment);
+      // name
+      $assignmentCard.find('.title span:first').text(assignment.name);;
       // 清除图片src
       $assignmentCard.find('.content img').removeAttr('src');
+      // deadline
+      $assignmentCard.find('.time').data('deadline', assignment.expired_at);
       // 将每个任务的html暂存在数组中
       cards.push('<div class="card">' + $assignmentCard.html() + '</div>');
-    }
+    });
     $assignmentsWrp.append(cards.join(''));
+
+    // 重新初始化倒计时
+    countDownInterval.forEach(function (id, index) {
+      clearInterval(id);
+    })
+    assignmentTimeCountDownInit();
   }
   
   // 自定义xhr对象获取上传进度
@@ -489,6 +504,16 @@ $(function () {
 
   if($('body').hasClass('assignments_join')) {
     initOperators(); 
+ 
+    // 二级导航
+    $('.assignments-subnav a').on('click', function () {
+      var $this = $(this);
+      var target = $this.data('target');
+      $this.parents('ul').find('.active').removeClass('active');
+      $this.addClass('active');
+      $('.assignments-wrp.active').removeClass('active').hide();
+      $(target).fadeIn().addClass('active');
+    });
   }
 
 });

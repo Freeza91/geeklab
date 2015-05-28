@@ -1,9 +1,7 @@
-require 'base64'
-
 class AssignmentsController < ApplicationController
 
   before_action :require_login?, except: :callback_from_qiniu
-  skip_before_filter :verify_authenticity_token, :only => [:callback_from_qiniu]
+  skip_before_filter :verify_authenticity_token, :only => [:callback_from_qiniu, :destroy]
 
   def index
     tester = current_user.to_tester
@@ -19,9 +17,9 @@ class AssignmentsController < ApplicationController
     respond_to do |format|
       format.html
       format.json do
-        json = {status: 0, code: 1, assignment: [] }
+        json = {status: 0, code: 1, assignments: [] }
         @assignments.each do |a|
-          json[:assignment] << a.to_json_with_project
+          json[:assignments] << a.to_json_with_project
         end
         render json: json
       end
@@ -68,7 +66,7 @@ class AssignmentsController < ApplicationController
     assignment = current_user.to_tester.assignments.find_by(id: params[:id])
     json = { status: 0, code: 1, msg: '删除任务成功' }
     unless assignment && assignment.destroy
-      json[:code], json[:msg] = 0, '没有权限删除这个任务'
+      json[:code], json[:msg] = 0, '没有权限删除这个任务或者此任务已经不存在'
     end
 
     render json: json
@@ -115,18 +113,11 @@ class AssignmentsController < ApplicationController
     if id && tester = Tester.find_by(id: id)
       assignment = Assignment.find_by(id: params[:assignment_id])
       if assignment.try(:tester_id) == tester.id
-        # delete origin file
-        code, result, response_headers = Qiniu::Storage.delete(
-          Settings.qiniu_bucket,
-          params[:video]
-        )
-        if code == 200
-          video = Base64.urlsafe_encode64
-          assignment.update_attributes(video: video, status: "wait_check")
-          json[:code] = 1
-          json[:video_url] = Settings.qiniu_bucket_domain + "/#{assignment.video}"
-          json[:msg] = '上传文件成功'
-        end
+        video = params[:key_name]
+        assignment.update_attributes(video: video, status: "wait_check")
+        json[:code] = 1
+        json[:video_url] = "http://" + Settings.qiniu_bucket_domain + "/#{video}"
+        json[:msg] = '上传文件成功'
       end
     end
 
@@ -141,7 +132,7 @@ private
     $redis.expire(auth_token, 1.days)
 
     key_name = generate_key_name(file_name)
-    callback_path = "/testers/0/assignments/1/callback_from_qiniu"
+    callback_path = "/testers/#{params[:tester_id]}/assignments/#{params[:assignment_id]}/callback_from_qiniu"
 
     callbackUrl = if Rails.env.development?
       "#{Settings.ngork_domain}#{callback_path}"

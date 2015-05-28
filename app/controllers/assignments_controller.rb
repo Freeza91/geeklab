@@ -7,10 +7,10 @@ class AssignmentsController < ApplicationController
     tester = current_user.to_tester
     assignments = tester.assignments
     if tester.approved
-      @assignments = assignments.new_tasks.page(params[:page])
+      @assignments = assignments.new_tasks.page(params[:page]).per(10)
       @num = assignments.not_view_num(tester.last_view_time)
     else
-      @assignments = assignments.test_task
+      @assignments = assignments.test_task.page(params[:page]).per(10)
       @num = nil
     end
 
@@ -84,9 +84,17 @@ class AssignmentsController < ApplicationController
   end
 
   def upload_token
-    token = generate_token(params[:assignment_id])
+    json = { status: 0, code: 1, msg: "生成token成功", token: '' }
+    if params[:name].blank?
+      json[:code], json[:msg] = 0, '文件名不能为空'
+    elsif current_user
+      token = generate_token(params[:assignment_id], params[:name])
+      json[:token] = token
+    else
+      json[:code], json[:msg] = 0, '你没有权限'
+    end
 
-    render json: { status: 0, code: 1, token: token }
+    render json: json
   end
 
   def callback_from_qiniu
@@ -107,12 +115,12 @@ class AssignmentsController < ApplicationController
 
 private
 
-  def generate_token(id)
+  def generate_token(id, file_name)
     auth_token = generate_qiniu_auth_token
     $redis.set(auth_token, current_user.id)
     $redis.expire(auth_token, 1.days)
 
-    key_name = generate_key_name
+    key_name = generate_key_name(file_name)
     callback_path = "/testers/0/assignments/1/callback_from_qiniu"
 
     callbackUrl = if Rails.env.development?
@@ -135,7 +143,7 @@ private
     SecureRandom.uuid + Time.now.to_i.to_s
   end
 
-  def generate_key_name
-    Time.now.to_i.to_s + [*'a'..'z',*'0'..'9',*'A'..'Z'].sample(8).join
+  def generate_key_name(key_name)
+    Time.now.to_i.to_s + [*'a'..'z',*'0'..'9',*'A'..'Z'].sample(8).join + key_name.to_s
   end
 end

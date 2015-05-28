@@ -96,9 +96,7 @@ $(function () {
     var $this = $(this);
     var assignmentId = $this.parents('.card').data('assignmentId');
     getAssignmentDetail(testerId, assignmentId, function (data) {
-      // 测试assignment detail modal view
-      //var assignmentDetail = 'test';
-      //showAssignmentDetail(assignmentDetail);
+      showAssignmentDetail(data.project);
       console.log(data);
     });
   });
@@ -315,6 +313,22 @@ $(function () {
 
   function showAssignmentDetail (assignmentDetail) {
     console.log(assignmentDetail);
+    var $modal = $('#assignment-detail');
+    // 填信息
+    $modal.find('.title .name').text(assignmentDetail.name);
+    $modal.find('.qrcode img').attr('src', assignmentDetail.qr_code)
+
+    var $detailTable = $modal.find('table');
+    $detailTable.find('[name="profile"]').text(assignmentDetail.profile);
+    $detailTable.find('[name="device"]').text(assignmentDetail.device);
+    $detailTable.find('[name="requirement"]').text(assignmentDetail.requirement);
+    $detailTable.find('[name="situation"]').text(assignmentDetail.desc);
+
+    var taskHtml = '';
+    assignmentDetail.tasks.forEach(function (task, index) {
+      taskHtml += '<li><i class="fa fa-check-circle"></i><span>' + task.content + '</span></li>'  
+    });
+    $detailTable.find('ul').html(taskHtml);
     $('#assignment-detail').modal();
   }
 

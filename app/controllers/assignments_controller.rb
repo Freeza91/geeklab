@@ -154,17 +154,16 @@ class AssignmentsController < ApplicationController
 private
 
   def delete_video_at_qiniu(assignment, json)
+
     code, result, response_headers = Qiniu::Storage.delete(
         Settings.qiniu_bucket,
-        URI.parse(assignment.try(:video)).path.to_s[1..-1]
+        URI.parse(assignment.try(:video)).path.to_s[1..-1].to_s
     )
-    if code == 200
-      assignment.update_attributes(status: "delete", video: '') if !json.size.zero?
-      true
-    else
-      json[:code], json[:msg] = 0, '没有找到资源'
-      false
-    end
+
+    json[:code], json[:msg] = 0, '没有找到资源' unless code == 200
+    assignment.update_attributes(status: "delete", video: '') if !json.size.zero?
+
+    true
   end
 
   def generate_token(id, file_name)

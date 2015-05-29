@@ -78,7 +78,9 @@ $(function () {
               $card.find('.operator.wait-check').fadeIn();
               $card.find('.operator.uploading').fadeOut();
               // 上传成功后跳转至正在进行中的任务页面
-              //location.href = '/testers/' + testerId + '/assignments/join';
+              if(location.pathname.split('/').pop() === 'assignments') {
+                location.href = '/testers/' + testerId + '/assignments/join';
+              }
             });
           }
         });
@@ -187,11 +189,12 @@ $(function () {
       if(data.status === 0) {
         switch(data.code) {
           case 0:
-            alert('上传失败');
-            break;
+            $card.find('.operator.loading').hide();
+            $card.find('.operator.upload-failed').fadeIn();
+          break;
           case 1:
             callback(data);
-            break;
+          break;
         }
       }
     })

@@ -226,7 +226,7 @@ private
     persistentNotifyUrl = if Rails.env.development?
       "#{Settings.ngork_domain}#{persistentNotify_path}"
       else
-      "#{Settings.domain}#{persistentNotifyUrl}"
+      "#{Settings.domain}#{persistentNotify_path}"
     end
 
     put_policy = {

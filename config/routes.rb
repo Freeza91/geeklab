@@ -40,7 +40,9 @@ Rails.application.routes.draw do
   resources :testers do
     resources :assignments do
       post 'callback_from_qiniu'
+      post 'callback_from_qiniu_transfer'
       get 'upload_token'
+      get 'get_video'
       delete 'delete_video'
       collection do
         get 'miss'

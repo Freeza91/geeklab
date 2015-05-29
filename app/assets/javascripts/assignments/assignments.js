@@ -72,7 +72,7 @@ $(function () {
           if(token) {
             uploadVideo(file, token, function (data) {
               // 上传成功后的回调
-              var imageUrl = data.video_url + '?vframe/png/offset/0/w/480/h/200'
+              var imageUrl = data.video + '?vframe/png/offset/0/w/480/h/200'
               $card.find('.content img').attr('src', imageUrl);
               // 切换operator
               $card.find('.operator.wait-check').fadeIn();
@@ -142,13 +142,26 @@ $(function () {
     };
     showInfoModal(options);
   });
+
   // 重新上传 click event
-  $('.video-reload').on('click', function () {
+  $('.assignments-wrp').on('click', '.video-reload', function () {
     var options = {
       title: '确认覆盖上传?',
       eventName: 'reloadVideo'
     };
     showInfoModal(options);
+  });
+
+  // 播放视频 click event
+  $('.assignments-wrp').on('click', '.video-play', function () {
+    var $this = $(this);
+
+    $card = $this.parents('.card');
+    assignmentId = $card.data('assignmentId'); 
+
+    getAssignmentVideoUrl(testerId, assignmentId, function(video) {
+      playVideo(video);
+    })
   });
 
   // 上传视频
@@ -255,6 +268,48 @@ $(function () {
       break;
     }
     $('#confirm-modal').modal('hide');
+  }
+
+  // 获取视频url
+  function getAssignmentVideoUrl (testerId, assignmentId, callback) {
+    var url = '/testers/' + testerId + '/assignments/' + assignmentId + '/get_video';
+
+    $.ajax({
+      url: url
+    })
+    .done(function (data, status) {
+      if(data.status === 0) {
+        switch(data.code) {
+          case 0:
+            console.log(data.msg);
+          break;
+          case 1:
+            callback(data.video);
+          break;
+        }
+      }
+    })
+    .error(function (errors, status) {
+      console.log(errors);
+    });
+  }
+
+  // 播放视频
+  function playVideo (video) {
+    var $modal = $('#video-player'); 
+    // 移除现有的video
+    $modal.find('video').remove();
+    // 创建新的video
+    var $video = document.createElement('video'),
+        $source = document.createElement('source');
+    $video.controls = 'control';
+    $video.style.width = '100%';
+    $video.style.height = '100%';
+    $source.src = video;
+    $video.appendChild($source);
+    $modal.find('.modal-body').append($video);
+
+    $modal.modal();
   }
 
   // 向服务器发送删除任务的请求
@@ -381,6 +436,7 @@ $(function () {
   // 倒计时初始化
   assignmentTimeCountDownInit();
 
+
   function getAssignmentPaging (page, callback) {
     var url = '/testers/' + testerId + '/assignments?page=' + page;
 
@@ -393,7 +449,7 @@ $(function () {
         if(data.assignments.length !== 0) {
           callback(data);
         } else {
-          $('window').unbind('scroll');
+          $(window).unbind('scroll');
           $('.load-more').unbind('click');
           $('.load-more p').text('没有更多了');
         }
@@ -514,6 +570,11 @@ $(function () {
       $('.assignments-wrp.active').removeClass('active').hide();
       $(target).fadeIn().addClass('active');
     });
+
+    // init video player
+    //videojs('player', {}, function () {
+      //console.log('video player is ready') 
+    //});
   }
 
 });

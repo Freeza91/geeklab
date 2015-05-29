@@ -235,7 +235,7 @@ private
       callbackUrl: callbackUrl,
       callbackBody: "auth_token=#{auth_token}&key_name=#{key_name}&assignment_id=#{id}",
       deadline: 1.days.from_now.to_i,
-      persistentOps: "avthumb/mp4/vb/256k/wmImage/" + qiniu_encode("#{Settings.water_picture}") + "|saveas/" + qiniu_encode("#{Settings.qiniu_bucket}:copy-#{key_name}") ,
+      persistentOps: "avthumb/mp4/vb/1.25m/wmImage/" + qiniu_encode("#{Settings.water_picture}") + "|saveas/" + qiniu_encode("#{Settings.qiniu_bucket}:copy-#{key_name}") ,
       persistentNotifyUrl: persistentNotifyUrl
     }
     Qiniu::Auth.generate_uptoken(put_policy)

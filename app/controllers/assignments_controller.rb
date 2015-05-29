@@ -179,12 +179,12 @@ private
     callbackUrl = if Rails.env.development?
       "#{Settings.ngork_domain}#{callback_path}"
     else
-      "my domain "
+      "#{settings.domain}#{callback_path}"
     end
     persistentNotifyUrl = if Rails.env.development?
       "#{Settings.ngork_domain}#{persistentNotify_path}"
       else
-      " my domain callbackUrl"
+      "#{settings.domain}#{persistentNotifyUrl}"
     end
 
     put_policy = {
@@ -193,7 +193,7 @@ private
       callbackUrl: callbackUrl,
       callbackBody: "auth_token=#{auth_token}&key_name=#{key_name}&assignment_id=#{id}",
       deadline: 1.days.from_now.to_i,
-      persistentOps: "avthumb/mp4/wmImage/" + qiniu_encode("http://119.254.101.120/assets/logo/logo-1d6138d60eb45eac05766b5dc16c240ea0868de1d8816168fb52adc08534fcf8.png") ,
+      persistentOps: "avthumb/mp4/wmImage/" + qiniu_encode("#{Settings.water_picture}") + "|saveas/" + qiniu_encode("#{Settings.qiniu_bucket}:copy-#{key_name}") ,
       persistentNotifyUrl: persistentNotifyUrl
     }
     Qiniu::Auth.generate_uptoken(put_policy)
@@ -204,7 +204,7 @@ private
   end
 
   def generate_key_name(key_name)
-    Time.now.to_i.to_s + [*'a'..'z',*'0'..'9',*'A'..'Z'].sample(8).join + key_name.to_s
+    Time.now.to_i.to_s + [*'a'..'z',*'0'..'9',*'A'..'Z'].sample(8).join + ".mp4"
   end
 
   def qiniu_encode(content)

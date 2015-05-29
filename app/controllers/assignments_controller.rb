@@ -48,6 +48,7 @@ class AssignmentsController < ApplicationController
     else
       json[:code], json[:msg] = 0, '没有权限查看视频资源'
     end
+    render json:json
   end
 
   def edit
@@ -157,7 +158,7 @@ private
 
     code, result, response_headers = Qiniu::Storage.delete(
         Settings.qiniu_bucket,
-        URI.parse(assignment.try(:video)).path.to_s[1..-1].to_s
+        URI.parse(assignment.try(:video).to_s).path.to_s[1..-1].to_s
     )
 
     json[:code], json[:msg] = 0, '没有找到资源' unless code == 200

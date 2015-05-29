@@ -119,6 +119,11 @@ class AssignmentsController < ApplicationController
   def destroy
     assignment = current_user.to_tester.assignments.find_by(id: params[:id])
     json = { status: 0, code: 1, msg: '删除任务成功' }
+    unless current_user.approved
+      json[:code], json[:msg] = 0, '没有完成新手任务，你无法删除'
+      return render json: json
+    end
+
     unless assignment && delete_video_at_qiniu(assignment, {}) && assignment.destroy
       json[:code], json[:msg] = 0, '没有权限删除这个任务或者此任务已经不存在'
     end

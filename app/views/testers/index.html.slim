@@ -10,11 +10,13 @@ main role='main'
             a.btn.btn-blue href=new_tester_path
               | 成为体验师
           - else
-            button.btn.btn-blue.temp data-approved="#{current_user.approved}"
-              - if current_user.approved
-                | 体验产品
-              - else
-                | 成为体验师
+            a.btn.btn-blue href=tester_assignments_path(current_user.id)
+              | 体验产品
+            /button.btn.btn-blue.temp data-approved="#{current_user.approved}"
+              /- if current_user.approved
+                /| 体验产品
+              /- else
+                /| 成为体验师
         - else
           button.btn.btn-blue data-target='#signup' data-toggle='modal'
             | 成为体验师

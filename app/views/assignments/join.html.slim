@@ -69,13 +69,12 @@ main role="main"
                   img src=("#{assignment.video}" + "?vframe/png/offset/0/w/480/h/200")
                 - else
                   img
-                = render partial: 'assignments/operators/wait_upload'
-                = render partial: 'assignments/operators/uploading'
-                = render partial: 'assignments/operators/upload_failed'
-                = render partial: 'assignments/operators/wait_check'
                 .status class=("status_" + "#{assignment.status}")
                   p
-                    = get_status_info(assignment.status)
+                    - if assignment.status == "success"
+                      | 任务成功
+                    - else
+                      | 任务已过期
               footer
                 .timer
                   p

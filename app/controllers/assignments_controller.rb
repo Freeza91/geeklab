@@ -62,9 +62,22 @@ class AssignmentsController < ApplicationController
 
   def miss
     tester = current_user.to_tester
-    tester.update_attribute(:last_view_time, Time.now)
     assignments = tester.assignments
-    @assignments =  assignments.missing
+    @assignments =  assignments.missing.page(params[:page]).per(10)
+
+    respond_to do |format|
+      format.html do
+        tester.update_attribute(:last_view_time, Time.now)
+      end
+      format.json do
+        json = {status: 0, code: 1, assignments: [] }
+        @assignments.each do |a|
+          json[:assignments] << a.to_json_with_project
+        end
+        render json: json
+      end
+    end
+
   end
 
   def not_interest
@@ -75,8 +88,32 @@ class AssignmentsController < ApplicationController
   def join
     tester = current_user.to_tester
     assignments = tester.assignments
-    @assignments_ing =  assignments.take_part_ing
-    @assignments_done = assignments.take_part_done
+    tester.update_attribute(:last_view_time, Time.now)
+    @assignments_ing =  assignments.take_part_ing.page(params[:page]).per(10)
+    @assignments_done = Kaminari.paginate_array(assignments.take_part_done).page(params[:page]).per(10)
+  end
+
+  def ing
+    tester = current_user.to_tester
+    assignments = tester.assignments
+    assignments_ing =  assignments.take_part_ing.page(params[:page]).per(10)
+    json = {status: 0, code: 1, assignments_ing: [] }
+    assignments_ing.each do |a|
+      json[:assignments_ing] << a.to_json_with_project
+    end
+
+    render json: json
+  end
+
+  def done
+    tester = current_user.to_tester
+    assignments = tester.assignments
+    assignments_done = Kaminari.paginate_array(assignments.take_part_done).page(params[:page]).per(10)
+    json = {status: 0, code: 1, assignments_done: [] }
+    assignments_done.each do |a|
+      json[:assignments_done] << a.to_json_with_project
+    end
+    render json: json
   end
 
   def destroy

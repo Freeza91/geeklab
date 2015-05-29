@@ -48,6 +48,8 @@ Rails.application.routes.draw do
         get 'miss'
         get 'join'
         get 'not_interest'
+        get 'ing'
+        get 'done'
       end
     end
   end

@@ -91,8 +91,8 @@ class AssignmentsController < ApplicationController
   def delete_video
     json = { status: 0, code: 1, msg: '删除视频成功' }
 
-    @assignment = Assignment.find_by(id: params[:assignment_id])
-    if @assignment.tester.id == current_user.id
+    assignment = Assignment.find_by(id: params[:assignment_id])
+    if assignment.tester.id == current_user.id
       delete_video_at_qiniu(assignment, json)
     else
       json[:code], json[:msg] = 0, '你没有权限操作'

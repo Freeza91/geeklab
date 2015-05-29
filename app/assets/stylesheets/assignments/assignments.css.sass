@@ -315,3 +315,31 @@
 .assignments_join
   .operator
     display: none
+  #assignments-done
+    display: none
+
+// 我参与的任务页面的tab切换
+.assignments-subnav
+  text-align: center
+  ul
+    display: inline-block
+    list-style: none
+    padding: 0
+    border: 1px solid #16a0c6
+    border-radius: 3px
+    > li
+      float: left
+      > a
+        display: inline-block
+        background-color: #fff
+        color: #16a0c6
+        padding: 5px 20px
+        box-shadow: 0 0 2px #ccc
+        font-size: 14px
+      > a:hover
+        background-color: rgba(23, 160, 188, .7)
+        color: #fff
+        text-decoration: none
+      > a.active
+        background-color: #16a0c6
+        color: #fff

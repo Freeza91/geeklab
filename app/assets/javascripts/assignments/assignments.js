@@ -70,6 +70,8 @@ $(function () {
 
         getUploadToken(testerId, assignmentId, filename, function (token) {
           if(token) {
+            $card.find('.status').hide();
+            $card.find('.content img').hide();
             uploadVideo(file, token, function (data) {
               // 上传成功后的回调
               var imageUrl = data.video + '?vframe/png/offset/0/w/480/h/200'

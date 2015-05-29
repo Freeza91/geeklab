@@ -13,10 +13,10 @@ main role="main"
       nav.assignments-subnav
         ul
           li
-            a.active href="javascrip: void(0)" data-target="#assignments-ing"
+            a.active href="javascript: void(0)" data-target="#assignments-ing"
               | 进行中
           li
-            a href="javascrip: void(0)" data-target="#assignments-done"
+            a href="javascript: void(0)" data-target="#assignments-done"
               | 已完成
       .assignments-wrp.clear-fix.active#assignments-ing
         - for assignment in @assignments_ing
@@ -26,8 +26,9 @@ main role="main"
                 h1.title 
                   span action="getAssignmentDetail"
                     = assignment.project.name
-                  span.close.assignment-del
-                    | &times
+                  - if current_user.approved
+                    span.close.assignment-del
+                      | &times
                 p.describle
                   = assignment.project.profile
               .content

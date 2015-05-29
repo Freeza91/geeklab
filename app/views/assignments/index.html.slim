@@ -18,8 +18,9 @@ main role="main"
                 h1.title 
                   span action="getAssignmentDetail"
                     = assignment.project.name
-                  span.close.assignment-del
-                    | &times
+                  - if current_user.approved
+                    span.close.assignment-del
+                      | &times
                 p.describle
                   = assignment.project.profile
               .content
@@ -41,6 +42,11 @@ main role="main"
         p
           | 加载更多
       
+- if @num && @num != 0
+  <!-- 过期任务提示开始 -->
+  = render partial: 'assignments/shared/miss_assignments_reminder'
+  <!-- 过期任务提示结束 -->
+
 = render partial: 'shared/confirm_modal'
 = render partial: 'assignments/shared/upload_modal'
 = render partial: 'assignments/shared/assignment_detail'

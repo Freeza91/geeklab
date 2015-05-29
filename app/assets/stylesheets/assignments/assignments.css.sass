@@ -308,7 +308,8 @@
 
 // 不同状态洗的operator 切换
 .assignments_index
-  .operator.uploading
+  .operator.uploading,
+  .operator.upload-failed
     display: none
 
 // 我参与的任务--operator
@@ -344,3 +345,38 @@
         background-color: #16a0c6
         color: #fff
   
+// 过期任务提示
+.assignments-reminder
+  position: fixed
+  top: 70px
+  left: 50px
+  box-shadow: 0 0 7px #ccc
+  border-radius: 50%
+  z-index: 10
+  .reminder-close
+    position: absolute
+    left: 100%
+    top: 0
+    font-size: 20px
+    line-height: 20px
+    cursor: pointer
+  .reminder-close:hover
+    color: #16a0c6
+  .inner
+    width: 80px
+    height: 80px
+    border-radius: 50%
+    background-color: #fff
+    padding-top: 15px
+    p,
+    a
+      color: #313131
+      font-size: 14px
+      text-align: center
+    .miss-count
+      margin-bottom: 5px
+    .miss-count > a:hover
+      color: #16a0c6
+      text-decoration: underline
+
+

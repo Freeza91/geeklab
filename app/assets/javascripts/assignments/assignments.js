@@ -73,7 +73,7 @@ $(function () {
             uploadVideo(file, token, function (data) {
               // 上传成功后的回调
               var imageUrl = data.video + '?vframe/png/offset/0/w/480/h/200'
-              $card.find('.content img').attr('src', imageUrl);
+              $card.find('.content img').attr('src', imageUrl).show();
               // 切换operator
               $card.find('.operator.wait-check').fadeIn();
               $card.find('.operator.uploading').fadeOut();
@@ -197,6 +197,8 @@ $(function () {
     })
     .error(function(errors, status) {
       console.log(errors);
+      $card.find('.operator.loading').hide();
+      $card.find('.operator.upload-failed').fadeIn();
     });
   }
 
@@ -255,7 +257,7 @@ $(function () {
           console.log(data);
           $card.find('.operator.wait-check').fadeOut();
           $card.find('.operator.wait-upload').fadeIn();
-          $card.find('img').removeAttr('src');
+          $card.find('img').removeAttr('src').hide();
           $card.find('status').hide();
         });
       break;

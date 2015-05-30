@@ -93,15 +93,15 @@ namespace :unicorn do
   desc "Start Unicorn"
   task start: :environment do
     queue 'echo "-----> Start Unicorn"'
-    if branch == 'develop'
-      queue! %{
-        cd #{app_path}
-        bundle exec unicorn_rails -E production -c config/unicorn_test.rb -D
-      }
-    elsif branch == 'master'
+    if branch == 'master'
       queue! %{
         cd #{app_path}
         bundle exec unicorn_rails -E production -c config/unicorn_master.rb -D
+      }
+    elsif branch == 'release'
+      queue! %{
+        cd #{app_path}
+        bundle exec unicorn_rails -E production -c config/unicorn_release.rb -D
       }
     end
   end

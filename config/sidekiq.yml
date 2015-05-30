@@ -3,7 +3,7 @@
 :pidfile: tmp/pids/sidekiq.pid
 :logfile: ./log/sidekiq.log
 production: # work model
-  :concurrency: 20
+  :concurrency: 5
 :queues:
   - [mailers, 5]
   - [update_assignment]

@@ -18,6 +18,7 @@ $(function () {
   var assignmentId = 0; // 当前执行操作的任务id
   var $card; // 当前执行操作的任务卡片
   var page = 1 //分页获取任务列表
+  var $curVideo; // 当前正在播放的video
 
 
   // 瀑布流加载，监听window滚动事件
@@ -168,6 +169,10 @@ $(function () {
     })
   });
 
+  // 关闭视频播放modal
+  $('#video-player [data-dismiss="modal"]').on('click', function () {
+    $curVideo.pause(); 
+  });
   // 上传视频
   function uploadVideo(file, token, callback) {
     // 构造formData
@@ -314,8 +319,8 @@ $(function () {
     $video.style.height = '100%';
     $source.src = video;
     $video.appendChild($source);
+    $curVideo = $video;
     $modal.find('.modal-body').append($video);
-
     $modal.modal();
   }
 
@@ -603,10 +608,6 @@ $(function () {
       $(target).fadeIn().addClass('active');
     });
 
-    // init video player
-    //videojs('player', {}, function () {
-      //console.log('video player is ready') 
-    //});
   }
 
 });

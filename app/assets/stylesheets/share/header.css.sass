@@ -1,0 +1,83 @@
+.header
+  height: 60px
+  position: fixed
+  top: 0
+  z-index: 50
+  width: 100%
+  background-color: rgba(255, 255, 255, 1)
+  .container
+    position: relative
+  .top-logo
+    display: inline-block
+    margin-top: 14px
+    cursor: default
+    img
+      width: 220px
+      height: 32px
+  .btn
+    color: #fff
+    height: 38px
+  .login
+    position: absolute
+    top: 11px 
+    right: 20px
+    min-width: 78px
+  .login:hover
+    opacity: .8
+
+.header.scroll-down
+  //background-color: rgba(255, 255, 255, .5)
+  box-shadow: 0 0 7px rgba(0, 0, 0, .5)
+.layout-fix.for-header
+  margin-top: 60px
+
+// nav-header
+.header
+  .navbar-header
+    margin-right: 20px
+.navbar-collapse
+  padding-top: 10px
+// dropdown
+.nav.login
+  > li
+    > a:hover
+      background-color: #fff
+  .dropdown-menu
+    left: 30px
+    right: 0
+    background-color: #fff
+    padding: 0
+    > li
+      height: 34px
+    > li > a
+      text-align: center
+      line-height: 34px
+      font-size: 14px
+      color: #313131
+      > .fa
+        margin-right: 8px
+    > li > a:hover
+      background-color: #16a0c6
+      color: #fff
+
+
+// 适配移动端
+@media(max-width: 992px)
+  .header
+    text-align: center
+    .role-switch
+      position: absolute
+      left: 0
+      top: 11px
+      margin-left: 20px
+
+@media(max-width: 768px)
+  .header
+    .navbar-nav
+      margin-top: -42px
+      margin-right: 0
+
+// tester页面下logo可点击
+body.testers
+  .top-logo
+    cursor: pointer

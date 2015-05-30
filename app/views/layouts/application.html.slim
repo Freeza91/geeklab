@@ -1,12 +1,29 @@
-DOCTYPE html
-html
-  head
-    title GeekLab
-    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
-    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+doctype html
+html lang=session[:locale]
+  head 
+    title 极客实验室
+    = stylesheet_link_tag 'application', media: 'all'
     = csrf_meta_tags
 
-  body
-    = render '/shared/header'
+  body class=(controller_name + ' ' + controller_name + '_' + action_name + ' ' + locale.to_s)
+    <!-- 重置密码时不加载header -->
+    - if controller_name != 'passwords' 
+      = render '/shared/header'
+      <!--= render '/shared/flash'-->
+
     = yield
-    = render 'shared/footer'
+
+    <!-- 重置密码时不加载footer -->
+    - if controller_name != "passwords" && controller_name != "errors"
+      = render '/shared/footer'
+
+    - if !current_user
+      <!-- 未登录时才加载登陆框 -->
+      = render '/users/sessions/new'
+      = render '/users/registrations/new'
+      <!-- 登陆框结束 -->
+
+    = render '/shared/info_modal'
+
+    <!-- 最后加载js文件 -->
+    = javascript_include_tag 'application'

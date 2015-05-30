@@ -1,0 +1,144 @@
+$font_color: #727071
+p
+  color: $font_color
+  font-size: 14px
+.banner_index
+  background: #fff image-url('banner/banner_index.png') center center no-repeat
+  height: 795px
+  transition: all 1s ease
+  .role
+    text-align: center
+    p
+      margin-top: 10px
+  //.role.active
+    //width: 100%
+    //transition: width .5s ease
+//.banner.show-left
+  //background-position: -21% center
+//.banner.show-right
+  //background-position: 121% center
+
+.banner_pm,
+.banner_tester
+  height: 640px
+
+.banner_pm
+  background: #fff image-url('banner/banner_pm.jpg') center no-repeat
+.banner_tester
+  background: #fff image-url('banner/banner_tester.jpg') center center no-repeat
+  .topic
+    float: left
+    margin-top: 150px
+    .title
+      color: #fff
+
+
+.steps
+  .icon
+    text-align: center
+  .title
+    font-size: 30px
+    color: $font_color
+    padding-bottom: 30px
+    text-align: center
+  .step
+    p
+      text-align: center
+      font-size: 18px
+    .title
+      font-size: 24px
+      padding-bottom: 0
+.banner
+  .btn
+    width: 230px
+    height: 60px
+    font-size: 24px
+    line-height: 46px
+    color: #fff
+
+  .wtf
+    font-size: 24px
+    margin-bottom: 100px
+.desc
+  float: right
+  .item
+    width: 400px
+    margin-bottom: 50px 
+    padding: 20px 30px 10px
+    background-color: rgba(255, 255, 255, .4)
+    text-align: center
+  p
+    font-size: 18px
+    text-align: left
+  .title
+    font-size: 24px
+    text-align: center
+.topic
+  p
+    font-size: 18px
+    i
+      margin-right: 10px
+  .title
+    font-size: 30px
+    span
+      margin-right: 10px
+  .btn
+    margin-top: 20px
+    margin-bottom: 12px
+
+// 适配移动端
+@media (max-width: 992px)
+  .steps
+    .step
+      margin-bottom: 30px
+    //.icon
+      //float: left
+    .fa
+      line-height: 104px
+    .conent
+      float: right
+
+  .desc
+    float: none
+    .item
+      margin-bottom: 0
+
+  .banner
+    .btn
+      width: 300px
+      height: 80px
+      line-height: 68px
+
+    .wtf
+      margin-left: 30px
+      margin-top: 20px
+
+  .topic
+    float: none
+    position: absolute
+    left: 50%
+    bottom: -40px
+    text-align: center
+
+  .banner_tester
+    background-image: image-url('banner/banner_tester_mobile.jpg')
+    position: relative
+    .topic
+      margin-left: -220px
+
+  .banner_pm
+    background-image: image-url('banner/banner_pm_mobile.jpg')    
+    position: relative
+    .topic
+      margin-left: -150px
+
+  .banner_index
+    background-image: image-url('banner/banner_index_mobile.png')
+    height: 1180px
+
+    .role
+      margin-top: 260px
+@media (min-width: 992px)
+  .steps
+    .icon
+      margin-bottom: 15px

@@ -1,0 +1,30 @@
+.modal.fade.sign#signup role='dialog' data-backdrop='static'
+  .modal-dialog.flip#sign-flip
+    .modal-content.front
+      .modal-header
+        button.close type='button' data-dismiss='modal' aria-label='Close'
+          span aria-hidden='true'
+            | &times
+        .logo
+          img src=image_path('logo/logo.png')
+      .modal-body
+        = render partial: 'users/shared/signup_form'
+        p
+          | 已有账号？直接
+          a.blue.flip-trigger href='javascript:void(0)' data-target='#sign-flip'
+            i.fa.fa-hand-o-right
+            | 登录
+    .modal-content.back
+      .modal-header
+        button.close type='button' data-dismiss='modal' aria-label='Close'
+          span aria-hidden='true'
+            | &times
+        .logo
+          img src="#{image_path('logo/logo.png')}"
+      .modal-body
+        = render partial: 'users/shared/login_form'
+        p
+          | 没有账号？
+          a.blue.flip-trigger href='javascript:void(0)' data-target='#sign-flip'
+            i.fa.fa-hand-o-right
+            | 注册

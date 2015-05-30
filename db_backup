@@ -1,0 +1,5 @@
+ssh -p 9527 deploy@50.116.16.150 'ls;
+cd db_backup; \
+pg_dump geek_lab > db_file; \
+echo successful db export; \
+git add -A ; git commit -m "update db_file"; git push; '

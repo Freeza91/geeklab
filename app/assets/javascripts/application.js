@@ -10,7 +10,20 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+// 引入 jquery
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
+
+// 引入 cityselect
+//= require jquery.cityselect
+
+// 引入 dateselect
+//= require jquery.dateselect
+
+// 引入 表单验证
+//= require form.valid
+
+// 引入bootstrap插件
+//= require bootstrap.min
+
 //= require_tree .

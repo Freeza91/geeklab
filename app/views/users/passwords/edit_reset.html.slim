@@ -1,0 +1,17 @@
+/*= form_for @user, url: update_reset_users_passwords_path, method: :put do |f|*/
+  /*= f.password_field 'encrypted_password'*/
+  /*= f.submit '更新密码'*/
+section.content-box.reset
+  .container
+    .inner
+      header
+        img src=image_path('logo/logo.png')  
+      = render 'users/shared/pwdreset_form'
+      .info.hidden
+        p
+          i.fa.fa-smile-o
+          | 密码重置成功,&nbsp
+          span.count
+          | 秒后跳转。如果没有自动跳转，请点击
+          a href='javascript:void(0)'
+           | 这里

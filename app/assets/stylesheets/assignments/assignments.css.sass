@@ -59,6 +59,8 @@
       font-size: 20px
       font-weight: normal
       cursor: pointer
+      .fa
+        margin-right: 5px
     .title:hover
       text-decoration: underline
 
@@ -93,6 +95,7 @@
 
   footer
     position: relative
+    height: 42px
     .timer p,
     .score
       font-size: 16px
@@ -196,14 +199,18 @@
 
 // 上传视频表单
 #upload-form
-  padding: 0 50px
-  margin: 30px 0
-  text-align: left
-  color: #313131
-  label,
-  .help-block
-    font-size: 16px
-    font-weight: normal
+  display: block
+  visibility: hidden
+  width: 0
+  height: 0
+  //padding: 0 50px
+  //margin: 30px 0
+  //text-align: left
+  //color: #313131
+  //label,
+  //.help-block
+    //font-size: 16px
+    //font-weight: normal
 
 
 // 上传进度圆环

@@ -16,6 +16,7 @@ main role="main"
             .inner
               header
                 h1.title 
+                  i.fa.fa-mobile
                   span action="getAssignmentDetail"
                     = assignment.project.name
                   - if current_user.approved
@@ -40,7 +41,10 @@ main role="main"
                     | 10
       .load-more
         p
-          | 加载更多
+          - if @assignments.length < 10
+            | 没有更多了
+          - else
+            | 加载更多
       
 - if @num && @num != 0
   <!-- 过期任务提示开始 -->

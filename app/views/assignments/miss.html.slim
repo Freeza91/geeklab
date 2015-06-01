@@ -7,6 +7,7 @@ main role="main"
             .inner
               header
                 h1.title 
+                  i.fa.fa-mobile
                   span action="getAssignmentDetail"
                     = assignment.project.name
                   span.close.assignment-del
@@ -33,7 +34,10 @@ main role="main"
                     | 10
       .load-more
         p
-          | 加载更多
+          - if @assignments.length < 10
+            | 没有更多了
+          - else
+            | 加载更多
 
 = render partial: 'shared/confirm_modal'
 = render partial: 'assignments/shared/assignment_detail'

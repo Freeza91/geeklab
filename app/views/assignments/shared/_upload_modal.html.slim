@@ -1,22 +1,23 @@
-.modal.fade#video-upload role="dialog" data-backdrop="stick"
-  .modal-dialog
-    .modal-content
-      .modal-header
-        button.close type="button" data-dismiss="modal" aria-label="Close"
-          span aria-hidden="true"
-            | &times
-        .logo
-          img src=image_path("logo/logo.png")
-      .modal-body
-        form#upload-form
-          .form-group
-            label for="video"
-              | 上传视频
-            input type="file" id="video"
-            p.help-block
-              | help info here
-          .tools
-            button.btn.btn-blue type="submit"
-              | 上传
-            button.btn.btn-gray data-dismiss='modal'
-              | 取消
+/.modal.fade#video-upload role="dialog" data-backdrop="stick"
+  /.modal-dialog
+    /.modal-content
+      /.modal-header
+        /button.close type="button" data-dismiss="modal" aria-label="Close"
+          /span aria-hidden="true"
+            /| &times
+        /.logo
+          /img src=image_path("logo/logo.png")
+      /.modal-body
+
+form#upload-form
+  .form-group
+    /label for="video"
+      /| 上传视频
+    input type="file" id="video" accept="video/*"
+    /p.help-block
+      /| help info here
+  /.tools
+    /button.btn.btn-blue type="submit"
+      /| 上传
+    /button.btn.btn-gray data-dismiss='modal'
+      /| 取消

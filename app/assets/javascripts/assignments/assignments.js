@@ -18,6 +18,8 @@ $(function () {
   var assignmentId = 0; // 当前执行操作的任务id
   var $card; // 当前执行操作的任务卡片
   var page = 1 //分页获取任务列表
+  var $curVideo; // 当前正在播放的video
+  var uploadAjax; //正在进行上传视频的ajax对象
 
 
   // 瀑布流加载，监听window滚动事件
@@ -44,51 +46,6 @@ $(function () {
     });
   });
 
-  // 上传视频表单的submit事件处理
-  // 获取token
-  // 上传视频
-  $('#upload-form').on('submit', function(event) {
-    // 阻止默认事件
-    event.stopPropagation();
-    event.preventDefault(); 
-
-    var $form = $(event.target);
-    var file = $form.find('[type="file"]')[0].files[0];
-
-    if(file) {
-      // 判断所选文件的类型是否为video
-      if(file.type.split('/')[0] === 'video') {
-        // 关闭模态框
-        $('#video-upload').modal('hide');
-        // 切换operator
-        $card.find('.operator').fadeOut();
-        $card.find('.operator.uploading').fadeIn();
-        // 删除视频截图
-        $card.find('img').removeAttr('src');
-
-        var filename = file.name
-
-        getUploadToken(testerId, assignmentId, filename, function (token) {
-          if(token) {
-            uploadVideo(file, token, function (data) {
-              // 上传成功后的回调
-              var imageUrl = data.video + '?vframe/png/offset/0/w/480/h/200'
-              $card.find('.content img').attr('src', imageUrl).show();
-              // 切换operator
-              $card.find('.operator.wait-check').fadeIn();
-              $card.find('.operator.uploading').fadeOut();
-              // 上传成功后跳转至正在进行中的任务页面
-              //location.href = '/testers/' + testerId + '/assignments/join';
-            });
-          }
-        });
-      } else {
-        $form.find('.help-block').text('只能上传视频');
-      }
-    } else {
-      $form.find('.help-block').text('请选择要上传的视频');
-    }
-  });
 
   // 点击任务标题显示任务说明
   //$('[action="getAssignmentDetail"]').on('click', function () {
@@ -97,7 +54,6 @@ $(function () {
     var assignmentId = $this.parents('.card').data('assignmentId');
     getAssignmentDetail(testerId, assignmentId, function (data) {
       showAssignmentDetail(data.project);
-      console.log(data);
     });
   });
 
@@ -108,7 +64,65 @@ $(function () {
     $card = $this.parents('.card');
     assignmentId = $card.data('assignmentId');
 
-    $('#video-upload').modal();
+    //$('#video-upload').modal();
+    $('#video').click();
+  });
+
+  // 取消上传 
+  $('.assignments-wrp').on('click', '.upload-cancel', function () {
+    uploadAjax.abort();
+    $card.find('.operator.uploading').hide();
+    $card.find('.operator.wait-upload').fadeIn();
+  });
+  // 开始上传视频
+  $('#video').on('change', function () {
+    var file = $(this)[0].files[0];
+    if(file) {
+      // 判断所选文件的类型是否为video
+      if(file.type.split('/')[0] === 'video') {
+        // 切换operator
+        $card.find('.operator').fadeOut();
+        $card.find('.operator.uploading').fadeIn();
+        // 删除视频截图
+        $card.find('img').removeAttr('src');
+
+        var filename = file.name
+
+        getUploadToken(testerId, assignmentId, filename, function (token) {
+          if(token) {
+            $card.find('.status').hide();
+            $card.find('.content img').hide();
+            uploadVideo(file, token, function (data) {
+              // 上传成功后的回调
+              var imageUrl = data.video + '?vframe/png/offset/0/w/480/h/200'
+              $card.find('.content img').attr('src', imageUrl).show();
+              // 切换operator
+              $card.find('.operator.wait-check').fadeIn();
+              $card.find('.operator.uploading').fadeOut();
+              // 显示状态，并将状态置为wait_check
+              $card.find('.status').fadeIn().find('p').text('等待审核').removeClass().addClass('status status_wait_check');
+              // 恢复上传进度圆环
+              $card.find('.progressCircle .inner').css({
+                'transform': 'rotate(0)',
+                '-o-transform': 'rotate(0)',
+                '-moz-transform': 'rotate(0)',
+                '-webkit-transform': 'rotate(0)'
+              });
+              // 清除上传input框的值
+              delete $(this)[0].files;
+              // 上传成功后跳转至正在进行中的任务页面
+              if(location.pathname.split('/').pop() === 'assignments') {
+                location.href = '/testers/' + testerId + '/assignments/join';
+              }
+            });
+          }
+        });
+      } else {
+        $form.find('.help-block').text('只能上传视频');
+      }
+    } else {
+      $form.find('.help-block').text('请选择要上传的视频');
+    }
   });
 
   // 删除任务按钮的click事件处理函数
@@ -164,6 +178,10 @@ $(function () {
     })
   });
 
+  // 关闭视频播放modal
+  $('#video-player [data-dismiss="modal"]').on('click', function () {
+    $curVideo.pause(); 
+  });
   // 上传视频
   function uploadVideo(file, token, callback) {
     // 构造formData
@@ -172,7 +190,7 @@ $(function () {
     formData.append('file', file);
     formData.append('accept', 'application/json');
     // ajax上传
-    $.ajax({
+    uploadAjax = $.ajax({
       url: 'http://upload.qiniu.com',
       method: 'post',
       data: formData,
@@ -187,18 +205,23 @@ $(function () {
       if(data.status === 0) {
         switch(data.code) {
           case 0:
-            alert('上传失败');
-            break;
+            $card.find('.operator.uploading').hide();
+            $card.find('.operator.upload-failed').fadeIn();
+          break;
           case 1:
             callback(data);
-            break;
+          break;
         }
       }
     })
     .error(function(errors, status) {
-      console.log(errors);
-      $card.find('.operator.loading').hide();
-      $card.find('.operator.upload-failed').fadeIn();
+      // 上传取消时，不显示上传失败
+      if(status === 'abort') {
+        return false;
+      } else {
+        $card.find('.operator.uploading').hide();
+        $card.find('.operator.upload-failed').fadeIn();
+      }
     });
   }
 
@@ -258,7 +281,7 @@ $(function () {
           $card.find('.operator.wait-check').fadeOut();
           $card.find('.operator.wait-upload').fadeIn();
           $card.find('img').removeAttr('src').hide();
-          $card.find('status').hide();
+          $card.find('.status').hide();
         });
       break;
       case 'deleteAssignment':
@@ -309,8 +332,8 @@ $(function () {
     $video.style.height = '100%';
     $source.src = video;
     $video.appendChild($source);
+    $curVideo = $video;
     $modal.find('.modal-body').append($video);
-
     $modal.modal();
   }
 
@@ -366,7 +389,6 @@ $(function () {
   }
 
   function showAssignmentDetail (assignmentDetail) {
-    console.log(assignmentDetail);
     var $modal = $('#assignment-detail');
     // 填信息
     $modal.find('.title .name').text(assignmentDetail.name);
@@ -450,7 +472,8 @@ $(function () {
       if(data.status === 0 && data.code === 1) {
         if(data.assignments.length !== 0) {
           callback(data);
-        } else {
+        }
+        if(data.assignments.length < 10) {
           $(window).unbind('scroll');
           $('.load-more').unbind('click');
           $('.load-more p').text('没有更多了');
@@ -560,6 +583,31 @@ $(function () {
     } 
   }
 
+  // 点击关闭或者查看过期任务后，关闭提示
+  $('.reminder-close').on('click', function () {
+    var $reminder = $(this).parents('.assignments-reminder');
+    closeMissAssignmentsReminder($reminder);
+  });
+  $('.miss-count').click('click', function () {
+    var $reminder = $(this).parents('.assignments-reminder');
+    closeMissAssignmentsReminder($reminder);
+  });
+  // 关闭过期任务提示
+  function closeMissAssignmentsReminder ($reminder) {
+    var url = '/testers/' + testerId + '/assignments/not_interest';
+    $.ajax({
+      url: url
+    })
+    .done(function (data, status) {
+      if(data.status === 0 && data.code === 1) {
+        $reminder.fadeOut();
+      }
+    })
+    .error(function (errors, status) {
+      console.log(errors);
+    });
+  }
+
   if($('body').hasClass('assignments_join')) {
     initOperators(); 
  
@@ -573,10 +621,6 @@ $(function () {
       $(target).fadeIn().addClass('active');
     });
 
-    // init video player
-    //videojs('player', {}, function () {
-      //console.log('video player is ready') 
-    //});
   }
 
 });

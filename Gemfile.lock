@@ -332,6 +332,7 @@ DEPENDENCIES
   rails (= 4.2.1)
   rails_admin!
   redis
+  rest-client
   sass-rails (~> 5.0)
   sendgrid
   settingslogic

@@ -41,6 +41,7 @@ Rails.application.routes.draw do
     resources :assignments do
       post 'callback_from_qiniu'
       post 'callback_from_qiniu_transfer'
+      post 'callback_from_qiniu_video_images'
       get 'upload_token'
       get 'get_video'
       delete 'delete_video'

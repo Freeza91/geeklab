@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150529030435) do
+ActiveRecord::Schema.define(version: 20150602063627) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 20150529030435) do
     t.string  "video"
     t.boolean "is_transfer", default: false
     t.boolean "is_sexy",     default: false
+    t.string  "comment"
   end
 
   create_table "projects", force: :cascade do |t|

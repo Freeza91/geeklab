@@ -44,7 +44,19 @@ main role="main"
                 .status class=("status_" + "#{assignment.status}")
                   p
                     = get_status_info(assignment.status)
-                .inner-mask
+                    - if assignment.status == "not_accept"
+                      i.fa.fa-exclamation-circle
+                  /ol.comment
+                    /li
+                      /| comment1
+                    /li
+                      /| comment2
+                    /li
+                      /| comment3
+                  ol
+                    - for comment in assignment.comment
+                      li
+                        = comment
               footer
                 .timer
                   p
@@ -55,7 +67,7 @@ main role="main"
                 .score
                   i.fa.fa-diamond
                   span.number
-                    = assignment.project.credi:
+                    = assignment.project.credit
       .assignments-wrp.clear-fix#assignments-done
         - for assignment in @assignments_done
           .card data-assignment-id="#{assignment.id}" data-status="#{assignment.status}"
@@ -80,6 +92,7 @@ main role="main"
                       | 任务成功
                     - else
                       | 任务已过期
+                      i.fa.fa-exclamation-circle
               footer
                 .timer
                   p
@@ -91,10 +104,11 @@ main role="main"
                   span.number
                     | 10
       .load-more
-        p
-          - if @assignments_ing.try(:size) < 10
+        - if @assignments_ing.try(:size) < 10
+          p
             | 没有更多了
-          - else
+        - else
+          button.btn.btn-blue
             | 加载更多
 
 = render partial: 'shared/confirm_modal'

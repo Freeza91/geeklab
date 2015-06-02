@@ -77,6 +77,10 @@
       bottom: 0
       width: 100%
       padding: 7px 0
+      .fa
+        font-size: 18px
+        margin-left: 5px
+        vertical-align: middle
       p
         text-align: center
         color: #fff
@@ -88,6 +92,28 @@
       width: 100%
       height: 100%
       background-color: rgba(0, 0, 0, .5)
+
+    .comment
+      display: none
+      position: absolute
+      width: 220px
+      background-color: #fff
+      z-index: 10
+      box-shadow: 0 0 5px #ccc
+      > li
+        padding: 10px
+    .comment::before
+      position: absolute
+      top: 50%
+      right: 100%
+      margin-top: -10px
+      content: ''
+      display: block
+      width: 0
+      height: 0
+      border-top: 10px solid transparent
+      border-right: 10px solid #fff
+      border-bottom: 10px solid transparent
 
     // 不同状态的提示
     .status.status_wait_check
@@ -125,6 +151,15 @@
   cursor: pointer
   p
     text-align: center
+  .btn
+    background-color: #fff
+    width: 100%
+    height: 38px
+    line-height: 26px
+    color: #313131
+    box-shadow: 0 0 5px #ccc
+  .btn:hover
+    color: #313131
 
 // assignment detail modal
 #assignment-detail

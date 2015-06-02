@@ -39,7 +39,7 @@ $(function () {
       });
     }
   });
-  $('.load-more').on('click', function () {
+  $('.load-more').on('click', 'button', function () {
     page++;
     getAssignmentPaging(page, function (data) {
       appendAssignments(data.assignments);
@@ -474,8 +474,8 @@ $(function () {
         }
         if(data.assignments.length < 10) {
           $(window).unbind('scroll');
-          $('.load-more').unbind('click');
-          $('.load-more p').text('没有更多了');
+          $('.load-more').unbind('click').find('button').hide();
+          $('.load-more').append('<p>没有更多了</p>');
         }
       }
     })
@@ -582,15 +582,40 @@ $(function () {
     } 
   }
 
-
   // 播放视频按钮的hover事件
-  $('.assignments').on('mouseenter', '.video-play', function () {
-    $card = $(this).parents('.card');  
-    //$(this).css('z-index', 5);
-    $card.find('.inner-mask').show();
+  //$('.assignments').on('mouseenter', '.video-play', function () {
+    //$card = $(this).parents('.card');  
+    ////$(this).css('z-index', 5);
+    //$card.find('.inner-mask').show();
+  //});
+  //$('.assignments').on('mouseout', '.video-play', function () {
+    //$card.find('.inner-mask').hide();
+  //});
+
+  // 计算comment的位置
+  function caculateCommentPosition () {
+    var comments = $('.comment');
+    comments.each(function (index, comment) {
+      var $comment = $(comment),
+          $fa = $comment.parents('.status').find('.fa');
+      var faPosition = $fa.position();
+      var left = faPosition.left + 14 + 10 + 8,
+          topPosition = ($comment.height() / 2) - faPosition.top - 7;
+      $comment.css({
+        'top': '-' + topPosition + 'px',
+        'left': left + 'px'
+      });
+    });
+  }
+
+  caculateCommentPosition();
+
+  // 显示comment, 当鼠标移到状态栏图标上时
+  $('.assignments-wrp').on('mouseenter', '.status .fa', function (){
+    $(this).parents('.status').find('.comment').fadeIn();
   });
-  $('.assignments').on('mouseout', '.video-play', function () {
-    $card.find('.inner-mask').hide();
+  $('.assignments-wrp').on('mouseout', '.status .fa', function (){
+    $(this).parents('.status').find('.comment').fadeOut();
   });
 
   // 点击关闭或者查看过期任务后，关闭提示

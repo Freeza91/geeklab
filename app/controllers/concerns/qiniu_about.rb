@@ -65,14 +65,13 @@ module QiniuAbout
   end
 
   def callback_from_qiniu_video_images
-    tester = Tester.find_by(id: params[:tester_id])
-    if tester
+    if params[:code] == 0 && tester = Tester.find_by(id: params[:tester_id])
       if assignment = tester.assignments.find_by(id: params[:assignment_id])
         key = params[:items].first[:key]
         assignment.update_attribute(:is_sexy, true) if SoraAoi(key)
         code, result, response_headers = Qiniu::Storage.delete(
           'video-images',
-          URI.parse(assignment.try(:video).to_s).path.to_s[1..-1].to_s
+          key
         )
       end
     end
@@ -126,7 +125,8 @@ private
     Qiniu::Utils.urlsafe_base64_encode content
   end
 
-  def SoraAoi(image_url)
+  def SoraAoi(image)
+    image_url = "http://#{Settings.qiniu_video_images_domain}/" + image
     res = RestClient.get(image_url + '?nrop')
     body = JSON.parse res.body
     return true if body['code'] == 0 && body['fileList'].first['label'] == 0

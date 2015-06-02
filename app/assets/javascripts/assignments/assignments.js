@@ -100,7 +100,7 @@ $(function () {
               $card.find('.operator.wait-check').fadeIn();
               $card.find('.operator.uploading').fadeOut();
               // 显示状态，并将状态置为wait_check
-              $card.find('.status').fadeIn().find('p').text('等待审核').removeClass().addClass('status status_wait_check');
+              $card.find('.status').fadeIn().removeClass().addClass('status status_wait_check').find('p').text('等待审核');
               // 恢复上传进度圆环
               $card.find('.progressCircle .inner').css({
                 'transform': 'rotate(0)',
@@ -460,7 +460,6 @@ $(function () {
   // 倒计时初始化
   assignmentTimeCountDownInit();
 
-
   function getAssignmentPaging (page, callback) {
     var url = '/testers/' + testerId + '/assignments?page=' + page;
 
@@ -582,6 +581,17 @@ $(function () {
       break;
     } 
   }
+
+
+  // 播放视频按钮的hover事件
+  $('.assignments').on('mouseenter', '.video-play', function () {
+    $card = $(this).parents('.card');  
+    //$(this).css('z-index', 5);
+    $card.find('.inner-mask').show();
+  });
+  $('.assignments').on('mouseout', '.video-play', function () {
+    $card.find('.inner-mask').hide();
+  });
 
   // 点击关闭或者查看过期任务后，关闭提示
   $('.reminder-close').on('click', function () {

@@ -44,6 +44,7 @@ main role="main"
                 .status class=("status_" + "#{assignment.status}")
                   p
                     = get_status_info(assignment.status)
+                .inner-mask
               footer
                 .timer
                   p
@@ -54,7 +55,7 @@ main role="main"
                 .score
                   i.fa.fa-diamond
                   span.number
-                    | 10
+                    = assignment.project.credi:
       .assignments-wrp.clear-fix#assignments-done
         - for assignment in @assignments_done
           .card data-assignment-id="#{assignment.id}" data-status="#{assignment.status}"

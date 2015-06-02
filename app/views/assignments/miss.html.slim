@@ -33,10 +33,11 @@ main role="main"
                   span.number
                     | 10
       .load-more
-        p
-          - if @assignments.length < 10
+        - if @assignments_ing.try(:size) < 10
+          p
             | 没有更多了
-          - else
+        - else
+          button.btn.btn-blue
             | 加载更多
 
 = render partial: 'shared/confirm_modal'

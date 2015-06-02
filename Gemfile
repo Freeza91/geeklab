@@ -16,6 +16,7 @@ gem 'slim-rails'
 gem 'bcrypt'
 gem 'kaminari'
 
+gem 'rest-client'
 gem 'qiniu'
 gem 'carrierwave'
 gem 'carrierwave-qiniu'

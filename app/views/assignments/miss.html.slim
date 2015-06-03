@@ -33,7 +33,7 @@ main role="main"
                   span.number
                     | 10
       .load-more
-        - if @assignments_ing.try(:size) < 10
+        - if @assignments.try(:size) < 10
           p
             | 没有更多了
         - else

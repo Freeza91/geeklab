@@ -26,7 +26,7 @@ class Users::MailersController < ApplicationController
               'http://localhost:3000/users/passwords/callback_reset'
             end
       url += "?reset_password_token=#{user.reset_password_token}"
-      UserMailer.reset_password(user, url).deliver_later
+      UserMailer.reset_password(user.id, url).deliver_later
       json[:msg] = email_target email
 
       render json: json

@@ -2,9 +2,15 @@ class ErrorsController < ApplicationController
 
   def file_not_found
     from = [root_path, pms_path, testers_path]
-    path = URI.parse(request.referer || root_url).path
-    referer = from.include?(path) ? path : root_path
-    @path = referer
+    path = (URI.parse request.original_url).path
+
+    @path = if path.include?"testers"
+        testers_path
+      elsif path.include?"pms"
+        pms_path
+      else
+        root_path
+      end
     render 'errors/file_not_found'
   end
 

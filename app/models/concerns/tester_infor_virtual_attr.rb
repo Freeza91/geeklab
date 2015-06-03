@@ -3,7 +3,7 @@ require 'active_support/concern'
 module TesterInforVirtualAttr
   extend ActiveSupport::Concern
 
-  attr_accessor :age, :income_low, :income_high, :city_level
+  attr_reader :age, :income_arr, :city_level
 
   def age
     Time.now.year - Date.parse(birthday).year
@@ -15,6 +15,10 @@ module TesterInforVirtualAttr
 
   def income_high
     income.split('-').last.to_i
+  end
+
+  def income_arr
+    (income_low..income_high).to_a
   end
 
   def city_level

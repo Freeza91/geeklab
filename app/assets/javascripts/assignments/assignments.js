@@ -39,7 +39,7 @@ $(function () {
       });
     }
   });
-  $('.load-more').on('click', function () {
+  $('.load-more').on('click', 'button', function () {
     page++;
     getAssignmentPaging(page, function (data) {
       appendAssignments(data.assignments);
@@ -100,7 +100,7 @@ $(function () {
               $card.find('.operator.wait-check').fadeIn();
               $card.find('.operator.uploading').fadeOut();
               // 显示状态，并将状态置为wait_check
-              $card.find('.status').fadeIn().find('p').text('等待审核').removeClass().addClass('status status_wait_check');
+              $card.find('.status').fadeIn().removeClass().addClass('status status_wait_check').find('p').text('等待审核');
               // 恢复上传进度圆环
               $card.find('.progressCircle .inner').css({
                 'transform': 'rotate(0)',
@@ -460,7 +460,6 @@ $(function () {
   // 倒计时初始化
   assignmentTimeCountDownInit();
 
-
   function getAssignmentPaging (page, callback) {
     var url = '/testers/' + testerId + '/assignments?page=' + page;
 
@@ -475,8 +474,8 @@ $(function () {
         }
         if(data.assignments.length < 10) {
           $(window).unbind('scroll');
-          $('.load-more').unbind('click');
-          $('.load-more p').text('没有更多了');
+          $('.load-more').unbind('click').find('button').hide();
+          $('.load-more').append('<p>没有更多了</p>');
         }
       }
     })
@@ -582,6 +581,42 @@ $(function () {
       break;
     } 
   }
+
+  // 播放视频按钮的hover事件
+  //$('.assignments').on('mouseenter', '.video-play', function () {
+    //$card = $(this).parents('.card');  
+    ////$(this).css('z-index', 5);
+    //$card.find('.inner-mask').show();
+  //});
+  //$('.assignments').on('mouseout', '.video-play', function () {
+    //$card.find('.inner-mask').hide();
+  //});
+
+  // 计算comment的位置
+  function caculateCommentPosition () {
+    var comments = $('.comment');
+    comments.each(function (index, comment) {
+      var $comment = $(comment),
+          $fa = $comment.parents('.status').find('.fa');
+      var faPosition = $fa.position();
+      var left = faPosition.left + 14 + 10 + 8,
+          topPosition = ($comment.height() / 2) - faPosition.top - 7;
+      $comment.css({
+        'top': '-' + topPosition + 'px',
+        'left': left + 'px'
+      });
+    });
+  }
+
+  caculateCommentPosition();
+
+  // 显示comment, 当鼠标移到状态栏图标上时
+  $('.assignments-wrp').on('mouseenter', '.status .fa', function (){
+    $(this).parents('.status').find('.comment').fadeIn();
+  });
+  $('.assignments-wrp').on('mouseout', '.status .fa', function (){
+    $(this).parents('.status').find('.comment').fadeOut();
+  });
 
   // 点击关闭或者查看过期任务后，关闭提示
   $('.reminder-close').on('click', function () {

@@ -19,7 +19,7 @@ main role="main"
             a href="javascript: void(0)" data-target="#assignments-done"
               | 已完成
       .assignments-wrp.clear-fix.active#assignments-ing
-        - for assignment in @assignments_ing
+        -  @assignments_ing.each do |assignment|
           .card data-assignment-id="#{assignment.id}" data-status="#{assignment.status}"
             .inner
               header
@@ -53,10 +53,10 @@ main role="main"
                       /| comment2
                     /li
                       /| comment3
-                  ol
-                    - for comment in assignment.comment
-                      li
-                        = comment
+                  /ol
+                    /- for comment in assignment.comment
+                      /li
+                        /= comment
               footer
                 .timer
                   p
@@ -69,7 +69,7 @@ main role="main"
                   span.number
                     = assignment.project.credit
       .assignments-wrp.clear-fix#assignments-done
-        - for assignment in @assignments_done
+        - @assignments_done.each do |assignment|
           .card data-assignment-id="#{assignment.id}" data-status="#{assignment.status}"
             .inner
               header

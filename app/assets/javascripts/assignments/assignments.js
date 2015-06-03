@@ -24,6 +24,11 @@ $(function () {
 
   // 瀑布流加载，监听window滚动事件
   $(window).on('scroll', function () {
+    // 第一页数量小于10
+    if(!!$('.load-more p')){
+      $(window).unbind('scroll');
+      return false;
+    }
     // 页面高度
     var pageHeight = $(document).height();
     // 视窗高度
@@ -87,6 +92,9 @@ $(function () {
         $card.find('img').removeAttr('src');
 
         var filename = file.name
+
+        // 清空input的value, 使再次选中同一视频时还能触发change事件
+        $(this).val('');
 
         getUploadToken(testerId, assignmentId, filename, function (token) {
           if(token) {

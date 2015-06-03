@@ -11,7 +11,7 @@ main role="main"
   section.assignments-list.content-box data-tester-id="#{@current_user.to_tester.id}"
     .container
       .assignments-wrp.clear-fix
-        - for assignment in @assignments
+        - @assignments.each do |assignment|
           .card data-assignment-id="#{assignment.id}"
             .inner
               header
@@ -31,7 +31,7 @@ main role="main"
                 = render partial: 'assignments/operators/upload_failed'
               footer
                 .timer
-                   - unless Time.now + 50.years > assignment.project.expired_at
+                   - if Time.now + 50.years > assignment.project.expired_at
                     p
                       | 距离任务结束 
                       span.time data-deadline="#{assignment.project.expired_at}"
@@ -41,7 +41,7 @@ main role="main"
                   span.number
                     | 10
       .load-more
-        - if @assignments_ing.try(:size) < 10
+        - if @assignments.try(:size) < 10
           p
             | 没有更多了
         - else

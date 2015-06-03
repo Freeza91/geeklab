@@ -37,8 +37,11 @@
     margin-right: 20px
 .navbar-collapse
   padding-top: 10px
+
 // dropdown
 .nav.login
+  a
+    color: #313131
   > li
     > a:hover
       background-color: #fff
@@ -53,13 +56,15 @@
       text-align: center
       line-height: 34px
       font-size: 14px
-      color: #313131
       > .fa
         margin-right: 8px
     > li > a:hover
       background-color: #16a0c6
       color: #fff
-
+.nav.login:hover
+  .caret
+    transition: all .3s ease
+    transform: rotate(180deg)
 
 // 适配移动端
 @media(max-width: 992px)

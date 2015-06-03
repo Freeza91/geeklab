@@ -56,6 +56,7 @@
   header
     padding: 10px 15px
     .title
+      margin-top: 10px
       font-size: 20px
       font-weight: normal
       cursor: pointer
@@ -179,9 +180,10 @@
     border-radius: 0
   .qrcode
     position: absolute
-    top: 15px
-    right: 15px
-    padding: 10px
+    top: 16px
+    right: 16px
+    padding: 5px
+    background-color: #fff
     img
       width: 120px
       height: 120px
@@ -354,6 +356,16 @@
     .fa-play-circle-o:hover
       opacity: 1
 
+.operator.play
+  .icon-wrp
+    margin-top: 60px
+    .fa-play-circle-o
+      opacity: .5
+      color: #fff
+      cursor: pointer
+    .fa-play-circle-o:hover
+      opacity: 1
+
 // 不同状态洗的operator 切换
 .assignments_index
   .operator.uploading,
@@ -361,11 +373,11 @@
     display: none
 
 // 我参与的任务--operator
-.assignments_join
+#assignments-ing
   .operator
     display: none
-  #assignments-done
-    display: none
+#assignments-done
+  display: none
 
 // 我参与的任务页面的tab切换
 .assignments-subnav
@@ -390,6 +402,8 @@
         text-decoration: none
       > a.active
         background-color: #fff
+      > a:focus
+        text-decoration: none
     > li:first-child > a
       border-right: 1px solid #a0a0a0
       

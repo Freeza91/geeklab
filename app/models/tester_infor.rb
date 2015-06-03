@@ -10,6 +10,8 @@ class TesterInfor < ActiveRecord::Base
 
   belongs_to :tester, inverse_of: :tester_infors
 
+  include TesterInforVirtualAttr
+
   def to_json
     time = birthday.to_datetime
     {

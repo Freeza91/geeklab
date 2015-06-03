@@ -1,5 +1,7 @@
 class UserFeature < ActiveRecord::Base
 
-  include user_feature_virtual_attr
+  belongs_to :project, inverse_of: :project
+
+  include UserFeatureVirtualAttr
 
 end

@@ -24,6 +24,11 @@ $(function () {
 
   // 瀑布流加载，监听window滚动事件
   $(window).on('scroll', function () {
+    // 第一页数量小于10
+    if(!!$('.load-more p')){
+      $(window).unbind('scroll');
+      return false;
+    }
     // 页面高度
     var pageHeight = $(document).height();
     // 视窗高度

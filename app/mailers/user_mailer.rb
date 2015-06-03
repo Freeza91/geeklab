@@ -8,8 +8,10 @@ class UserMailer < ApplicationMailer
     render 'user_mailer/welcome', layout: false
   end
 
-  def reset_password(user, url)
+  def reset_password(user_id, url)
     @url = url
+    user = User.find_by(id: user_id)
+    return unless user
     @email = user.email
     sendgrid_category "Reset Password "
     mail to: user.email, subject: "重置密码"
@@ -32,11 +34,11 @@ class UserMailer < ApplicationMailer
     render 'user_mailer/novice_task_approved', layout: false
   end
 
-  def new_tasks_notice(email, content)
+  def new_task_notice(email, content)
     @email = email
     @content = content
     sendgrid_category "new task novice"
     mail to: email, subject: "新手任务到达通知"
-    render 'user_mailer/new_tasks_notice', layout: false
+    render 'user_mailer/new_task_notice', layout: false
   end
 end

@@ -93,6 +93,9 @@ $(function () {
 
         var filename = file.name
 
+        // 清空input的value, 使再次选中同一视频时还能触发change事件
+        $(this).val('');
+
         getUploadToken(testerId, assignmentId, filename, function (token) {
           if(token) {
             $card.find('.status').hide();

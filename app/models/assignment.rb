@@ -59,7 +59,7 @@ class Assignment < ActiveRecord::Base
       name = self.project.name
       email_to = self.tester.tester_infors.first.email_contract || email
       UserMailer.video_check_failed(email_to, name, task_url).deliver_later if status == "not_accept"
-      UserMailer.video_check_failed(email_to, name, task_url).deliver_later if status == "success"
+      UserMailer.video_check_success(email_to, name, task_url).deliver_later if status == "success"
     end
   end
 end

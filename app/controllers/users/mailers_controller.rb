@@ -38,17 +38,6 @@ class Users::MailersController < ApplicationController
     end
   end
 
-  def send_novice_task
-    json = { status: 0, code: 0 }
-    if current_user
-      tester_infor = current_user.to_tester.tester_infors.last
-      UserMailer.novice_task(tester_infor.try(:email_contract) || current_user.email).deliver_later
-      json[:code] = 1
-    end
-
-    render json: json
-  end
-
 private
 
   def generate_code

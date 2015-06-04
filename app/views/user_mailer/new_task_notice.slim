@@ -1,52 +1,32 @@
 table style='background-color: #eee; box-shadow: 0 0 7px #eeeeee; width: 100%; padding: 50px 0'
   tr
     td
-      table width="600" style="margin-left: auto; margin-right: auto; background-color: #fff; padding: 0 40px"
+      table width="600" style="margin-left: auto; margin-right: auto; background-color: #fff; padding: 15px 70px"
         thead
           tr style='text-align: center'
-            td style='padding-bottom: 20px; padding-top: 40px'
+            td style='padding-bottom: 30px; padding-top: 40px'
               img src=image_url('logo/logo.png') alt='极客实验室' title='极客实验室'
         tbody style='font-size: 14px'
           tr
-            td style='padding-bottom: 20px; font-size:16px'
+            td style='padding-bottom: 20px; font-size:14px'
               span
                 | 亲爱的
-                a href=('mailto:' + @email) style='font-size: 14px;
-                font-weight:bold; text-decoration:none; color: #17a0c6'
+                a href=('mailto:' + @email) style='font-size: 14px; font-weight:bold; text-decoration:none; color: #17a0c6'
                   = @email
                 | 用户
           tr
-            td style='padding-bottom: 20px; font-size: 16px; line-height: 24px'
+            td style='padding-bottom: 10px; font-size: 14px; line-height: 24px'
               span
                 | 新任务到达已发布到你的任务列表里，请打开下面的链接查看任务详情
           tr
-            td style='padding-bottom: 20px; font-size: 16px; line-height: 24px'
-              a href=@task_url
+            td style='padding-bottom: 10px; font-size: 14px; line-height: 24px'
+              a href=@task_url style='font-size: 14px; font-weight:bold; text-decoration:none; color: #17a0c6'
                = @task_url
           tr
-            td style='padding-bottom: 20px; font-size: 16px; line-height: 24px'
+            td style='padding-bottom: 20px; font-size: 14px; line-height: 24px'
               span
                 | 你需要将产品使用过程录制成视频，然后在任务列表中进行上传，我们会在一个工作日内给你反馈。
-          /tr
-            /td style='font-size: 16px; padding-bottom: 10px'
-              /span
-                /| 邮件请发送至
-                /a href='mailto:geeklab@geekpark.net' style='font-size: 14px;
-                /font-weight:bold; text-decoration:none; color: #17a0c6'
-                  /| geeklab@geekpark.net
-          /tfoot style='text-align: center'
-            /tr
-              /td style='padding-bottom: 10px; padding-top: 40px; font-size: 14px'
-                /span
-                  /| 此邮件由系统发出，不接受回信。
-            /tr
-              /td style='padding-bottom: 40px; font-size: 14px'
-                /span
-                  /| 如有任何疑问，请发邮件至
-                  /a href='mailto:geeklab@geekpark.net' style='font-weight:bold; text-decoration:none; color: #17a0c6'
-                    /| geeklab@geeklab.net
-                  /| 与我们联系
   tr
-    td style="text-align: center; padding-top: 30px; color: #888"
+    td style="text-align: center; padding-top: 30px; color: #888; font-size: 14px"
       span
         | Copyright &copy 2015 北京中明万长管理咨询有限公司

@@ -1,37 +1,29 @@
-table width='600' style='color: #313131; box-shadow: 0 0 7px #eeeeee'
-  thead
-    tr style='text-align: center'
-      td style='padding-bottom: 20px; padding-top: 40px'
-        img src=image_url('logo/logo.png') alt='极客实验室' title='极客实验室'
-  tbody style='font-size: 14px'
-    tr
-      td style='padding-bottom: 20px; font-size:16px'
-        span
-          | 亲爱的
-          a href=('mailto:' + @email) style='font-size: 14px;
-          font-weight:bold; text-decoration:none; color: #17a0c6'
-            = @email
-          | 用户
-    tr
-      td style='padding-bottom: 20px; font-size: 16px; line-height: 24px'
-        span
-          | 你得新手任务已经被我们人工审核通过，您可以完成新手任务！！
-    tr
-      td style='font-size: 16px; padding-bottom: 10px'
-        span
-          | 邮件请发送至
-          a href='mailto:geeklab@geekpark.net' style='font-size: 14px;
-          font-weight:bold; text-decoration:none; color: #17a0c6'
-            | geeklab@geekpark.net
-    tfoot style='text-align: center'
-      tr
-        td style='padding-bottom: 10px; padding-top: 40px; font-size: 14px'
-          span
-            | 此邮件由系统发出，不接受回信。
-      tr
-        td style='padding-bottom: 40px; font-size: 14px'
-          span
-            | 如有任何疑问，请发邮件至
-            a href='mailto:geeklab@geekpark.net' style='font-weight:bold; text-decoration:none; color: #17a0c6'
-              | geeklab@geeklab.net
-            | 与我们联系
+table style='background-color: #eee; box-shadow: 0 0 7px #eeeeee; width: 100%; padding: 50px 0'
+  tr
+    td
+      table width="600" style="margin-left: auto; margin-right: auto; background-color: #fff; padding: 15px 70px"
+        thead
+          tr style='text-align: center'
+            td style='padding-bottom: 20px; padding-top: 40px'
+              img src=image_url('logo/logo.png') alt='极客实验室' title='极客实验室'
+        tbody style='font-size: 14px'
+          tr
+            td style='padding-bottom: 20px; font-size:14px'
+              span
+                | 亲爱的
+                a href=('mailto:' + @email) style='font-size: 14px;
+                font-weight:bold; text-decoration:none; color: #17a0c6'
+                  = @email
+                | 用户
+          tr
+            td style='padding-bottom: 20px; font-size: 14px; line-height: 24px'
+              span
+                | 你得xxx任务的测试视频已通过审核！
+          tr
+            td style='font-size: 14px; padding-bottom: 10px'
+              a href="javascript:void(0)" style='font-size: 14px; font-weight:bold; text-decoration:none; color: #17a0c6'
+                | 链接
+  tr
+    td style="text-align: center; padding-top: 30px; color: #888; font-size: 14px"
+      span
+        | Copyright &copy 2015 北京中明万长管理咨询有限公司

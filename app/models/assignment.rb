@@ -12,6 +12,8 @@ class Assignment < ActiveRecord::Base
   belongs_to :tester,  inverse_of: :assignments
   belongs_to :project, inverse_of: :assignments
 
+  after_update :video_notice_to_tester
+
   class << self
 
     def take_part_ing
@@ -48,5 +50,13 @@ class Assignment < ActiveRecord::Base
       id: id,
       project: self.project
     }
+  end
+
+
+  def video_notice_to_tester
+    if status == 'not_accept'
+      task_url = "#{Settings.domain}/testers/#{tester_id}/assignments/join"
+      UserMailer.video_check_failed(self.tester.email, task_url).deliver_later
+    end
   end
 end

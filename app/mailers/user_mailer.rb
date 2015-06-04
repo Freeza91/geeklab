@@ -41,4 +41,13 @@ class UserMailer < ApplicationMailer
     mail to: email, subject: "新手任务到达通知"
     render 'user_mailer/new_task_notice', layout: false
   end
+
+  def video_check_failed(email, task_url)
+    @email = email
+    @task_url = task_url
+    sendgrid_category "video checke failed"
+    mail to: email, subject: '视频审核未通过'
+    render 'user_mailer/video_check_failed', layout: false
+  end
+
 end

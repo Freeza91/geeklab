@@ -20,5 +20,10 @@ if Rails.env.development?
       task_url = "#{Settings.domain}/testers/1/assignments"
       UserMailer.new_task_notice('rudy@geekpark.net', task_url)
     end
+
+    def video_check_failed
+      task_url = "#{Settings.domain}/testers/1/assignments/join"
+      UserMailer.video_check_failed('rudy@geekpark.net', task_url)
+    end
   end
 end

@@ -1,6 +1,11 @@
 class RailsAdminPgIntArray < RailsAdmin::Config::Fields::Base
   register_instance_option :formatted_value do
-    value.join(',')
+    if value.nil?
+      value
+    else
+      value.join(',')
+    end
+
   end
 
   def parse_input(params)

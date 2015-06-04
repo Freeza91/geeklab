@@ -102,7 +102,7 @@ ActiveRecord::Schema.define(version: 20150603065837) do
     t.datetime "reset_password_sent_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "last_view_time",         default: '2015-05-21 11:37:35'
+    t.datetime "last_view_time",         default: '2015-05-26 13:43:52'
   end
 
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", unique: true, using: :btree

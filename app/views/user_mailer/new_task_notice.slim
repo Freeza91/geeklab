@@ -17,7 +17,9 @@ table style='background-color: #eee; box-shadow: 0 0 7px #eeeeee; width: 100%; p
           tr
             td style='padding-bottom: 10px; font-size: 14px; line-height: 24px'
               span
-                | 新任务到达已发布到你的任务列表里，请打开下面的链接查看任务详情
+                | 新任务"
+                = @name
+                | "已发布到你的任务列表里，请打开下面的链接查看任务详情
           tr
             td style='padding-bottom: 10px; font-size: 14px; line-height: 24px'
               a href=@task_url style='font-size: 14px; font-weight:bold; text-decoration:none; color: #17a0c6'

@@ -17,8 +17,8 @@ if Rails.env.development?
     end
 
     def new_task_notice
-      url = "http://#{Settings.domain}/testers/1/assignments"
-      UserMailer.new_task_notice('rudy@geekpark.net', url)
+      task_url = "#{Settings.domain}/testers/1/assignments"
+      UserMailer.new_task_notice('rudy@geekpark.net', task_url)
     end
   end
 end

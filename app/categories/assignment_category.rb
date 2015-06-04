@@ -10,7 +10,7 @@ class AssignmentCategory
         # send assignment
         Assignment.create(tester_id: infor.tester_id, project_id: project.id, status: 'new')
         # deliver email to tester
-        url = "http://#{Settings.domain}/testers/#{infor.tester_id}/assignments"
+        url = "#{Settings.domain}/testers/#{infor.tester_id}/assignments"
         UserMailer.new_task_notice(infor.tester.email, url).deliver_later
       end
     end

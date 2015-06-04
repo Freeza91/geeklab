@@ -46,7 +46,7 @@ main role="main"
                     = get_status_info(assignment.status)
                     - if assignment.status == "not_accept"
                       i.fa.fa-exclamation-circle
-                  - if assignment.comment
+                  - if assignments.status == "not_accept" && assignment.comment
                     ol.comment
                       - assignment.comment.each do |comment|
                         li

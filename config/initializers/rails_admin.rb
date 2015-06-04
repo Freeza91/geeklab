@@ -68,4 +68,17 @@ RailsAdmin.config do |config|
       field :approved
     end
   end
+
+  config.model "Assignment" do
+    edit do
+      field :project_id
+      field :tester_id
+      field :status
+      field :video
+      field :is_transfer
+      field :is_sexy
+      field :comment, :pg_int_array
+    end
+  end
+
 end

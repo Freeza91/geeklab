@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   end
 
   resources :pms
+  resources :projects
 
   resources :testers do
     resources :assignments do

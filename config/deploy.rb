@@ -17,7 +17,7 @@ when 'stg'
   set :branch, 'master'
 else
   set :domain, '119.254.101.120'
-  set :branch, 'master'
+  set :branch, 'develop'
 end
 
 p "将要部署到：#{branch}"
@@ -93,7 +93,7 @@ namespace :unicorn do
   desc "Start Unicorn"
   task start: :environment do
     queue 'echo "-----> Start Unicorn"'
-    if branch == 'master'
+    if branch == 'master' || branch == 'develop'
       queue! %{
         cd #{app_path}
         bundle exec unicorn_rails -E production -c config/unicorn_master.rb -D

@@ -1,7 +1,7 @@
 header.header.navbar.navbar-static.clear-fix
   .container
     .navbar-header
-      - if controller_name == 'testers'
+      - if controller_name == 'testers' || controller_name == "assignments"
         a.top-logo href=testers_path
           img src=image_path('logo/logo.png')
       - else
@@ -28,12 +28,23 @@ header.header.navbar.navbar-static.clear-fix
       - if controller_name != "errors"
         - if current_user
           ul.nav.navbar-nav.login
+            - if  controller_name == 'testers' || controller_name == 'assignments' || controller_name == "stores"
+              li
+                a.score href="javascript:void(0)"
+                  | 我的积分
+                  i.fa.fa-diamond
+                  = current_user.to_tester.credits
+              li
+                a href="javascript:void(0)"
+                  span.tester-mark class=(current_user.approved ? 'active' : '')
+                    i.fa.fa-street-view
+                    | 体验师
             li.dropdown
               a role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'
                 =current_user.email
                 span.caret
               ul.dropdown-menu role='menu'
-                - if  controller_name == 'testers'
+                - if  controller_name == 'testers' || controller_name == 'assignments' || controller_name == "stores"
                   li
                     - if current_user.to_tester.try(:tester_infors).blank?
                       a href='/testers/new'
@@ -43,6 +54,16 @@ header.header.navbar.navbar-static.clear-fix
                       a href=edit_tester_path(current_user.id)
                         i.fa.fa-user
                         | 个人信息
+                  // 完成个人信息后显示任务列表 
+                  - if !current_user.to_tester.try(:tester_infors).blank?
+                    li
+                      a href=tester_assignments_path(current_user.id)
+                        i.fa.fa-th-large
+                        | 任务列表
+                  li
+                    a href=stores_path
+                      i.fa.fa-diamond
+                      | 积分商城
                 li
                   a rel="noflow" data-method="delete" href=users_session_path(current_user.id)
                     i.fa.fa-power-off

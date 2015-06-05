@@ -11,7 +11,10 @@ main role='main'
               | 成为体验师
           - else
             a.btn.btn-blue href=tester_assignments_path(current_user.id)
-              | 体验产品
+              - if current_user.approved
+                | 体验产品
+              - else
+                | 成为体验师
             /button.btn.btn-blue.temp data-approved="#{current_user.approved}"
               /- if current_user.approved
                 /| 体验产品

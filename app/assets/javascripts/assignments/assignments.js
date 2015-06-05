@@ -19,10 +19,15 @@ $(function () {
   var $card; // 当前执行操作的任务卡片
   var page = 1 //分页获取任务列表
   var $curVideo; // 当前正在播放的video
-
+  var uploadAjax; //正在进行上传视频的ajax对象
 
   // 瀑布流加载，监听window滚动事件
   $(window).on('scroll', function () {
+    // 第一页数量小于10
+    if(!!$('.load-more p')){
+      $(window).unbind('scroll');
+      return false;
+    }
     // 页面高度
     var pageHeight = $(document).height();
     // 视窗高度
@@ -38,29 +43,47 @@ $(function () {
       });
     }
   });
-  $('.load-more').on('click', function () {
+  $('.load-more').on('click', 'button', function () {
     page++;
     getAssignmentPaging(page, function (data) {
       appendAssignments(data.assignments);
     });
   });
 
-  // 上传视频表单的submit事件处理
-  // 获取token
-  // 上传视频
-  $('#upload-form').on('submit', function(event) {
-    // 阻止默认事件
-    event.stopPropagation();
-    event.preventDefault(); 
 
-    var $form = $(event.target);
-    var file = $form.find('[type="file"]')[0].files[0];
+  // 点击任务标题显示任务说明
+  //$('[action="getAssignmentDetail"]').on('click', function () {
+  $('.assignments-wrp').on('click', '[action="getAssignmentDetail"]', function () {
+    var $this = $(this);
+    var assignmentId = $this.parents('.card').data('assignmentId');
+    getAssignmentDetail(testerId, assignmentId, function (data) {
+      showAssignmentDetail(data.project);
+    });
+  });
 
+  // 上传视频按钮的click事件处理函数
+  $('.assignments-wrp').on('click', '.video-upload',  function () {
+    var $this = $(this);
+    // 设置当前操作的卡片
+    $card = $this.parents('.card');
+    assignmentId = $card.data('assignmentId');
+
+    //$('#video-upload').modal();
+    $('#video').click();
+  });
+
+  // 取消上传 
+  $('.assignments-wrp').on('click', '.upload-cancel', function () {
+    uploadAjax.abort();
+    $card.find('.operator.uploading').hide();
+    $card.find('.operator.wait-upload').fadeIn();
+  });
+  // 开始上传视频
+  $('#video').on('change', function () {
+    var file = $(this)[0].files[0];
     if(file) {
       // 判断所选文件的类型是否为video
       if(file.type.split('/')[0] === 'video') {
-        // 关闭模态框
-        $('#video-upload').modal('hide');
         // 切换operator
         $card.find('.operator').fadeOut();
         $card.find('.operator.uploading').fadeIn();
@@ -68,6 +91,9 @@ $(function () {
         $card.find('img').removeAttr('src');
 
         var filename = file.name
+
+        // 清空input的value, 使再次选中同一视频时还能触发change事件
+        $(this).val('');
 
         getUploadToken(testerId, assignmentId, filename, function (token) {
           if(token) {
@@ -80,6 +106,17 @@ $(function () {
               // 切换operator
               $card.find('.operator.wait-check').fadeIn();
               $card.find('.operator.uploading').fadeOut();
+              // 显示状态，并将状态置为wait_check
+              $card.find('.status').fadeIn().removeClass().addClass('status status_wait_check').find('p').text('等待审核');
+              // 恢复上传进度圆环
+              $card.find('.progressCircle .inner').css({
+                'transform': 'rotate(0)',
+                '-o-transform': 'rotate(0)',
+                '-moz-transform': 'rotate(0)',
+                '-webkit-transform': 'rotate(0)'
+              });
+              // 清除上传input框的值
+              delete $(this)[0].files;
               // 上传成功后跳转至正在进行中的任务页面
               if(location.pathname.split('/').pop() === 'assignments') {
                 location.href = '/testers/' + testerId + '/assignments/join';
@@ -93,27 +130,6 @@ $(function () {
     } else {
       $form.find('.help-block').text('请选择要上传的视频');
     }
-  });
-
-  // 点击任务标题显示任务说明
-  //$('[action="getAssignmentDetail"]').on('click', function () {
-  $('.assignments-wrp').on('click', '[action="getAssignmentDetail"]', function () {
-    var $this = $(this);
-    var assignmentId = $this.parents('.card').data('assignmentId');
-    getAssignmentDetail(testerId, assignmentId, function (data) {
-      showAssignmentDetail(data.project);
-      console.log(data);
-    });
-  });
-
-  // 上传视频按钮的click事件处理函数
-  $('.assignments-wrp').on('click', '.video-upload',  function () {
-    var $this = $(this);
-    // 设置当前操作的卡片
-    $card = $this.parents('.card');
-    assignmentId = $card.data('assignmentId');
-
-    $('#video-upload').modal();
   });
 
   // 删除任务按钮的click事件处理函数
@@ -181,7 +197,7 @@ $(function () {
     formData.append('file', file);
     formData.append('accept', 'application/json');
     // ajax上传
-    $.ajax({
+    uploadAjax = $.ajax({
       url: 'http://upload.qiniu.com',
       method: 'post',
       data: formData,
@@ -206,9 +222,13 @@ $(function () {
       }
     })
     .error(function(errors, status) {
-      console.log(errors);
-      $card.find('.operator.uploading').hide();
-      $card.find('.operator.upload-failed').fadeIn();
+      // 上传取消时，不显示上传失败
+      if(status === 'abort') {
+        return false;
+      } else {
+        $card.find('.operator.uploading').hide();
+        $card.find('.operator.upload-failed').fadeIn();
+      }
     });
   }
 
@@ -376,7 +396,6 @@ $(function () {
   }
 
   function showAssignmentDetail (assignmentDetail) {
-    console.log(assignmentDetail);
     var $modal = $('#assignment-detail');
     // 填信息
     $modal.find('.title .name').text(assignmentDetail.name);
@@ -448,7 +467,6 @@ $(function () {
   // 倒计时初始化
   assignmentTimeCountDownInit();
 
-
   function getAssignmentPaging (page, callback) {
     var url = '/testers/' + testerId + '/assignments?page=' + page;
 
@@ -460,10 +478,11 @@ $(function () {
       if(data.status === 0 && data.code === 1) {
         if(data.assignments.length !== 0) {
           callback(data);
-        } else {
+        }
+        if(data.assignments.length < 10) {
           $(window).unbind('scroll');
-          $('.load-more').unbind('click');
-          $('.load-more p').text('没有更多了');
+          $('.load-more').unbind('click').find('button').hide();
+          $('.load-more').append('<p>没有更多了</p>');
         }
       }
     })
@@ -569,6 +588,42 @@ $(function () {
       break;
     } 
   }
+
+  // 播放视频按钮的hover事件
+  //$('.assignments').on('mouseenter', '.video-play', function () {
+    //$card = $(this).parents('.card');  
+    ////$(this).css('z-index', 5);
+    //$card.find('.inner-mask').show();
+  //});
+  //$('.assignments').on('mouseout', '.video-play', function () {
+    //$card.find('.inner-mask').hide();
+  //});
+
+  // 计算comment的位置
+  function caculateCommentPosition () {
+    var comments = $('.comment');
+    comments.each(function (index, comment) {
+      var $comment = $(comment),
+          $fa = $comment.parents('.status').find('.fa');
+      var faPosition = $fa.position();
+      var left = faPosition.left + 14 + 10 + 8,
+          topPosition = ($comment.height() / 2) - faPosition.top - 7;
+      $comment.css({
+        'top': '-' + topPosition + 'px',
+        'left': left + 'px'
+      });
+    });
+  }
+
+  caculateCommentPosition();
+
+  // 显示comment, 当鼠标移到状态栏图标上时
+  $('.assignments-wrp').on('mouseenter', '.status .fa', function (){
+    $(this).parents('.status').find('.comment').fadeIn();
+  });
+  $('.assignments-wrp').on('mouseout', '.status .fa', function (){
+    $(this).parents('.status').find('.comment').fadeOut();
+  });
 
   // 点击关闭或者查看过期任务后，关闭提示
   $('.reminder-close').on('click', function () {

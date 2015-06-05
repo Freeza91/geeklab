@@ -8,8 +8,10 @@ class UserMailer < ApplicationMailer
     render 'user_mailer/welcome', layout: false
   end
 
-  def reset_password(user, url)
+  def reset_password(user_id, url)
     @url = url
+    user = User.find_by(id: user_id)
+    return unless user
     @email = user.email
     sendgrid_category "Reset Password "
     mail to: user.email, subject: "重置密码"
@@ -17,26 +19,44 @@ class UserMailer < ApplicationMailer
     render 'user_mailer/reset_password', layout: false
   end
 
-  def novice_task(email)
-    attachments['新手任务.pdf'] = File.read("#{Rails.root.to_s}/public/新手任务.pdf")
+  def new_task_notice(email, name, task_url)
     @email = email
-    sendgrid_category "novice task send"
-    mail to: email, subject: "新手任务"
-    render 'user_mailer/novice_task', layout: false
+    @name = name
+    @task_url = task_url
+
+    sendgrid_category "new task novice"
+    mail to: email, subject: "新手任务到达通知"
+    render 'user_mailer/new_task_notice', layout: false
   end
 
-  def novice_task_approved(email)
+  def novice_task_approved(email, title, task_url)
     @email = email
+    @title = title
+    @task_url = task_url
+
     sendgrid_category "novice task approved send"
     mail to: email, subject: "新手任务通过通知"
     render 'user_mailer/novice_task_approved', layout: false
   end
 
-  def new_tasks_notice(email, content)
+  def video_check_failed(email, name, task_url)
     @email = email
-    @content = content
-    sendgrid_category "new task novice"
-    mail to: email, subject: "新手任务到达通知"
-    render 'user_mailer/new_tasks_notice', layout: false
+    @name = name
+    @task_url = task_url
+
+    sendgrid_category "video check failed"
+    mail to: email, subject: '视频审核未通过'
+    render 'user_mailer/video_check_failed', layout: false
   end
+
+  def video_check_success(email, name, task_url)
+    @email = email
+    @name = name
+    @task_url = task_url
+
+    sendgrid_category "video check success"
+    mail to: email, subject: '视频审核通过'
+    render 'user_mailer/video_check_success', layout: false
+  end
+
 end

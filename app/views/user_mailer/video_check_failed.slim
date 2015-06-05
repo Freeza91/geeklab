@@ -18,7 +18,9 @@ table style='background-color: #eee; box-shadow: 0 0 7px #eeeeee; width: 100%; p
           tr
             td style='padding-bottom: 20px; font-size: 14px; line-height: 24px'
               span
-                | 你的xxx任务视频审核未通过，请重新上传视频。
+                | 你的"
+                = @name
+                | "视频审核未通过，请重新上传视频。
           tr
             td style='padding-bottom: 20px; font-size: 14px; line-height: 24px'
               a href=@task_url style='font-size: 14px; font-weight:bold; text-decoration:none; color: #17a0c6'

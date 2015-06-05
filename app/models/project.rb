@@ -6,7 +6,10 @@ class Project < ActiveRecord::Base
 
   has_many :assignments,  inverse_of: :project
   has_many :tasks,        inverse_of: :project
-  has_one  :user_feature, inverse_of: :project
+  has_one  :user_feature
+
+  accepts_nested_attributes_for :tasks, allow_destroy: true
+  accepts_nested_attributes_for :user_feature, allow_destroy: true
 
   def to_json_with_tasks
     {

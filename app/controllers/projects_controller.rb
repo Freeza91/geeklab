@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
 
-  before_action :require_login?, except: :index
+  before_action :require_login?
   before_action :is_pm?
 
   def index
@@ -10,9 +10,21 @@ class ProjectsController < ApplicationController
   end
 
   def new
+    @project = Project.new
+    @task = @project.tasks.build
+    @user_feature = @project.build_user_feature
   end
 
   def create
+    project = Project.new(project_params)
+    if project.save
+      p project.tasks
+      p project.user_feature
+    else
+      p project.errors.full_messages
+    end
+
+    render :show
   end
 
   def destroy
@@ -21,6 +33,9 @@ class ProjectsController < ApplicationController
 private
 
   def project_params
+    params.require(:project).permit(:name,
+                                    tasks_attributes: [:content],
+                                    user_feature_attributes: [:sex])
   end
 
   def is_pm?

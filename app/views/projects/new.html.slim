@@ -1,2 +1,12 @@
-h1 Projects#new
-p Find me in app/views/projects/new.html.slim
+= form_for @project do |f|
+  = f.text_field :name
+  = f.fields_for :tasks do |task_form|
+    = task_form.text_field :content
+
+  = f.fields_for :tasks do |task_form|
+    = task_form.text_field :content
+
+  = f.fields_for :user_feature do |user_feature_form|
+    = user_feature_form.text_field :sex
+  div
+    = f.submit 'tijiao', class: 'btn btn-primary'

@@ -21,9 +21,9 @@ class Users::MailersController < ApplicationController
       user.save(validate: false)
 
       url = if Rails.env.production?
-              'http://50.116.16.150/users/passwords/callback_reset'
+              "http://#{Settings.domain}/users/passwords/callback_reset"
             else Rails.env.development? || Rails.env.test?
-              'http://localhost:3000/users/passwords/callback_reset'
+              "http://localhost:3000/users/passwords/callback_reset"
             end
       url += "?reset_password_token=#{user.reset_password_token}"
       UserMailer.reset_password(user.id, url).deliver_later

@@ -35,6 +35,9 @@ gem 'newrelic_rpm'
 
 gem 'rails_admin', :git => 'git://github.com/sferik/rails_admin.git'
 
+# vue.js
+gem 'vuejs-rails'
+
 group :development, :test do
   gem 'byebug'
   gem 'pry'

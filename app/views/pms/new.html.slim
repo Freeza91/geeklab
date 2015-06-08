@@ -1,3 +1,62 @@
 section.content-box
-  .container
-    div 这里可以填写pm的表单
+    .project 
+      .top.clear-fix
+        .container
+          a href="javascript: void(0)"
+            | 选择测试方式
+          .form-nav.place-right
+            ul
+              li
+                a.active href="javascript: void(0)"
+                  | 1
+              li
+                a href="javascript: void(0)"
+                  | 2
+              li
+                a href="javascript: void(0)"
+                  | 3
+              li
+                a href="javascript: void(0)"
+                  | 4
+      .title
+        .container
+          input type="text" name="name"
+      .container
+        .form
+          form
+            .panel.panel-default
+              .panel-heading
+                | 选择测试平台
+              .panel-body
+                label.radio-inline
+                  input type="radio" name="platform" value="android" v-model="platform"
+                  i.fa.fa-android.fa-5x
+                label.radio-inline
+                  input type="radio" name="platform" value="ios" v-model="platform"
+                  i.fa.fa-apple.fa-5x
+            .panel.panel-default
+              .panel-heading
+                | 用户系统要求
+              .panel-body
+                #sys-slider
+            .panel.panel-default
+              .panel-heading
+                | 用户应该使用什么设备
+              .panel-body
+                label.radio-inline
+                  input type="radio" name="device" value="tablet" v-model="device"
+                  i.fa.fa-tablet.fa-5x
+                label.radio-inline
+                  input type="radio" name="device" value="phone" v-model="device"
+                  i.fa.fa-mobile.fa-5x
+            .panel.panel-default
+              .panel-heading
+                | 产品简介
+              .panel-body
+                textarea
+            .panel.panel-default
+              .panel-heading
+                | 应用下载二维码
+              .panel-body
+    .getvalue.btn.btn-blue
+      | get value

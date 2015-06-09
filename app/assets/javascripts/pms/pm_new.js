@@ -23,7 +23,6 @@ $(function () {
     connect: 'upper'
   });
   //$('#slider').Link('lower').to($('.lower'));
-  //$('#slider').Link('upper').to($('.upper'));
   
   var vm = new Vue({
     el: '.form',

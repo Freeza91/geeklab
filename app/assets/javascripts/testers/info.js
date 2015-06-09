@@ -162,19 +162,6 @@ $(function () {
       {'p': '博士'}
     ]
   };
-  var incomeData = {
-    'citylist': [
-      {'p': '2万以下'},
-      {'p': '2-5万'},
-      {'p': '5-8万'},
-      {'p': '8-10万'},
-      {'p': '10-15万'},
-      {'p': '15-30万'},
-      {'p': '30-50万'},
-      {'p': '50-100万'},
-      {'p': '100万以上'},
-    ]
-  };
   $('#emotion').citySelect({
     url: emotionData,
     nodata: 'none',
@@ -187,11 +174,6 @@ $(function () {
   });
   $('#education').citySelect({
     url: educationData,
-    nodata: 'none',
-    required: false
-  });
-  $('#income').citySelect({
-    url: incomeData,
     nodata: 'none',
     required: false
   });
@@ -275,9 +257,7 @@ $(function () {
     })
     .done(function (data, status, xhr) {
       if(data.status === 0 && data.code === 1) {
-        var $modal = $('#info-modal');
-        $modal.find('.title').text('个人信息已保存');
-        $modal.find('.content').text('新手任务已发送至你的邮箱，完成任务即可成为体验师');
+        var $modal = $('#form-finish');
         $modal.on('hide.bs.modal', function () {
           location.href = '/testers';
         });
@@ -333,4 +313,12 @@ $(function () {
     })
   }
   verticalMiddleTitle();
+
+  function showHint () {
+      var $modal = $('#info-modal');
+      $modal.find('.title').text('成为体验师，需要先完成个人信息。');
+      //$modal.find('.content').text('成为体验师，需要先完成个人信息。');
+      $modal.modal();
+  }
+  showHint();
 });

@@ -28,12 +28,13 @@ header.header.navbar.navbar-static.clear-fix
       - if controller_name != "errors"
         - if current_user
           ul.nav.navbar-nav.login
-            - if  controller_name == 'testers' || controller_name == 'assignments' || controller_name == "stores"
+            - if controller_name == "stores"
               li
                 a.score href="javascript:void(0)"
                   | 我的积分
                   i.fa.fa-diamond
-                  = current_user.to_tester.credits
+                  = current_user.to_tester.credits.to_i 
+            - if  controller_name == 'testers' || controller_name == 'assignments' || controller_name == "stores"
               li
                 a href="javascript:void(0)"
                   span.tester-mark class=(current_user.approved ? 'active' : '')
@@ -44,7 +45,7 @@ header.header.navbar.navbar-static.clear-fix
                 =current_user.email
                 span.caret
               ul.dropdown-menu role='menu'
-                - if  controller_name == 'testers' || controller_name == 'assignments' || controller_name == "stores"
+                - if  controller_name == 'testers' || controller_name == 'assignments'
                   li
                     - if current_user.to_tester.try(:tester_infors).blank?
                       a href='/testers/new'
@@ -61,7 +62,7 @@ header.header.navbar.navbar-static.clear-fix
                         i.fa.fa-th-large
                         | 任务列表
                   li
-                    a href=stores_path
+                    a href=stores_path target="_blank"
                       i.fa.fa-diamond
                       | 积分商城
                 li

@@ -16,9 +16,14 @@
 
 // 引入 cityselect
 //= require jquery.cityselect
-
 // 引入 dateselect
 //= require jquery.dateselect
+
+// import vue
+//= require vue
+
+// 引入noUiSlider, a range slider plugin
+//= require jquery.nouislider
 
 // 引入 表单验证
 //= require form.valid

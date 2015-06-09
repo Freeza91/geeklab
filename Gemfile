@@ -20,6 +20,7 @@ gem 'rest-client'
 gem 'qiniu'
 gem 'carrierwave'
 gem 'carrierwave-qiniu'
+gem 'mini_magick'
 
 gem 'sendgrid'
 gem 'redis'

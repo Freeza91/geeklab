@@ -8,5 +8,7 @@
 
   = f.fields_for :user_feature do |user_feature_form|
     = user_feature_form.text_field :sex
+
+  = f.file_field :qr_code
   div
     = f.submit 'tijiao', class: 'btn btn-primary'

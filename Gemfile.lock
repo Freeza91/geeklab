@@ -161,6 +161,7 @@ GEM
       rake
     mina-sidekiq (0.3.1)
       mina
+    mini_magick (4.2.1)
     mini_portile (0.6.2)
     minitest (5.6.1)
     multi_json (1.11.0)
@@ -325,6 +326,7 @@ DEPENDENCIES
   meta_request
   mina
   mina-sidekiq
+  mini_magick
   newrelic_rpm
   pg
   pry

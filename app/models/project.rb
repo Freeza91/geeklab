@@ -11,6 +11,8 @@ class Project < ActiveRecord::Base
   accepts_nested_attributes_for :tasks, allow_destroy: true
   accepts_nested_attributes_for :user_feature, allow_destroy: true
 
+  mount_uploader :qr_code, QrCodeUploader
+
   def to_json_with_tasks
     {
       name: name,

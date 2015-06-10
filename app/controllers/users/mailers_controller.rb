@@ -21,7 +21,7 @@ class Users::MailersController < ApplicationController
       user.save(validate: false)
 
       url = if Rails.env.production?
-              "http://#{Settings.domain}/users/passwords/callback_reset"
+              "#{Settings.domain}/users/passwords/callback_reset"
             else Rails.env.development? || Rails.env.test?
               "http://localhost:3000/users/passwords/callback_reset"
             end

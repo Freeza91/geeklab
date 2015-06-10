@@ -1,0 +1,201 @@
+section.content-box
+    .project 
+      .top.clear-fix
+        .container
+          a href="javascript: void(0)"
+            | 选择测试方式
+          .form-pagination.place-right
+            ul
+              li
+                a.active href="javascript: void(0)"
+                  | 1
+              li
+                a href="javascript: void(0)"
+                  | 2
+              li
+                a href="javascript: void(0)"
+                  | 3
+              li
+                a href="javascript: void(0)"
+                  | 4
+      .title
+        .container
+          i.fa.fa-pencil
+          input type="text" name="name" maxlength="15" placeholder="请输入测试任务标题..."
+          span
+            |还可以输入
+          span
+            | 20
+          span
+            | 字
+      .container
+        .form
+          form
+            // web
+            .panel.panel-default
+              .panel-heading
+                | 测试网址
+              .panel-body
+                .form-group
+                  input.form-control type="text" maxlength="15" v-model="website"
+                p.js-len-control
+                  | 还可以输入
+                  span.js-len-count 15
+                  | 字
+            .panel.panel-default
+              .panel-heading
+                | 产品简介
+              .panel-body
+                .form-group
+                  input.form-control type="text" maxlength="15" v-model="introduction"
+                p.js-len-control
+                  | 还可以输入
+                  span.js-len-count 15
+                  | 字
+            // target user
+            .panel.panel-default
+              .panel-heading
+                | 测试用户个数
+              .panel-body
+                #slider-user 
+            .panel.panel-default
+              .panel-heading
+                | 年龄范围
+              .panel-body
+                #slider-age 
+            .panel.panel-default
+              .panel-heading
+                | 年收入
+              .panel-body
+                #slider-income 
+            .panel.panel-default
+              .panel-heading
+                | 性别
+                label.checkbox-inline.checkbox-default.checkall
+                  input type="checkbox" value="checkall"
+                  span
+                    | 全选
+              .panel-body
+                label.checkbox-inline.checkbox-default v-repeat="sex"
+                  input type="checkbox" value="male" v-model="checked"
+                  span
+                    | {{key}}
+            .panel.panel-default
+              .panel-heading
+                | 城市级别
+                label.checkbox-inline.checkbox-default.checkall
+                  input type="checkbox" value="checkall"
+                  span
+                    | 全选
+              .panel-body
+                label.checkbox-inline.checkbox-default v-repeat="city"
+                  input type="checkbox" value="male" v-model="checked"
+                  span
+                    | {{key}}
+            .panel.panel-default
+              .panel-heading
+                | 学历
+                label.checkbox-inline.checkbox-default.checkall
+                  input type="checkbox" value="checkall"
+                  span
+                    | 全选
+              .panel-body
+                label.checkbox-inline.checkbox-default v-repeat="education"
+                  input type="checkbox" value="male" v-model="checked"
+                  span
+                    | {{key}}
+            .panel.panel-default
+              .panel-heading
+                | 情感状况
+                label.checkbox-inline.checkbox-default.checkall
+                  input type="checkbox" value="checkall"
+                  span
+                    | 全选
+              .panel-body
+                label.checkbox-inline.checkbox-default v-repeat="emotion"
+                  input type="checkbox" value="male" v-model="checked"
+                  span
+                    | {{key}}
+            .panel.panel-default
+              .panel-heading
+                | 性取向
+                label.checkbox-inline.checkbox-default.checkall
+                  input type="checkbox" value="checkall"
+                  span
+                    | 全选
+              .panel-body
+                label.checkbox-inline.checkbox-default v-repeat="orientation"
+                  input type="checkbox" value="male" v-model="checked"
+                  span
+                    | {{key}}
+            .panel.panel-default
+              .panel-heading
+                | 兴趣标签
+                label.checkbox-inline.checkbox-default.checkall
+                  input type="checkbox" value="checkall"
+                  span
+                    | 全选
+              .panel-body
+                label.checkbox-inline.checkbox-default v-repeat="interests"
+                  input type="checkbox" value="key" v-model="checked"
+                  span
+                    | {{key}}
+            // 测试任务
+            .panel.panel-default
+              .panel-heading
+                | 测试情景
+              .panel-body
+                textarea.form-control v-model="situation"
+                p.js-len-control
+                  | 还可以输入
+                  span.js-len-count 140
+                  | 字
+            .panel.panel-default
+              .panel-heading
+                | 测试任务
+              .panel-body
+                .task v-repeat="tasks"
+                  textarea.form-control v-model="content"
+                  p.js-len-control
+                    | 还可以输入
+                    span.js-len-count 140
+                    | 字
+            // 联系方式
+            .panel.panel-default
+              .panel-heading
+                | 姓名
+              .panel-body
+                .form-group
+                  input.form-control type="text" maxlength="15" v-model="username"
+                p.js-len-control
+                  | 还可以输入
+                  span.js-len-count 15
+                  | 字
+            .panel.panel-default
+              .panel-heading
+                | 手机
+              .panel-body
+                .form-group
+                  input.form-control type="text" maxlength="11" v-model="mobile"
+                p.js-len-control
+                  | 还可以输入
+                  span.js-len-count 11
+                  | 字
+            .panel.panel-default
+              .panel-heading
+                | 邮箱
+              .panel-body
+                .form-group
+                  input.form-control type="email" v-model="email"
+            .panel.panel-default
+              .panel-heading
+                | 公司
+              .panel-body
+                .form-group
+                  input.form-control type="text" maxlength="30" v-model="company"
+                p.js-len-control
+                  | 还可以输入
+                  span.js-len-count 30
+                  | 字
+    .getvalue.btn.btn-blue
+      | get value

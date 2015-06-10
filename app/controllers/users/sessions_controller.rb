@@ -8,7 +8,7 @@ class Users::SessionsController < ApplicationController
 
   def auth
     json = { status: 0, code: 1, msg: '', url: '' }
-    email = params[:email]
+    email = params[:email].to_s.downcase
     @user = User.find_by(email: email)
     if @user && @user.valid_password?(params[:encrypted_password])
       session[:id] = @user.id

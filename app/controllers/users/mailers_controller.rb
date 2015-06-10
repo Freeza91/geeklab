@@ -2,7 +2,7 @@ class Users::MailersController < ApplicationController
 
   def send_confirmation
     json = { status: 0, code: 1, email: '' }
-    email = params[:email]
+    email = params[:email].to_s.downcase
     code = generate_code
     $redis.set(email, code)
     $redis.expire(email, 1800) # set 30 mintues
@@ -14,7 +14,7 @@ class Users::MailersController < ApplicationController
   def send_reset_password
     json = {msg: '', code: 1, status: 0 }
 
-    email = params[:email]
+    email = params[:email].to_s.downcase
     user = User.find_by(email: email) || current_user
     if user
       user.generate_reset_password_token

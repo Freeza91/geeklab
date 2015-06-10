@@ -9,8 +9,8 @@ class Users::RegistrationsController < ApplicationController
 
   def create
     json = { status: 0, code: 1, msg: [], url: ''}
-
-    value = $redis.get(params[:user][:email]) if $redis.exists params[:user][:email]
+    email = params[:user][:email].to_s.downcase
+    value = $redis.get(email) if $redis.exists email
     @user = User.new(user_params)
     if value && value == params[:user][:code]
       if @user.save
@@ -49,7 +49,7 @@ class Users::RegistrationsController < ApplicationController
 
   def is_emails_exist
     json = { code: 1, status: 0 }
-    unless User.find_by(email: params[:email])
+    unless User.find_by(email: params[:email].to_s.downcase)
       json[:code] = 0
     end
     render json: json

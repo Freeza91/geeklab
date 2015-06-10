@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   end
 
   after_update :deliver_approved_email
+  before_save { self.email = email.to_s.downcase }
 
   def deliver_approved_email
     task_url = "#{Settings.domain}/testers/#{id}/assignments"

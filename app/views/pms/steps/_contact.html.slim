@@ -1,0 +1,36 @@
+.panel.panel-default
+  .panel-heading
+    | 姓名
+  .panel-body
+    .form-group
+      input.form-control type="text" maxlength="15" v-model="username"
+    p.js-len-control
+      | 还可以输入
+      span.js-len-count 15
+      | 字
+.panel.panel-default
+  .panel-heading
+    | 手机
+  .panel-body
+    .form-group
+      input.form-control type="text" maxlength="11" v-model="mobile"
+    p.js-len-control
+      | 还可以输入
+      span.js-len-count 11
+      | 字
+.panel.panel-default
+  .panel-heading
+    | 邮箱
+  .panel-body
+    .form-group
+      input.form-control type="email" v-model="email"
+.panel.panel-default
+  .panel-heading
+    | 公司
+  .panel-body
+    .form-group
+      input.form-control type="text" maxlength="30" v-model="company"
+    p.js-len-control
+      | 还可以输入
+      span.js-len-count 30
+      | 字

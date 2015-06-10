@@ -31,13 +31,14 @@ section.content-box
       .container
         .form
           form
-            // web
-            = render partial: 'pms/steps/web'
+            // app
+            = render partial: 'pms/steps/app'
             // target user
             = render partial: 'pms/steps/target_user'
             // 测试任务
             = render partial: 'pms/steps/tasks'
             // 联系方式
             = render partial: 'pms/steps/contact'
+            // target user
     .getvalue.btn.btn-blue
       | get value

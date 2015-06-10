@@ -1,5 +1,5 @@
 $(function () {
-  if(!$('body').hasClass('pms_web')) {
+  if(!$('body').hasClass('pms_app')) {
     return false;
   }
 

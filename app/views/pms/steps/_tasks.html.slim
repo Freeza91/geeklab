@@ -1,0 +1,19 @@
+.panel.panel-default
+  .panel-heading
+    | 测试情景
+  .panel-body
+    textarea.form-control v-model="situation"
+    p.js-len-control
+      | 还可以输入
+      span.js-len-count 140
+      | 字
+.panel.panel-default
+  .panel-heading
+    | 测试任务
+  .panel-body
+    .task v-repeat="tasks"
+      textarea.form-control v-model="content"
+      p.js-len-control
+        | 还可以输入
+        span.js-len-count 140
+        | 字

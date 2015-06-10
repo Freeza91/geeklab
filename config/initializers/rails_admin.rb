@@ -81,4 +81,35 @@ RailsAdmin.config do |config|
     end
   end
 
+  config.model "Project" do
+    edit do
+      field :name
+      field :profile
+      field :device
+      field :requirement
+      field :platform
+      field :expired_at
+      field :contact_name
+      field :phone
+      field :email
+      field :company
+      field :credit
+      field :demand
+      field :approved
+      field :qr_code
+
+      field :tasks do
+        orderable true
+      end
+
+      field :assignments do
+        orderable true
+      end
+
+      field :user_feature do
+      end
+
+    end
+  end
+
 end

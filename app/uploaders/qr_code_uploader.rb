@@ -9,12 +9,7 @@ class QrCodeUploader < CarrierWave::Uploader::Base
   self.qiniu_bucket_domain = "#{Settings.qiniu_qrcode_domain}"
 
   def store_dir
-    "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
-  end
-
-  def filename
-    return "something.#{file.extension}" if original_filename.empty?
-    original_filename
+    "uploads-#{model.class.to_s.underscore}-#{mounted_as}-#{model.id}"
   end
 
 end

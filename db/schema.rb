@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150603065837) do
+ActiveRecord::Schema.define(version: 20150610082217) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,10 +39,11 @@ ActiveRecord::Schema.define(version: 20150603065837) do
     t.string   "phone"
     t.string   "email"
     t.string   "company"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
     t.integer  "credit"
     t.integer  "demand",       default: 1
+    t.boolean  "approved",     default: false
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -102,7 +103,7 @@ ActiveRecord::Schema.define(version: 20150603065837) do
     t.datetime "reset_password_sent_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "last_view_time",         default: '2015-05-26 13:43:52'
+    t.datetime "last_view_time",         default: '2015-05-21 11:37:35'
   end
 
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", unique: true, using: :btree

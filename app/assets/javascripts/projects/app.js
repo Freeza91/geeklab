@@ -175,8 +175,10 @@ $(function () {
     var income = $('#slider-income').val();
     var sys = data.platform === 'ios' ? $('#slider-ios').val() : $('#slider-android').val();
     data.demand = userCount;
-    data.age = age.join('-');
-    data.income = income.join('-');
+
+    data.user_feature_attribute.age = age.join('-');
+    data.user_feature_attribute.income = income.join('-');
+
     data.requirement = sys;
 
     console.log(data);

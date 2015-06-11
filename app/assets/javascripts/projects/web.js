@@ -142,12 +142,12 @@ $(function () {
     var vmData = vm.$data;
 
     // 不存在的数据，为了统一
-    data.platform = data.device = 'web';
+    data.device = 'web';
     data.requirement = "all";
     // 获取数据
     // project basic info
     data.name = vmData.name;
-    data.website = vmData.website;
+    data.platform = vmData.website;
     data.profile = vmData.introduction;
     
     // target user requirement
@@ -178,8 +178,9 @@ $(function () {
     var age = $('#slider-age').val();
     var income = $('#slider-income').val();
     data.demand = userCount;
-    data.age = age.join('-');
-    data.income = income.join('-');
+
+    data.user_feature_attribute.age = age.join('-');
+    data.user_feature_attribute.income = income.join('-');
 
     console.log(data);
     

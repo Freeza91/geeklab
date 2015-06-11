@@ -15,6 +15,7 @@ gem 'settingslogic'
 gem 'slim-rails'
 gem 'bcrypt'
 gem 'kaminari'
+gem 'hashids'
 
 gem 'rest-client'
 gem 'qiniu'

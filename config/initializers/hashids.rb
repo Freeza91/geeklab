@@ -1,0 +1,1 @@
+$hashids = Hashids.new Settings.hashids_secret_token, 4

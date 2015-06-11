@@ -49,9 +49,15 @@ class Users::RegistrationsController < ApplicationController
 
   def is_emails_exist
     json = { code: 1, status: 0 }
-    unless User.find_by(email: params[:email].to_s.downcase)
-      json[:code] = 0
+    if limit_ip?("email")
+      json[:code] = -1
+      return render json: json
+    else
+      unless User.find_by(email: params[:email].to_s.downcase)
+        json[:code] = 0
+      end
     end
+
     render json: json
   end
 

@@ -132,11 +132,15 @@ $(function () {
     var data = {};
     var vmData = vm.$data;
 
+    // 不存在的数据，为了统一
+    data.platform = data.device = 'web';
     // 获取数据
+    // project basic info
     data.name = vmData.name;
     data.website = vmData.website;
-    data.introduction = vmData.introduction;
+    data.profile = vmData.introduction;
     
+    // target user requirement
     data.sex = getVmCheckboxArr(vmData.sex);
     data.city = getVmCheckboxArr(vmData.city);
     data.education = getVmCheckboxArr(vmData.education);
@@ -144,7 +148,16 @@ $(function () {
     data.orientation = getVmCheckboxArr(vmData.orientation);
     data.interests = getVmCheckboxArr(vmData.interests);
 
-    data.username = vmData.username;
+    // tasks
+    data.tasks = [];
+    vmData.tasks.forEach(function (task) {
+      data.tasks.push({
+        content: task.content
+      });
+    });
+
+    // contact info
+    data.contact_name = vmData.username;
     data.mobile = vmData.mobile;
     data.email= vmData.email;
     data.company = vmData.company;
@@ -153,8 +166,8 @@ $(function () {
     var age = $('#slider-age').val();
     var income = $('#slider-income').val();
     data.userCount = userCount;
-    data.age = age;
-    data.income = income;
+    data.age = age.join('-');
+    data.income = income.join('-');
 
     console.log(data);
     

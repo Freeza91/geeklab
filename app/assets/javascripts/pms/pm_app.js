@@ -138,7 +138,7 @@ $(function () {
     data.name = vmData.name;
     data.platform = vmData.platform;
     data.device = vmData.device;
-    data.introduction = vmData.introduction;
+    data.profile = vmData.introduction;
     
     data.sex = getVmCheckboxArr(vmData.sex);
     data.city = getVmCheckboxArr(vmData.city);
@@ -147,18 +147,26 @@ $(function () {
     data.orientation = getVmCheckboxArr(vmData.orientation);
     data.interests = getVmCheckboxArr(vmData.interests);
 
-    data.username = vmData.username;
-    data.mobile = vmData.mobile;
+    data.tasks = [];
+    vmData.tasks.forEach(function (task) {
+      data.tasks.push({
+        content: task.content
+      });
+    });
+
+    data.contact_name = vmData.username;
+    data.phone = vmData.mobile;
     data.email= vmData.email;
     data.company = vmData.company;
  
     var userCount = $('#slider-user').val();
     var age = $('#slider-age').val();
     var income = $('#slider-income').val();
-    var sys = $('#slider-sys').val();
+    var sys = data.platform === 'ios' ? $('#slider-ios').val() : $('#slider-android').val();
     data.userCount = userCount;
-    data.age = age;
-    data.income = income;
+    data.age = age.join('-');
+    data.income = income.join('-');
+    data.requirement = sys;
 
     console.log(data);
 

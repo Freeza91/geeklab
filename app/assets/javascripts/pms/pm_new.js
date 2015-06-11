@@ -18,7 +18,7 @@ $(function () {
       connect: 'upper',
       format: {
         to: function (value) {
-          return value;
+          return androidMap[value]; 
         },
         from: function (value) {
           return androidMap[value]; 
@@ -35,7 +35,7 @@ $(function () {
       connect: 'upper',
       format: {
         to: function (value) {
-          return value;
+          return iosMap[value];
         },
         from: function (value) {
           return iosMap[value];

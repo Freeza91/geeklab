@@ -15,11 +15,13 @@ gem 'settingslogic'
 gem 'slim-rails'
 gem 'bcrypt'
 gem 'kaminari'
+gem 'hashids'
 
 gem 'rest-client'
 gem 'qiniu'
 gem 'carrierwave'
 gem 'carrierwave-qiniu'
+gem 'mini_magick'
 
 gem 'sendgrid'
 gem 'redis'

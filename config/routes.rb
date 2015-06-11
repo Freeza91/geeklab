@@ -35,9 +35,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :pms do
-    get 'web'
-    get 'app'
+  resources :pms
+  resources :projects do
+    collection do
+      get 'web/new', to: 'projects#web'
+      get 'app/new', to: 'projects#app'
+    end
   end
 
   resources :testers do

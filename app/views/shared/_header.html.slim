@@ -33,7 +33,7 @@ header.header.navbar.navbar-static.clear-fix
                 a.score href="javascript:void(0)"
                   | 我的积分
                   i.fa.fa-diamond
-                  = current_user.to_tester.credits.to_i 
+                  = current_user.to_tester.try(:credits).to_i
             - if  controller_name == 'testers' || controller_name == 'assignments' || controller_name == "stores"
               li
                 a href="javascript:void(0)"
@@ -51,11 +51,11 @@ header.header.navbar.navbar-static.clear-fix
                       a href='/testers/new'
                         i.fa.fa-user
                         | 个人信息
-                    - else 
+                    - else
                       a href=edit_tester_path(current_user.id)
                         i.fa.fa-user
                         | 个人信息
-                  // 完成个人信息后显示任务列表 
+                  // 完成个人信息后显示任务列表
                   - if !current_user.to_tester.try(:tester_infors).blank?
                     li
                       a href=tester_assignments_path(current_user.id)
@@ -76,5 +76,5 @@ header.header.navbar.navbar-static.clear-fix
           - else
             button.btn.btn-blue.login data-toggle='modal' data-target='#signup'
               | 登录/注册
-         
+
 section.layout-fix.for-header

@@ -8,3 +8,4 @@ production: # work model
   - [mailers, 5]
   - [update_assignment]
   - [pfop_video_images]
+  - [start_assign, 10]

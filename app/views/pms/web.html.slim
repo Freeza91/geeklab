@@ -7,10 +7,10 @@ section.content-box
           .form-pagination.place-right
             ul
               li
-                a.active href="javascript: void(0)"
+                a v-class="active" href="javascript: void(0)"
                   | 1
               li
-                a href="javascript: void(0)"
+                a v-class="active: step === 2" href="javascript: void(0)"
                   | 2
               li
                 a href="javascript: void(0)"
@@ -31,13 +31,19 @@ section.content-box
       .container
         .form
           form
-            // web
-            = render partial: 'pms/steps/web'
+            // we
+            .step-1 v-show="step === 1"
+              = render partial: 'pms/steps/web'
+              button.btn.btn-blue v-on="click: nextStep"
+                | 下一步
             // target user
-            = render partial: 'pms/steps/target_user'
-            // 测试任务
-            = render partial: 'pms/steps/tasks'
-            // 联系方式
-            = render partial: 'pms/steps/contact'
+            .step-2 v-show="step === 2"
+              = render partial: 'pms/steps/target_user'
+              // 测试任务
+            .step-3 v-show="step === 3"
+              = render partial: 'pms/steps/tasks'
+              // 联系方式
+            .step-4 v-show="step === 4"
+              = render partial: 'pms/steps/contact'
     .getvalue.btn.btn-blue
       | get value

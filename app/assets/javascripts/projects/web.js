@@ -4,7 +4,7 @@ $(function () {
   }
 
   var vm = new Vue({
-    el: '.form',
+    el: '.project',
     data: {
       step: 1,
       sex: [
@@ -130,6 +130,7 @@ $(function () {
     methods: {
       previousStep: previousStep,
       nextStep: nextStep,
+      addTask: addTask,
       submit: submit
     }
   });
@@ -144,6 +145,7 @@ $(function () {
 
     // 不存在的数据，为了统一
     data.platform = data.device = 'web';
+    data.requirement = "all";
     // 获取数据
     // project basic info
     data.name = vmData.name;
@@ -151,17 +153,19 @@ $(function () {
     data.profile = vmData.introduction;
     
     // target user requirement
-    data.sex = getVmCheckboxArr(vmData.sex);
-    data.city = getVmCheckboxArr(vmData.city);
-    data.education = getVmCheckboxArr(vmData.education);
-    data.emotion = getVmCheckboxArr(vmData.emotion);
-    data.orientation = getVmCheckboxArr(vmData.orientation);
-    data.interests = getVmCheckboxArr(vmData.interests);
+    data.user_feature_attributes = {};
+    data.user_feature_attributes.sex = getVmCheckboxArr(vmData.sex);
+    data.user_feature_attributes.city_level = getVmCheckboxArr(vmData.city, 'index');
+    data.user_feature_attributes.education = getVmCheckboxArr(vmData.education);
+    data.user_feature_attributes.emotion_status = getVmCheckboxArr(vmData.emotion);
+    data.user_feature_attributes.sex_orientation = getVmCheckboxArr(vmData.orientation);
+    data.user_feature_attributes.interests = getVmCheckboxArr(vmData.interests);
 
     // tasks
-    data.tasks = [];
+    data.desc = vmData.situation;
+    data.tasks_attributes = [];
     vmData.tasks.forEach(function (task) {
-      data.tasks.push({
+      data.tasks_attributes.push({
         content: task.content
       });
     });
@@ -175,17 +179,17 @@ $(function () {
     var userCount = $('#slider-user').val();
     var age = $('#slider-age').val();
     var income = $('#slider-income').val();
-    data.userCount = userCount;
+    data.demand = userCount;
     data.age = age.join('-');
     data.income = income.join('-');
 
     console.log(data);
     
-    var url = '/pms';
+    var url = '/projects';
     $.ajax({
       url: url,
       method: 'post',
-      data: data
+      data: {project: data}
     })
     .done(function (data, status) {
 
@@ -195,16 +199,32 @@ $(function () {
     });
   }
 
-  function getVmCheckboxArr (vmArr) {
+  /* 
+   * @param valueType 返回值的类型
+   */
+  function getVmCheckboxArr (vmArr, valueType) {
+    valueType = valueType || 'value';
     var result = [];
-    vmArr.forEach(function (item) {
-      if(item.checked) {
-        result.push(item.key);
-      }
-    });
+    switch(valueType) {
+      case 'index': 
+        vmArr.forEach(function (item, index) {
+          if(item.checked) {
+            result.push(index + 1);
+          }
+        });
+      break;
+      case 'value':
+        vmArr.forEach(function (item) {
+          if(item.checked) {
+            result.push(item.key);
+          }
+        });
+      break;
+    }
     return result;
   }
 
+  // 操作相关的函数
   function previousStep (event) {
     event.preventDefault();
     vm.step--;
@@ -212,5 +232,11 @@ $(function () {
   function nextStep (event) {
     event.preventDefault();
     vm.step++;
+  }
+  function addTask (event) {
+    event.preventDefault();
+    vm.tasks.push({
+      content: ''
+    });
   }
 });

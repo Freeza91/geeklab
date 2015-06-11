@@ -4,7 +4,7 @@ $(function () {
   }
 
   var vm = new Vue({
-    el: '.form',
+    el: '.project',
     data: {
       step: 1,
       platform: 'ios',
@@ -132,6 +132,7 @@ $(function () {
     methods: {
       previousStep: previousStep,
       nextStep: nextStep,
+      addTask: addTask,
       submit: submit
     }
   });
@@ -149,16 +150,19 @@ $(function () {
     data.device = vmData.device;
     data.profile = vmData.introduction;
     
-    data.sex = getVmCheckboxArr(vmData.sex);
-    data.city = getVmCheckboxArr(vmData.city);
-    data.education = getVmCheckboxArr(vmData.education);
-    data.emotion = getVmCheckboxArr(vmData.emotion);
-    data.orientation = getVmCheckboxArr(vmData.orientation);
-    data.interests = getVmCheckboxArr(vmData.interests);
+    // target user requirement
+    data.user_feature_attributes = {};
+    data.user_feature_attributes.sex = getVmCheckboxArr(vmData.sex);
+    data.user_feature_attributes.city_level = getVmCheckboxArr(vmData.city, 'index');
+    data.user_feature_attributes.education = getVmCheckboxArr(vmData.education);
+    data.user_feature_attributes.emotion_status = getVmCheckboxArr(vmData.emotion);
+    data.user_feature_attributes.sex_orientation = getVmCheckboxArr(vmData.orientation);
+    data.user_feature_attributes.interests = getVmCheckboxArr(vmData.interests);
 
-    data.tasks = [];
+    data.desc = vmData.situation;
+    data.tasks_attributes = [];
     vmData.tasks.forEach(function (task) {
-      data.tasks.push({
+      data.tasks_attributes.push({
         content: task.content
       });
     });
@@ -172,18 +176,18 @@ $(function () {
     var age = $('#slider-age').val();
     var income = $('#slider-income').val();
     var sys = data.platform === 'ios' ? $('#slider-ios').val() : $('#slider-android').val();
-    data.userCount = userCount;
+    data.demand = userCount;
     data.age = age.join('-');
     data.income = income.join('-');
     data.requirement = sys;
 
     console.log(data);
 
-    var url = '/pms';
+    var url = '/projects';
     $.ajax({
       url: url,
       method: 'post',
-      data: data
+      data: {project: data}
     })
     .done(function (data, status) {
 
@@ -193,13 +197,28 @@ $(function () {
     });
   }
 
-  function getVmCheckboxArr (vmArr) {
+  /* 
+   * @param valueType 返回值的类型
+   */
+  function getVmCheckboxArr (vmArr, valueType) {
+    valueType = valueType || 'value';
     var result = [];
-    vmArr.forEach(function (item) {
-      if(item.checked) {
-        result.push(item.key);
-      }
-    });
+    switch(valueType) {
+      case 'index': 
+        vmArr.forEach(function (item, index) {
+          if(item.checked) {
+            result.push(index + 1);
+          }
+        });
+      break;
+      case 'value':
+        vmArr.forEach(function (item) {
+          if(item.checked) {
+            result.push(item.key);
+          }
+        });
+      break;
+    }
     return result;
   }
 
@@ -215,6 +234,12 @@ $(function () {
   function nextStep (event) {
     event.preventDefault();
     vm.step++;
+  }
+  function addTask (event) {
+    event.preventDefault();
+    vm.tasks.push({
+      content: ''
+    });
   }
 
 });

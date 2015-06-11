@@ -49,7 +49,15 @@ $(function () {
       min: 1,
       max: 5
     },
-    step: 1
+    step: 1,
+    format:  {
+      to: function (value) {
+        return parseInt(value);
+      },
+      from: function (value) {
+        return parseInt(value);
+      }
+    }
   });
   $('#slider-age').noUiSlider({
     start: [18, 48],
@@ -58,7 +66,15 @@ $(function () {
       max: 48
     },
     step: 5,
-    connect: true
+    connect: true,
+    format:  {
+      to: function (value) {
+        return parseInt(value);
+      },
+      from: function (value) {
+        return parseInt(value);
+      }
+    }
   });
   $('#slider-income').noUiSlider({
     start: [0, 8],

@@ -4,7 +4,7 @@ $(function () {
   }
 
   var vm = new Vue({
-    el: '.form',
+    el: '.project',
     data: {
       step: 1,
       platform: 'ios',

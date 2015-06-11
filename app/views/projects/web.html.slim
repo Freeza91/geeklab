@@ -4,20 +4,7 @@ section.content-box
         .container
           a href="javascript: void(0)"
             | 选择测试方式
-          .form-pagination.place-right
-            ul
-              li
-                a v-class="active" href="javascript: void(0)"
-                  | 1
-              li
-                a v-class="active: step === 2" href="javascript: void(0)"
-                  | 2
-              li
-                a href="javascript: void(0)"
-                  | 3
-              li
-                a href="javascript: void(0)"
-                  | 4
+          = render partial: 'projects/shared/pagination'
       .title
         .container
           i.fa.fa-pencil

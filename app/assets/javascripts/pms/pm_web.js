@@ -157,6 +157,20 @@ $(function () {
     data.income = income;
 
     console.log(data);
+    
+    var url = '/pms';
+    $.ajax({
+      url: url,
+      method: 'post',
+      data: data
+    })
+    .done(function (data, status) {
+
+    })
+    .error(function (errors, status) {
+      console.log(errors);
+    });
+
   });
 
   function getVmCheckboxArr (vmArr) {

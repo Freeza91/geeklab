@@ -6,6 +6,7 @@ $(function () {
   var vm = new Vue({
     el: '.form',
     data: {
+      step: 1,
       sex: [
         {
           key: '男',
@@ -125,6 +126,9 @@ $(function () {
           content: ''
         }
       ]
+    },
+    methods: {
+      nextStep: nextStep
     }
   });
   
@@ -194,5 +198,14 @@ $(function () {
       }
     });
     return result;
+  }
+
+  function previousStep (event) {
+    event.preventDefault();
+    vm.step--;
+  }
+  function nextStep (event) {
+    event.preventDefault();
+    vm.step++;
   }
 });

@@ -4,16 +4,45 @@ $(function () {
   }
 
   var incomeMap = [0, 2, 5, 8, 10, 15, 30, 50, 100];
+  var androidMap = ['1.5', '2.2', '2.3', '2.3.3', '3.0', '3.1', '3.2', '4.0', '4.0.3', '4.1', '4.2', '4.3', '4.4', '4.5', '5.0', '5.1'];
+  var iosMap = ['1.0', '2.0', '3.0', '4.0', '5.0', '6.0', '7.0', '8.0'];
   // range slider
-  $('#slider-sys').noUiSlider({
-    start: 2,
-    range: {
-      min: 0,
-      max: 6
-    },
-    step: 1,
-    connect: 'upper'
-  });
+  if($('.slider-sys')) {
+    $('#slider-android').noUiSlider({
+      start: 2,
+      range: {
+        min: 0,
+        max: 14
+      },
+      step: 1,
+      connect: 'upper',
+      format: {
+        to: function (value) {
+          return value;
+        },
+        from: function (value) {
+          return androidMap[value]; 
+        }
+      }
+    });
+    $('#slider-ios').noUiSlider({
+      start: 2,
+      range: {
+        min: 0,
+        max: 7
+      },
+      step: 1,
+      connect: 'upper',
+      format: {
+        to: function (value) {
+          return value;
+        },
+        from: function (value) {
+          return iosMap[value];
+        }
+      }
+    });
+  }
   $('#slider-user').noUiSlider({
     start: 3,
     range: {

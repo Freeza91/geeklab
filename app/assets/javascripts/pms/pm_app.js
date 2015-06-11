@@ -6,6 +6,8 @@ $(function () {
   var vm = new Vue({
     el: '.form',
     data: {
+      platform: 'ios',
+      device: 'tablet',
       sex: [
         {
           key: '男',
@@ -134,7 +136,8 @@ $(function () {
 
     // 获取数据
     data.name = vmData.name;
-    data.website = vmData.website;
+    data.platform = vmData.platform;
+    data.device = vmData.device;
     data.introduction = vmData.introduction;
     
     data.sex = getVmCheckboxArr(vmData.sex);
@@ -152,6 +155,7 @@ $(function () {
     var userCount = $('#slider-user').val();
     var age = $('#slider-age').val();
     var income = $('#slider-income').val();
+    var sys = $('#slider-sys').val();
     data.userCount = userCount;
     data.age = age;
     data.income = income;

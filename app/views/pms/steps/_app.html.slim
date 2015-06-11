@@ -12,7 +12,9 @@
   .panel-heading
     | 用户系统要求
   .panel-body
-    #slider-sys
+    .slider-sys#slider-android
+      span.sys-value
+    .slider-sys#slider-ios
       span.sys-value
 .panel.panel-default
   .panel-heading
@@ -29,7 +31,7 @@
     | 产品简介
   .panel-body
     .form-group
-      input.form-control type="text" maxlength="15"
+      input.form-control type="text" maxlength="15" v-model="introduction"
 .panel.panel-default
   .panel-heading
     | 应用下载二维码

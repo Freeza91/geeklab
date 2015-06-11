@@ -8,4 +8,10 @@ class PmsController < ApplicationController
   def new
   end
 
+  def web
+  end
+
+  def app
+  end
+
 end

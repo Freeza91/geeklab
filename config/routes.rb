@@ -36,7 +36,12 @@ Rails.application.routes.draw do
   end
 
   resources :pms
-  resources :projects
+  resources :projects do
+    collection do
+      get 'web/new'
+      get 'app/new'
+    end
+  end
 
   resources :testers do
     resources :assignments do

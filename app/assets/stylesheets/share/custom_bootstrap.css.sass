@@ -64,3 +64,22 @@ input[type='checkbox']
   height: 100%
   vertical-align: middle
   display: inline-block
+
+// checkbox-inline
+.checkbox-default
+  [type="checkbox"]
+    display: none
+  [type="checkbox"] + span
+    display: inline-block
+    width: 100px
+    height: 30px
+    padding-left: 0
+    background-color: #dadada
+    line-height: 30px
+    font-size: 14px
+    color: #313131
+    text-align: center
+    transition: all .3s ease
+  [type="checkbox"]:checked + span
+    background-color: #16a0c6
+    color: #fff

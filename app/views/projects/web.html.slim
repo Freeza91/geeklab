@@ -33,17 +33,17 @@ section.content-box
           form
             // we
             .step-1 v-show="step === 1"
-              = render partial: 'pms/steps/web'
+              = render partial: 'projects/steps/web'
               button.btn.btn-blue v-on="click: nextStep"
                 | 下一步
             // target user
             .step-2 v-show="step === 2"
-              = render partial: 'pms/steps/target_user'
+              = render partial: 'projects/steps/target_user'
               // 测试任务
             .step-3 v-show="step === 3"
-              = render partial: 'pms/steps/tasks'
+              = render partial: 'projects/steps/tasks'
               // 联系方式
             .step-4 v-show="step === 4"
-              = render partial: 'pms/steps/contact'
+              = render partial: 'projects/steps/contact'
     .getvalue.btn.btn-blue
       | get value

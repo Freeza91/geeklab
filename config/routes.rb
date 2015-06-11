@@ -38,8 +38,8 @@ Rails.application.routes.draw do
   resources :pms
   resources :projects do
     collection do
-      get 'web/new'
-      get 'app/new'
+      get 'web/new', to: 'projects#web'
+      get 'app/new', to: 'projects#app'
     end
   end
 

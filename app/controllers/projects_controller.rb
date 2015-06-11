@@ -9,6 +9,12 @@ class ProjectsController < ApplicationController
   def show
   end
 
+  def web
+  end
+
+  def app
+  end
+
   def new
     @project = Project.new
     @task = @project.tasks.build

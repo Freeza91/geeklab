@@ -1,12 +1,13 @@
 $(function () {
-  if(!$('body').hasClass('pms_web')) {
+  if(!$('body').hasClass('projects_app')) {
     return false;
   }
 
   var vm = new Vue({
     el: '.form',
     data: {
-      step: 1,
+      platform: 'ios',
+      device: 'tablet',
       sex: [
         {
           key: '男',
@@ -126,9 +127,6 @@ $(function () {
           content: ''
         }
       ]
-    },
-    methods: {
-      nextStep: nextStep
     }
   });
   
@@ -136,15 +134,12 @@ $(function () {
     var data = {};
     var vmData = vm.$data;
 
-    // 不存在的数据，为了统一
-    data.platform = data.device = 'web';
     // 获取数据
-    // project basic info
     data.name = vmData.name;
-    data.website = vmData.website;
+    data.platform = vmData.platform;
+    data.device = vmData.device;
     data.profile = vmData.introduction;
     
-    // target user requirement
     data.sex = getVmCheckboxArr(vmData.sex);
     data.city = getVmCheckboxArr(vmData.city);
     data.education = getVmCheckboxArr(vmData.education);
@@ -152,7 +147,6 @@ $(function () {
     data.orientation = getVmCheckboxArr(vmData.orientation);
     data.interests = getVmCheckboxArr(vmData.interests);
 
-    // tasks
     data.tasks = [];
     vmData.tasks.forEach(function (task) {
       data.tasks.push({
@@ -160,21 +154,22 @@ $(function () {
       });
     });
 
-    // contact info
     data.contact_name = vmData.username;
-    data.mobile = vmData.mobile;
+    data.phone = vmData.mobile;
     data.email= vmData.email;
     data.company = vmData.company;
  
     var userCount = $('#slider-user').val();
     var age = $('#slider-age').val();
     var income = $('#slider-income').val();
+    var sys = data.platform === 'ios' ? $('#slider-ios').val() : $('#slider-android').val();
     data.userCount = userCount;
     data.age = age.join('-');
     data.income = income.join('-');
+    data.requirement = sys;
 
     console.log(data);
-    
+
     var url = '/pms';
     $.ajax({
       url: url,
@@ -187,7 +182,6 @@ $(function () {
     .error(function (errors, status) {
       console.log(errors);
     });
-
   });
 
   function getVmCheckboxArr (vmArr) {
@@ -200,12 +194,8 @@ $(function () {
     return result;
   }
 
-  function previousStep (event) {
-    event.preventDefault();
-    vm.step--;
-  }
-  function nextStep (event) {
-    event.preventDefault();
-    vm.step++;
+  function localImageView (image, $img) {
+    var url = window.URL.createObjectURL(image);
+    $img.src = url;
   }
 });

@@ -21,8 +21,11 @@ class TestersController < ApplicationController
         current_user.update_attribute(:role, 'both')
       end
       # default: project.first is new tester task
-      Assignment.create(project_id: Project.first.try(:id), tester_id: current_user.id,  status: 'test')
-      UserMailer.novice_task(@tester_infor.email_contract || current_user.email).deliver_later
+      a = Assignment.create(project_id: Project.first.try(:id), tester_id: current_user.id,  status: 'test')
+
+      task_url = "#{Settings.domain}/testers/#{current_user.id}/assignments"
+      UserMailer.new_task_notice(@tester_infor.email_contract || current_user.email,
+                                 a.project.name, task_url).deliver_later
     else
       json['code'] = 0
       json['msg'] = @tester_infor.errors.full_messages

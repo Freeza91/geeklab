@@ -28,6 +28,18 @@ header.header.navbar.navbar-static.clear-fix
       - if controller_name != "errors"
         - if current_user
           ul.nav.navbar-nav.login
+            - if controller_name == "stores"
+              li
+                a.score href="javascript:void(0)"
+                  | 我的积分
+                  i.fa.fa-diamond
+                  = current_user.to_tester.credits.to_i 
+            - if  controller_name == 'testers' || controller_name == 'assignments' || controller_name == "stores"
+              li
+                a href="javascript:void(0)"
+                  span.tester-mark class=(current_user.approved ? 'active' : '')
+                    i.fa.fa-street-view
+                    | 体验师
             li.dropdown
               a role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'
                 =current_user.email
@@ -49,6 +61,10 @@ header.header.navbar.navbar-static.clear-fix
                       a href=tester_assignments_path(current_user.id)
                         i.fa.fa-th-large
                         | 任务列表
+                  li
+                    a href=stores_path target="_blank"
+                      i.fa.fa-diamond
+                      | 积分商城
                 li
                   a rel="noflow" data-method="delete" href=users_session_path(current_user.id)
                     i.fa.fa-power-off

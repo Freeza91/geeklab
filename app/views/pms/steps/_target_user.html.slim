@@ -1,0 +1,87 @@
+.panel.panel-default
+  .panel-heading
+    | 测试用户个数
+  .panel-body
+    #slider-user 
+.panel.panel-default
+  .panel-heading
+    | 年龄范围
+  .panel-body
+    #slider-age 
+.panel.panel-default
+  .panel-heading
+    | 年收入
+  .panel-body
+    #slider-income 
+.panel.panel-default
+  .panel-heading
+    | 性别
+    label.checkbox-inline.checkbox-default.checkall
+      input type="checkbox" value="checkall"
+      span
+        | 全选
+  .panel-body
+    label.checkbox-inline.checkbox-default v-repeat="sex"
+      input type="checkbox" value="male" v-model="checked"
+      span
+        | {{key}}
+.panel.panel-default
+  .panel-heading
+    | 城市级别
+    label.checkbox-inline.checkbox-default.checkall
+      input type="checkbox" value="checkall"
+      span
+        | 全选
+  .panel-body
+    label.checkbox-inline.checkbox-default v-repeat="city"
+      input type="checkbox" value="male" v-model="checked"
+      span
+        | {{key}}
+.panel.panel-default
+  .panel-heading
+    | 学历
+    label.checkbox-inline.checkbox-default.checkall
+      input type="checkbox" value="checkall"
+      span
+        | 全选
+  .panel-body
+    label.checkbox-inline.checkbox-default v-repeat="education"
+      input type="checkbox" value="male" v-model="checked"
+      span
+        | {{key}}
+.panel.panel-default
+  .panel-heading
+    | 情感状况
+    label.checkbox-inline.checkbox-default.checkall
+      input type="checkbox" value="checkall"
+      span
+        | 全选
+  .panel-body
+    label.checkbox-inline.checkbox-default v-repeat="emotion"
+      input type="checkbox" value="male" v-model="checked"
+      span
+        | {{key}}
+.panel.panel-default
+  .panel-heading
+    | 性取向
+    label.checkbox-inline.checkbox-default.checkall
+      input type="checkbox" value="checkall"
+      span
+        | 全选
+  .panel-body
+    label.checkbox-inline.checkbox-default v-repeat="orientation"
+      input type="checkbox" value="male" v-model="checked"
+      span
+        | {{key}}
+.panel.panel-default
+  .panel-heading
+    | 兴趣标签
+    label.checkbox-inline.checkbox-default.checkall
+      input type="checkbox" value="checkall"
+      span
+        | 全选
+  .panel-body
+    label.checkbox-inline.checkbox-default v-repeat="interests"
+      input type="checkbox" value="key" v-model="checked"
+      span
+        | {{key}}

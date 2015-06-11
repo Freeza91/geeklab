@@ -21,7 +21,6 @@ $(function () {
   var $curVideo; // 当前正在播放的video
   var uploadAjax; //正在进行上传视频的ajax对象
 
-
   // 瀑布流加载，监听window滚动事件
   $(window).on('scroll', function () {
     // 第一页数量小于10

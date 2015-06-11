@@ -21,9 +21,9 @@ class Users::MailersController < ApplicationController
       user.save(validate: false)
 
       url = if Rails.env.production?
-              'http://50.116.16.150/users/passwords/callback_reset'
+              "#{Settings.domain}/users/passwords/callback_reset"
             else Rails.env.development? || Rails.env.test?
-              'http://localhost:3000/users/passwords/callback_reset'
+              "http://localhost:3000/users/passwords/callback_reset"
             end
       url += "?reset_password_token=#{user.reset_password_token}"
       UserMailer.reset_password(user.id, url).deliver_later
@@ -36,17 +36,6 @@ class Users::MailersController < ApplicationController
 
       render json: json
     end
-  end
-
-  def send_novice_task
-    json = { status: 0, code: 0 }
-    if current_user
-      tester_infor = current_user.to_tester.tester_infors.last
-      UserMailer.novice_task(tester_infor.try(:email_contract) || current_user.email).deliver_later
-      json[:code] = 1
-    end
-
-    render json: json
   end
 
 private

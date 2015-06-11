@@ -92,7 +92,25 @@ main role="mian"
               label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='income'
                 | 年收入
               .col-xs-7.col-sm-7.col-md-7.col-lg-7
-                select.prov
+                select
+                  option value="0-2"
+                    | 2万以下
+                  option value="2-5"
+                    | 2-5万
+                  option value="5-8"
+                    | 5-8万
+                  option value="8-10"
+                    | 8-10万
+                  option value="10-15"
+                    | 10-15万
+                  option value="15-30"
+                    | 15-30万
+                  option value="30-50"
+                    | 30-50万
+                  option value="50-100"
+                    | 50-100万
+                  option value="100-999"
+                    | 100万以上
                 span.form-control-feedback.text.sr-only 请选择年收入
             .form-group data-type='checkbox'
               label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='personality'
@@ -148,3 +166,23 @@ main role="mian"
             .col-xs-4.col-sm-4.col-md-4.col-lg-4
               button.btn.btn-blue.submit
                 | 提交
+
+.modal.fade.sign#form-finish data-backdrop='static'
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close type='button' data-dismiss='modal' aria-label='Close'
+          span aria-hidden='true'
+            | &times
+        .logo 
+          img src=image_path('logo/logo.png')
+      .modal-body
+        h1.title
+          | 个人信息已保存
+        p.content
+          | 还差一步，完成新手任务你就是体验师啦!
+        a.btn.btn-blue href=tester_assignments_path(current_user.id)
+          | 即刻出发
+        button.btn.btn-gray data-dismiss='modal'
+          | 稍后再去
+

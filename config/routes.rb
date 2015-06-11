@@ -35,7 +35,10 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :pms
+  resources :pms do
+    get 'web'
+    get 'app'
+  end
 
   resources :testers do
     resources :assignments do

@@ -193,4 +193,9 @@ $(function () {
     });
     return result;
   }
+
+  function localImageView (image, $img) {
+    var url = window.URL.createObjectURL(image);
+    $img.src = url;
+  }
 });

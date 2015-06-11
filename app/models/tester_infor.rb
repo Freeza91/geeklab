@@ -10,6 +10,8 @@ class TesterInfor < ActiveRecord::Base
 
   belongs_to :tester, inverse_of: :tester_infors
 
+  before_save { self.email_contract = email_contract.to_s.downcase }
+
   include TesterInforVirtualAttr
 
   def to_json

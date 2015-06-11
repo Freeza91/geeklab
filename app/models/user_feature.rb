@@ -1,6 +1,8 @@
 class UserFeature < ActiveRecord::Base
 
-  belongs_to :project, inverse_of: :project
+  belongs_to :project
+
+  # validates :sex, presence: true
 
   include UserFeatureVirtualAttr
 

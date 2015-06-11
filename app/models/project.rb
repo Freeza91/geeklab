@@ -1,7 +1,8 @@
 class Project < ActiveRecord::Base
 
-  validates :name, :profile, :platform, :desc, :expired_at,
-            #:requirement, :device, :qr_code,
+  validates :name, :profile, :platform, :desc,
+            :requirement, :device,
+            # :qr_code, :expired_at,
             :contact_name, :phone, :email, :company,
             presence: true
 

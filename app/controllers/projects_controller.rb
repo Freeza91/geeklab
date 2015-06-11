@@ -15,12 +15,6 @@ class ProjectsController < ApplicationController
   def app
   end
 
-  def new
-    @project = Project.new
-    @task = @project.tasks.build
-    @user_feature = @project.build_user_feature
-  end
-
   def create
     project = Project.new(project_params)
     if project.save

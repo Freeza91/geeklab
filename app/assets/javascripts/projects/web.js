@@ -128,11 +128,17 @@ $(function () {
       ]
     },
     methods: {
-      nextStep: nextStep
+      previousStep: previousStep,
+      nextStep: nextStep,
+      submit: submit
     }
   });
   
-  $('.getvalue').on('click', function () {
+  $('.getvalue').on('click', submit);
+
+  function submit(event) {
+    event.preventDefault();
+
     var data = {};
     var vmData = vm.$data;
 
@@ -187,8 +193,7 @@ $(function () {
     .error(function (errors, status) {
       console.log(errors);
     });
-
-  });
+  }
 
   function getVmCheckboxArr (vmArr) {
     var result = [];

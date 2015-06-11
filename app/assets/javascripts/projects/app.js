@@ -6,6 +6,7 @@ $(function () {
   var vm = new Vue({
     el: '.form',
     data: {
+      step: 1,
       platform: 'ios',
       device: 'tablet',
       sex: [
@@ -127,10 +128,18 @@ $(function () {
           content: ''
         }
       ]
+    },
+    methods: {
+      previousStep: previousStep,
+      nextStep: nextStep,
+      submit: submit
     }
   });
   
-  $('.getvalue').on('click', function () {
+  $('.getvalue').on('click', submit); 
+
+  function submit (event) {
+    event.preventDefault();
     var data = {};
     var vmData = vm.$data;
 
@@ -182,7 +191,7 @@ $(function () {
     .error(function (errors, status) {
       console.log(errors);
     });
-  });
+  }
 
   function getVmCheckboxArr (vmArr) {
     var result = [];
@@ -198,4 +207,14 @@ $(function () {
     var url = window.URL.createObjectURL(image);
     $img.src = url;
   }
+
+  function previousStep (event) {
+    event.preventDefault();
+    vm.step--;
+  }
+  function nextStep (event) {
+    event.preventDefault();
+    vm.step++;
+  }
+
 });

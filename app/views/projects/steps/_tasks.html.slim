@@ -5,10 +5,9 @@
     textarea.form-control v-model="situation"
     p.js-len-control
       | 还可以输入
-      span.js-len-count 140
+      span.js-len-count
+        | {{situation ? (140 - situation.length) : 140}}
       | 字
-    button.btn.btn-gray v-on="click: addTask"
-      i.fa.fa
 .panel.panel-default
   .panel-heading
     | 测试任务
@@ -18,4 +17,7 @@
       p.js-len-control
         | 还可以输入
         span.js-len-count 140
+          | {{140 - content.length}}
         | 字
+    button.btn.btn-gray.add-task v-on="click: addTask"
+      i.fa.fa-plus.fa-2x

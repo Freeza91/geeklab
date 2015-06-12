@@ -32,6 +32,11 @@
   .panel-body
     .form-group
       input.form-control type="text" maxlength="15" v-model="introduction"
+    p.js-len-control
+      | 还可以输入
+      span.js-len-count v-text=""
+        | {{introduction ? (15 - introduction.length) : 15}}
+      | 字
 .panel.panel-default
   .panel-heading
     | 应用下载二维码

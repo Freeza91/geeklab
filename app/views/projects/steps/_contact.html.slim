@@ -6,7 +6,8 @@
       input.form-control type="text" maxlength="15" v-model="username"
     p.js-len-control
       | 还可以输入
-      span.js-len-count 15
+      span.js-len-count
+        | {{username ? (15 - username.length) : 15}}
       | 字
 .panel.panel-default
   .panel-heading
@@ -16,7 +17,8 @@
       input.form-control type="text" maxlength="11" v-model="mobile"
     p.js-len-control
       | 还可以输入
-      span.js-len-count 11
+      span.js-len-count
+        | {{mobile ? (11 - mobile.length) : 11}}
       | 字
 .panel.panel-default
   .panel-heading
@@ -32,5 +34,6 @@
       input.form-control type="text" maxlength="30" v-model="company"
     p.js-len-control
       | 还可以输入
-      span.js-len-count 30
+      span.js-len-count
+        | {{company ? (30 - company.length) : 30}}
       | 字

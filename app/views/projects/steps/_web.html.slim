@@ -3,10 +3,11 @@
     | 测试网址
   .panel-body
     .form-group
-      input.form-control type="text" maxlength="15" v-model="website"
+      input.form-control type="text" maxlength="15" v-model="website" v-on="keyup: textLengthCountDown($event)"
     p.js-len-control
       | 还可以输入
-      span.js-len-count 15
+      span.js-len-count
+        | {{website ? (15 - website.length) : 15}}
       | 字
 .panel.panel-default
   .panel-heading
@@ -16,5 +17,6 @@
       input.form-control type="text" maxlength="15" v-model="introduction"
     p.js-len-control
       | 还可以输入
-      span.js-len-count 15
+      span.js-len-count v-text=""
+        | {{introduction ? (15 - introduction.length) : 15}}
       | 字

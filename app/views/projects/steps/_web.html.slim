@@ -1,10 +1,11 @@
 .panel.panel-default
   .panel-heading
-    | 测试网址
-    span v-show="!validated.step_1 && !website"
+    span.name
+      | 测试网址
+    span.hint-info v-show="!validated.step_1 && !website"
       | 请填写网址
   .panel-body
-    .form-group
+    .form-group v-class="has-error: !validated.step_1 && !website"
       input.form-control type="text" maxlength="15" v-model="website"
     p.js-len-control
       | 还可以输入
@@ -13,11 +14,12 @@
       | 字
 .panel.panel-default
   .panel-heading
-    | 产品简介
-    span v-show="!validated.step_1 && !introduction"
+    span.name
+      | 产品简介
+    span.hint-info v-show="!validated.step_1 && !introduction"
       | 请填写产品简介
   .panel-body
-    .form-group
+    .form-group v-class="has-error: !validated.step_1 && !introduction"
       input.form-control type="text" maxlength="15" v-model="introduction"
     p.js-len-control
       | 还可以输入

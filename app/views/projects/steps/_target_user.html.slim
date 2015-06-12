@@ -1,21 +1,25 @@
 .panel.panel-default
   .panel-heading
-    | 测试用户个数
+    span.name
+      | 测试用户个数
   .panel-body
     #slider-user 
 .panel.panel-default
   .panel-heading
-    | 年龄范围
+    span.name
+      | 年龄范围
   .panel-body
     #slider-age 
 .panel.panel-default
   .panel-heading
-    | 年收入
+    span.name
+      | 年收入
   .panel-body
     #slider-income 
 .panel.panel-default
   .panel-heading
-    | 性别
+    span.name
+      | 性别
     label.checkbox-inline.checkbox-default.checkall
       input type="checkbox" value="checkall" v-model="checkAll.sex" v-on="click: toggleCheckAll('sex')"
       span
@@ -27,7 +31,8 @@
         | {{key}}
 .panel.panel-default
   .panel-heading
-    | 城市级别
+    span.name
+      | 城市级别
     label.checkbox-inline.checkbox-default.checkall
       input type="checkbox" value="checkall" v-model="checkAll.city" v-on="click: toggleCheckAll('city')"
       span
@@ -39,7 +44,8 @@
         | {{key}}
 .panel.panel-default
   .panel-heading
-    | 学历
+    span.name
+      | 学历
     label.checkbox-inline.checkbox-default.checkall
       input type="checkbox" value="checkall" v-model="checkAll.education" v-on="click: toggleCheckAll('education')"
       span
@@ -51,7 +57,8 @@
         | {{key}}
 .panel.panel-default
   .panel-heading
-    | 情感状况
+    span.name
+      | 情感状况
     label.checkbox-inline.checkbox-default.checkall
       input type="checkbox" value="checkall" v-model="checkAll.emotion" v-on="click: toggleCheckAll('emotion')"
       span
@@ -63,7 +70,8 @@
         | {{key}}
 .panel.panel-default
   .panel-heading
-    | 性取向
+    span.name
+      | 性取向
     label.checkbox-inline.checkbox-default.checkall
       input type="checkbox" value="checkall" v-model="checkAll.orientation" v-on="click: toggleCheckAll('orientation')"
       span
@@ -75,7 +83,8 @@
         | {{key}}
 .panel.panel-default
   .panel-heading
-    | 兴趣标签
+    span.name
+      | 兴趣标签
     label.checkbox-inline.checkbox-default.checkall
       input type="checkbox" value="checkall" v-model="checkAll.interests" v-on="click: toggleCheckAll('interests')"
       span

@@ -2,7 +2,7 @@ $(function () {
   if(!$('body').hasClass('projects_app')) {
     return false;
   }
-
+  var qrcode;
   var vm = new Vue({
     el: '.project',
     data: {
@@ -141,7 +141,7 @@ $(function () {
         {
           content: ''
         }
-      ]
+      ],
     },
     methods: {
       previousStep: previousStep,
@@ -149,6 +149,7 @@ $(function () {
       addTask: addTask,
       toggleCheckAll: toggleCheckAll,
       checkAllEffect: checkAllEffect,
+      localImageView: localImageView,
       submit: submit
     }
   });
@@ -166,8 +167,10 @@ $(function () {
   }
 
   function postData () {
-    var data = {};
+    //var data = {};
+    var data = new FormData();
     var vmData = vm.$data;
+    vm.$log(vm.$data);
 
     // 获取数据
     data.name = vmData.name;
@@ -207,19 +210,24 @@ $(function () {
     data.user_feature_attributes.income = income.join('-');
 
     data.requirement = sys;
-
-    console.log(data);
+    
+    //data.append('qr_code', qrcode)
+    data.qr_code = qrcode;
+    console.log(data, qrcode);
 
     var url = '/projects';
     $.ajax({
       url: url,
       method: 'post',
-      data: {project: data}
+      data: {project: data},
+      cache: false,
+      processData: false, //Dont't process the file
+      contentType: false,
     })
     .done(function (data, status) {
-      if(data.status === 0 && data.code === 1) {
-        location.href = '/projects'
-      }
+      //if(data.status === 0 && data.code === 1) {
+        //location.href = '/projects'
+      //}
     })
     .error(function (errors, status) {
       console.log(errors);
@@ -251,9 +259,11 @@ $(function () {
     return result;
   }
 
-  function localImageView (image, $img) {
-    var url = window.URL.createObjectURL(image);
-    $img.src = url;
+  function localImageView (event) {
+    qrcode = event.target.files[0]; 
+    var url = window.URL.createObjectURL(qrcode);
+    event.target.value = '';
+    $('#qrcode').attr('src', url);
   }
 
   function previousStep (event) {

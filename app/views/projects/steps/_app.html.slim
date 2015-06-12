@@ -48,4 +48,5 @@
     span.name
       | 应用下载二维码
   .panel-body
-    input#test type="file" accept="image/*" v-model="qrcode"
+    input type="file" accept="image/*" v-on="change: localImageView($event)"
+    img#qrcode

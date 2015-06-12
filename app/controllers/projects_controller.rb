@@ -39,22 +39,22 @@ class ProjectsController < ApplicationController
 private
 
   def project_params
-    params.require(:project).permit(:name, :profile, :device, :requirement,
-                                    :platform, :desc, :contact_name,
-                                    :qr_code, :demand,
-                                    :phone, :email, :company,
-                                    tasks_attributes: [:content],
-                                    user_feature_attributes:[
-                                      {
-                                        sex:  [], city_level: [],
-                                        emotional_status: [],
-                                        sex_orientation: [],
-                                        education: [],
-                                        interest: []
+    params.permit(:name, :profile, :device, :requirement,
+                  :platform, :desc, :contact_name,
+                  :qr_code, :demand,
+                  :phone, :email, :company,
+                  tasks_attributes: [:content],
+                  user_feature_attributes:[
+                    {
+                      sex:  [], city_level: [],
+                      emotional_status: [],
+                      sex_orientation: [],
+                      education: [],
+                      interest: []
 
-                                      },
-                                      :age, :income
-                                    ])
+                    },
+                    :age, :income
+                  ])
   end
 
   def is_pm?

@@ -3,7 +3,7 @@ $hashids = Hashids.new Settings.hashids_secret_token, 4
 class ActiveRecord::Base
 
   # 加密id做参数
-  def to_param
+  def to_param_hash
     encode_id
   end
 

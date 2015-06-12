@@ -4,9 +4,11 @@ class ProjectsController < ApplicationController
   before_action :is_pm?
 
   def index
+    @projects = current_user.to_pm.projects.includes(:tasks).includes(:user_feature)
   end
 
   def show
+    @project = current_user.to_pm.projects.includes(:tasks).includes(:user_feature).find_by(id: params[:id])
   end
 
   def web
@@ -16,15 +18,19 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    project = Project.new(project_params)
+    json = { status: 0, code: 1, msg: '' }
+    project = current_user.to_pm.projects.build(project_params)
     if project.save
-      p project.tasks
-      p project.user_feature
+      json[:msg] = 'success'
     else
-      p project.errors.full_messages
+      json[:code], json[:msg] = 0, project.errors.full_messages
     end
 
-    render :show
+    render json: json
+  end
+
+  def edit
+    @project = Project.includes(:tasks).includes(:user_feature).find_by(id: params[:id])
   end
 
   def destroy
@@ -38,10 +44,16 @@ private
                                     :qr_code, :demand,
                                     :phone, :email, :company,
                                     tasks_attributes: [:content],
-                                    user_feature_attributes: [
-                                      :sex, :income, :age, :city_level,
-                                      :education, :emotional_status,
-                                      :sex_orientation, :interest
+                                    user_feature_attributes:[
+                                      {
+                                        sex:  [], city_level: [],
+                                        emotional_status: [],
+                                        sex_orientation: [],
+                                        education: [],
+                                        interest: []
+
+                                      },
+                                      :age, :income
                                     ])
   end
 

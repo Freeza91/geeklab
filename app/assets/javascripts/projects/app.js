@@ -136,7 +136,7 @@ $(function () {
       submit: submit
     }
   });
-  
+
   function submit (event) {
     event.preventDefault();
     var data = {};
@@ -147,15 +147,15 @@ $(function () {
     data.platform = vmData.platform;
     data.device = vmData.device;
     data.profile = vmData.introduction;
-    
+
     // target user requirement
-    data.user_feature_attribute = {};
-    data.user_feature_attribute.sex = getVmCheckboxArr(vmData.sex);
-    data.user_feature_attribute.city_level = getVmCheckboxArr(vmData.city, 'index');
-    data.user_feature_attribute.education = getVmCheckboxArr(vmData.education);
-    data.user_feature_attribute.emotion_status = getVmCheckboxArr(vmData.emotion);
-    data.user_feature_attribute.sex_orientation = getVmCheckboxArr(vmData.orientation);
-    data.user_feature_attribute.interests = getVmCheckboxArr(vmData.interests);
+    data.user_feature_attributes = {};
+    data.user_feature_attributes.sex = getVmCheckboxArr(vmData.sex);
+    data.user_feature_attributes.city_level = getVmCheckboxArr(vmData.city, 'index');
+    data.user_feature_attributes.education = getVmCheckboxArr(vmData.education);
+    data.user_feature_attributes.emotional_status = getVmCheckboxArr(vmData.emotion);
+    data.user_feature_attributes.sex_orientation = getVmCheckboxArr(vmData.orientation);
+    data.user_feature_attributes.interest = getVmCheckboxArr(vmData.interests);
 
     data.desc = vmData.situation;
     data.tasks_attributes = [];
@@ -169,15 +169,15 @@ $(function () {
     data.phone = vmData.mobile;
     data.email= vmData.email;
     data.company = vmData.company;
- 
+
     var userCount = $('#slider-user').val();
     var age = $('#slider-age').val();
     var income = $('#slider-income').val();
     var sys = data.platform === 'ios' ? $('#slider-ios').val() : $('#slider-android').val();
     data.demand = userCount;
 
-    data.user_feature_attribute.age = age.join('-');
-    data.user_feature_attribute.income = income.join('-');
+    data.user_feature_attributes.age = age.join('-');
+    data.user_feature_attributes.income = income.join('-');
 
     data.requirement = sys;
 
@@ -197,14 +197,14 @@ $(function () {
     });
   }
 
-  /* 
+  /*
    * @param valueType 返回值的类型
    */
   function getVmCheckboxArr (vmArr, valueType) {
     valueType = valueType || 'value';
     var result = [];
     switch(valueType) {
-      case 'index': 
+      case 'index':
         vmArr.forEach(function (item, index) {
           if(item.checked) {
             result.push(index + 1);

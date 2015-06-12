@@ -12,9 +12,9 @@
   .panel-heading
     | 用户系统要求
   .panel-body
-    .slider-sys#slider-android
+    .slider-sys#slider-android v-show="platform === 'android'"
       span.sys-value
-    .slider-sys#slider-ios
+    .slider-sys#slider-ios v-show="platform === 'ios'"
       span.sys-value
 .panel.panel-default
   .panel-heading
@@ -29,6 +29,8 @@
 .panel.panel-default
   .panel-heading
     | 产品简介
+    span v-show="!validated.step_1 && !introduction"
+      | 请输入产品简介
   .panel-body
     .form-group
       input.form-control type="text" maxlength="15" v-model="introduction"

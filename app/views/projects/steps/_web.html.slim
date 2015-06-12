@@ -1,9 +1,11 @@
 .panel.panel-default
   .panel-heading
     | 测试网址
+    span v-show="!validated.step_1 && !website"
+      | 请填写网址
   .panel-body
     .form-group
-      input.form-control type="text" maxlength="15" v-model="website" v-on="keyup: textLengthCountDown($event)"
+      input.form-control type="text" maxlength="15" v-model="website"
     p.js-len-control
       | 还可以输入
       span.js-len-count
@@ -12,6 +14,8 @@
 .panel.panel-default
   .panel-heading
     | 产品简介
+    span v-show="!validated.step_1 && !introduction"
+      | 请填写产品简介
   .panel-body
     .form-group
       input.form-control type="text" maxlength="15" v-model="introduction"

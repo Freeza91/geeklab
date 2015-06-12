@@ -7,6 +7,12 @@ $(function () {
     el: '.project',
     data: {
       step: 1,
+      validated: {
+        step_1: true,
+        step_2: true,
+        step_3: true,
+        step_4: true
+      },
       platform: 'ios',
       device: 'tablet',
       sex: [
@@ -137,8 +143,19 @@ $(function () {
     }
   });
 
-  function submit (event) {
+  function submit(event) {
     event.preventDefault();
+
+    if(vm.name && vm.username && vm.mobile && vm.email && vm.company) {
+      vm.step_4 = true;
+      postData();
+    } else {
+      vm.validated.step_4 = false;
+      return false;
+    }
+  }
+
+  function postData () {
     var data = {};
     var vmData = vm.$data;
 
@@ -190,7 +207,9 @@ $(function () {
       data: {project: data}
     })
     .done(function (data, status) {
-
+      if(data.status === 0 && data.code === 1) {
+        location.href = '/projects'
+      }
     })
     .error(function (errors, status) {
       console.log(errors);
@@ -233,7 +252,28 @@ $(function () {
   }
   function nextStep (event) {
     event.preventDefault();
-    vm.step++;
+    switch(vm.step) {
+      case 1:
+        if(vm.introduction) {
+          vm.validated.step_1 = true;
+          vm.step++;
+        } else {
+          vm.validated.step_1 = false;
+        }
+      break;
+      case 2:
+        vm.step++;
+      break;
+      case 3:
+        if(vm.situation && vm.tasks[0].content) {
+          vm.validated.step_3 = true;
+          vm.step++;
+        } else {
+          vm.validated.step_3 = false;
+        }
+      break;
+    }
+    return false;
   }
   function addTask (event) {
     event.preventDefault();

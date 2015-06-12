@@ -43,6 +43,7 @@ $(function () {
       }
     });
   }
+
   $('#slider-user').noUiSlider({
     start: 3,
     range: {

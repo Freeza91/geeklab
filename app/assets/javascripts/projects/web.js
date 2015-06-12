@@ -7,6 +7,20 @@ $(function () {
     el: '.project',
     data: {
       step: 1,
+      validated: {
+        step_1: true,
+        step_2: true,
+        step_3: true,
+        step_4: true
+      },
+      checkAll: {
+        sex: true,
+        city: true,
+        education: true,
+        emotion: true,
+        orientation: true,
+        interests: false
+      },
       sex: [
         {
           key: '男',
@@ -131,6 +145,8 @@ $(function () {
       previousStep: previousStep,
       nextStep: nextStep,
       addTask: addTask,
+      toggleCheckAll: toggleCheckAll,
+      checkAllEffect: checkAllEffect,
       submit: submit
     }
   });
@@ -138,6 +154,16 @@ $(function () {
   function submit(event) {
     event.preventDefault();
 
+    if(vm.name && vm.username && vm.mobile && vm.email && vm.company) {
+      vm.step_4 = true;
+      postData();
+    } else {
+      vm.validated.step_4 = false;
+      return false;
+    }
+  }
+
+  function postData () {
     var data = {};
     var vmData = vm.$data;
 
@@ -191,7 +217,9 @@ $(function () {
       data: {project: data}
     })
     .done(function (data, status) {
-
+      if(data.status === 0 && data.code === 1) {
+        location.href = '/projects'
+      }
     })
     .error(function (errors, status) {
       console.log(errors);
@@ -227,15 +255,65 @@ $(function () {
   function previousStep (event) {
     event.preventDefault();
     vm.step--;
+    return false;
   }
   function nextStep (event) {
     event.preventDefault();
-    vm.step++;
+    switch(vm.step) {
+      case 1:
+        if(vm.website && vm.introduction) {
+          vm.validated.step_1 = true;
+          vm.step++;
+        } else {
+          vm.validated.step_1 = false;
+        }
+      break;
+      case 2:
+        vm.step++;
+      break;
+      case 3:
+        if(vm.situation && vm.tasks[0].content) {
+          vm.validated.step_3 = true;
+          vm.step++;
+        } else {
+          vm.validated.step_3 = false;
+        }
+      break;
+    }
+    return false;
   }
   function addTask (event) {
     event.preventDefault();
     vm.tasks.push({
       content: ''
     });
+  }
+
+  function toggleCheckAll (category) {
+    var checkbox = vm[category];
+    if(vm.checkAll[category]) {
+      checkbox.forEach(function (item) {
+        item.checked = true;
+      });
+    } else {
+      checkbox.forEach(function (item) {
+        item.checked = false;
+      });
+    }
+  }
+
+  function checkAllEffect (category, currChecked) {
+    if(!currChecked) {
+      vm.checkAll[category] = false;
+    } else {
+      var checkbox = vm[category];
+      if(checkbox.every(isCheck)) {
+        vm.checkAll[category] = true;
+      }
+    }
+  }
+
+  function isCheck(item) {
+    return item.checked;
   }
 });

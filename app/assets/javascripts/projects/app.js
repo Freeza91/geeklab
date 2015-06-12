@@ -170,7 +170,6 @@ $(function () {
     //var data = {};
     var data = new FormData();
     var vmData = vm.$data;
-    vm.$log(vm.$data);
 
     // 获取数据
     //data.name = vmData.name;
@@ -212,7 +211,7 @@ $(function () {
         content: task.content
       });
     });
-    data.append('tasks_attributes', tasks_attributes);
+    data.append('tasks_attributes', JSON.stringify(tasks_attributes));
 
     //data.contact_name = vmData.username;
     //data.phone = vmData.mobile;
@@ -236,10 +235,10 @@ $(function () {
     data.append('requirement', sys);
     user_feature_attributes.age = age.join('-');
     user_feature_attributes.income = income.join('-');
-    data.append('user_feature_attributes', user_feature_attributes);
+    data.append('user_feature_attributes', JSON.stringify(user_feature_attributes));
     
     data.append('qr_code', qrcode)
-    console.log(data, qrcode);
+    console.log(data);
 
     var url = '/projects';
     $.ajax({

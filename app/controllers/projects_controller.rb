@@ -7,6 +7,7 @@ class ProjectsController < ApplicationController
   end
 
   def show
+    @project = Project.find_by(id: params[:id]).includes(:tasks).includes(:user_feature)
   end
 
   def web
@@ -16,15 +17,15 @@ class ProjectsController < ApplicationController
   end
 
   def create
+    json = { status: 0, code: 1, msg: '' }
     project = Project.new(project_params)
     if project.save
-      p project.tasks
-      p project.user_feature
+      json[:msg] = 'success'
     else
-      p project.errors.full_messages
+      json[:code], json[:msg] = 0, project.errors.full_messages
     end
 
-    render :show
+    render json: json
   end
 
   def destroy
@@ -38,10 +39,16 @@ private
                                     :qr_code, :demand,
                                     :phone, :email, :company,
                                     tasks_attributes: [:content],
-                                    user_feature_attributes: [
-                                      :sex, :income, :age, :city_level,
-                                      :education, :emotional_status,
-                                      :sex_orientation, :interest
+                                    user_feature_attributes:[
+                                      {
+                                        sex:  [], city_level: [],
+                                        emotional_status: [],
+                                        sex_orientation: [],
+                                        education: [],
+                                        interest: []
+
+                                      },
+                                      :age, :income
                                     ])
   end
 

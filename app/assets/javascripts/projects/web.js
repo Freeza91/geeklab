@@ -134,7 +134,7 @@ $(function () {
       submit: submit
     }
   });
-  
+
   function submit(event) {
     event.preventDefault();
 
@@ -149,15 +149,15 @@ $(function () {
     data.name = vmData.name;
     data.platform = vmData.website;
     data.profile = vmData.introduction;
-    
+
     // target user requirement
     data.user_feature_attributes = {};
     data.user_feature_attributes.sex = getVmCheckboxArr(vmData.sex);
     data.user_feature_attributes.city_level = getVmCheckboxArr(vmData.city, 'index');
     data.user_feature_attributes.education = getVmCheckboxArr(vmData.education);
-    data.user_feature_attributes.emotion_status = getVmCheckboxArr(vmData.emotion);
+    data.user_feature_attributes.emotional_status = getVmCheckboxArr(vmData.emotion);
     data.user_feature_attributes.sex_orientation = getVmCheckboxArr(vmData.orientation);
-    data.user_feature_attributes.interests = getVmCheckboxArr(vmData.interests);
+    data.user_feature_attributes.interest = getVmCheckboxArr(vmData.interests);
 
     // tasks
     data.desc = vmData.situation;
@@ -173,17 +173,17 @@ $(function () {
     data.phone = vmData.mobile;
     data.email= vmData.email;
     data.company = vmData.company;
- 
+
     var userCount = $('#slider-user').val();
     var age = $('#slider-age').val();
     var income = $('#slider-income').val();
     data.demand = userCount;
 
-    data.user_feature_attribute.age = age.join('-');
-    data.user_feature_attribute.income = income.join('-');
+    data.user_feature_attributes.age = age.join('-');
+    data.user_feature_attributes.income = income.join('-');
 
     console.log(data);
-    
+
     var url = '/projects';
     $.ajax({
       url: url,
@@ -198,14 +198,14 @@ $(function () {
     });
   }
 
-  /* 
+  /*
    * @param valueType 返回值的类型
    */
   function getVmCheckboxArr (vmArr, valueType) {
     valueType = valueType || 'value';
     var result = [];
     switch(valueType) {
-      case 'index': 
+      case 'index':
         vmArr.forEach(function (item, index) {
           if(item.checked) {
             result.push(index + 1);

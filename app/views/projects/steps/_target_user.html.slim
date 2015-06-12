@@ -17,71 +17,71 @@
   .panel-heading
     | 性别
     label.checkbox-inline.checkbox-default.checkall
-      input type="checkbox" value="checkall"
+      input type="checkbox" value="checkall" v-model="checkAll.sex" v-on="click: toggleCheckAll('sex')"
       span
         | 全选
   .panel-body
     label.checkbox-inline.checkbox-default v-repeat="sex"
-      input type="checkbox" value="male" v-model="checked"
+      input type="checkbox" v-model="checked" v-on="click: checkAllEffect('sex', checked)"
       span
         | {{key}}
 .panel.panel-default
   .panel-heading
     | 城市级别
     label.checkbox-inline.checkbox-default.checkall
-      input type="checkbox" value="checkall"
+      input type="checkbox" value="checkall" v-model="checkAll.city" v-on="click: toggleCheckAll('city')"
       span
         | 全选
   .panel-body
     label.checkbox-inline.checkbox-default v-repeat="city"
-      input type="checkbox" value="male" v-model="checked"
+      input type="checkbox" v-model="checked" v-on="click: checkAllEffect('city', checked)"
       span
         | {{key}}
 .panel.panel-default
   .panel-heading
     | 学历
     label.checkbox-inline.checkbox-default.checkall
-      input type="checkbox" value="checkall"
+      input type="checkbox" value="checkall" v-model="checkAll.education" v-on="click: toggleCheckAll('education')"
       span
         | 全选
   .panel-body
     label.checkbox-inline.checkbox-default v-repeat="education"
-      input type="checkbox" value="male" v-model="checked"
+      input type="checkbox" v-model="checked" v-on="click: checkAllEffect('education', checked)"
       span
         | {{key}}
 .panel.panel-default
   .panel-heading
     | 情感状况
     label.checkbox-inline.checkbox-default.checkall
-      input type="checkbox" value="checkall"
+      input type="checkbox" value="checkall" v-model="checkAll.emotion" v-on="click: toggleCheckAll('emotion')"
       span
         | 全选
   .panel-body
     label.checkbox-inline.checkbox-default v-repeat="emotion"
-      input type="checkbox" value="male" v-model="checked"
+      input type="checkbox" v-model="checked" v-on="click: checkAllEffect('emotion', checked)"
       span
         | {{key}}
 .panel.panel-default
   .panel-heading
     | 性取向
     label.checkbox-inline.checkbox-default.checkall
-      input type="checkbox" value="checkall"
+      input type="checkbox" value="checkall" v-model="checkAll.orientation" v-on="click: toggleCheckAll('orientation')"
       span
         | 全选
   .panel-body
     label.checkbox-inline.checkbox-default v-repeat="orientation"
-      input type="checkbox" value="male" v-model="checked"
+      input type="checkbox" v-model="checked" v-on="click: checkAllEffect('orientation', checked)"
       span
         | {{key}}
 .panel.panel-default
   .panel-heading
     | 兴趣标签
     label.checkbox-inline.checkbox-default.checkall
-      input type="checkbox" value="checkall"
+      input type="checkbox" value="checkall" v-model="checkAll.interests" v-on="click: toggleCheckAll('interests')"
       span
         | 全选
   .panel-body
     label.checkbox-inline.checkbox-default v-repeat="interests"
-      input type="checkbox" value="key" v-model="checked"
+      input type="checkbox" value="key" v-model="checked" v-on="click: checkAllEffect('interests', checked)"
       span
         | {{key}}

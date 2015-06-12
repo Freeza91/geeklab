@@ -13,8 +13,13 @@ $(function () {
         step_3: true,
         step_4: true
       },
-      test: {
-        name: '123'
+      checkAll: {
+        sex: true,
+        city: true,
+        education: true,
+        emotion: true,
+        orientation: true,
+        interests: false
       },
       sex: [
         {
@@ -140,6 +145,8 @@ $(function () {
       previousStep: previousStep,
       nextStep: nextStep,
       addTask: addTask,
+      toggleCheckAll: toggleCheckAll,
+      checkAllEffect: checkAllEffect,
       submit: submit
     }
   });
@@ -282,4 +289,31 @@ $(function () {
     });
   }
 
+  function toggleCheckAll (category) {
+    var checkbox = vm[category];
+    if(vm.checkAll[category]) {
+      checkbox.forEach(function (item) {
+        item.checked = true;
+      });
+    } else {
+      checkbox.forEach(function (item) {
+        item.checked = false;
+      });
+    }
+  }
+
+  function checkAllEffect (category, currChecked) {
+    if(!currChecked) {
+      vm.checkAll[category] = false;
+    } else {
+      var checkbox = vm[category];
+      if(checkbox.every(isCheck)) {
+        vm.checkAll[category] = true;
+      }
+    }
+  }
+
+  function isCheck(item) {
+    return item.checked;
+  }
 });

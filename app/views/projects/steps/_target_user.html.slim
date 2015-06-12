@@ -81,7 +81,13 @@
       span
         | 全选
   .panel-body
-    label.checkbox-inline.checkbox-default v-repeat="interests"
-      input type="checkbox" value="key" v-model="checked" v-on="click: checkAllEffect('interests', checked)"
-      span
-        | {{key}}
+    .row
+      label.checkbox-inline.checkbox-default v-repeat="interests.slice(0, 4)"
+        input type="checkbox" value="key" v-model="checked" v-on="click: checkAllEffect('interests', checked)"
+        span
+          | {{key}}
+    .row style="margin-top: 15px"
+      label.checkbox-inline.checkbox-default v-repeat="interests.slice(4)"
+        input type="checkbox" value="key" v-model="checked" v-on="click: checkAllEffect('interests', checked)"
+        span
+          | {{key}}

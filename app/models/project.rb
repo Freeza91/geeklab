@@ -33,7 +33,8 @@ class Project < ActiveRecord::Base
   end
 
   def prepare_assign
-    StartAssignJob.perform_later(id) if approved && id != Project.first.id
+    StartAssignJob.perform_later(id) if approved && expired_at.to_i < Time.now.to_i &&
+                                        id != Project.first.id
   end
 
 end

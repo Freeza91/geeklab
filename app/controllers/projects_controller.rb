@@ -4,10 +4,11 @@ class ProjectsController < ApplicationController
   before_action :is_pm?
 
   def index
+    @projects = current_user.to_pm.projects.includes(:tasks).includes(:user_feature)
   end
 
   def show
-    @project = Project.find_by(id: params[:id]).includes(:tasks).includes(:user_feature)
+    @project = current_user.to_pm.projects.includes(:tasks).includes(:user_feature).find_by(id: params[:id])
   end
 
   def web
@@ -18,7 +19,7 @@ class ProjectsController < ApplicationController
 
   def create
     json = { status: 0, code: 1, msg: '' }
-    project = Project.new(project_params)
+    project = current_user.to_pm.projects.build(project_params)
     if project.save
       json[:msg] = 'success'
     else
@@ -26,6 +27,10 @@ class ProjectsController < ApplicationController
     end
 
     render json: json
+  end
+
+  def edit
+    @project = Project.includes(:tasks).includes(:user_feature).find_by(id: params[:id])
   end
 
   def destroy

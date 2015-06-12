@@ -151,13 +151,13 @@ $(function () {
     data.profile = vmData.introduction;
     
     // target user requirement
-    data.user_feature_attribute = {};
-    data.user_feature_attribute.sex = getVmCheckboxArr(vmData.sex);
-    data.user_feature_attribute.city_level = getVmCheckboxArr(vmData.city, 'index');
-    data.user_feature_attribute.education = getVmCheckboxArr(vmData.education);
-    data.user_feature_attribute.emotion_status = getVmCheckboxArr(vmData.emotion);
-    data.user_feature_attribute.sex_orientation = getVmCheckboxArr(vmData.orientation);
-    data.user_feature_attribute.interests = getVmCheckboxArr(vmData.interests);
+    data.user_feature_attributes = {};
+    data.user_feature_attributes.sex = getVmCheckboxArr(vmData.sex);
+    data.user_feature_attributes.city_level = getVmCheckboxArr(vmData.city, 'index');
+    data.user_feature_attributes.education = getVmCheckboxArr(vmData.education);
+    data.user_feature_attributes.emotion_status = getVmCheckboxArr(vmData.emotion);
+    data.user_feature_attributes.sex_orientation = getVmCheckboxArr(vmData.orientation);
+    data.user_feature_attributes.interests = getVmCheckboxArr(vmData.interests);
 
     // tasks
     data.desc = vmData.situation;

@@ -1,6 +1,7 @@
 .panel.panel-default
   .panel-heading
-    | 选择测试平台
+    span.name
+      | 选择测试平台
   .panel-body
     label.radio-inline
       input type="radio" name="platform" value="android" v-model="platform"
@@ -10,15 +11,17 @@
       i.fa.fa-apple.fa-5x
 .panel.panel-default
   .panel-heading
-    | 用户系统要求
+    span.name
+      | 用户系统要求
   .panel-body
-    .slider-sys#slider-android
+    .slider-sys#slider-android v-show="platform === 'android'"
       span.sys-value
-    .slider-sys#slider-ios
+    .slider-sys#slider-ios v-show="platform === 'ios'"
       span.sys-value
 .panel.panel-default
   .panel-heading
-    | 用户应该使用什么设备
+    span.name
+      | 用户应该使用什么设备
   .panel-body
     label.radio-inline
       input type="radio" name="device" value="tablet" v-model="device"
@@ -28,12 +31,22 @@
       i.fa.fa-mobile.fa-5x
 .panel.panel-default
   .panel-heading
-    | 产品简介
+    span.name
+      | 产品简介
+    span.hint-info v-show="!validated.step_1 && !introduction"
+      | 请输入产品简介
   .panel-body
-    .form-group
+    .form-group v-class="has-error: !validated.step_1 && !introduction"
       input.form-control type="text" maxlength="15" v-model="introduction"
+    p.js-len-control
+      | 还可以输入
+      span.js-len-count v-text=""
+        | {{introduction ? (15 - introduction.length) : 15}}
+      | 字
 .panel.panel-default
   .panel-heading
-    | 应用下载二维码
+    span.name
+      | 应用下载二维码
   .panel-body
-    input#test type="file" accept="image/*" v-model="qrcode"
+    input type="file" accept="image/*" v-on="change: localImageView($event)"
+    img#qrcode

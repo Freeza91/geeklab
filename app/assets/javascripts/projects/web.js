@@ -7,6 +7,20 @@ $(function () {
     el: '.project',
     data: {
       step: 1,
+      validated: {
+        step_1: true,
+        step_2: true,
+        step_3: true,
+        step_4: true
+      },
+      checkAll: {
+        sex: true,
+        city: true,
+        education: true,
+        emotion: true,
+        orientation: true,
+        interests: false
+      },
       sex: [
         {
           key: '男',
@@ -131,6 +145,8 @@ $(function () {
       previousStep: previousStep,
       nextStep: nextStep,
       addTask: addTask,
+      toggleCheckAll: toggleCheckAll,
+      checkAllEffect: checkAllEffect,
       submit: submit
     }
   });
@@ -138,49 +154,90 @@ $(function () {
   function submit(event) {
     event.preventDefault();
 
-    var data = {};
+    if(vm.name && vm.username && vm.mobile && vm.email && vm.company) {
+      vm.step_4 = true;
+      postData();
+    } else {
+      vm.validated.step_4 = false;
+      return false;
+    }
+  }
+
+  function postData () {
+    //var data = {};
+    var data = new FormData();
     var vmData = vm.$data;
 
     // 不存在的数据，为了统一
-    data.device = 'web';
-    data.requirement = "all";
+    //data.device = 'web';
+    //data.requirement = "all";
+    data.append('device', 'web');
+    data.append('requirement', 'all');
+
     // 获取数据
     // project basic info
-    data.name = vmData.name;
-    data.platform = vmData.website;
-    data.profile = vmData.introduction;
+    //data.name = vmData.name;
+    //data.platform = vmData.website;
+    //data.profile = vmData.introduction;
+    data.append('name', vmData.name);
+    data.append('platform', vmData.platform);
+    data.append('profile', vmData.profile);
 
     // target user requirement
-    data.user_feature_attributes = {};
-    data.user_feature_attributes.sex = getVmCheckboxArr(vmData.sex);
-    data.user_feature_attributes.city_level = getVmCheckboxArr(vmData.city, 'index');
-    data.user_feature_attributes.education = getVmCheckboxArr(vmData.education);
-    data.user_feature_attributes.emotional_status = getVmCheckboxArr(vmData.emotion);
-    data.user_feature_attributes.sex_orientation = getVmCheckboxArr(vmData.orientation);
-    data.user_feature_attributes.interest = getVmCheckboxArr(vmData.interests);
+    //data.user_feature_attributes = {};
+    //data.user_feature_attributes.sex = getVmCheckboxArr(vmData.sex);
+    //data.user_feature_attributes.city_level = getVmCheckboxArr(vmData.city, 'index');
+    //data.user_feature_attributes.education = getVmCheckboxArr(vmData.education);
+    //data.user_feature_attributes.emotional_status = getVmCheckboxArr(vmData.emotion);
+    //data.user_feature_attributes.sex_orientation = getVmCheckboxArr(vmData.orientation);
+    //data.user_feature_attributes.interest = getVmCheckboxArr(vmData.interests);
+    var user_feature_attributes = {};
+    user_feature_attributes.sex = getVmCheckboxArr(vmData.sex);
+    user_feature_attributes.city_level = getVmCheckboxArr(vmData.city, 'index');
+    user_feature_attributes.education = getVmCheckboxArr(vmData.education);
+    user_feature_attributes.emotional_status = getVmCheckboxArr(vmData.emotion);
+    user_feature_attributes.sex_orientation = getVmCheckboxArr(vmData.orientation);
+    user_feature_attributes.interest = getVmCheckboxArr(vmData.interests);
 
     // tasks
-    data.desc = vmData.situation;
-    data.tasks_attributes = [];
+    //data.desc = vmData.situation;
+    //data.tasks_attributes = [];
+    //vmData.tasks.forEach(function (task) {
+      //data.tasks_attributes.push({
+        //content: task.content
+      //});
+    //});
+    data.append('desc', vmData.situation);
+    var tasks_attributes = [];
     vmData.tasks.forEach(function (task) {
-      data.tasks_attributes.push({
+      tasks_attributes.push({
         content: task.content
       });
     });
+    data.append('tasks_attributes', JSON.stringify(tasks_attributes));
 
     // contact info
-    data.contact_name = vmData.username;
-    data.phone = vmData.mobile;
-    data.email= vmData.email;
-    data.company = vmData.company;
+    //data.contact_name = vmData.username;
+    //data.phone = vmData.mobile;
+    //data.email= vmData.email;
+    //data.company = vmData.company;
+    data.append('contact_name', vmData.username);
+    data.append('phone', vmData.mobile);
+    data.append('email', vmData.email);
+    data.append('company', vmData.company);
 
     var userCount = $('#slider-user').val();
     var age = $('#slider-age').val();
     var income = $('#slider-income').val();
-    data.demand = userCount;
 
-    data.user_feature_attributes.age = age.join('-');
-    data.user_feature_attributes.income = income.join('-');
+    //data.demand = userCount;
+    //data.user_feature_attributes.age = age.join('-');
+    //data.user_feature_attributes.income = income.join('-');
+
+    data.append('demand', userCount);
+    user_feature_attributes.age = age.join('-');
+    user_feature_attributes.income = income.join('-');
+    data.append('user_feature_attributes', JSON.stringify(user_feature_attributes));
 
     console.log(data);
 
@@ -188,10 +245,16 @@ $(function () {
     $.ajax({
       url: url,
       method: 'post',
-      data: {project: data}
+      //data: {project: data}
+      data: data,
+      cache: false,
+      processData: false, //Dont't process the file
+      contentType: false,
     })
     .done(function (data, status) {
-
+      if(data.status === 0 && data.code === 1) {
+        location.href = '/projects'
+      }
     })
     .error(function (errors, status) {
       console.log(errors);
@@ -227,15 +290,65 @@ $(function () {
   function previousStep (event) {
     event.preventDefault();
     vm.step--;
+    return false;
   }
   function nextStep (event) {
     event.preventDefault();
-    vm.step++;
+    switch(vm.step) {
+      case 1:
+        if(vm.website && vm.introduction) {
+          vm.validated.step_1 = true;
+          vm.step++;
+        } else {
+          vm.validated.step_1 = false;
+        }
+      break;
+      case 2:
+        vm.step++;
+      break;
+      case 3:
+        if(vm.situation && vm.tasks[0].content) {
+          vm.validated.step_3 = true;
+          vm.step++;
+        } else {
+          vm.validated.step_3 = false;
+        }
+      break;
+    }
+    return false;
   }
   function addTask (event) {
     event.preventDefault();
     vm.tasks.push({
       content: ''
     });
+  }
+
+  function toggleCheckAll (category) {
+    var checkbox = vm[category];
+    if(vm.checkAll[category]) {
+      checkbox.forEach(function (item) {
+        item.checked = true;
+      });
+    } else {
+      checkbox.forEach(function (item) {
+        item.checked = false;
+      });
+    }
+  }
+
+  function checkAllEffect (category, currChecked) {
+    if(!currChecked) {
+      vm.checkAll[category] = false;
+    } else {
+      var checkbox = vm[category];
+      if(checkbox.every(isCheck)) {
+        vm.checkAll[category] = true;
+      }
+    }
+  }
+
+  function isCheck(item) {
+    return item.checked;
   }
 });

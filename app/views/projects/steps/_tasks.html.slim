@@ -1,21 +1,30 @@
 .panel.panel-default
   .panel-heading
-    | 测试情景
+    span.name
+      | 测试情景
+    span.hint-info v-show="!validated.step_3 && !situation"
+      | 请填写测试情景
   .panel-body
-    textarea.form-control v-model="situation"
+    .form-group v-class="has-error: !validated.step_3 && !situation"
+      textarea.form-control v-model="situation"
     p.js-len-control
       | 还可以输入
-      span.js-len-count 140
+      span.js-len-count
+        | {{situation ? (140 - situation.length) : 140}}
       | 字
-    button.btn.btn-gray v-on="click: addTask"
-      i.fa.fa
 .panel.panel-default
   .panel-heading
-    | 测试任务
+    span.name
+      | 测试任务
+    span.hint-info v-show="!validated.step_3 && !tasks[0].content"
+      | 请填写测试任务
   .panel-body
-    .task v-repeat="tasks"
+    .form-group v-repeat="tasks" v-class="has-error: !validated.step_3 && !content"
       textarea.form-control v-model="content"
       p.js-len-control
         | 还可以输入
-        span.js-len-count 140
+        span.js-len-count
+          | {{140 - content.length}}
         | 字
+    button.btn.btn-gray.add-task v-on="click: addTask"
+      i.fa.fa-plus.fa-2x

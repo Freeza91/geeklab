@@ -1,36 +1,51 @@
 .panel.panel-default
   .panel-heading
-    | 姓名
+    span.name
+      | 姓名
+    span.hint-info v-show="!validated.step_4 && !username"
+      | 请填写姓名
   .panel-body
-    .form-group
+    .form-group v-class="has-error: !validated.step_4 && !username"
       input.form-control type="text" maxlength="15" v-model="username"
     p.js-len-control
       | 还可以输入
-      span.js-len-count 15
+      span.js-len-count
+        | {{username ? (15 - username.length) : 15}}
       | 字
 .panel.panel-default
   .panel-heading
-    | 手机
+    span.name
+      | 手机
+    span.hint-info v-show="!validated.step_4 && !mobile"
+      | 请填写手机
   .panel-body
-    .form-group
+    .form-group v-class="has-error: !validated.step_4 && !mobile"
       input.form-control type="text" maxlength="11" v-model="mobile"
     p.js-len-control
       | 还可以输入
-      span.js-len-count 11
+      span.js-len-count
+        | {{mobile ? (11 - mobile.length) : 11}}
       | 字
 .panel.panel-default
   .panel-heading
-    | 邮箱
+    span.name
+      | 邮箱
+    span.hint-info v-show="!validated.step_4 && !email"
+      | 请填写邮箱
   .panel-body
-    .form-group
+    .form-group v-class="has-error: !validated.step_4 && !email"
       input.form-control type="email" v-model="email"
 .panel.panel-default
   .panel-heading
-    | 公司
+    span.name
+      | 公司
+    span.hint-info v-show="!validated.step_4 && !company"
+      | 请填写公司
   .panel-body
-    .form-group
+    .form-group v-class="has-error: !validated.step_4 && !company"
       input.form-control type="text" maxlength="30" v-model="company"
     p.js-len-control
       | 还可以输入
-      span.js-len-count 30
+      span.js-len-count
+        | {{company ? (30 - company.length) : 30}}
       | 字

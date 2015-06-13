@@ -205,12 +205,19 @@ $(function () {
       //});
     //});
     data.append('desc', vmData.situation);
-    var tasks_attributes = [];
-    vmData.tasks.forEach(function (task) {
-      tasks_attributes.push({
-        content: task.content
-      });
-    });
+    var tasks_attributes = {};
+
+    for(var i=0; i<vmData.tasks.length; i++){
+      content = vmData.tasks[i];
+      tasks_attributes[i] = {};
+      tasks_attributes[i] = content;
+    }
+
+    // vmData.tasks.forEach(function (task) {
+    //   tasks_attributes.push({
+    //     content: task.content
+    //   });
+    // });
     data.append('tasks_attributes', JSON.stringify(tasks_attributes));
 
     //data.contact_name = vmData.username;
@@ -236,7 +243,7 @@ $(function () {
     user_feature_attributes.age = age.join('-');
     user_feature_attributes.income = income.join('-');
     data.append('user_feature_attributes', JSON.stringify(user_feature_attributes));
-    
+
     data.append('qr_code', qrcode)
     console.log(data);
 
@@ -286,7 +293,7 @@ $(function () {
   }
 
   function localImageView (event) {
-    qrcode = event.target.files[0]; 
+    qrcode = event.target.files[0];
     var url = window.URL.createObjectURL(qrcode);
     event.target.value = '';
     $('#qrcode').attr('src', url);

@@ -25,6 +25,9 @@
 // 引入noUiSlider, a range slider plugin
 //= require jquery.nouislider
 
+// html5sortable
+//= require jquery.sortable
+
 // 引入 表单验证
 //= require form.valid
 

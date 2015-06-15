@@ -1,10 +1,12 @@
 class Project < ActiveRecord::Base
 
   validates :name, :profile, :platform, :desc,
-            :requirement, :device, :qr_code,
-            # :expired_at,
+            :requirement, :device,
+            # :expired_at
             :contact_name, :phone, :email, :company,
             presence: true
+
+  validates_presence_of :qr_code, :if => Proc.new { |qr| not device == 'web' }
 
   has_many :assignments,   inverse_of: :project
   has_many :tasks,         inverse_of: :project

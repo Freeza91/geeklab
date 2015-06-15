@@ -310,7 +310,14 @@ $(function () {
         }
       break;
       case 2:
-        vm.step++;
+        var cates = ['sex', 'city', 'education', 'emotion', 'orientation'];
+        vm.validated.step_2 = cates.every(function (cate) {
+          vm.hasChecked[cate] = vm[cate].every(isCheck);
+          return vm.hasChecked[cate];
+        });
+        if(vm.validated.step_2) {
+          vm.step++;
+        }
       break;
       case 3:
         if(vm.situation && vm.tasks[0].content) {

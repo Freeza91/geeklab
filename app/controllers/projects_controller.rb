@@ -20,15 +20,8 @@ class ProjectsController < ApplicationController
   def create
     json = { status: 0, code: 1, msg: '' }
     project = current_user.to_pm.projects.build(project_params)
-    if project.save
-      json[:msg] = 'success'
-      p project.tasks
-      p project.user_feature
-    else
-      p project.errors.full_messages
-      json[:code], json[:msg] = 0, project.errors.full_messages
-    end
 
+    json[:code], json[:msg] = 0, project.errors.full_messages unless project.save
 
     render json: json
   end

@@ -188,7 +188,7 @@ $(function () {
     data.append('name', vmData.name);
     data.append('platform', vmData.platform);
     data.append('device', vmData.device);
-    data.append('profile', vmData.profile);
+    data.append('profile', vmData.introduction);
 
     // target user requirement
     //data.user_feature_attributes = {};
@@ -265,9 +265,9 @@ $(function () {
       contentType: false,
     })
     .done(function (data, status) {
-      //if(data.status === 0 && data.code === 1) {
-        //location.href = '/projects'
-      //}
+      if(data.status === 0 && data.code === 1) {
+        location.href = '/projects'
+      }
     })
     .error(function (errors, status) {
       console.log(errors);

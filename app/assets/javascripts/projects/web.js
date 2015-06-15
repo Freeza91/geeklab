@@ -145,6 +145,7 @@ $(function () {
       previousStep: previousStep,
       nextStep: nextStep,
       addTask: addTask,
+      deleteTask: deleteTask,
       toggleCheckAll: toggleCheckAll,
       checkAllEffect: checkAllEffect,
       submit: submit
@@ -327,6 +328,12 @@ $(function () {
     vm.tasks.push({
       content: ''
     });
+    updateSort();
+  }
+
+  function deleteTask (task, event) {
+    event.preventDefault();
+    vm.tasks.$remove(task.$index);
   }
 
   function toggleCheckAll (category) {
@@ -356,9 +363,20 @@ $(function () {
   function isCheck(item) {
     return item.checked;
   }
-
   // init task sortable
-  $('.sortable').sortable().bind('sortupdate', function (event) {
-    console.log(event.target)
-  });
+  function initSortable () {
+    $('.sortable').sortable({
+      handle: '.drag-handle'
+    });
+  }
+  initSortable ();
+
+  // 动态插入task之后的拖动
+  function updateSort () {
+    $('.sortable').on('DOMNodeInserted', function () {
+      initSortable();
+      $('.sortable').unbind('DOMNodeInserted');
+    });
+  }
+
 });

@@ -85,10 +85,10 @@
   .panel-heading
     span.name
       | 兴趣标签
-    label.checkbox-inline.checkbox-default.checkall
-      input type="checkbox" value="checkall" v-model="checkAll.interests" v-on="click: toggleCheckAll('interests')"
-      span
-        | 全选
+    /label.checkbox-inline.checkbox-default.checkall
+      /input type="checkbox" value="checkall" v-model="checkAll.interests" v-on="click: toggleCheckAll('interests')"
+      /span
+        /| 全选
   .panel-body
     .row
       label.checkbox-inline.checkbox-default v-repeat="interests.slice(0, 4)"

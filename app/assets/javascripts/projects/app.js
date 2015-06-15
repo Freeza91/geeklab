@@ -170,56 +170,87 @@ $(function () {
     //var data = {};
     var data = new FormData();
     var vmData = vm.$data;
-    vm.$log(vm.$data);
 
     // 获取数据
-    data.name = vmData.name;
-    data.platform = vmData.platform;
-    data.device = vmData.device;
-    data.profile = vmData.introduction;
+    //data.name = vmData.name;
+    //data.platform = vmData.platform;
+    //data.device = vmData.device;
+    //data.profile = vmData.introduction;
+    data.append('name', vmData.name);
+    data.append('platform', vmData.platform);
+    data.append('device', vmData.device);
+    data.append('profile', vmData.profile);
 
     // target user requirement
-    data.user_feature_attributes = {};
-    data.user_feature_attributes.sex = getVmCheckboxArr(vmData.sex);
-    data.user_feature_attributes.city_level = getVmCheckboxArr(vmData.city, 'index');
-    data.user_feature_attributes.education = getVmCheckboxArr(vmData.education);
-    data.user_feature_attributes.emotional_status = getVmCheckboxArr(vmData.emotion);
-    data.user_feature_attributes.sex_orientation = getVmCheckboxArr(vmData.orientation);
-    data.user_feature_attributes.interest = getVmCheckboxArr(vmData.interests);
+    //data.user_feature_attributes = {};
+    //data.user_feature_attributes.sex = getvmcheckboxarr(vmdata.sex);
+    //data.user_feature_attributes.city_level = getvmcheckboxarr(vmdata.city, 'index');
+    //data.user_feature_attributes.education = getvmcheckboxarr(vmdata.education);
+    //data.user_feature_attributes.emotional_status = getvmcheckboxarr(vmdata.emotion);
+    //data.user_feature_attributes.sex_orientation = getvmcheckboxarr(vmdata.orientation);
+    //data.user_feature_attributes.interest = getvmcheckboxarr(vmdata.interests);
+    var user_feature_attributes = {};
+    user_feature_attributes.sex = getVmCheckboxArr(vmData.sex);
+    user_feature_attributes.city_level = getVmCheckboxArr(vmData.city, 'index');
+    user_feature_attributes.education = getVmCheckboxArr(vmData.education);
+    user_feature_attributes.emotional_status = getVmCheckboxArr(vmData.emotion);
+    user_feature_attributes.sex_orientation = getVmCheckboxArr(vmData.orientation);
+    user_feature_attributes.interest = getVmCheckboxArr(vmData.interests);
 
-    data.desc = vmData.situation;
-    data.tasks_attributes = [];
-    vmData.tasks.forEach(function (task) {
-      data.tasks_attributes.push({
-        content: task.content
-      });
+    //data.desc = vmData.situation;
+    //data.tasks_attributes = [];
+    //vmData.tasks.forEach(function (task) {
+      //data.tasks_attributes.push({
+        //content: task.content
+      //});
+    //});
+    //var tasks_attributes = {};
+    //for(var i=0; i<vmData.tasks.length; i++){
+      //content = vmData.tasks[i];
+      //tasks_attributes[i] = {};
+      //tasks_attributes[i] = content;
+    //}
+
+    var tasks_attributes = {};
+    vmData.tasks.forEach(function (task, index) {
+      tasks_attributes[index] = {content: task.content};
     });
+    data.append('tasks_attributes', JSON.stringify(tasks_attributes));
+    data.append('desc', vmData.situation);
 
-    data.contact_name = vmData.username;
-    data.phone = vmData.mobile;
-    data.email= vmData.email;
-    data.company = vmData.company;
+    //data.contact_name = vmData.username;
+    //data.phone = vmData.mobile;
+    //data.email= vmData.email;
+    //data.company = vmData.company;
+    data.append('contact_name', vmData.username);
+    data.append('phone', vmData.mobile);
+    data.append('email', vmData.email);
+    data.append('company', vmData.company);
 
     var userCount = $('#slider-user').val();
     var age = $('#slider-age').val();
     var income = $('#slider-income').val();
     var sys = data.platform === 'ios' ? $('#slider-ios').val() : $('#slider-android').val();
-    data.demand = userCount;
+    //data.demand = userCount;
+    //data.user_feature_attributes.age = age.join('-');
+    //data.user_feature_attributes.income = income.join('-');
+    //data.requirement = sys;
 
-    data.user_feature_attributes.age = age.join('-');
-    data.user_feature_attributes.income = income.join('-');
+    data.append('demand', userCount);
+    data.append('requirement', sys);
+    user_feature_attributes.age = age.join('-');
+    user_feature_attributes.income = income.join('-');
+    data.append('user_feature_attributes', JSON.stringify(user_feature_attributes));
 
-    data.requirement = sys;
-    
-    //data.append('qr_code', qrcode)
-    data.qr_code = qrcode;
-    console.log(data, qrcode);
+    data.append('qr_code', qrcode)
+    console.log(data);
 
     var url = '/projects';
     $.ajax({
       url: url,
       method: 'post',
-      data: {project: data},
+      //data: {project: data},
+      data: data,
       cache: false,
       processData: false, //Dont't process the file
       contentType: false,
@@ -260,7 +291,7 @@ $(function () {
   }
 
   function localImageView (event) {
-    qrcode = event.target.files[0]; 
+    qrcode = event.target.files[0];
     var url = window.URL.createObjectURL(qrcode);
     event.target.value = '';
     $('#qrcode').attr('src', url);
@@ -329,5 +360,10 @@ $(function () {
   function isCheck(item) {
     return item.checked;
   }
+ 
+  // init task sortable
+  $('.sortable').sortable({
+    handle: '.drag-handle'
+  });
 
 });

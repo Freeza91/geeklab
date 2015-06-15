@@ -19,12 +19,19 @@
     span.hint-info v-show="!validated.step_3 && !tasks[0].content"
       | 请填写测试任务
   .panel-body
-    .form-group v-repeat="tasks" v-class="has-error: !validated.step_3 && !content"
-      textarea.form-control v-model="content"
-      p.js-len-control
-        | 还可以输入
-        span.js-len-count
-          | {{140 - content.length}}
-        | 字
+    ul.sortable
+      li v-repeat="tasks"
+        .form-group v-class="has-error: !validated.step_3 && !content"
+          textarea.form-control rows="3" v-model="content"
+          p.js-len-control
+            | 还可以输入
+            span.js-len-count
+              | {{140 - content.length}}
+            | 字
+        .handle
+          .drag-handle
+            i.fa.fa-arrows-v.fa-2x
+          .delete-handle v-on="click: deleteTask(this, $event)"
+            i.fa.fa-trash-o.fa-2x
     button.btn.btn-gray.add-task v-on="click: addTask"
       i.fa.fa-plus.fa-2x

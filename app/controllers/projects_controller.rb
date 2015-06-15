@@ -22,9 +22,13 @@ class ProjectsController < ApplicationController
     project = current_user.to_pm.projects.build(project_params)
     if project.save
       json[:msg] = 'success'
+      p project.tasks
+      p project.user_feature
     else
+      p project.errors.full_messages
       json[:code], json[:msg] = 0, project.errors.full_messages
     end
+
 
     render json: json
   end
@@ -39,22 +43,41 @@ class ProjectsController < ApplicationController
 private
 
   def project_params
-    params.permit(:name, :profile, :device, :requirement,
-                  :platform, :desc, :contact_name,
-                  :qr_code, :demand,
-                  :phone, :email, :company,
-                  tasks_attributes: [:content],
-                  user_feature_attributes:[
-                    {
-                      sex:  [], city_level: [],
-                      emotional_status: [],
-                      sex_orientation: [],
-                      education: [],
-                      interest: []
 
-                    },
-                    :age, :income
-                  ])
+    project_param = params.permit(:name, :profile, :device, :requirement,
+                                  :platform, :desc, :contact_name,
+                                  :qr_code, :demand,
+                                  :phone, :email, :company)
+    tasks_params = {
+      "tasks_attributes": JSON.parse(params[:tasks_attributes]),
+    }
+
+    action_params = {
+      "controller": "projects",
+      "action": "create"
+    }
+
+    user_feature_params = {
+      "user_feature_attributes": JSON.parse(params[:user_feature_attributes])
+    }
+
+    params = ActionController::Parameters.new(project_param.merge(user_feature_params).merge(tasks_params).merge!(action_params))
+
+    params.permit(
+                :name, :profile, :device, :requirement,
+                :platform, :desc, :contact_name,
+                :qr_code, :demand,
+                :phone, :email, :company,
+                tasks_attributes: [:content],
+                user_feature_attributes:[{
+                  sex:  [], city_level: [],
+                  emotional_status: [],
+                  sex_orientation: [],
+                  education: [],
+                  interest: []
+                },
+                :age, :income
+                ])
   end
 
   def is_pm?

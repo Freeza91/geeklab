@@ -207,14 +207,19 @@ $(function () {
         //content: task.content
       //});
     //});
-    data.append('desc', vmData.situation);
-    var tasks_attributes = [];
-    vmData.tasks.forEach(function (task) {
-      tasks_attributes.push({
-        content: task.content
-      });
+    //var tasks_attributes = [];
+    //vmData.tasks.forEach(function (task) {
+      //tasks_attributes.push({
+        //content: task.content
+      //});
+    //});
+ 
+    var tasks_attributes = {};
+    vmData.tasks.forEach(function (task, index) {
+      tasks_attributes[index] = {content: task.content};
     });
     data.append('tasks_attributes', JSON.stringify(tasks_attributes));
+    data.append('desc', vmData.situation);
 
     // contact info
     //data.contact_name = vmData.username;
@@ -351,4 +356,9 @@ $(function () {
   function isCheck(item) {
     return item.checked;
   }
+
+  // init task sortable
+  $('.sortable').sortable().bind('sortupdate', function (event) {
+    console.log(event.target)
+  });
 });

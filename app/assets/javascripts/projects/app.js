@@ -204,21 +204,19 @@ $(function () {
         //content: task.content
       //});
     //});
-    data.append('desc', vmData.situation);
+    //var tasks_attributes = {};
+    //for(var i=0; i<vmData.tasks.length; i++){
+      //content = vmData.tasks[i];
+      //tasks_attributes[i] = {};
+      //tasks_attributes[i] = content;
+    //}
+
     var tasks_attributes = {};
-
-    for(var i=0; i<vmData.tasks.length; i++){
-      content = vmData.tasks[i];
-      tasks_attributes[i] = {};
-      tasks_attributes[i] = content;
-    }
-
-    // vmData.tasks.forEach(function (task) {
-    //   tasks_attributes.push({
-    //     content: task.content
-    //   });
-    // });
+    vmData.tasks.forEach(function (task, index) {
+      tasks_attributes[index] = {content: task.content};
+    });
     data.append('tasks_attributes', JSON.stringify(tasks_attributes));
+    data.append('desc', vmData.situation);
 
     //data.contact_name = vmData.username;
     //data.phone = vmData.mobile;

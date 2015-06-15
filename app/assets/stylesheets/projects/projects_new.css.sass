@@ -103,3 +103,41 @@
 // task
 .add-task
   width: 100%
+// sortable
+.sortable
+  list-style: none
+  padding: 0
+  > li
+    position: relative
+    .handle
+      position: absolute
+      left: 0
+      top: 0
+    .drag-handle,
+    .delete-handle
+      height: 36px
+      color: #fff
+      background-color: #a0a0a0
+      margin-bottom: 1px
+    .drag-handle
+      cursor: move
+    .drag-handle:hover,
+    .delete-handle:hover
+      background-color: #16a0c6
+    .fa
+      line-height: 36px
+  > .sortable-dragging
+    .drag-handle
+      background-color: #16a0c6
+  textarea
+    padding-left: 27px
+
+// qrcode preview
+.qrcode-preview
+  display: none
+  width: 100px
+  height: 100px
+  margin: 10px
+  transition: all .5s ease
+.qrcode-preview[src]
+  display: inline

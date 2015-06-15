@@ -46,7 +46,13 @@
 .panel.panel-default
   .panel-heading
     span.name
-      | 应用下载二维码
+      | 下载二维码
+    span.hint-info v-show="!validated.step_1 && !qrcode"
+      | 请上传二维码
   .panel-body
-    input type="file" accept="image/*" v-on="change: localImageView($event)"
-    img#qrcode
+    input type="file" accept="image/*" name="qrcode" style="display: none" v-on="change: localImageView"
+    img.qrcode-preview
+    .icon
+      .fa.fa-upload.fa-5x
+    button.btn.btn-blue.upload-qrcode v-on="click: uploadQrcode($event)" style="width: 120px"
+      | 上传二维码

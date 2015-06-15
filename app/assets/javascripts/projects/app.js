@@ -23,6 +23,7 @@ $(function () {
       },
       platform: 'ios',
       device: 'tablet',
+      qrcode: '',
       sex: [
         {
           key: '男',
@@ -149,6 +150,7 @@ $(function () {
       addTask: addTask,
       toggleCheckAll: toggleCheckAll,
       checkAllEffect: checkAllEffect,
+      uploadQrcode: uploadQrcode,
       localImageView: localImageView,
       submit: submit
     }
@@ -291,10 +293,13 @@ $(function () {
   }
 
   function localImageView (event) {
-    qrcode = event.target.files[0];
+    var input = event.target;
+    qrcode = input.files[0];
+    vm.qrcode = input.value;
     var url = window.URL.createObjectURL(qrcode);
-    event.target.value = '';
-    $('#qrcode').attr('src', url);
+    input.value = '';
+    $('.qrcode-preview').attr('src', url);
+    $('.fa-upload').hide();
   }
 
   function previousStep (event) {
@@ -305,7 +310,7 @@ $(function () {
     event.preventDefault();
     switch(vm.step) {
       case 1:
-        if(vm.introduction) {
+        if(vm.introduction && qrcode) {
           vm.validated.step_1 = true;
           vm.step++;
         } else {
@@ -376,5 +381,11 @@ $(function () {
       initSortable();
       $('.sortable').unbind('DOMNodeInserted');
     });
+  }
+
+  // 上传二维码
+  function uploadQrcode (event) {
+    event.preventDefault(); 
+    $('[name="qrcode"]').click();
   }
 });

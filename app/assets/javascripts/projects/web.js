@@ -328,6 +328,7 @@ $(function () {
     vm.tasks.push({
       content: ''
     });
+    updateSort();
   }
 
   function deleteTask (task, event) {
@@ -363,8 +364,19 @@ $(function () {
     return item.checked;
   }
   // init task sortable
-  $('.sortable').sortable({
-    handle: '.drag-handle'
-  });
+  function initSortable () {
+    $('.sortable').sortable({
+      handle: '.drag-handle'
+    });
+  }
+  initSortable ();
+
+  // 动态插入task之后的拖动
+  function updateSort () {
+    $('.sortable').on('DOMNodeInserted', function () {
+      initSortable();
+      $('.sortable').unbind('DOMNodeInserted');
+    });
+  }
 
 });

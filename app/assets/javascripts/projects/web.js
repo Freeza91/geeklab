@@ -21,6 +21,13 @@ $(function () {
         orientation: true,
         interests: false
       },
+      hasChecked: {
+        sex: true,
+        city: true,
+        education: true,
+        emotion: true,
+        orientation: true
+      },
       sex: [
         {
           key: '男',
@@ -181,8 +188,8 @@ $(function () {
     //data.platform = vmData.website;
     //data.profile = vmData.introduction;
     data.append('name', vmData.name);
-    data.append('platform', vmData.platform);
-    data.append('profile', vmData.profile);
+    data.append('platform', vmData.website);
+    data.append('profile', vmData.introduction);
 
     // target user requirement
     //data.user_feature_attributes = {};

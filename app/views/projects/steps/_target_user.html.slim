@@ -20,6 +20,8 @@
   .panel-heading
     span.name
       | 性别
+    span.hint-info v-show="!validated.step_2 && !hasChecked.sex"
+      | 请选择性别
     label.checkbox-inline.checkbox-default.checkall
       input type="checkbox" value="checkall" v-model="checkAll.sex" v-on="click: toggleCheckAll('sex')"
       span
@@ -33,6 +35,8 @@
   .panel-heading
     span.name
       | 城市级别
+    span.hint-info v-show="!validated.step_2 && !hasChecked.city"
+      | 请选择城市级别
     label.checkbox-inline.checkbox-default.checkall
       input type="checkbox" value="checkall" v-model="checkAll.city" v-on="click: toggleCheckAll('city')"
       span
@@ -46,6 +50,8 @@
   .panel-heading
     span.name
       | 学历
+    span.hint-info v-show="!validated.step_2 && !hasChecked.education"
+      | 请选择学历
     label.checkbox-inline.checkbox-default.checkall
       input type="checkbox" value="checkall" v-model="checkAll.education" v-on="click: toggleCheckAll('education')"
       span
@@ -59,6 +65,8 @@
   .panel-heading
     span.name
       | 情感状况
+    span.hint-info v-show="!validated.step_2 && !hasChecked.emotion"
+      | 请选择情感状况
     label.checkbox-inline.checkbox-default.checkall
       input type="checkbox" value="checkall" v-model="checkAll.emotion" v-on="click: toggleCheckAll('emotion')"
       span
@@ -72,6 +80,8 @@
   .panel-heading
     span.name
       | 性取向
+    span.hint-info v-show="!validated.step_2 && !hasChecked.orientation"
+      | 请选择性取向
     label.checkbox-inline.checkbox-default.checkall
       input type="checkbox" value="checkall" v-model="checkAll.orientation" v-on="click: toggleCheckAll('orientation')"
       span

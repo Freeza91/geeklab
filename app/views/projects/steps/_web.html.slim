@@ -1,21 +1,16 @@
 .panel.panel-default
   .panel-heading
     span.name
-      | 测试网址
+      | 测试网址(必填)
     span.hint-info v-show="!validated.step_1 && !website"
       | 请填写网址
   .panel-body
     .form-group v-class="has-error: !validated.step_1 && !website"
-      input.form-control type="text" maxlength="15" v-model="website"
-    p.js-len-control
-      | 还可以输入
-      span.js-len-count
-        | {{website ? (15 - website.length) : 15}}
-      | 字
+      input.form-control type="text" v-model="website"
 .panel.panel-default
   .panel-heading
     span.name
-      | 产品简介
+      | 产品简介(必填)
     span.hint-info v-show="!validated.step_1 && !introduction"
       | 请填写产品简介
   .panel-body

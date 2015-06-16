@@ -32,7 +32,7 @@
 .panel.panel-default
   .panel-heading
     span.name
-      | 产品简介
+      | 产品简介(必填)
     span.hint-info v-show="!validated.step_1 && !introduction"
       | 请输入产品简介
   .panel-body
@@ -46,7 +46,7 @@
 .panel.panel-default
   .panel-heading
     span.name
-      | 下载二维码
+      | 下载二维码(必填)
     span.hint-info v-show="!validated.step_1 && !qrcode"
       | 请上传二维码
   .panel-body

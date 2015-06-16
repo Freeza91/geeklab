@@ -56,7 +56,7 @@ class AssignmentsController < ApplicationController
 
     respond_to do |format|
       format.html do
-        tester.update_attribute(:last_view_time, Time.now)
+        tester.update_column(:last_view_time, Time.now)
       end
       format.json do
         json = {status: 0, code: 1, assignments: [] }
@@ -70,14 +70,14 @@ class AssignmentsController < ApplicationController
   end
 
   def not_interest
-    current_user.update_attribute(:last_view_time, Time.now)
+    current_user.update_column(:last_view_time, Time.now)
     render json: { status: 0, code: 1 }
   end
 
   def join
     tester = current_user.to_tester
     assignments = tester.assignments
-    tester.update_attribute(:last_view_time, Time.now)
+    tester.update_column(:last_view_time, Time.now)
     @assignments_ing =  assignments.take_part_ing.page(params[:page]).per(10)
     @assignments_done = Kaminari.paginate_array(assignments.take_part_done).page(params[:page]).per(10)
   end

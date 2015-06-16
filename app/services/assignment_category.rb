@@ -5,7 +5,6 @@ module AssignmentCategory
       project = Project.find_by(id: project_id)
       return unless project
       @user_feature = project.user_feature
-
       TesterInfor.find_each(batch_size: 100) do |infor|
         # select tester
         if select_tester(infor, get_device(project.platform, project.device))
@@ -20,7 +19,6 @@ module AssignmentCategory
     end
 
     def select_tester(infor, device)
-
       # 成为正式的测试用户
       return false unless infor.tester.approved
 
@@ -31,7 +29,6 @@ module AssignmentCategory
       return false unless @user_feature.city_level.include?(infor.city_level) #城市级别限制
       return false unless @user_feature.education.include?(infor.education) #学历限制
       return false unless @user_feature.sex_orientation.include?(infor.sex_orientation) #性取向限制
-
       # 符合条件之一即可
       return false if (@user_feature.income_arr & infor.income_arr).size.zero? #收入限制
 
@@ -44,12 +41,15 @@ module AssignmentCategory
 
     def get_device(platform, device)
       # web 测试的设备要求是什么? 暂定无设备要求
+      platform = platform.downcase
+      device = device.downcase
+
       if platform == "ios"
-        return "iPhone" if device == "phone"
-        return "iPad" if device == "pad"
+        return "iPhone" if device.include?"phone"
+        return "iPad" if device.include?"pad"
       elsif platform == 'android'
-        return "Android Phone" if device == "phone"
-        return "Android Pad" if  device == "pad"
+        return "Android Phone" if device.inlucde?"phone"
+        return "Android Pad" if  device.include?"pad"
       else
         "web"
       end

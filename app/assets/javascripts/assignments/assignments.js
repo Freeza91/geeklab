@@ -12,7 +12,7 @@ $(function () {
     //播放视频
     //任务倒计时
     // 瀑布流加载
-    
+
   // 保存testId
   var testerId = $('.assignments-list').data('testerId');
   var assignmentId = 0; // 当前执行操作的任务id
@@ -72,7 +72,7 @@ $(function () {
     $('#video').click();
   });
 
-  // 取消上传 
+  // 取消上传
   $('.assignments-wrp').on('click', '.upload-cancel', function () {
     uploadAjax.abort();
     $card.find('.operator.uploading').hide();
@@ -178,7 +178,7 @@ $(function () {
     var $this = $(this);
 
     $card = $this.parents('.card');
-    assignmentId = $card.data('assignmentId'); 
+    assignmentId = $card.data('assignmentId');
 
     getAssignmentVideoUrl(testerId, assignmentId, function(video) {
       playVideo(video);
@@ -187,7 +187,7 @@ $(function () {
 
   // 关闭视频播放modal
   $('#video-player [data-dismiss="modal"]').on('click', function () {
-    $curVideo.pause(); 
+    $curVideo.pause();
   });
   // 上传视频
   function uploadVideo(file, token, callback) {
@@ -255,7 +255,7 @@ $(function () {
     })
   }
 
- 
+
   // 显示操作的提示信息
   /* @param options  Object 显示的提示信息
    * options.title  String 标题
@@ -294,7 +294,7 @@ $(function () {
       case 'deleteAssignment':
         // 删除任务
         deleteAssigment (testerId, assignmentId, function () {
-          // 删除任务后的回调， 将当前卡片重页面上移除  
+          // 删除任务后的回调， 将当前卡片重页面上移除
           $card.remove();
         });
       break;
@@ -328,7 +328,7 @@ $(function () {
 
   // 播放视频
   function playVideo (video) {
-    var $modal = $('#video-player'); 
+    var $modal = $('#video-player');
     // 移除现有的video
     $modal.find('video').remove();
     // 创建新的video
@@ -360,7 +360,7 @@ $(function () {
       .error(function (errors, status) {
         console.log(errors);
       });
-    } 
+    }
   }
 
   // 删除视频
@@ -399,7 +399,7 @@ $(function () {
     var $modal = $('#assignment-detail');
     // 填信息
     $modal.find('.title .name').text(assignmentDetail.name);
-    $modal.find('.qrcode img').attr('src', assignmentDetail.qr_code)
+    assignmentDetail.qr_code && $modal.find('.qrcode img').attr('src', assignmentDetail.qr_code.url)
 
     var $detailTable = $modal.find('table');
     $detailTable.find('[name="profile"]').text(assignmentDetail.profile);
@@ -409,7 +409,7 @@ $(function () {
 
     var taskHtml = '';
     assignmentDetail.tasks.forEach(function (task, index) {
-      taskHtml += '<li><i class="fa fa-check-circle"></i><span>' + task.content + '</span></li>'  
+      taskHtml += '<li><i class="fa fa-check-circle"></i><span>' + task.content + '</span></li>'
     });
     $detailTable.find('ul').html(taskHtml);
     $('#assignment-detail').modal();
@@ -492,7 +492,7 @@ $(function () {
   }
 
   function appendAssignments (assignments) {
-    var $assignmentsWrp = $('.assignments-wrp'); 
+    var $assignmentsWrp = $('.assignments-wrp');
     // 复制一个card作为模板
     var $assignmentCard = $('.card:last').clone();
     var cards = [];
@@ -515,7 +515,7 @@ $(function () {
     })
     assignmentTimeCountDownInit();
   }
-  
+
   // 自定义xhr对象获取上传进度
   function customeXhr () {
     var xhr = $.ajaxSettings.xhr();
@@ -586,12 +586,12 @@ $(function () {
       case 'delete':
         $card.find('.operator.wait-upload').fadeIn();
       break;
-    } 
+    }
   }
 
   // 播放视频按钮的hover事件
   //$('.assignments').on('mouseenter', '.video-play', function () {
-    //$card = $(this).parents('.card');  
+    //$card = $(this).parents('.card');
     ////$(this).css('z-index', 5);
     //$card.find('.inner-mask').show();
   //});
@@ -618,10 +618,10 @@ $(function () {
   caculateCommentPosition();
 
   // 显示comment, 当鼠标移到状态栏图标上时
-  $('.assignments-wrp').on('mouseenter', '.status .fa', function (){
+  $('.assignments-wrp').on('mouseenter', '.status p', function (){
     $(this).parents('.status').find('.comment').fadeIn();
   });
-  $('.assignments-wrp').on('mouseout', '.status .fa', function (){
+  $('.assignments-wrp').on('mouseout', '.status p', function (){
     $(this).parents('.status').find('.comment').fadeOut();
   });
 
@@ -651,18 +651,24 @@ $(function () {
   }
 
   if($('body').hasClass('assignments_join')) {
-    initOperators(); 
+    initOperators();
  
     // 二级导航
     $('.assignments-subnav a').on('click', function () {
       var $this = $(this);
-      var target = $this.data('target');
+      var target = $this.data('target'),
+          hash = $this.data('hash');
       $this.parents('ul').find('.active').removeClass('active');
       $this.addClass('active');
       $('.assignments-wrp.active').removeClass('active').hide();
       $(target).fadeIn().addClass('active');
+      location.hash = hash;
     });
 
+    var hash = location.hash.substr(1);
+    if(hash === 'done') {
+      $('[data-hash="done"]').click();
+    }
   }
 
 });

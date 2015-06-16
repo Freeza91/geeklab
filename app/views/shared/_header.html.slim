@@ -34,14 +34,14 @@ header.header.navbar.navbar-static.clear-fix
                   | 我的积分
                   i.fa.fa-diamond
                   = current_user.to_tester.try(:credits).to_i
-            - if  controller_name == 'testers' || controller_name == 'assignments' || controller_name == "stores"
+            - if  controller_name == 'testers' || controller_name == 'assignments'
               li
-                a href="javascript:void(0)"
+                a
                   span.tester-mark class=(current_user.approved ? 'active' : '')
                     i.fa.fa-street-view
                     | 体验师
             li.dropdown
-              a role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'
+              a role='button'
                 =current_user.email
                 span.caret
               ul.dropdown-menu role='menu'

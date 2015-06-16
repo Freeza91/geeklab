@@ -176,7 +176,9 @@ $(function () {
           if($item.hasClass('required')) {
             $el = $item.find('input');
             infoName = $item.find('input').data('infoName');
-            valided = textValid($el, infoName);
+            if(!textValid($el, infoName)) {
+              valided = false;
+            }
           }
         break;
         case 'radio':
@@ -201,7 +203,6 @@ $(function () {
           $selectSet = $item.find('select');
           for(var i = 0; i < $selectSet.length; i++) {
             var $select = $($selectSet[i]);
-            console.log($select.val());
             if($select.val() === '') {
               valided = false;
               $item.addClass('has-error').find('.form-control-feedback').removeClass('sr-only');
@@ -234,7 +235,7 @@ $(function () {
     })
     .error(function (errors, status) {
       console.log(errors);
-    })
+    });
   });
 
   // 文本字段验证

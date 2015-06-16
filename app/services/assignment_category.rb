@@ -34,7 +34,9 @@ module AssignmentCategory
 
       # 符合条件之一即可
       return false if (@user_feature.income_arr & infor.income_arr).size.zero? #收入限制
-      # 如果@user_feature.interest 是空的话，该如何处理？，如何表示更好地无限制
+
+      # 如果@user_feature.interest 是空的话，无限制
+      return true  if @user_feature.interest.size.zero?
       return false if (@user_feature.interest & infor.interest).size.zero?     #兴趣限制
 
       true

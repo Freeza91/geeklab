@@ -33,8 +33,8 @@ module TesterInforVirtualAttr
        '黑龙江-哈尔滨'
       ]
     ]
-    return 1 if cities[0].include?(livingplaces)
-    return 2 if cities[1].include?(livingplaces)
+    return 1 if cities[0].include?(livingplace)
+    return 2 if cities[1].include?(livingplace)
     3
   end
 

@@ -13,10 +13,10 @@ main role="main"
       nav.assignments-subnav
         ul
           li
-            a.active href="javascript: void(0)" data-target="#assignments-ing"
+            a.active href="javascript: void(0)" data-target="#assignments-ing" data-hash="ing"
               | 进行中
           li
-            a href="javascript: void(0)" data-target="#assignments-done"
+            a href="javascript: void(0)" data-target="#assignments-done" data-hash="done"
               | 已完成
       .assignments-wrp.clear-fix.active#assignments-ing
         -  @assignments_ing.each do |assignment|

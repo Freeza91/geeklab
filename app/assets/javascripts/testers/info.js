@@ -202,7 +202,9 @@ $(function () {
           if($item.hasClass('required')) {
             $el = $item.find('input');
             infoName = $item.find('input').data('infoName');
-            valided = textValid($el, infoName);
+            if(!textValid($el, infoName)) {
+              valided = false;
+            }
           }
         break;
         case 'radio':

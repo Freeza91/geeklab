@@ -18,6 +18,6 @@
       input.form-control type="text" maxlength="15" v-model="introduction"
     p.js-len-control
       | 还可以输入
-      span.js-len-count v-text=""
+      span.js-len-count v-class="introduction.length >= 10 ? 'warn' : ''"
         | {{introduction ? (15 - introduction.length) : 15}}
       | 字

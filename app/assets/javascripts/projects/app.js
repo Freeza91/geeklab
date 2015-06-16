@@ -29,7 +29,7 @@ $(function () {
         orientation: true
       },
       platform: 'ios',
-      device: 'tablet',
+      device: 'phone',
       qrcode: '',
       mobile: {
         content: '',
@@ -163,6 +163,7 @@ $(function () {
       previousStep: previousStep,
       nextStep: nextStep,
       addTask: addTask,
+      deleteTask: deleteTask,
       toggleCheckAll: toggleCheckAll,
       checkAllEffect: checkAllEffect,
       uploadQrcode: uploadQrcode,
@@ -361,6 +362,11 @@ $(function () {
       content: ''
     });
     updateSort();
+  }
+
+  function deleteTask (task, event) {
+    event.preventDefault();
+    vm.tasks.$remove(task.$index);
   }
 
   function toggleCheckAll (category) {

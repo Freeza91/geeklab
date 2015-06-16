@@ -9,7 +9,7 @@
       input.form-control type="text" maxlength="15" v-model="username"
     p.js-len-control
       | 还可以输入
-      span.js-len-count
+      span.js-len-count v-class="username.length >= 10 ? 'warn' : ''"
         | {{username ? (15 - username.length) : 15}}
       | 字
 .panel.panel-default
@@ -23,11 +23,11 @@
   .panel-body
     .form-group v-class="has-error: !validated.step_4 && !mobile"
       input.form-control type="text" maxlength="11" v-model="mobile.content" v-on="focus: mobile.validated = true"
-    p.js-len-control
-      | 还可以输入
-      span.js-len-count
-        | {{11 - mobile.content.length}}
-      | 字
+    /p.js-len-control
+      /| 还可以输入
+      /span.js-len-count
+        /| {{11 - mobile.content.length}}
+      /| 字
 .panel.panel-default
   .panel-heading
     span.name
@@ -50,6 +50,6 @@
       input.form-control type="text" maxlength="30" v-model="company"
     p.js-len-control
       | 还可以输入
-      span.js-len-count
+      span.js-len-count v-class="company.length >= 25 ? 'warn' : ''"
         | {{company ? (30 - company.length) : 30}}
       | 字

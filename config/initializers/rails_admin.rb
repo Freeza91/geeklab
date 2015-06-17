@@ -95,7 +95,7 @@ RailsAdmin.config do |config|
       field :company
       field :credit
       field :demand
-      field :approved
+      field :status
       field :qr_code
 
       field :tasks do

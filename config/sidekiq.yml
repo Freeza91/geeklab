@@ -7,5 +7,6 @@ production: # work model
 :queues:
   - [mailers, 5]
   - [update_assignment]
+  - [update_project]
   - [pfop_video_images]
   - [start_assign, 10]

@@ -18,8 +18,11 @@ class Project < ActiveRecord::Base
 
   before_save { self.email = email.to_s.downcase }
   before_update :prepare_assign
+  before_save :auto_update_status
 
   mount_uploader :qr_code, QrCodeUploader
+
+  scope :success, -> { where(status: 'success') }
 
   def to_json_with_tasks
     {
@@ -35,8 +38,13 @@ class Project < ActiveRecord::Base
   end
 
   def prepare_assign
-    StartAssignJob.perform_later(id) if approved && expired_at.to_i < Time.now.to_i &&
+    StartAssignJob.perform_later(id) if status == 'success' &&
+                                        expired_at.to_i > Time.now.to_i &&
                                         id != Project.first.id
+  end
+
+  def auto_update_status
+     AutoUpdateProjectJob.set(wait: (1.day / 2)).perform_later(id) if status == 'wait_check'
   end
 
 end

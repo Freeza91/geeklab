@@ -4,11 +4,11 @@ class ProjectsController < ApplicationController
   before_action :is_pm?
 
   def index
-    @projects = current_user.to_pm.projects.includes(:tasks).includes(:user_feature)
+    @projects = current_user.to_pm.projects.includes(:assignments)
   end
 
   def show
-    @project = current_user.to_pm.projects.includes(:tasks).includes(:user_feature).find_by(id: params[:id])
+    @project = current_user.to_pm.projects.includes(:tasks).includes(:user_feature).includes(:assignments).find_by(id: params[:id])
   end
 
   def web

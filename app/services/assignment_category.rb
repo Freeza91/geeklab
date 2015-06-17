@@ -24,7 +24,8 @@ module AssignmentCategory
       return false unless infor.tester.approved
 
       # 硬性条件
-      return false unless device != "web" && infor.device.include?(device)        #设备限制
+
+      return false if device != "web" && !infor.device.include?(device)        #设备限制
       return false unless infor.age.between?(@user_feature.age_low, @user_feature.age_high) #年龄限制
       # return false unless @user_feature.sex.include?(infor.sex) # 性别限制
       return false unless @user_feature.city_level.include?(infor.city_level) #城市级别限制

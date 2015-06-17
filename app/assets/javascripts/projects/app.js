@@ -51,15 +51,15 @@ $(function () {
       ],
       city: [
         {
-          key: '一线城市',
+          key: '北上广深',
           checked: true
         },
         {
-          key: '二线城市',
+          key: '省会城市',
           checked: true
         },
         {
-        key: '三线城市',
+        key: '其它',
         checked: true
         }
       ],

@@ -39,7 +39,7 @@ class Project < ActiveRecord::Base
 
   def prepare_assign
     StartAssignJob.perform_later(id) if status == 'success' &&
-                                        expired_at.to_i < Time.now.to_i &&
+                                        expired_at.to_i > Time.now.to_i &&
                                         id != Project.first.id
   end
 

@@ -5,6 +5,7 @@ module AssignmentCategory
       project = Project.find_by(id: project_id)
       return unless project
       @user_feature = project.user_feature
+
       TesterInfor.find_each(batch_size: 100) do |infor|
         # select tester
         if select_tester(infor, get_device(project.platform, project.device))
@@ -46,7 +47,7 @@ module AssignmentCategory
 
       if platform == "ios"
         return "iPhone" if device.include?"phone"
-        return "iPad" if device.include?"pad"
+        return "iPad" if device.include?"tablet"
       elsif platform == 'android'
         return "Android Phone" if device.inlucde?"phone"
         return "Android Pad" if  device.include?"pad"

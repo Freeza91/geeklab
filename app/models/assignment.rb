@@ -4,16 +4,16 @@ class Assignment < ActiveRecord::Base
   scope :not_expired,  -> { joins(:project).where("projects.expired_at > ?", Time.now + 1.minutes) }
   scope :not_view,     -> (last_view){ joins(:project).where("projects.expired_at > ?", last_view) }
 
-  scope :test,         -> { where(status: 'test') }
-  scope :not_take_part,-> { where(status: "new") }
-  scope :ing,          -> { where('status in (?)', ['wait_check', 'checking', 'not_accept', 'delete']) }
-  scope :done,         -> { where(status: "success") }
+  scope :test,         -> { where("assignments.status = ?", 'test') }
+  scope :not_take_part,-> { where("assignments.status = ?",  "new") }
+  scope :ing,          -> { where('assignments.status in (?)', ['wait_check', 'checking', 'not_accept', 'delete']) }
+  scope :done,         -> { where("assignments.status = ?", "success") }
 
   belongs_to :tester,  inverse_of: :assignments
   belongs_to :project, inverse_of: :assignments
 
   after_update :video_notice_to_tester
-  after_commit :auto_update_assignment_status
+  after_update :auto_update_assignment_status
 
   class << self
 

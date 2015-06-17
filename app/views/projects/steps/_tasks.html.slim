@@ -6,7 +6,7 @@
       | 请填写测试情景
   .panel-body
     .form-group v-class="has-error: !validated.step_3 && !situation"
-      textarea.form-control rows="4" v-model="situation"
+      textarea.form-control rows="4" v-model="situation" placeholder="例如：想象一下你现在想给自己买一套新衣裳"
     p.js-len-control
       | 还可以输入
       span.js-len-count v-class="situation.length >= 135 ? 'warn' : ''"
@@ -25,8 +25,8 @@
           textarea.form-control rows="4" v-model="content"
           p.js-len-control
             | 还可以输入
-            span.js-len-count v-class="content.length >= 135 ? 'warn' : ''"
-              | {{140 - content.length}}
+            span.js-len-count v-class="content.length >= 25 ? 'warn' : ''"
+              | {{30 - content.length}}
             | 字
         .handle
           .drag-handle

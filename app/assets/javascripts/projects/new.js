@@ -9,7 +9,7 @@ $(function () {
   // range slider
   if($('.slider-sys')) {
     $('#slider-android').noUiSlider({
-      start: 2,
+      start: 0,
       range: {
         min: 0,
         max: 14
@@ -21,12 +21,12 @@ $(function () {
           return androidMap[value]; 
         },
         from: function (value) {
-          return androidMap[value]; 
+          return value;
         }
       }
     });
     $('#slider-ios').noUiSlider({
-      start: 2,
+      start: 0,
       range: {
         min: 0,
         max: 7
@@ -38,7 +38,7 @@ $(function () {
           return iosMap[value];
         },
         from: function (value) {
-          return iosMap[value];
+          return value;
         }
       }
     });
@@ -62,6 +62,7 @@ $(function () {
   });
   $('#slider-age').noUiSlider({
     start: [18, 48],
+    margin: 5,
     range: {
       min: 18,
       max: 48
@@ -79,6 +80,7 @@ $(function () {
   });
   $('#slider-income').noUiSlider({
     start: [0, 8],
+    margin: 1,
     range: {
       min: 0,
       max: 8

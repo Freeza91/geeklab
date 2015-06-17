@@ -24,15 +24,15 @@
       | 用户应该使用什么设备
   .panel-body
     label.radio-inline
-      input type="radio" name="device" value="tablet" v-model="device"
-      i.fa.fa-tablet.fa-5x
-    label.radio-inline
       input type="radio" name="device" value="phone" v-model="device"
       i.fa.fa-mobile.fa-5x
+    label.radio-inline
+      input type="radio" name="device" value="tablet" v-model="device"
+      i.fa.fa-tablet.fa-5x
 .panel.panel-default
   .panel-heading
     span.name
-      | 产品简介
+      | 产品简介(必填)
     span.hint-info v-show="!validated.step_1 && !introduction"
       | 请输入产品简介
   .panel-body
@@ -40,19 +40,19 @@
       input.form-control type="text" maxlength="15" v-model="introduction"
     p.js-len-control
       | 还可以输入
-      span.js-len-count v-text=""
+      span.js-len-count v-class="introduction.length >= 10 ? 'warn' : ''"
         | {{introduction ? (15 - introduction.length) : 15}}
       | 字
 .panel.panel-default
   .panel-heading
     span.name
-      | 下载二维码
+      | 下载二维码(必填)
     span.hint-info v-show="!validated.step_1 && !qrcode"
       | 请上传二维码
   .panel-body
     input type="file" accept="image/*" name="qrcode" style="display: none" v-on="change: localImageView"
     img.qrcode-preview
     .icon
-      .fa.fa-upload.fa-5x
+      .fa.fa-upload.fa-5x style="color: #eee"
     button.btn.btn-blue.upload-qrcode v-on="click: uploadQrcode($event)" style="width: 120px"
       | 上传二维码

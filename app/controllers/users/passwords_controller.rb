@@ -17,7 +17,7 @@ class Users::PasswordsController < ApplicationController
 
   def reset
     current_user.forget_me(cookies) if current_user
-    reset_session
+    #reset_session
 
     from = [root_path, pms_path, testers_path]
     path = URI.parse(request.referer || root_url).path

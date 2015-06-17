@@ -29,8 +29,16 @@ $(function () {
         orientation: true
       },
       platform: 'ios',
-      device: 'tablet',
+      device: 'phone',
       qrcode: '',
+      mobile: {
+        content: '',
+        validated: true
+      },
+      email: {
+        content: '',
+        validated: true
+      },
       sex: [
         {
           key: '男',
@@ -155,6 +163,7 @@ $(function () {
       previousStep: previousStep,
       nextStep: nextStep,
       addTask: addTask,
+      deleteTask: deleteTask,
       toggleCheckAll: toggleCheckAll,
       checkAllEffect: checkAllEffect,
       uploadQrcode: uploadQrcode,
@@ -166,7 +175,9 @@ $(function () {
   function submit(event) {
     event.preventDefault();
 
-    if(vm.name && vm.username && vm.mobile && vm.email && vm.company) {
+    vm.mobile.validated = inputValid(vm.mobile.content, 'mobile_phone');
+    vm.email.validated = inputValid(vm.email.content, 'email');
+    if(vm.name && vm.username && vm.mobile.validated && vm.email.validated && vm.company) {
       vm.step_4 = true;
       postData();
     } else {
@@ -232,8 +243,8 @@ $(function () {
     //data.email= vmData.email;
     //data.company = vmData.company;
     data.append('contact_name', vmData.username);
-    data.append('phone', vmData.mobile);
-    data.append('email', vmData.email);
+    data.append('phone', vmData.mobile.content);
+    data.append('email', vmData.email.content);
     data.append('company', vmData.company);
 
     var userCount = $('#slider-user').val();
@@ -353,6 +364,11 @@ $(function () {
     updateSort();
   }
 
+  function deleteTask (task, event) {
+    event.preventDefault();
+    vm.tasks.$remove(task.$index);
+  }
+
   function toggleCheckAll (category) {
     var checkbox = vm[category];
     if(vm.checkAll[category]) {
@@ -402,4 +418,20 @@ $(function () {
     event.preventDefault(); 
     $('[name="qrcode"]').click();
   }
+
+  function inputValid (value, type) {
+    var result;
+    switch(type){
+      case 'email':
+        var emailReg = /^[0-9a-zA-Z_-]+@([0-9a-zA-Z]+.)+[a-zA-Z]$/;
+        result = emailReg.test(value);
+      break; 
+      case 'mobile_phone':
+        var mobileReg = /^1[3|5|7|8][0-9]{9}$/;
+        result = mobileReg.test(value);
+        break;
+    }
+    return result;
+  }
+
 });

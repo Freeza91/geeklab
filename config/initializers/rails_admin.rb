@@ -135,17 +135,21 @@ RailsAdmin.config do |config|
   end
 
   config.model "UserFeature" do
-    field :age
-    field :income
-    field :sex,                 :pg_int_array
-    field :city_level,          :pg_int_array
-    field :education,           :pg_int_array
-    field :emotional_status,    :pg_int_array
-    field :sex_orientation,     :pg_int_array
-    field :interest,            :pg_int_array
-    field :profession,          :pg_int_array
-    field :personality,         :pg_int_array
-    field :project_id
+    edit do
+      field :project_id
+
+      field :age
+      field :income
+      field :sex,                 :pg_int_array
+      field :city_level,          :pg_int_array
+      field :education,           :pg_int_array
+      field :emotional_status,    :pg_int_array
+      field :sex_orientation,     :pg_int_array
+      field :interest,            :pg_int_array
+      field :profession,          :pg_int_array
+      field :personality,         :pg_int_array
+    end
+
   end
 
 end

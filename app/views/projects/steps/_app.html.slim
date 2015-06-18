@@ -12,15 +12,6 @@
 .panel.panel-default
   .panel-heading
     span.name
-      | 用户系统要求
-  .panel-body
-    .slider-sys#slider-android v-show="platform === 'android'"
-      span.sys-value
-    .slider-sys#slider-ios v-show="platform === 'ios'"
-      span.sys-value
-.panel.panel-default
-  .panel-heading
-    span.name
       | 用户应该使用什么设备
   .panel-body
     label.radio-inline
@@ -28,7 +19,16 @@
       i.fa.fa-mobile.fa-5x
     label.radio-inline
       input type="radio" name="device" value="tablet" v-model="device"
-      i.fa.fa-tablet.fa-5x
+      i.fa.fa-tablet.fa-5x style="transform: rotate(-90deg); -webkit-transform:rotate(-90deg)"
+.panel.panel-default
+  .panel-heading
+    span.name
+      | 用户系统要求
+  .panel-body
+    .slider-sys#slider-android v-show="platform === 'android'"
+      span.sys-value
+    .slider-sys#slider-ios v-show="platform === 'ios'"
+      span.sys-value
 .panel.panel-default
   .panel-heading
     span.name

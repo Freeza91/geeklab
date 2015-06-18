@@ -30,7 +30,7 @@ class Project < ActiveRecord::Base
       profile: profile,
       device: device,
       requirement: requirement,
-      qr_code: qr_code,
+      qr_code: qr_code.try(:url),
       platform: platform,
       desc: desc,
       tasks: self.tasks

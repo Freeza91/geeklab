@@ -399,7 +399,7 @@ $(function () {
     var $modal = $('#assignment-detail');
     // 填信息
     $modal.find('.title .name').text(assignmentDetail.name);
-    assignmentDetail.qr_code && $modal.find('.qrcode img').attr('src', assignmentDetail.qr_code.url)
+    assignmentDetail.qr_code && $modal.find('.qrcode img').attr('src', assignmentDetail.qr_code)
 
     var $detailTable = $modal.find('table');
     $detailTable.find('[name="profile"]').text(assignmentDetail.profile);
@@ -652,7 +652,7 @@ $(function () {
 
   if($('body').hasClass('assignments_join')) {
     initOperators();
- 
+
     // 二级导航
     $('.assignments-subnav a').on('click', function () {
       var $this = $(this);

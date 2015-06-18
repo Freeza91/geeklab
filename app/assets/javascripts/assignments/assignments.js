@@ -403,8 +403,8 @@ $(function () {
 
     var $detailTable = $modal.find('table');
     $detailTable.find('[name="profile"]').text(assignmentDetail.profile);
-    $detailTable.find('[name="device"]').text(assignmentDetail.device);
-    $detailTable.find('[name="requirement"]').text(assignmentDetail.requirement);
+    $detailTable.find('[name="device"]').text(assignmentDetail.platform + ' ' + assignmentDetail.device);
+    $detailTable.find('[name="requirement"]').text(assignmentDetail.platform + ' ' + assignmentDetail.requirement + '及以上');
     $detailTable.find('[name="situation"]').text(assignmentDetail.desc);
 
     var taskHtml = '';

@@ -1,6 +1,7 @@
 class TestersController < ApplicationController
 
   before_action :require_login?, except: :index
+  before_action :already_create?, only: [:create, :new]
 
   def index
     current_user.update_attribute(:role, 'both') if current_user.try(:role) == 'pm'
@@ -91,5 +92,11 @@ private
     rescue
       DateTime.parse('1991-10-04')
     end
+  end
+
+private
+
+  def already_create?
+    redirect_to edit_tester_path(current_user) if current_user.to_tester.tester_infors.size != 1
   end
 end

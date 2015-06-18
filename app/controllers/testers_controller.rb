@@ -97,6 +97,6 @@ private
 private
 
   def already_create?
-    redirect_to edit_tester_path(current_user) if current_user.to_tester.tester_infors.size != 1
+    redirect_to edit_tester_path(current_user) if current_user.to_tester.tester_infors.size >= 1
   end
 end

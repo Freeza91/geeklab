@@ -7,7 +7,7 @@ class TestersController < ApplicationController
   end
 
   def new
-    @devices = ['iPhone', 'iPad', 'Andoriod Phone', 'Andoriod Pad']
+    @devices = ['iPhone', 'iPad', 'Android Phone', 'Android Pad']
     @personality = ['温柔', '粗犷', '活泼', '老城', '内向', '开朗', '豪爽', '沉默', '急躁', '稳重']
     @interests = ['足球', '健身', '旅游', '二次元', '音乐', '看书', '电影', '星座']
     render '/testers/new'

@@ -28,6 +28,11 @@ $(function () {
         emotion: true,
         orientation: true
       },
+      name: '',
+      introduction: '',
+      situation: '',
+      username: '',
+      company: '',
       mobile: {
         content: '',
         validated: true
@@ -164,6 +169,7 @@ $(function () {
       deleteTask: deleteTask,
       toggleCheckAll: toggleCheckAll,
       checkAllEffect: checkAllEffect,
+      textareaLengthLimit: textareaLengthLimit,
       submit: submit
     }
   });
@@ -425,6 +431,22 @@ $(function () {
     }
     return result;
   }
+  
+  function textareaLengthLimit (modelName, event, lengthLimit) {
+    var el = event.target;
+    var value = el.value;
+    var len = value.length;
+    if(len < lengthLimit) {
+      return true;
+    } else {
+      if(modelName === 'situation') {
+        vm.situation = value.substr(0, lengthLimit);
+      } else {
+        vm.tasks[modelName].content = value.substr(0, lengthLimit);
+      }
+      event.returnValue = false;
+    }
+  };
 
 });
 

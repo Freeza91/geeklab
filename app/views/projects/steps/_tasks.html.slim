@@ -35,3 +35,6 @@
             i.fa.fa-trash-o.fa-2x
     button.btn.btn-gray.add-task v-on="click: addTask"
       i.fa.fa-plus style="font-size: 1.5em"
+    p.task-limit v-show="tasksLimited"
+      span
+        | 最多添加5个任务

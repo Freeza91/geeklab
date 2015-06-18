@@ -358,9 +358,16 @@ $(function () {
   }
   function addTask (event) {
     event.preventDefault();
-    vm.tasks.push({
-      content: ''
-    });
+    if(vm.tasks.length < 5) {
+      vm.tasks.push({
+        content: ''
+      });
+    } else {
+      vm.tasksLimited = true;
+      setTimeout(function () {
+        vm.tasksLimited = false;
+      }, 2000);
+    }
     updateSort();
   }
 

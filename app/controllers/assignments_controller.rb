@@ -5,10 +5,10 @@ class AssignmentsController < ApplicationController
     tester = current_user.to_tester
     assignments = tester.assignments
     if tester.approved
-      @assignments = assignments.new_tasks.page(params[:page]).per(10)
+      @assignments = assignments.new_tasks.order("created_at desc").page(params[:page]).per(10)
       @num = assignments.not_view_num(tester.last_view_time)
     else
-      @assignments = assignments.test_task.page(params[:page]).per(10)
+      @assignments = assignments.test_task.order("created_at desc").page(params[:page]).per(10)
       @num = nil
     end
 
@@ -52,7 +52,7 @@ class AssignmentsController < ApplicationController
   def miss
     tester = current_user.to_tester
     assignments = tester.assignments
-    @assignments =  assignments.missing.page(params[:page]).per(10)
+    @assignments =  assignments.missing.order("created_at desc").page(params[:page]).per(10)
 
     respond_to do |format|
       format.html do
@@ -78,14 +78,14 @@ class AssignmentsController < ApplicationController
     tester = current_user.to_tester
     assignments = tester.assignments
     tester.update_column(:last_view_time, Time.now)
-    @assignments_ing =  assignments.take_part_ing.page(params[:page]).per(10)
+    @assignments_ing =  assignments.take_part_ing.order("created_at desc").page(params[:page]).per(10)
     @assignments_done = Kaminari.paginate_array(assignments.take_part_done).page(params[:page]).per(10)
   end
 
   def ing
     tester = current_user.to_tester
     assignments = tester.assignments
-    assignments_ing =  assignments.take_part_ing.page(params[:page]).per(10)
+    assignments_ing =  assignments.take_part_ing.order("created_at desc").page(params[:page]).per(10)
     json = {status: 0, code: 1, assignments_ing: [] }
     assignments_ing.each do |a|
       json[:assignments_ing] << a.to_json_with_project
@@ -97,7 +97,7 @@ class AssignmentsController < ApplicationController
   def done
     tester = current_user.to_tester
     assignments = tester.assignments
-    assignments_done = Kaminari.paginate_array(assignments.take_part_done).page(params[:page]).per(10)
+    assignments_done = Kaminari.paginate_array(assignments.take_part_done.order("created_at desc")).page(params[:page]).per(10)
     json = {status: 0, code: 1, assignments_done: [] }
     assignments_done.each do |a|
       json[:assignments_done] << a.to_json_with_project

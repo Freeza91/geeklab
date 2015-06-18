@@ -399,12 +399,20 @@ $(function () {
     var $modal = $('#assignment-detail');
     // 填信息
     $modal.find('.title .name').text(assignmentDetail.name);
-    assignmentDetail.qr_code && $modal.find('.qrcode img').attr('src', assignmentDetail.qr_code)
 
     var $detailTable = $modal.find('table');
+    if (assignmentDetail.device === 'web') {
+      $detailTable.removeClass('app').addClass('web');
+      $detailTable.find('[name="website"]').text(assignmentDetail.platform);
+      $modal.find('.qrcode').hide();
+    } else {
+      $detailTable.removeClass('web').addClass('app');
+      $detailTable.find('[name="device"]').text(assignmentDetail.platform + ' ' + assignmentDetail.device);
+      $detailTable.find('[name="requirement"]').text(assignmentDetail.platform + ' ' + assignmentDetail.requirement + '及以上');
+      assignmentDetail.qr_code && $modal.find('.qrcode').show().find('img').attr('src', assignmentDetail.qr_code);
+    }
+
     $detailTable.find('[name="profile"]').text(assignmentDetail.profile);
-    $detailTable.find('[name="device"]').text(assignmentDetail.platform + ' ' + assignmentDetail.device);
-    $detailTable.find('[name="requirement"]').text(assignmentDetail.platform + ' ' + assignmentDetail.requirement + '及以上');
     $detailTable.find('[name="situation"]').text(assignmentDetail.desc);
 
     var taskHtml = '';

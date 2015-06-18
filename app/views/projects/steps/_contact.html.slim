@@ -38,7 +38,7 @@
       | 邮箱格式错误
   .panel-body
     .form-group v-class="has-error: !validated.step_4 && !email"
-      input.form-control type="email" v-model="email.content" v-on="focus: email.validated = true"
+      input.form-control type="text" v-model="email.content" v-on="focus: email.validated = true"
 .panel.panel-default
   .panel-heading
     span.name

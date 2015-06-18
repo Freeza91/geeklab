@@ -434,7 +434,7 @@ $(function () {
 
       assignmentDeadline[index] = new Date(deadline);
       var times = assignmentDeadline[index] - now;
-      var max_times = 60 * 60 * 24 * 100;
+      var max_times = 1000 * 60 * 60 * 24 * 100;
 
       if(times <= 0 || times > max_times) {
         return false;

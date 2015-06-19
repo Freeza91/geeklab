@@ -20,6 +20,9 @@ module AssignmentCategory
     end
 
     def select_tester(infor, device)
+
+      #处理部分用户删除个人信息
+      return false if infor || infor.test
       # 成为正式的测试用户
       return false unless infor.tester.approved
 

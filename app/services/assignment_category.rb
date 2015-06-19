@@ -50,7 +50,7 @@ module AssignmentCategory
         return "iPhone" if device.include?"phone"
         return "iPad" if device.include?"pad"
       elsif platform == 'android'
-        return "Android Phone" if device.inlucde?"phone"
+        return "Android Phone" if device.include?"phone"
         return "Android Pad" if  device.include?"pad"
       else
         "web"

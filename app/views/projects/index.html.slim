@@ -1,1 +1,16 @@
-p= @projects
+main role="main"
+  section.projects-list.content-box data-pm-id="#{@current_user.id}"
+    .container
+      .projects-wrp.clear-fix
+        - @projects.each do |project|
+          .card data-project-id="#{project.id}"
+            .inner
+              header
+                hi.title
+                  span
+                    = project.name
+                  span
+                    | 正在进行
+                  span.close
+                    | &times
+              .content

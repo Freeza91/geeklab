@@ -320,6 +320,7 @@ $(function () {
   function previousStep (event) {
     event.preventDefault();
     vm.step--;
+    scrollToTop();
     return false;
   }
   function nextStep (event) {
@@ -329,6 +330,7 @@ $(function () {
         if(vm.website && vm.introduction) {
           vm.validated.step_1 = true;
           vm.step++;
+          scrollToTop();
         } else {
           vm.validated.step_1 = false;
         }
@@ -341,12 +343,14 @@ $(function () {
         });
         if(vm.validated.step_2) {
           vm.step++;
+          scrollToTop();
         }
       break;
       case 3:
         if(vm.situation && vm.tasks[0].content) {
           vm.validated.step_3 = true;
           vm.step++;
+          scrollToTop();
         } else {
           vm.validated.step_3 = false;
         }
@@ -447,6 +451,11 @@ $(function () {
       event.returnValue = false;
     }
   };
+
+  function scrollToTop () {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
 
 });
 

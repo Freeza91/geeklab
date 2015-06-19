@@ -77,7 +77,10 @@ RailsAdmin.config do |config|
       field :video
       field :is_transfer
       field :is_sexy
-      field :comment, :pg_int_array
+      field :reasons, :pg_int_array
+
+      field :comment
+
     end
   end
 

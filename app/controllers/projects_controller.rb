@@ -12,6 +12,13 @@ class ProjectsController < ApplicationController
     @assignments = @project.assignments.order("id desc")
   end
 
+  def video
+    @project = current_user.to_pm.projects.includes(:user_feature).includes(:assignments).find_by(id: params[:id])
+    @assignments = @project ? @project.assignments : nil
+    # p @assignments
+    @assignment = @assignments ? @assignments.find_by(id: params[:assignments_id]) : nil
+  end
+
   def web
   end
 

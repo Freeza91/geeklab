@@ -401,14 +401,23 @@ $(function () {
     $modal.find('.title .name').text(assignmentDetail.name);
 
     var $detailTable = $modal.find('table');
+    var device = assignmentDetail.device[0].toUpperCase() + assignmentDetail.device.substr(1);
     if (assignmentDetail.device === 'web') {
       $detailTable.removeClass('app').addClass('web');
       $detailTable.find('[name="website"]').text(assignmentDetail.platform);
       $modal.find('.qrcode').hide();
     } else {
       $detailTable.removeClass('web').addClass('app');
-      $detailTable.find('[name="device"]').text(assignmentDetail.platform + ' ' + assignmentDetail.device);
-      $detailTable.find('[name="requirement"]').text(assignmentDetail.platform + ' ' + assignmentDetail.requirement + '及以上');
+      switch(assignmentDetail.platform) {
+        case 'ios':
+          $detailTable.find('[name="device"]').text('i' + device);
+          $detailTable.find('[name="requirement"]').text('iOS ' + assignmentDetail.requirement + '及以上');
+        break;
+        case 'android':
+          $detailTable.find('[name="device"]').text('Android' + device);
+          $detailTable.find('[name="requirement"]').text('Android ' + assignmentDetail.requirement + '及以上');
+        break;
+      }
       assignmentDetail.qr_code && $modal.find('.qrcode').show().find('img').attr('src', assignmentDetail.qr_code);
     }
 

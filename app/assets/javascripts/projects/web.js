@@ -28,6 +28,11 @@ $(function () {
         emotion: true,
         orientation: true
       },
+      name: '',
+      introduction: '',
+      situation: '',
+      username: '',
+      company: '',
       mobile: {
         content: '',
         validated: true
@@ -154,7 +159,8 @@ $(function () {
         {
           content: ''
         }
-      ]
+      ],
+      tasksLimited: false
     },
     methods: {
       previousStep: previousStep,
@@ -163,6 +169,7 @@ $(function () {
       deleteTask: deleteTask,
       toggleCheckAll: toggleCheckAll,
       checkAllEffect: checkAllEffect,
+      textareaLengthLimit: textareaLengthLimit,
       submit: submit
     }
   });
@@ -349,9 +356,16 @@ $(function () {
   }
   function addTask (event) {
     event.preventDefault();
-    vm.tasks.push({
-      content: ''
-    });
+    if(vm.tasks.length < 5) {
+      vm.tasks.push({
+        content: ''
+      });
+    } else {
+      vm.tasksLimited = true;
+      setTimeout(function () {
+        vm.tasksLimited = false;
+      }, 2000);
+    }
     updateSort();
   }
 
@@ -417,6 +431,22 @@ $(function () {
     }
     return result;
   }
+  
+  function textareaLengthLimit (modelName, event, lengthLimit) {
+    var el = event.target;
+    var value = el.value;
+    var len = value.length;
+    if(len < lengthLimit) {
+      return true;
+    } else {
+      if(modelName === 'situation') {
+        vm.situation = value.substr(0, lengthLimit);
+      } else {
+        vm.tasks[modelName].content = value.substr(0, lengthLimit);
+      }
+      event.returnValue = false;
+    }
+  };
 
 });
 

@@ -399,12 +399,20 @@ $(function () {
     var $modal = $('#assignment-detail');
     // 填信息
     $modal.find('.title .name').text(assignmentDetail.name);
-    assignmentDetail.qr_code && $modal.find('.qrcode img').attr('src', assignmentDetail.qr_code.url)
 
     var $detailTable = $modal.find('table');
+    if (assignmentDetail.device === 'web') {
+      $detailTable.removeClass('app').addClass('web');
+      $detailTable.find('[name="website"]').text(assignmentDetail.platform);
+      $modal.find('.qrcode').hide();
+    } else {
+      $detailTable.removeClass('web').addClass('app');
+      $detailTable.find('[name="device"]').text(assignmentDetail.platform + ' ' + assignmentDetail.device);
+      $detailTable.find('[name="requirement"]').text(assignmentDetail.platform + ' ' + assignmentDetail.requirement + '及以上');
+      assignmentDetail.qr_code && $modal.find('.qrcode').show().find('img').attr('src', assignmentDetail.qr_code);
+    }
+
     $detailTable.find('[name="profile"]').text(assignmentDetail.profile);
-    $detailTable.find('[name="device"]').text(assignmentDetail.device);
-    $detailTable.find('[name="requirement"]').text(assignmentDetail.requirement);
     $detailTable.find('[name="situation"]').text(assignmentDetail.desc);
 
     var taskHtml = '';
@@ -434,7 +442,7 @@ $(function () {
 
       assignmentDeadline[index] = new Date(deadline);
       var times = assignmentDeadline[index] - now;
-      var max_times = 60 * 60 * 24 * 100;
+      var max_times = 1000 * 60 * 60 * 24 * 100;
 
       if(times <= 0 || times > max_times) {
         return false;
@@ -652,7 +660,7 @@ $(function () {
 
   if($('body').hasClass('assignments_join')) {
     initOperators();
- 
+
     // 二级导航
     $('.assignments-subnav a').on('click', function () {
       var $this = $(this);

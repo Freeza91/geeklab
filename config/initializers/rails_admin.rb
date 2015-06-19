@@ -81,6 +81,29 @@ RailsAdmin.config do |config|
     end
   end
 
+  config.model "TesterInfor" do
+    edit do
+      field :tester
+      field :username
+      field :sex
+      field :birthday
+      field :birthplace
+      field :livingplace
+      field :device,                :pg_int_array
+      field :emotional_status
+      field :sex_orientation
+      field :education
+      field :profession
+      field :income
+      field :personality,           :pg_int_array
+      field :interest,              :pg_int_array
+      field :email_contract
+      field :mobile_phone
+      field :wechat
+      field :ali_pay
+    end
+  end
+
   config.model "Project" do
     edit do
       field :name
@@ -106,10 +129,27 @@ RailsAdmin.config do |config|
         orderable true
       end
 
-      field :user_feature do
-      end
+      field :user_feature
 
     end
+  end
+
+  config.model "UserFeature" do
+    edit do
+      field :project_id
+
+      field :age
+      field :income
+      field :sex,                 :pg_int_array
+      field :city_level,          :pg_int_array
+      field :education,           :pg_int_array
+      field :emotional_status,    :pg_int_array
+      field :sex_orientation,     :pg_int_array
+      field :interest,            :pg_int_array
+      field :profession,          :pg_int_array
+      field :personality,         :pg_int_array
+    end
+
   end
 
 end

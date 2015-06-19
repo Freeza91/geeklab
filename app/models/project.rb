@@ -17,8 +17,8 @@ class Project < ActiveRecord::Base
   accepts_nested_attributes_for :user_feature, allow_destroy: true
 
   before_save { self.email = email.to_s.downcase }
-  before_update :prepare_assign
-  before_save :auto_update_status
+  after_update :prepare_assign
+  after_save :auto_update_status
 
   mount_uploader :qr_code, QrCodeUploader
 
@@ -30,7 +30,7 @@ class Project < ActiveRecord::Base
       profile: profile,
       device: device,
       requirement: requirement,
-      qr_code: qr_code,
+      qr_code: qr_code.try(:url),
       platform: platform,
       desc: desc,
       tasks: self.tasks

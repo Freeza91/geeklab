@@ -11,19 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150617081157) do
+ActiveRecord::Schema.define(version: 20150618104947) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "assignments", force: :cascade do |t|
-    t.integer "project_id"
-    t.integer "tester_id"
-    t.string  "status"
-    t.string  "video"
-    t.boolean "is_transfer", default: false
-    t.boolean "is_sexy",     default: false
-    t.string  "comment",                     array: true
+    t.integer  "project_id"
+    t.integer  "tester_id"
+    t.string   "status"
+    t.string   "video"
+    t.boolean  "is_transfer", default: false
+    t.boolean  "is_sexy",     default: false
+    t.string   "comment",                     array: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "projects", force: :cascade do |t|

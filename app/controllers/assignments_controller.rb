@@ -113,7 +113,8 @@ class AssignmentsController < ApplicationController
       return render json: json
     end
 
-    unless assignment && delete_video_at_qiniu(assignment, {}) && assignment.destroy
+    # unless assignment && delete_video_at_qiniu(assignment, {}) && assignment.destroy
+    unless assignment && assignment.update_attribute(:status, 'never_show')
       json[:code], json[:msg] = 0, '没有权限删除这个任务或者此任务已经不存在'
     end
 

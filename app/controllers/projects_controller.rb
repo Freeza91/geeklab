@@ -14,8 +14,17 @@ class ProjectsController < ApplicationController
 
   def video
     @project = current_user.to_pm.projects.includes(:user_feature).includes(:assignments).find_by(id: params[:id])
-    @assignments = @project ? @project.assignments : nil
-    @assignment = @assignments ? @assignments.find_by(id: params[:assignments_id]) : nil
+    @other_assignments = nil
+    @assignment = nil
+
+    if @project
+      assignments = @project.assignments
+      if assignments
+        @assignment = assignments.find_by(id: params[:assignments_id])
+        @other_assignments = assignments - [@assignment]
+      end
+    end
+
   end
 
   def web

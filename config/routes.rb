@@ -44,7 +44,7 @@ Rails.application.routes.draw do
     end
 
     member do
-      get 'video/:assignements_id', to: 'projects#video'
+      get 'video/:assignments_id', to: 'projects#video'
     end
 
     resources :assignments, only: :show do

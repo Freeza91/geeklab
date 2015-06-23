@@ -21,6 +21,7 @@ class ProjectsController < ApplicationController
       assignments = @project.assignments.limit(@project.try(:demand))
       if assignments
         @assignment = assignments.find_by(id: params[:assignments_id])
+        @assignments.update_attribute(:is_read, true) if @assignment
         @other_assignments = assignments - [@assignment]
       end
     end

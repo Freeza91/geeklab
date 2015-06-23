@@ -42,6 +42,14 @@ Rails.application.routes.draw do
       get 'app/new', to: 'projects#app'
       get 'video', to: 'projects#video'
     end
+
+    member do
+      get 'video/:assignements_id', to: 'projects#video'
+    end
+
+    resources :assignments, only: :show do
+      resources :comment, only: :create
+    end
   end
 
   resources :testers do

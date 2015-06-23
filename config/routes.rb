@@ -40,6 +40,7 @@ Rails.application.routes.draw do
     collection do
       get 'web/new', to: 'projects#web'
       get 'app/new', to: 'projects#app'
+      get 'video', to: 'projects#video'
     end
   end
 

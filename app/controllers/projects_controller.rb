@@ -8,14 +8,17 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    @project = current_user.to_pm.projects.includes(:tasks).includes(:user_feature).includes(:assignments).find_by(id: params[:id])
-    @assignments = @project.assignments.order("created_at desc")
+    #@project = current_user.to_pm.projects.includes(:tasks).includes(:user_feature).includes(:assignments).find_by(id: params[:id])
+    #@assignments = @project.assignments.order("created_at desc")
   end
 
   def web
   end
 
   def app
+  end
+
+  def video
   end
 
   def create

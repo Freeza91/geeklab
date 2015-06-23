@@ -9,7 +9,7 @@ class ProjectsController < ApplicationController
 
   def show
     @project = current_user.to_pm.projects.includes(:tasks).includes(:user_feature).includes(:assignments).find_by(id: params[:id])
-    @assignments = @project ? @project.assignments.order("id desc") : nil
+    @assignments = @project ? @project.assignments.order("id desc").limit(@project.try(:demand)) : nil
   end
 
   def video
@@ -18,7 +18,7 @@ class ProjectsController < ApplicationController
     @assignment = nil
 
     if @project
-      assignments = @project.assignments
+      assignments = @project.assignments.limit(@project.try(:demand))
       if assignments
         @assignment = assignments.find_by(id: params[:assignments_id])
         @other_assignments = assignments - [@assignment]

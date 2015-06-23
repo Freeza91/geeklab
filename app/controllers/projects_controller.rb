@@ -9,13 +9,12 @@ class ProjectsController < ApplicationController
 
   def show
     @project = current_user.to_pm.projects.includes(:tasks).includes(:user_feature).includes(:assignments).find_by(id: params[:id])
-    @assignments = @project.assignments.order("id desc")
+    @assignments = @project ? @project.assignments.order("id desc") : nil
   end
 
   def video
     @project = current_user.to_pm.projects.includes(:user_feature).includes(:assignments).find_by(id: params[:id])
     @assignments = @project ? @project.assignments : nil
-    # p @assignments
     @assignment = @assignments ? @assignments.find_by(id: params[:assignments_id]) : nil
   end
 
@@ -35,7 +34,12 @@ class ProjectsController < ApplicationController
   end
 
   def edit
-    @project = Project.includes(:tasks).includes(:user_feature).find_by(id: params[:id])
+    json = { status: 0, code: 1, msg: "" }
+
+    project = current_user.to_pm.projects.includes(:tasks).includes(:user_feature).find_by(id: params[:id])
+    json[:project] = project.to_json_to_pm if project
+    render json
+
   end
 
   def destroy

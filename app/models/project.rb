@@ -37,6 +37,20 @@ class Project < ActiveRecord::Base
     }
   end
 
+  def to_json_to_pm
+    {
+      name: name,
+      profile: profile,
+      device: device,
+      requirement: requirement,
+      qr_code: qr_code.try(:url),
+      platform: platform,
+      desc: desc,
+      user_feature: self.user_feature,
+      tasks: self.tasks
+    }
+  end
+
   def prepare_assign
     StartAssignJob.perform_later(id) if status == 'success' &&
                                         expired_at.to_i > Time.now.to_i &&

@@ -1,4 +1,4 @@
-p=@project.name
+p=@project.try(:name)
 p=@assignment.try(:video)
 p=@assignment.try(:status)
-p=@assignments.size
+p=@assignments.try(:size)

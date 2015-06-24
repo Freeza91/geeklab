@@ -48,10 +48,13 @@ class ProjectsController < ApplicationController
   def edit
     json = { status: 0, code: 1, msg: "" }
 
-    project = current_user.to_pm.projects.includes(:tasks).includes(:user_feature).find_by(id: params[:id])
+    @project = project = current_user.to_pm.projects.includes(:tasks).includes(:user_feature).find_by(id: params[:id])
     json[:project] = project.to_json_to_pm if project
-    render json
 
+    respond_to do |format|
+      format.html 
+      format.json { render json: json }
+    end
   end
 
   def update
@@ -59,7 +62,7 @@ class ProjectsController < ApplicationController
     json = { status: 0, code: 1, msg: '更新成功' }
 
     project = current_user.to_pm.projects.find_by(id: params[:id])
-    unless project && project.update_attributes(project_params)
+    unless project && project.update(project_params)
       json[:code], json[:msg] = 0, '更新不成功'
     end
 

@@ -1,95 +1,95 @@
-/p= @project.tasks.last.content
 main role="main"
   section.content-box
     .container
       .col-md-9
-        p
+        p.title
           i.fa.fa-mobile.fa-2x
-          | 测试任务名字
-          i.fa.fa-pencil.place-right
+          = @project.name
+          a href=("/projects/" + "#{@project.id}" + "/edit")
+            i.fa.fa-pencil.place-right js-action="edit" data-id=@project.id
         table.table.table-1
           tbody
-            /- if project.platform === 'web'
-            tr.website
-              td
-                | 网站地址
-              td name="website"
-                | iphone
-            /- else
-            tr
-              td
-                | 平台
-              td
-                | iOS
-            tr.device
-              td
-                | 测试设备
-              td name="device"
-                | iphone
-            tr.requirement
-              td
-                | 系统要求
-              td name="requirement"
-                | iOS 7.0及以上
+            - if @project.device == 'web'
+              tr.website
+                td
+                  | 网站地址
+                td
+                  = @project.device
+            - else
+              tr
+                td
+                  | 平台
+                td
+                  = @project.platform
+              tr
+                td
+                  | 测试设备
+                td
+                  = @project.device
+              tr.requirement
+                td
+                  | 系统要求
+                td
+                  = @project.requirement
             tr
               td
                 | 产品简介
-              td name="profile"
-                | 不超过15字的产品介绍
+              td
+                = @project.profile
         table.table.table-1
           tbody
             tr
               td
                 | 测试用户数
               td
-                | 3
+                = @project.demand
             tr
               td
                 | 年龄范围
               td
-                | 18~40岁
+                = @project.user_feature.age
             tr
               td
                 | 年收入
               td
-                | 0~100万
+                = @project.user_feature.income
             tr
               td
                 | 性别
               td
-                | 男、女
+                = @project.user_feature.sex.join(', ')
             tr
               td
                 | 城市级别
               td
-                | 北上广深
+                = @project.user_feature.city_level.join(', ') 
             tr
               td
                 | 学历
               td
-                | 本科
+                = @project.user_feature.education.join(', ') 
             tr
               td
                 | 情感状态
               td
-                | 单身
+                = @project.user_feature.emotional_status.join(', ')
             tr
               td
                 | 性取向
               td
-                | 不限
+                = @project.user_feature.sex_orientation.join(', ')
             tr
               td
                 | 兴趣标签
               td
-                | 不限
+                = @project.user_feature.interest.join(', ')
         table.table.table-1
           tbody
             tr
               td
                 | 测试场景
-              td name="situation"
-                | zaker是一款面向多平台的互动分享和个性化订阅的社会化阅读软件。你现在处于无聊闲适的时候，想看一看社交软件上的信息
+              td
+                = @project.desc
             tr
               td
                 | 任务详情
@@ -97,46 +97,45 @@ main role="main"
                 p
                   | 温馨提示: 测试过程中请尽可能的大声而自信的说出你的真实感受
                 ul
-                  li
-                    i.fa.fa-check-circle
-                    span
-                      | zaker是一款面向多平台的互动分享和个性化订阅的社会化阅读软件。你现在处于无聊闲适的时候，想看一看社交软件上的信息
-                  li
-                    i.fa.fa-check-circle
-                    span
-                      | dsfsdf
-                  li
-                    i.fa.fa-check-circle
-                    span
-                      | dkhfak
+                  - @project.tasks.each do |task| 
+                    li
+                      i.fa.fa-check-circle
+                      span
+                        = task.content 
         table.table.table-1
           tbody
             tr
               td
                 | 昵称
               td
-                | dbvnf
+                = @project.contact_name  
             tr
               td
                 | 手机号
               td
-                | 12345678901
+                = @project.phone 
             tr
               td
                 | 联系邮箱
               td
-                | example@geekpark.net
+                = @project.email
             tr
               td
                 | 公司名称
               td
-                | geekpark
+                = @project.company              
       .col-md-3
-        p
+        p.title
           | 测试视频
         .video-list
-          ul
-            li
-              a href="javascript: void(0)"
-                img src=image_path('logo/logo.png')
-              i.fa.fa-play-circle.fa-4x
+            ul
+              - if @assignments.try(:size) > 0
+                - @assgiments.each do |assignment|
+                  li
+                    a href=("/projects/" + "#{@project.id}" + "/video/" + "#{assignment.id}")
+                      img src=assignment.video + '?vframe/png/offset/0/w/480/h/200'
+                    i.fa.fa-play-circle.fa-4x
+              li
+                a href="javascript: void(0)"
+                  img
+                i.fa.fa-play-circle.fa-4x

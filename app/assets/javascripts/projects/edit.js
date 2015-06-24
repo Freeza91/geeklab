@@ -96,9 +96,11 @@ $(function () {
     vmData.tasks = [];
     project.tasks.forEach(function (item) {
       vmData.tasks.push({
+        id: item.id,
         content: item.content
       });
     });
+    vmData.deletedTask = [];
 
     // 联系方式
     vmData.mobile = {
@@ -202,8 +204,23 @@ $(function () {
     user_feature_attributes.interest = getVmCheckboxArr(vmData.interests);
 
     var tasks_attributes = {};
-    vmData.tasks.forEach(function (task, index) {
-      tasks_attributes[index] = {content: task.content};
+    var taskIndex = 0;
+    vmData.tasks.forEach(function (task) {
+      if(task.id) {
+        tasks_attributes[taskIndex++] = {
+          content: task.content,
+          id:  task.id
+        };
+      } else {
+        tasks_attributes[taskIndex++] = {content: task.content};
+      }
+    });
+    // 处理被删除的task
+    vmData.deletedTask.forEach(function (taskId) {
+      tasks_attributes[taskIndex++] = {
+        id: taskId,
+        destroy: 1
+      }
     });
     data.append('tasks_attributes', JSON.stringify(tasks_attributes));
     data.append('desc', vmData.situation);
@@ -242,9 +259,8 @@ $(function () {
       contentType: false,
     })
     .done(function (data, status) {
-      console.log(data);
       if(data.status === 0 && data.code === 1) {
-        //location.href = '/projects'
+        location.href = '/projects'
       }
     })
     .error(function (errors, status) {
@@ -341,6 +357,9 @@ $(function () {
   function deleteTask (task, event) {
     event.preventDefault();
     vm.tasks.$remove(task.$index);
+    if(task.id) {
+      vm.deletedTask.push(task.id);
+    }
   }
 
   function toggleCheckAll (category) {

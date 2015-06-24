@@ -3,7 +3,9 @@ main role="main"
     .container
       .col-md-9
         p.title
-          i.fa.fa-mobile.fa-2x
+          - if @project.device == "web"
+          - else
+            i.fa.fa-mobile.fa-2x
           = @project.name
           a href=("/projects/" + "#{@project.id}" + "/edit")
             i.fa.fa-pencil.place-right js-action="edit" data-id=@project.id
@@ -48,11 +50,13 @@ main role="main"
                 | 年龄范围
               td
                 = @project.user_feature.age
+                | 岁
             tr
               td
                 | 年收入
               td
                 = @project.user_feature.income
+                | 万
             tr
               td
                 | 性别

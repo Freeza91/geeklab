@@ -15,10 +15,8 @@ main role="main"
                 p.describle
                   = assignment.project.profile
               .content
-                - if assignment.status != "delete"
-                  img src=("#{assignment.video}" + "?vframe/png/offset/0/w/480/h/200")
-                - else
-                  img
+                .icon-wrp
+                  i.fa.fa-file-video-o.fa-4x
                 .status class=("status_" + "#{assignment.status}")
                   p
                     = get_status_info(assignment.status)
@@ -31,7 +29,7 @@ main role="main"
                 .score
                   i.fa.fa-diamond
                   span.number
-                    | 10
+                    = assignment.project.credit
       .load-more
         - if @assignments.try(:size) < 10
           p

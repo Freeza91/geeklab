@@ -39,7 +39,7 @@ main role="main"
                 .score
                   i.fa.fa-diamond
                   span.number
-                    | 10
+                    = assignment.project.credit  
       .load-more
         - if @assignments.try(:size) < 10
           p

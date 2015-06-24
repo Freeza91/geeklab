@@ -409,6 +409,12 @@ $(function () {
 
     var $detailTable = $modal.find('table');
     var device = assignmentDetail.device[0].toUpperCase() + assignmentDetail.device.substr(1);
+    if(assignmentDetail.device === 0) {
+      // 新手任务
+      $detailTable.removeClass('web').addClass('app');
+      $detailTable.find('[name="device"]').text('任意设备');
+      $detailTable.find('[name="requirement"]').text('无限制');
+    }
     if (assignmentDetail.device === 'web') {
       $detailTable.removeClass('app').addClass('web');
       $detailTable.find('[name="website"]').text(assignmentDetail.platform);

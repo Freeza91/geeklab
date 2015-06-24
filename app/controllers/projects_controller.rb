@@ -51,6 +51,19 @@ class ProjectsController < ApplicationController
 
   end
 
+  def update
+
+    json = { status: 0, code: 1, msg: '更新成功' }
+
+    project = current_user.to_pm.projects.find_by(id: params[:id])
+    unless project && project.update_attributes(project_params)
+      json[:code], json[:msg] = 0, '更新不成功'
+    end
+
+    render json: json
+
+  end
+
   def destroy
   end
 

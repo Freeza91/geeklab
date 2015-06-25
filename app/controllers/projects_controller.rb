@@ -4,7 +4,11 @@ class ProjectsController < ApplicationController
   before_action :is_pm?
 
   def index
-    @projects = current_user.to_pm.projects.includes(:assignments).order("id desc")
+    @projects = current_user.to_pm.projects.order("id desc").includes(:assignments)
+    @assignments = []
+    @projects.each do |project|
+      @assignments << project.assignments.done.order("updated_at desc").limit(project.demand)
+    end
   end
 
   def show
@@ -12,7 +16,7 @@ class ProjectsController < ApplicationController
     @assignments = @project ? @project.assignments.done.order("id desc").limit(@project.try(:demand)) : []
   end
 
-  def video 
+  def video
     @project = current_user.to_pm.projects.includes(:user_feature).includes(:assignments).find_by(id: params[:id])
     @other_assignments = []
     @assignment = []

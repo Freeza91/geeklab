@@ -206,20 +206,23 @@ $(function () {
     var tasks_attributes = {};
     var taskIndex = 0;
     vmData.tasks.forEach(function (task) {
-      if(task.id) {
-        tasks_attributes[taskIndex++] = {
-          content: task.content,
-          id:  task.id
-        };
-      } else {
-        tasks_attributes[taskIndex++] = {content: task.content};
+      if(task.content.length > 0) {
+        if(task.id) {
+          tasks_attributes[taskIndex++] = {
+            content: task.content,
+            id:  task.id
+          };
+        } else {
+          tasks_attributes[taskIndex++] = {content: task.content};
+        }
       }
     });
+
     // 处理被删除的task
     vmData.deletedTask.forEach(function (taskId) {
       tasks_attributes[taskIndex++] = {
         id: taskId,
-        destroy: 1
+        _destroy: 1
       }
     });
     data.append('tasks_attributes', JSON.stringify(tasks_attributes));

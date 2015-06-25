@@ -223,24 +223,13 @@ $(function () {
     user_feature_attributes.sex_orientation = getVmCheckboxArr(vmData.orientation);
     user_feature_attributes.interest = getVmCheckboxArr(vmData.interests);
 
-    //data.desc = vmData.situation;
-    //data.tasks_attributes = [];
-    //vmData.tasks.forEach(function (task) {
-      //data.tasks_attributes.push({
-        //content: task.content
-      //});
-    //});
-    //var tasks_attributes = {};
-    //for(var i=0; i<vmData.tasks.length; i++){
-      //content = vmData.tasks[i];
-      //tasks_attributes[i] = {};
-      //tasks_attributes[i] = content;
-    //}
-
     var tasks_attributes = {};
     vmData.tasks.forEach(function (task, index) {
-      tasks_attributes[index] = {content: task.content};
+      if(task.content.length > 0) {
+        tasks_attributes[index] = {content: task.content};
+      }
     });
+
     data.append('tasks_attributes', JSON.stringify(tasks_attributes));
     data.append('desc', vmData.situation);
 

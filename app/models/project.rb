@@ -59,6 +59,16 @@ class Project < ActiveRecord::Base
     }
   end
 
+  def to_json_for_index
+    {
+      id: id,
+      name: name,
+      status: status,
+      demand: demand,
+      expired_at: expired_at
+    }
+  end
+
   def prepare_assign
     StartAssignJob.perform_later(id) if status == 'success' &&
                                         expired_at.to_i > Time.now.to_i &&

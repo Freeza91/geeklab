@@ -5,10 +5,27 @@ class ProjectsController < ApplicationController
 
   def index
     @projects = current_user.to_pm.projects.show.order("id desc").includes(:assignments)
+    @projects = @projects.page(params[:page]).per(10)
     @assignments = []
     @projects.each do |project|
       @assignments << project.assignments.done.order("updated_at desc").limit(project.demand)
     end
+
+    respond_to do |format|
+      format.html
+      format.json do
+        json = {status: 0, code: 1, assignments: [], projects: [] }
+        @projects.each do |project|
+          json[:projects] << project.to_json_for_index
+        end
+        @assignments.each do |a|
+          json[:assignments] << a.to_json
+        end
+
+        render json: json
+      end
+    end
+
   end
 
   def show

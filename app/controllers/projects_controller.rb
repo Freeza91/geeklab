@@ -4,7 +4,7 @@ class ProjectsController < ApplicationController
   before_action :is_pm?
 
   def index
-    @projects = current_user.to_pm.projects.order("id desc").includes(:assignments)
+    @projects = current_user.to_pm.projects.show.order("id desc").includes(:assignments)
     @assignments = []
     @projects.each do |project|
       @assignments << project.assignments.done.order("updated_at desc").limit(project.demand)
@@ -12,12 +12,12 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    @project = current_user.to_pm.projects.includes(:tasks).includes(:user_feature).includes(:assignments).find_by(id: params[:id])
+    @project = current_user.to_pm.projects.show.includes(:tasks).includes(:user_feature).includes(:assignments).find_by(id: params[:id])
     @assignments = @project ? @project.assignments.done.order("id desc").limit(@project.try(:demand)) : []
   end
 
   def video
-    @project = current_user.to_pm.projects.includes(:user_feature).includes(:assignments).find_by(id: params[:id])
+    @project = current_user.to_pm.projects.show.includes(:user_feature).includes(:assignments).find_by(id: params[:id])
     @other_assignments = []
     @assignment = []
 
@@ -64,8 +64,6 @@ class ProjectsController < ApplicationController
     json = { status: 0, code: 1, msg: '更新成功' }
 
     project = current_user.to_pm.projects.find_by(id: params[:id])
-    p project
-    p project_params
 
     unless project && project.update(project_params)
       json[:code], json[:msg] = 0, "更新不成功:#{project.errors.full_messages}"
@@ -76,7 +74,16 @@ class ProjectsController < ApplicationController
   end
 
   def destroy
+    json = { status: 0, code: 1, msg: '' }
 
+    project = Project.find_by(id: params[:id])
+    if project && project.pm_id == current_user.id
+      project.update_attribute(:status, 'delete')
+    else
+      json[:code], json[:msg] = 0, '没有权限或者已经删除'
+    end
+
+    render json: json
   end
 
 private

@@ -8,6 +8,8 @@ class Project < ActiveRecord::Base
 
   validates_presence_of :qr_code, :if => Proc.new { |qr| not device == 'web' }
 
+  scope :show, -> { where.not(status: 'delete') }
+
   has_many :assignments,   inverse_of: :project
   has_many :tasks,         inverse_of: :project
   has_one  :user_feature,  inverse_of: :project

@@ -9,22 +9,24 @@ class ProjectsController < ApplicationController
 
   def show
     @project = current_user.to_pm.projects.includes(:tasks).includes(:user_feature).includes(:assignments).find_by(id: params[:id])
-    @assignments = @project ? @project.assignments.order("id desc").limit(@project.try(:demand)) : nil
+    @assignments = @project ? @project.assignments.done.order("id desc").limit(@project.try(:demand)) : []
   end
 
   def video
+
     @project = current_user.to_pm.projects.includes(:user_feature).includes(:assignments).find_by(id: params[:id])
-    @other_assignments = nil
-    @assignment = nil
+    @other_assignments = []
+    @assignment = []
 
     if @project
-      assignments = @project.assignments.limit(@project.try(:demand))
-      if assignments
+      assignments = @project.assignments.done.limit(@project.try(:demand))
+      if assignments && assignments.size > 0
         @assignment = assignments.find_by(id: params[:assignments_id])
-        @assignments.update_attribute(:is_read, true) if @assignment
+        @assignment.update_attribute(:is_read, true) if @assignment
         @other_assignments = assignments - [@assignment]
       end
     end
+
 
   end
 
@@ -32,9 +34,6 @@ class ProjectsController < ApplicationController
   end
 
   def app
-  end
-
-  def video
   end
 
   def create
@@ -105,7 +104,7 @@ private
                 :platform, :desc, :contact_name,
                 :qr_code, :demand,
                 :phone, :email, :company,
-                tasks_attributes: [:content],
+                tasks_attributes: [:id, :content, :_destroy],
                 user_feature_attributes:[{
                   sex:  [], city_level: [],
                   emotional_status: [],

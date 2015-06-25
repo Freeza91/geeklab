@@ -66,12 +66,12 @@ main role="main"
               td
                 | 城市级别
               td
-                = @project.user_feature.city_level.join(', ') 
+                = @project.user_feature.city_level.join(', ')
             tr
               td
                 | 学历
               td
-                = @project.user_feature.education.join(', ') 
+                = @project.user_feature.education.join(', ')
             tr
               td
                 | 情感状态
@@ -101,23 +101,23 @@ main role="main"
                 p
                   | 温馨提示: 测试过程中请尽可能的大声而自信的说出你的真实感受
                 ul
-                  - @project.tasks.each do |task| 
+                  - @project.tasks.each do |task|
                     li
                       i.fa.fa-check-circle
                       span
-                        = task.content 
+                        = task.content
         table.table.table-1
           tbody
             tr
               td
                 | 昵称
               td
-                = @project.contact_name  
+                = @project.contact_name
             tr
               td
                 | 手机号
               td
-                = @project.phone 
+                = @project.phone
             tr
               td
                 | 联系邮箱
@@ -127,17 +127,17 @@ main role="main"
               td
                 | 公司名称
               td
-                = @project.company              
+                = @project.company
       .col-md-3
         p.title
           | 测试视频
         .video-list
             ul
-              - if @assignments.try(:size) > 0
-                - @assgiments.each do |assignment|
+              - if @assignments && @assignments.size > 0
+                - @assignments.each do |assignment|
                   li
                     a href=("/projects/" + "#{@project.id}" + "/video/" + "#{assignment.id}")
-                      img src=assignment.video + '?vframe/png/offset/0/w/480/h/200'
+                      img src=("#{assignment.video}?vframe/png/offset/0/w/480/h/200")
                     i.fa.fa-play-circle.fa-4x
               li
                 a href="javascript: void(0)"

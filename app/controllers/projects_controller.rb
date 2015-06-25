@@ -9,7 +9,7 @@ class ProjectsController < ApplicationController
 
   def show
     @project = current_user.to_pm.projects.includes(:tasks).includes(:user_feature).includes(:assignments).find_by(id: params[:id])
-    @assignments = @project ? @project.assignments.order("id desc") : nil
+    @assignments = @project ? @project.assignments.order("id desc").limit(@project.try(:demand)) : nil
   end
 
   def video
@@ -18,9 +18,10 @@ class ProjectsController < ApplicationController
     @assignment = nil
 
     if @project
-      assignments = @project.assignments
+      assignments = @project.assignments.limit(@project.try(:demand))
       if assignments
         @assignment = assignments.find_by(id: params[:assignments_id])
+        @assignments.update_attribute(:is_read, true) if @assignment
         @other_assignments = assignments - [@assignment]
       end
     end
@@ -52,7 +53,7 @@ class ProjectsController < ApplicationController
     json[:project] = project.to_json_to_pm if project
 
     respond_to do |format|
-      format.html 
+      format.html
       format.json { render json: json }
     end
   end
@@ -62,8 +63,11 @@ class ProjectsController < ApplicationController
     json = { status: 0, code: 1, msg: '更新成功' }
 
     project = current_user.to_pm.projects.find_by(id: params[:id])
+    p project
+    p project_params
+
     unless project && project.update(project_params)
-      json[:code], json[:msg] = 0, '更新不成功'
+      json[:code], json[:msg] = 0, "更新不成功:#{project.errors.full_messages}"
     end
 
     render json: json

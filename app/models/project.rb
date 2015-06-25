@@ -14,7 +14,7 @@ class Project < ActiveRecord::Base
   belongs_to :pm
 
   accepts_nested_attributes_for :tasks, allow_destroy: true
-  accepts_nested_attributes_for :user_feature, allow_destroy: true
+  accepts_nested_attributes_for :user_feature, allow_destroy: true, update_only: true
 
   before_save { self.email = email.to_s.downcase }
   after_update :prepare_assign

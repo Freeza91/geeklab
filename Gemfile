@@ -56,6 +56,10 @@ group :development, :test do
   gem 'quiet_assets'
 
   gem 'guard-livereload', '~> 2.4', require: false
+
+  # db infor
+  gem 'rails_db_info'
+  gem 'rails-erd'
 end
 
 group :production do

@@ -10,9 +10,10 @@ main role="main"
                 h1.title
                   a href=("/projects/" + "#{project.id}")
                     = project.name
-                  span.status class=("status_" + "#{project.status}")
+                  p.status class=("status_" + "#{project.status}")
                     i.fa.fa-exclamation-circle
-                    = get_status_info(project.status) 
+                    span
+                      = get_status_info(project.status) 
                   - if project.status != "underway"
                     span.close.delete-project
                       | &times
@@ -38,6 +39,13 @@ main role="main"
                   span.total
                     | /
                     = project.demand
+      .load-more
+        - if @projects.try(:size) < 10
+          p
+            | 没有更多了
+        - else
+          button.btn.btn-blue
+            | 加载更多
 
-= render partial: 'shared/confirm_modal'
+= render 'shared/confirm_modal'
 = render 'projects/shared/add_modal'

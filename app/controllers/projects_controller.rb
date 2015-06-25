@@ -16,10 +16,10 @@ class ProjectsController < ApplicationController
       format.json do
         json = {status: 0, code: 1, assignments: [], projects: [] }
         @projects.each do |project|
-          json[:projects] << project.to_json_for_index
+          json[:projects] << project
         end
         @assignments.each do |a|
-          json[:assignments] << a.to_json
+          json[:assignments] << a
         end
 
         render json: json

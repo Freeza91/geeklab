@@ -30,7 +30,6 @@ class ProjectsController < ApplicationController
       end
     end
 
-
   end
 
   def web
@@ -51,8 +50,8 @@ class ProjectsController < ApplicationController
   def edit
     json = { status: 0, code: 1, msg: "" }
 
-    @project = project = current_user.to_pm.projects.includes(:tasks).includes(:user_feature).find_by(id: params[:id])
-    json[:project] = project.to_json_to_pm if project
+    @project = current_user.to_pm.projects.includes(:tasks).includes(:user_feature).find_by(id: params[:id])
+    json[:project] = @project.to_json_to_pm if @project
 
     respond_to do |format|
       format.html
@@ -77,6 +76,7 @@ class ProjectsController < ApplicationController
   end
 
   def destroy
+
   end
 
 private
@@ -117,10 +117,6 @@ private
                 },
                 :age, :income
                 ])
-  end
-
-  def is_pm?
-    redirect_to pms_path unless ['both', 'pm'].include?(current_user.role)
   end
 
 end

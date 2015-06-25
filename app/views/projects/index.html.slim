@@ -13,35 +13,25 @@ main role="main"
                   span.status class=("status_" + "#{project.status}")
                     i.fa.fa-exclamation-circle
                     = get_status_info(project.status) 
-                  span.close
-                    | &times
+                  - if project.status != "underway"
+                    span.close
+                      | &times
               .content
                 .videos
                   ul
-                    li.col-md-4
-                      img  src=image_path('logo/logo.png')
-                      /src=("#{assignment.video}" + "?vframe/png/offset/0/w/480/h/200")
-                      /a href=("/projects/" + "#{project.id}" + "/video/" + "#{assignment.id}")
-                      a href="javascript: void(0)"
-                        i.fa.fa-play-circle.fa-4x
-                    li.col-md-4
-                      img  src=image_path('logo/logo.png')
-                      /src=("#{assignment.video}" + "?vframe/png/offset/0/w/480/h/200")
-                      a href="javascript: void(0)"
-                        i.fa.fa-play-circle.fa-4x
-                    li.col-md-4
-                      img  src=image_path('logo/logo.png')
-                      /src=("#{assignment.video}" + "?vframe/png/offset/0/w/480/h/200")
-                      a href="javascript: void(0)"
-                        i.fa.fa-play-circle.fa-4x
-                    li.col-md-4
-                      /img  src=image_path('logo/logo.png')
-                      /src=("#{assignment.video}" + "?vframe/png/offset/0/w/480/h/200")
-                      a href="javascript: void(0)"
-                        i.fa.fa-play-circle.fa-4x
+                    - if project.assignments.try(:size) > 0
+                      - project.assignments.each do |assignment|
+                        li.col-md-4
+                          img src=("#{assignment.video}" + "?vframe/png/offset/0/w/480/h/200")
+                          a href=("/projects/" + "#{project.id}" + "/video/" + "#{assignment.id}")
+                            i.fa.fa-play-circle.fa-4x
+                    - (project.demand - project.assignments.size).times
+                      li.col-md-4
+                        a href="javascript: void(0)"
+                          i.fa.fa-play-circle.fa-4x
                 .progress-num
                   span.done
-                    | 2
+                    = project.assignments.size  
                   span.total
                     | /
                     = project.demand

@@ -137,7 +137,7 @@ main role="main"
                 - @assignments.each do |assignment|
                   li
                     a href=("/projects/" + "#{@project.id}" + "/video/" + "#{assignment.id}")
-                      img src=("#{assignment.video}?vframe/png/offset/0/w/480/h/200")
+                      img src=("#{assignment.video}" + "?vframe/png/offset/0/w/480/h/200")
                     i.fa.fa-play-circle.fa-4x
               li
                 a href="javascript: void(0)"

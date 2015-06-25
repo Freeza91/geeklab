@@ -12,8 +12,7 @@ class ProjectsController < ApplicationController
     @assignments = @project ? @project.assignments.done.order("id desc").limit(@project.try(:demand)) : []
   end
 
-  def video
-
+  def video 
     @project = current_user.to_pm.projects.includes(:user_feature).includes(:assignments).find_by(id: params[:id])
     @other_assignments = []
     @assignment = []

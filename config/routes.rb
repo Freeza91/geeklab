@@ -48,7 +48,7 @@ Rails.application.routes.draw do
     end
 
     resources :assignments, only: :show do
-      resources :comment, only: :create
+      resources :comments, only: :create
     end
   end
 

@@ -3,7 +3,7 @@ main role="main"
     .container
       = render partial: 'projects/shared/add'
       .projects-wrp.clear-fix
-        - @projects.each do |project|
+        - @projects.each_with_index do |project, index|
           .card data-project-id="#{project.id}"
             .inner
               header
@@ -14,18 +14,21 @@ main role="main"
                     i.fa.fa-exclamation-circle
                     = get_status_info(project.status) 
                   - if project.status != "underway"
-                    span.close
+                    span.close.delete-project
                       | &times
               .content
                 .videos
                   ul
-                    - if project.assignments.try(:size) > 0
-                      - project.assignments.each do |assignment|
+                    - if @assignments[index].try(:size) > 0
+                      - @assignments[index].each do |assignment|
                         li.col-md-4
                           img src=("#{assignment.video}" + "?vframe/png/offset/0/w/480/h/200")
                           a href=("/projects/" + "#{project.id}" + "/video/" + "#{assignment.id}")
                             i.fa.fa-play-circle.fa-4x
-                    - (project.demand - project.assignments.size).times
+                          - if !assignment.is_read
+                            span.read-mark
+                              | new
+                    - (project.demand - @assignments[index].size).times
                       li.col-md-4
                         a href="javascript: void(0)"
                           i.fa.fa-play-circle.fa-4x
@@ -36,4 +39,5 @@ main role="main"
                     | /
                     = project.demand
 
+= render partial: 'shared/confirm_modal'
 = render 'projects/shared/add_modal'

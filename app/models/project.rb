@@ -39,13 +39,19 @@ class Project < ActiveRecord::Base
 
   def to_json_to_pm
     {
+      id: id,
       name: name,
       profile: profile,
       device: device,
+      demand: demand,
       requirement: requirement,
       qr_code: qr_code.try(:url),
       platform: platform,
       desc: desc,
+      contact_name: contact_name,
+      phone: phone,
+      email: email,
+      company: company,
       user_feature: self.user_feature,
       tasks: self.tasks
     }

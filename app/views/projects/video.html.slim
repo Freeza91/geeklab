@@ -1,5 +1,105 @@
-p=@project.try(:name)
-p=@assignment.try(:video)
-p=@assignment.try(:status)
-p=@assignments.try(:size)
-p hello
+/p=@project.try(:name)
+/p=@assignment.try(:video)
+/p=@assignment.try(:status)
+/p=@assignments.try(:size)
+main role="mian"
+  section.content-box
+    .container
+      .col-md-9
+        p.title
+          i.fa.fa-mobile.fa-2x
+          = @project.try(:name)
+        .video-player
+          video controls="controls" style="width: 100%; height: 100%"
+            /source src="http://7xjcsq.com2.z0.glb.qiniucdn.com/copy-1434955521wScCUpQT.mp4"
+            source src=@assignment.try(:video);
+        p
+          | 视频评价
+          /- if @assignment.comments
+            /comments 
+          /- else
+        .evaluate
+          .form
+            .col-md-6
+              p
+                | 你觉得视频是否合格?
+              label.radio-inline
+                input type="radio" name="quality" value="yes" v-model="quality"
+                span YES
+              label.radio-inline
+                input type="radio" name="quality" value="no" v-model="quality"
+                span NO
+            .col-md-6
+              p
+                | 你觉得TA是你的目标用户吗?
+              label.radio-inline
+                input type="radio" name="user" value="yes" v-model="user"
+                span YES
+              label.radio-inline
+                input type="radio" name="user" value="no" v-model="user"
+                span NO
+            /input type="text" v-model="assignmentId" value=@assignment.id style="display:none"
+            /input type="text" v-model="projectId" value=@project.id
+            .button.btn.btn-blue v-on="click: submit($event)"
+              | 提交
+
+        p
+          | 用户信息
+        table.table.table-1
+          tbody
+            tr
+              td
+                | 性别
+              td
+                /= @assignment.tester.tester_infors.sex
+                | 女
+            tr
+              td
+                | 年龄
+              td
+                | 23
+            tr
+              td
+                | 居住地
+              td
+                /= @assignment.tester.tester_infors.liviingplace
+                | 北京
+            tr
+              td
+                | 情感状况
+              td
+                /= @assignment.tester.tester_infors.emotion_status
+                | 单身
+            tr
+              td
+                | 教育程度
+              td
+                /= @assignment.tester.tester_infors.education
+                | 本科
+            tr
+              td
+                | 职业信息
+              td
+                /= @assignment.tester.tester_infors.profession 
+                | 互联网 
+            tr
+              td
+                | 兴趣爱好
+              td
+                /= @assignment.tester.tester_infors.interest.join(', ') 
+                | 足球，音乐
+      .col-md-3
+        p
+          | 测试视频
+        .video-list
+          ul
+            /- if @other_assignments.try(:size) > 0
+              /- @other_assignments.each do |assignment|
+                /li
+                  /a href=("/projects/" + "#{@project.id}" + "/video/" + "#{assignment.id}")
+                    /img src=image_path('logo/logo.png')
+                  /i.fa.fa-play-circle.fa-4x
+            li
+              a href="javascript: void(0)"
+                img
+              i.fa.fa-play-circle.fa-4x

@@ -1,5 +1,5 @@
 $(function () {
-  if(!$('body').hasClass('projects_web') && !$('body').hasClass('projects_app')) {
+  if(!$('body').hasClass('projects_web') && !$('body').hasClass('projects_app') && !$('body').hasClass('projects_edit')) {
     return false;
   }
 
@@ -139,7 +139,7 @@ $(function () {
         return incomeMap[value];
       },
       from: function (value) {
-        return incomeMap[value];
+        return value;
       }
     }
   });

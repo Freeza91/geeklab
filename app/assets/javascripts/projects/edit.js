@@ -1,183 +1,178 @@
 $(function () {
-  if(!$('body').hasClass('projects_app')) {
+  if(!$('body').hasClass('projects_edit')) {
     return false;
   }
-  var qrcode;
-  var vm = new Vue({
-    el: '.project',
-    data: {
-      step: 1,
-      validated: {
-        step_1: true,
-        step_2: true,
-        step_3: true,
-        step_4: true
-      },
-      checkAll: {
-        sex: true,
-        city: true,
-        education: true,
-        emotion: true,
-        orientation: true,
-        interests: false
-      },
-      hasChecked: {
-        sex: true,
-        city: true,
-        education: true,
-        emotion: true,
-        orientation: true
-      },
-      name: '',
-      introduction: '',
-      platform: 'ios',
-      device: 'phone',
-      situation: '',
-      username: '',
-      company: '',
-      qrcode: '',
-      mobile: {
-        content: '',
-        validated: true
-      },
-      email: {
-        content: '',
-        validated: true
-      },
-      sex: [
-        {
-          key: '男',
-          checked: true
-        },
-        {
-          key: '女',
-          checked: true
+
+  var url = location.pathname,
+      uploadUrl = '',
+      vm,
+      qrcode;
+
+  var checkMap = {
+    city: ['一线城市', '省会城市', '其它']
+  };
+
+  $.ajax({
+    url: url,
+    dataType: 'json'
+  })
+  .done(function (data, status) {
+    if(data.status === 0 && data.code === 1) {
+      uploadUrl = '/projects/' + data.project.id;
+      vm = new Vue({
+        el: '.project',
+        data: generateVmData(data.project),
+        methods: {
+          previousStep: previousStep,
+          nextStep: nextStep,
+          addTask: addTask,
+          deleteTask: deleteTask,
+          toggleCheckAll: toggleCheckAll,
+          checkAllEffect: checkAllEffect,
+          uploadQrcode: uploadQrcode,
+          localImageView: localImageView,
+          textareaLengthLimit: textareaLengthLimit,
+          submit: submit
         }
-      ],
-      city: [
-        {
-          key: '北上广深',
-          checked: true
-        },
-        {
-          key: '省会城市',
-          checked: true
-        },
-        {
-        key: '其它',
-        checked: true
-        }
-      ],
-      education: [
-        {
-          key: '高中及以下',
-          checked: true
-        },
-        {
-          key: '大专',
-          checked: true
-        },
-        {
-          key: '本科',
-          checked: true
-        },
-        {
-          key: '硕士',
-          checked: true
-        },
-        {
-          key: '博士',
-          checked: true
-        }
-      ],
-      emotion: [
-        {
-          key: '单身',
-          checked: true
-        },
-        {
-          key: '恋爱中',
-          checked: true
-        },
-        {
-          key: '已婚',
-          checked: true
-        }
-      ],
-      orientation: [
-        {
-          key: '异性恋',
-          checked: true
-        },
-        {
-          key: '同性恋',
-          checked: true
-        },
-        {
-          key: '双性恋',
-          checked: true
-        }
-      ],
-      interests: [
-        {
-          key: '足球',
-          checked: false
-        },
-        {
-          key: '健身',
-          checked: false
-        },
-        {
-          key: '旅游',
-          checked: false
-        },
-        {
-          key: '二次元',
-          checked: false
-        },
-        {
-          key: '音乐',
-          checked: false
-        },
-        {
-          key: '看书',
-          checked: false
-        },
-        {
-          key: '电影',
-          checked: false
-        },
-        {
-          key: '星座',
-          checked: false
-        }
-      ],
-      tasks: [
-        {
-          content: ''
-        },
-        {
-          content: ''
-        },
-        {
-          content: ''
-        }
-      ]
-    },
-    methods: {
-      previousStep: previousStep,
-      nextStep: nextStep,
-      addTask: addTask,
-      deleteTask: deleteTask,
-      toggleCheckAll: toggleCheckAll,
-      checkAllEffect: checkAllEffect,
-      uploadQrcode: uploadQrcode,
-      localImageView: localImageView,
-      textareaLengthLimit: textareaLengthLimit,
-      submit: submit
+      });
     }
+  })
+  .error(function (errors, status) {
+    console.log(errors);
   });
 
+
+  function generateVmData (project) {
+    var incomeMap = [0, 2, 5, 8, 10, 15, 30, 50, 100];
+    var androidMap = ['2.2', '2.3', '2.3.3', '3.0', '3.1', '3.2', '4.0', '4.0.3', '4.1', '4.2', '4.3', '4.4', '4.5', '5.0', '5.1'];
+    var iosMap = ['6.0', '7.0', '8.0'];
+
+    var vmData = {};
+    vmData.step = 1;
+    vmData.validated = {
+      step_1: true,
+      step_2: true,
+      step_3: true,
+      step_4: true
+    };
+    vmData.checkAll = {
+      sex: true,
+      city: true,
+      education: true,
+      emotion: true,
+      orientation: true,
+      interests: false
+    };
+    vmData.hasChecked = {
+      sex: true,
+      city: true,
+      education: true,
+      emotion: true,
+      orientation: true
+    };
+
+    // 基本信息
+    vmData.name = project.name;
+    vmData.introduction = project.profile;
+    vmData.device = project.device;
+
+    // 区分web, app
+    if(project.device === 'web') {
+      vmData.website = project.platform
+    } else {
+      vmData.platform = project.platform;
+    }
+    
+    // target user
+    vmData.sex = generateVmCheckArr(['男', '女'], project.user_feature.sex);
+    vmData.city = generateVmCheckArr(['北上广深', '省会城市', '其它'], project.user_feature.city_level, 'index');
+    vmData.education = generateVmCheckArr(['高中及以下', '大专', '本科', '硕士', '博士'], project.user_feature.education);
+    vmData.emotion = generateVmCheckArr(['单身', '恋爱中', '已婚'], project.user_feature.emotional_status);
+    vmData.orientation = generateVmCheckArr(['异性恋', '同性恋', '双性恋'], project.user_feature.sex_orientation);
+    vmData.interests = generateVmCheckArr(['足球', '健身', '旅游', '二次元', '音乐', '看书', '电影', '星座'], project.user_feature.interest);
+
+    // task
+    vmData.situation = project.desc;
+    vmData.tasks = [];
+    project.tasks.forEach(function (item) {
+      vmData.tasks.push({
+        id: item.id,
+        content: item.content
+      });
+    });
+    vmData.deletedTask = [];
+
+    // 联系方式
+    vmData.mobile = {
+      content: project.phone,
+      validated: true
+    };
+    vmData.email = {
+      content: project.email,
+      validated: true
+    };
+    vmData.username = project.contact_name;
+    vmData.company = project.company;
+
+    // 设置使用slider选择的值
+    $('#slider-age').val(project.user_feature.age.split('-'));
+    var income = project.user_feature.income.split('-').map(function (item) {
+      return incomeMap.indexOf(parseInt(item));
+    });
+    $('#slider-income').val(income);
+    $('#slider-user').val(project.demand);
+    // app时设置系统要求
+    if(project.device != 'web') {
+      switch(project.platform) {
+        case 'android':
+          $('#slider-android').val(androidMap[project.requirement]);
+        break;
+        case 'ios':
+          $('#slider-ios').val(iosMap[project.requirement]);
+        break;
+      }
+    }
+    // 是否全选
+    for (key in vmData.checkAll) {
+      vmData.checkAll[key] = isCheckAll(vmData[key]); 
+    }
+    // 显示二维码图片
+    if(project.qr_code) {
+      $('.qrcode-preview').attr('src', project.qr_code).show();
+      $('.fa-upload').hide();
+      vmData.qrcode = project.qr_code;
+    } 
+    console.log(vmData);
+    return vmData;
+  }
+
+  function generateVmCheckArr (cates, catesChecked, checkType) {
+    var arr = [];
+    if(checkType === 'index') {
+      cates.forEach(function (item, index) {
+        arr.push({
+          key: item,
+          checked: catesChecked.indexOf(index + 1) != -1
+        })
+      });
+    } else {
+      cates.forEach(function (item) {
+        arr.push({
+          key: item,
+          checked: catesChecked.indexOf(item) != -1
+        });
+      });
+    }
+    return arr;
+  }
+
+  function isCheckAll (vmCheckArr) {
+    return vmCheckArr.every(function (item){
+      return item.checked;
+    });
+  }
+
+  
   function submit(event) {
     event.preventDefault();
 
@@ -193,28 +188,13 @@ $(function () {
   }
 
   function postData () {
-    //var data = {};
     var data = new FormData();
     var vmData = vm.$data;
 
-    // 获取数据
-    //data.name = vmData.name;
-    //data.platform = vmData.platform;
-    //data.device = vmData.device;
-    //data.profile = vmData.introduction;
     data.append('name', vmData.name);
-    data.append('platform', vmData.platform);
     data.append('device', vmData.device);
     data.append('profile', vmData.introduction);
 
-    // target user requirement
-    //data.user_feature_attributes = {};
-    //data.user_feature_attributes.sex = getvmcheckboxarr(vmdata.sex);
-    //data.user_feature_attributes.city_level = getvmcheckboxarr(vmdata.city, 'index');
-    //data.user_feature_attributes.education = getvmcheckboxarr(vmdata.education);
-    //data.user_feature_attributes.emotional_status = getvmcheckboxarr(vmdata.emotion);
-    //data.user_feature_attributes.sex_orientation = getvmcheckboxarr(vmdata.orientation);
-    //data.user_feature_attributes.interest = getvmcheckboxarr(vmdata.interests);
     var user_feature_attributes = {};
     user_feature_attributes.sex = getVmCheckboxArr(vmData.sex);
     user_feature_attributes.city_level = getVmCheckboxArr(vmData.city, 'index');
@@ -224,19 +204,30 @@ $(function () {
     user_feature_attributes.interest = getVmCheckboxArr(vmData.interests);
 
     var tasks_attributes = {};
-    vmData.tasks.forEach(function (task, index) {
+    var taskIndex = 0;
+    vmData.tasks.forEach(function (task) {
       if(task.content.length > 0) {
-        tasks_attributes[index] = {content: task.content};
+        if(task.id) {
+          tasks_attributes[taskIndex++] = {
+            content: task.content,
+            id:  task.id
+          };
+        } else {
+          tasks_attributes[taskIndex++] = {content: task.content};
+        }
       }
     });
 
+    // 处理被删除的task
+    vmData.deletedTask.forEach(function (taskId) {
+      tasks_attributes[taskIndex++] = {
+        id: taskId,
+        _destroy: 1
+      }
+    });
     data.append('tasks_attributes', JSON.stringify(tasks_attributes));
     data.append('desc', vmData.situation);
 
-    //data.contact_name = vmData.username;
-    //data.phone = vmData.mobile;
-    //data.email= vmData.email;
-    //data.company = vmData.company;
     data.append('contact_name', vmData.username);
     data.append('phone', vmData.mobile.content);
     data.append('email', vmData.email.content);
@@ -246,25 +237,25 @@ $(function () {
     var age = $('#slider-age').val();
     var income = $('#slider-income').val();
     var sys = (vmData.platform === 'ios' ? $('#slider-ios').val() : $('#slider-android').val());
-    //data.demand = userCount;
-    //data.user_feature_attributes.age = age.join('-');
-    //data.user_feature_attributes.income = income.join('-');
-    //data.requirement = sys;
 
     data.append('demand', userCount);
-    data.append('requirement', sys);
     user_feature_attributes.age = age.join('-');
     user_feature_attributes.income = income.join('-');
     data.append('user_feature_attributes', JSON.stringify(user_feature_attributes));
 
-    data.append('qr_code', qrcode)
-    console.log(data);
+    // 区分web, app
+    if(vmData.device === 'web') {
+      data.append('platform', vmData.website);
+      data.append('requirement', 'all');
+    } else {
+      data.append('platform', vmData.platform);
+      data.append('requirement', sys);
+      qrcode ? data.append('qr_code', qrcode) : data.append('qr_code', vmData.qrcode);
+    }
 
-    var url = '/projects';
     $.ajax({
-      url: url,
-      method: 'post',
-      //data: {project: data},
+      url: uploadUrl,
+      method: 'put',
       data: data,
       cache: false,
       processData: false, //Dont't process the file
@@ -279,10 +270,6 @@ $(function () {
       console.log(errors);
     });
   }
-
-  /*
-   * @param valueType 返回值的类型
-   */
   function getVmCheckboxArr (vmArr, valueType) {
     valueType = valueType || 'value';
     var result = [];
@@ -324,7 +311,7 @@ $(function () {
     event.preventDefault();
     switch(vm.step) {
       case 1:
-        if(vm.introduction && qrcode) {
+        if(vm.introduction && vm.qrcode) {
           vm.validated.step_1 = true;
           vm.step++;
           scrollToTop();
@@ -373,6 +360,9 @@ $(function () {
   function deleteTask (task, event) {
     event.preventDefault();
     vm.tasks.$remove(task.$index);
+    if(task.id) {
+      vm.deletedTask.push(task.id);
+    }
   }
 
   function toggleCheckAll (category) {
@@ -460,5 +450,4 @@ $(function () {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
   }
-
 });

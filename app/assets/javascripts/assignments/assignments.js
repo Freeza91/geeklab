@@ -214,6 +214,13 @@ $(function () {
           case 0:
             $card.find('.operator.uploading').hide();
             $card.find('.operator.upload-failed').fadeIn();
+            // 恢复上传进度圆环
+            $card.find('.progressCircle .inner').css({
+              'transform': 'rotate(0)',
+              '-o-transform': 'rotate(0)',
+              '-moz-transform': 'rotate(0)',
+              '-webkit-transform': 'rotate(0)'
+            });
           break;
           case 1:
             callback(data);
@@ -402,6 +409,12 @@ $(function () {
 
     var $detailTable = $modal.find('table');
     var device = assignmentDetail.device[0].toUpperCase() + assignmentDetail.device.substr(1);
+    if(assignmentDetail.device === 0) {
+      // 新手任务
+      $detailTable.removeClass('web').addClass('app');
+      $detailTable.find('[name="device"]').text('任意设备');
+      $detailTable.find('[name="requirement"]').text('无限制');
+    }
     if (assignmentDetail.device === 'web') {
       $detailTable.removeClass('app').addClass('web');
       $detailTable.find('[name="website"]').text(assignmentDetail.platform);

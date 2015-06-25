@@ -34,6 +34,9 @@ class ProjectsController < ApplicationController
   def app
   end
 
+  def video
+  end
+
   def create
     json = { status: 0, code: 1, msg: '' }
     project = current_user.to_pm.projects.build(project_params)
@@ -46,7 +49,7 @@ class ProjectsController < ApplicationController
   def edit
     json = { status: 0, code: 1, msg: "" }
 
-    project = current_user.to_pm.projects.includes(:tasks).includes(:user_feature).find_by(id: params[:id])
+    @project = project = current_user.to_pm.projects.includes(:tasks).includes(:user_feature).find_by(id: params[:id])
     json[:project] = project.to_json_to_pm if project
 
     respond_to do |format|
@@ -62,7 +65,8 @@ class ProjectsController < ApplicationController
     project = current_user.to_pm.projects.find_by(id: params[:id])
     p project
     p project_params
-    unless project && project.assign_attributes(project_params)
+
+    unless project && project.update(project_params)
       json[:code], json[:msg] = 0, "更新不成功:#{project.errors.full_messages}"
     end
 

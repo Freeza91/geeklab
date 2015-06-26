@@ -8,7 +8,7 @@ main role="main"
             .inner
               header
                 h1.title
-                  a href=("/projects/" + "#{project.id}")
+                  a href=("/projects/" + "#{project.id}") target="_blank"
                     = project.name
                   p.status class=("status_" + "#{project.status}")
                     i.fa.fa-exclamation-circle
@@ -23,7 +23,7 @@ main role="main"
                       - @assignments[index].each do |assignment|
                         li.col-md-4
                           img src=("#{assignment.video}" + "?vframe/png/offset/0/w/480/h/200")
-                          a href=("/projects/" + "#{project.id}" + "/video/" + "#{assignment.id}")
+                          a href=("/projects/" + "#{project.id}" + "/video/" + "#{assignment.id}") target="_blank"
                             i.fa.fa-play-circle.fa-4x
                           - if !assignment.is_read
                             span.read-mark
@@ -38,6 +38,17 @@ main role="main"
                   span.total
                     | /
                     = project.demand
+                .count-down data-deadline="#{project.expired_at}"
+                  i.fa.fa-clock-o
+                  span.day
+                    | 3
+                  | 天
+                  span.hour
+                    | 13
+                  | 时
+                  span.minute
+                    | 38
+                  | 分
       .load-more
         - if @projects.try(:size) < 10
           p

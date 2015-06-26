@@ -311,18 +311,28 @@ $(function () {
     event.preventDefault();
     switch(vm.step) {
       case 1:
-        if(vm.introduction && vm.qrcode) {
-          vm.validated.step_1 = true;
-          vm.step++;
-          scrollToTop();
+        if(vm.device === 'web') {
+          if(vm.website && vm.introduction) {
+            vm.validated.step_1 = true;
+            vm.step++;
+            scrollToTop();
+          } else {
+            vm.validated.step_1 = false;
+          }
         } else {
-          vm.validated.step_1 = false;
+          if(vm.introduction && vm.qrcode) {
+            vm.validated.step_1 = true;
+            vm.step++;
+            scrollToTop();
+          } else {
+            vm.validated.step_1 = false;
+          }
         }
       break;
       case 2:
         var cates = ['sex', 'city', 'education', 'emotion', 'orientation'];
         vm.validated.step_2 = cates.every(function (cate) {
-          vm.hasChecked[cate] = vm[cate].every(isCheck);
+          vm.hasChecked[cate] = vm[cate].some(isCheck);
           return vm.hasChecked[cate];
         });
         if(vm.validated.step_2) {

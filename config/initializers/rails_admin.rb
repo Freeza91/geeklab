@@ -78,6 +78,7 @@ RailsAdmin.config do |config|
       field :is_transfer
       field :is_sexy
       field :reasons, :pg_int_array
+      field :is_read
 
       field :comment
 

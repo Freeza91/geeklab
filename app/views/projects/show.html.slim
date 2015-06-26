@@ -7,8 +7,8 @@ main role="main"
           - else
             i.fa.fa-mobile.fa-2x
           = @project.name
-          a href=("/projects/" + "#{@project.id}" + "/edit")
-            i.fa.fa-pencil.place-right js-action="edit" data-id=@project.id
+          a.place-right href=("/projects/" + "#{@project.id}" + "/edit")
+            i.fa.fa-pencil js-action="edit" data-id=@project.id
         table.table.table-1
           tbody
             - if @project.device == 'web'
@@ -137,7 +137,7 @@ main role="main"
                 - @assignments.each do |assignment|
                   li
                     a href=("/projects/" + "#{@project.id}" + "/video/" + "#{assignment.id}")
-                      img src=("#{assignment.video}?vframe/png/offset/0/w/480/h/200")
+                      img src=("#{assignment.video}" + "?vframe/png/offset/0/w/480/h/200")
                     i.fa.fa-play-circle.fa-4x
               li
                 a href="javascript: void(0)"

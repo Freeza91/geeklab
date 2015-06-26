@@ -5,9 +5,8 @@ class CommentsController < ApplicationController
 
   def create
     json = { status: 0, code: 1, msg: ''}
-
-    assignment = Assignment.find_by(:id, params[:assignment_id])
-    if assignment && assignment.project_id == params[:project_id] && assignment.tester_id == current_user.id
+    assignment = Assignment.find_by(id: params[:assignment_id])
+    if assignment && assignment.project_id == params[:project_id].to_i && assignment.tester_id == current_user.id
       comment = assignment.build_comment(comment_params)
       unless comment.save
         json[:code], json[:msg] = 0, "#{comment.errors.full_messages}"
@@ -15,6 +14,8 @@ class CommentsController < ApplicationController
     else
       json[:code], json[:msg] = 0, '没有权限'
     end
+
+    render json: json
   end
 
 private

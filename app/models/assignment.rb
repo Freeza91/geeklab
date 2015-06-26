@@ -44,7 +44,6 @@ class Assignment < ActiveRecord::Base
 
   end
 
-
   def to_json_with_project
     {
       status: status,
@@ -54,6 +53,13 @@ class Assignment < ActiveRecord::Base
     }
   end
 
+  def to_json_for_project_index
+    {
+      id: id,
+      video: video,
+      is_read: is_read
+    }
+  end
 
   def video_notice_to_tester
     if status == 'not_accept' || status == "success"

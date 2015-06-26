@@ -8,6 +8,8 @@ class Project < ActiveRecord::Base
 
   validates_presence_of :qr_code, :if => Proc.new { |qr| not device == 'web' }
 
+  scope :show, -> { where.not(status: 'delete') }
+
   has_many :assignments,   inverse_of: :project
   has_many :tasks,         inverse_of: :project
   has_one  :user_feature,  inverse_of: :project
@@ -57,10 +59,28 @@ class Project < ActiveRecord::Base
     }
   end
 
+  def to_json_for_index
+    {
+      id: id,
+      name: name,
+      status: get_status,
+      demand: demand,
+      expired_at: expired_at
+    }
+  end
+
+  def get_status
+    self.update_column(:status, 'failed') if expired?
+    status
+  end
+
+  def expired?
+    expired_at.to_i > Time.now.to_i
+  end
+
   def prepare_assign
     StartAssignJob.perform_later(id) if status == 'success' &&
-                                        expired_at.to_i > Time.now.to_i &&
-                                        id != Project.first.id
+                                        expired? && id != Project.first.id
   end
 
   def auto_update_status

@@ -40,6 +40,11 @@ class ApplicationController < ActionController::Base
     false
   end
 
+  def is_pm?
+    @is_pm ||= ['both', 'pm'].include?(current_user.role)
+    redirect_to pms_path unless @is_pm
+  end
+
 private
 
   def from_session

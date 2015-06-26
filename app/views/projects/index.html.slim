@@ -12,7 +12,7 @@ main role="main"
                     = project.name
                   span.status class=("status_" + "#{project.status}")
                     i.fa.fa-exclamation-circle
-                    = get_status_info(project.status) 
+                    = get_status_info(project.status)
                   - if project.status != "underway"
                     span.close.delete-project
                       | &times
@@ -34,7 +34,7 @@ main role="main"
                           i.fa.fa-play-circle.fa-4x
                 .progress-num
                   span.done
-                    = project.assignments.size  
+                    = @assignments[index].size
                   span.total
                     | /
                     = project.demand

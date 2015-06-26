@@ -63,16 +63,24 @@ class Project < ActiveRecord::Base
     {
       id: id,
       name: name,
-      status: status,
+      status: get_status,
       demand: demand,
       expired_at: expired_at
     }
   end
 
+  def get_status
+    self.update_column(:status, 'failed') if expired?
+    status
+  end
+
+  def expired?
+    expired_at.to_i > Time.now.to_i
+  end
+
   def prepare_assign
     StartAssignJob.perform_later(id) if status == 'success' &&
-                                        expired_at.to_i > Time.now.to_i &&
-                                        id != Project.first.id
+                                        expired? && id != Project.first.id
   end
 
   def auto_update_status

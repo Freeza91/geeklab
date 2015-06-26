@@ -1,5 +1,5 @@
 module ProjectsHelper
-  
+
   def get_status_info(status)
     info = {
       'underway': '正在进行中',

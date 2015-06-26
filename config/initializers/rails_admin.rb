@@ -124,6 +124,7 @@ RailsAdmin.config do |config|
       field :demand
       field :status
       field :qr_code
+      field :reasons,           :pg_int_array
 
       field :tasks do
         orderable true

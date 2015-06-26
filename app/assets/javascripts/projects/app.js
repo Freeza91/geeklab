@@ -335,7 +335,7 @@ $(function () {
       case 2:
         var cates = ['sex', 'city', 'education', 'emotion', 'orientation'];
         vm.validated.step_2 = cates.every(function (cate) {
-          vm.hasChecked[cate] = vm[cate].every(isCheck);
+          vm.hasChecked[cate] = vm[cate].some(isCheck);
           return vm.hasChecked[cate];
         });
         if(vm.validated.step_2) {

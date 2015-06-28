@@ -1,0 +1,28 @@
+header.header.navbar.navbar-static.clear-fix
+  .container
+    .navbar-header
+      a.top-logo href=stores_path
+        img src=image_path('logo/logo.png')
+    .navbar-collapse.collapse
+      ul.nav.navbar-nav
+        - if current_user
+          ul.nav.navbar-nav.login
+            li
+              a.score href="javascript:void(0)"
+                | 我的积分
+                i.fa.fa-diamond
+                = current_user.to_tester.try(:credits).to_i
+            li.dropdown
+              a role='button'
+                =current_user.email
+                span.caret
+              ul.dropdown-menu role='menu'
+                li
+                  a rel="noflow" data-method="delete" href=users_session_path(current_user.id)
+                    i.fa.fa-power-off
+                    | 退出登录
+        - else
+          button.btn.btn-blue.login data-toggle='modal' data-target='#signup'
+            | 登录/注册
+
+section.layout-fix.for-header

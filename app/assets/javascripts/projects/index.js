@@ -15,7 +15,7 @@ $(function () {
     'success': '任务成功',
     'failed': '任务失败'
   };
-  $('.delete-project').on('click', function () {
+  $('.projects-wrp').on('click', '.delete-project', function () {
     $card = $(this).parents('.card');
     id = $(this).parents('.card').data('projectId');
 
@@ -187,5 +187,32 @@ $(function () {
 
   // 倒计时初始化
   countDownInit();
+
+  // 计算comment的位置
+  function caculateCommentPosition () {
+    var comments = $('.comment');
+    comments.each(function (index, comment) {
+      var $comment = $(comment),
+          $status = $comment.parent().find('.status');
+      var statusPosition = $status.position();
+      var left = statusPosition.left + $status.width() + 10,
+          topPosition = ($comment.height() / 2) - statusPosition.top - 7;
+      $comment.css({
+        'top': '-' + topPosition + 'px',
+        'left': left + 'px'
+      });
+    });
+  }
+
+  caculateCommentPosition();
+
+  // 显示comment, 当鼠标移到状态栏图标上时
+  $('.projects-wrp').on('mouseenter', '.status', function (){
+    console.log('xxx');
+    $(this).parents('.title').find('.comment').fadeIn();
+  });
+  $('.projects-wrp').on('mouseout', '.status', function (){
+    $(this).parents('.title').find('.comment').fadeOut();
+  });
 
 });

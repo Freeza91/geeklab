@@ -13,6 +13,11 @@ main role="main"
                   p.status class=("status_" + "#{project.status}")
                     i.fa.fa-exclamation-circle
                     = get_status_info(project.status)
+                  - if project.status == "not_accept" && project.reasons.size > 0
+                    ol.comment
+                      - project.reasons.each do |reason|
+                        li
+                          = reason
                   - if project.status != "underway"
                     span.close.delete-project
                       | &times
@@ -27,7 +32,6 @@ main role="main"
                             i.fa.fa-play-circle.fa-4x
                           - if !assignment.is_read
                             span.read-mark
-                              | new
                     - (project.demand - @assignments[index].size).times
                       li.col-md-4
                         a href="javascript: void(0)"
@@ -40,15 +44,18 @@ main role="main"
                     = project.demand
                 .count-down data-deadline="#{project.expired_at}"
                   i.fa.fa-clock-o
-                  span.day
-                    | 3
-                  | 天
-                  span.hour
-                    | 13
-                  | 时
-                  span.minute
-                    | 38
-                  | 分
+                  - if project.status == "failed"
+                    | 任务已结束
+                  - else
+                    span.day
+                      | 3
+                    | 天
+                    span.hour
+                      | 13
+                    | 时
+                    span.minute
+                      | 38
+                    | 分
       .load-more
         - if @projects.try(:size) < 10
           p

@@ -71,6 +71,7 @@ Rails.application.routes.draw do
   end
 
   resources :stores
+  resources :goods
 
   require 'sidekiq/web'
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|

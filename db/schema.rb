@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150626064629) do
+ActiveRecord::Schema.define(version: 20150629091041) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,33 @@ ActiveRecord::Schema.define(version: 20150626064629) do
     t.boolean "target_user"
     t.integer "assignment_id"
     t.boolean "qualified"
+  end
+
+  create_table "goods", force: :cascade do |t|
+    t.string   "name"
+    t.string   "stock"
+    t.text     "describle"
+    t.float    "cost"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer  "num"
+    t.string   "good_name"
+    t.float    "total_cost"
+    t.integer  "good_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "user_id"
+  end
+
+  create_table "pictures", force: :cascade do |t|
+    t.integer  "pictureable_id"
+    t.string   "pictureable_type"
+    t.string   "url"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
   create_table "projects", force: :cascade do |t|
@@ -115,6 +142,7 @@ ActiveRecord::Schema.define(version: 20150626064629) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "last_view_time",         default: '2015-05-21 11:37:35'
+    t.integer  "credits",                default: 0
   end
 
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", unique: true, using: :btree

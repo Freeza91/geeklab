@@ -8,11 +8,16 @@ main role="main"
             .inner
               header
                 h1.title
-                  a href=("/projects/" + "#{project.id}")
+                  a href=("/projects/" + "#{project.id}") target="_blank"
                     = project.name
                   p.status class=("status_" + "#{project.status}")
                     i.fa.fa-exclamation-circle
                     = get_status_info(project.status)
+                  - if project.status == "not_accept" && project.reasons && project.reasons.size > 0
+                    ol.comment
+                      - project.reasons.each do |reason|
+                        li
+                          = reason
                   - if project.status != "underway"
                     span.close.delete-project
                       | &times
@@ -23,11 +28,10 @@ main role="main"
                       - @assignments[index].each do |assignment|
                         li.col-md-4
                           img src=("#{assignment.video}" + "?vframe/png/offset/0/w/480/h/200")
-                          a href=("/projects/" + "#{project.id}" + "/video/" + "#{assignment.id}")
+                          a href=("/projects/" + "#{project.id}" + "/video/" + "#{assignment.id}") target="_blank"
                             i.fa.fa-play-circle.fa-4x
                           - if !assignment.is_read
                             span.read-mark
-                              | new
                     - (project.demand - @assignments[index].size).times
                       li.col-md-4
                         a href="javascript: void(0)"
@@ -38,6 +42,20 @@ main role="main"
                   span.total
                     | /
                     = project.demand
+                .count-down data-deadline="#{project.expired_at}"
+                  i.fa.fa-clock-o
+                  - if project.status == "failed"
+                    | 任务已结束
+                  - else
+                    span.day
+                      | 3
+                    | 天
+                    span.hour
+                      | 13
+                    | 时
+                    span.minute
+                      | 38
+                    | 分
       .load-more
         - if @projects.try(:size) < 10
           p

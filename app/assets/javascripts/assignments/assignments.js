@@ -456,6 +456,7 @@ $(function () {
   // 每次新加载时候清理之前所有的倒计时，重新初始化
   // 处理方式太暴力了，以后优化
   function assignmentTimeCountDownInit () {
+    var max_times = 1000 * 60 * 60 * 24 * 100;
     $('.time').each(function (index, item) {
       //countDownInterval[index] = setInterval(assignmentTimeCountDown(deadline, $ele));
       var $ele = $(item),
@@ -464,7 +465,6 @@ $(function () {
 
       assignmentDeadline[index] = new Date(deadline);
       var times = assignmentDeadline[index] - now;
-      var max_times = 1000 * 60 * 60 * 24 * 100;
 
       if(times <= 0 || times > max_times) {
         return false;

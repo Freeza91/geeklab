@@ -102,6 +102,28 @@
       position: relative
       background-color: #fff
       height: 240px
+    .comment
+      display: none
+      position: absolute
+      width: 200px
+      background-color: #fff
+      z-index: 10
+      box-shadow: 0 0 5px #ccc
+      font-size: 15px
+      > li
+        padding: 7px
+    .comment::before
+      position: absolute
+      top: 50%
+      right: 100%
+      margin-top: -10px
+      content: ''
+      display: block
+      width: 0
+      height: 0
+      border-top: 10px solid transparent
+      border-right: 10px solid #fff
+      border-bottom: 10px solid transparent
 
   .progress-num
     position: absolute
@@ -150,9 +172,21 @@
 // 是否看过的标记
 .read-mark
   position: absolute
+  background-image: image_url('icon/new_38.png')
   top: 10px
   right: 10px
-  background-color: #f00
-  color: #fff
-  text-transform: uppercase
-  padding: 3px
+  width: 38px
+  height: 38px
+.count-down
+  position: absolute
+  right: 10px
+  bottom: 20px
+  color: #a0a0a0
+  > span
+    font-size: 15px
+    color: #16a0c6
+    margin-left: 7px
+  > .fa-clock-o
+    font-size: 23px
+    vertical-align: bottom
+    margin-right: 5px

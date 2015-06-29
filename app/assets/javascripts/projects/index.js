@@ -15,7 +15,7 @@ $(function () {
     'success': '任务成功',
     'failed': '任务失败'
   };
-  $('.delete-project').on('click', function () {
+  $('.projects-wrp').on('click', '.delete-project', function () {
     $card = $(this).parents('.card');
     id = $(this).parents('.card').data('projectId');
 
@@ -129,9 +129,90 @@ $(function () {
         $video.append(videoTemplate.clone());
       }
 
+      // deadline
+      $projectCard.find('.count-down').data('deadline', projects[i].expired_at);
+
       // 将每个任务的html暂存在数组中
       cards.push('<div class="card">' + $projectCard.html() + '</div>');
     }
     $projectsWrp.append(cards.join(''));
+ 
+    // 重新初始化倒计时
+    countDownInterval.forEach(function (id, index) {
+      clearInterval(id);
+    })
+    timeCountDownInit();
   }
+
+  // 倒计时
+  var countDownInterval = [];
+  var projectDeadline = [];
+  function countDownInit () {
+    $('.count-down').each(function (index, item) {
+      var $ele = $(item),
+          deadline = $ele.data('deadline'),
+          now = new Date();
+      console.log(deadline);
+      projectDeadline[index] = new Date(deadline);
+      var times = projectDeadline[index] - now;
+
+      if(times > 0) {
+
+        countDown(times, $ele);
+
+        countDownInterval[index] = setInterval(function () {
+          var deadline = projectDeadline[index],
+              now = new Date(),
+              times = deadline - now;
+          if(times <= 0) {
+            clearInterval(countDownInterval[index]);
+            return false;
+          }
+          countDown(times, $ele);
+        }, 1000 * 60);
+      }
+    });
+  }
+
+  function countDown (count, $ele) {
+    var days = ~~ (count / (24 * 60 * 60 * 1000)), //天
+        hours = ~~ ((count / (60 * 60 * 1000)) % 24), //小时
+        minutes = ~~ ((count / (60 * 1000)) % 60), //分钟
+    hours = hours < 10 ? '0' + hours : hours;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    $ele.find('.day').text(days);
+    $ele.find('.hour').text(hours);
+    $ele.find('.minute').text(minutes);
+  }
+
+  // 倒计时初始化
+  countDownInit();
+
+  // 计算comment的位置
+  function caculateCommentPosition () {
+    var comments = $('.comment');
+    comments.each(function (index, comment) {
+      var $comment = $(comment),
+          $status = $comment.parent().find('.status');
+      var statusPosition = $status.position();
+      var left = statusPosition.left + $status.width() + 10,
+          topPosition = ($comment.height() / 2) - statusPosition.top - 7;
+      $comment.css({
+        'top': '-' + topPosition + 'px',
+        'left': left + 'px'
+      });
+    });
+  }
+
+  caculateCommentPosition();
+
+  // 显示comment, 当鼠标移到状态栏图标上时
+  $('.projects-wrp').on('mouseenter', '.status', function (){
+    console.log('xxx');
+    $(this).parents('.title').find('.comment').fadeIn();
+  });
+  $('.projects-wrp').on('mouseout', '.status', function (){
+    $(this).parents('.title').find('.comment').fadeOut();
+  });
+
 });

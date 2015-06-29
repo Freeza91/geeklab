@@ -1,11 +1,14 @@
 header.header.navbar.navbar-static.clear-fix
   .container
     .navbar-header
-      a.top-logo href=root_path
+      a.top-logo href=pms_path
         img src=image_path('logo/logo.png')
-    - if current_user
-      .navbar-collapse.collapse
-        ul.nav.navbar-nav
+    .navbar-collapse.collapse
+      ul.nav.navbar-nav
+        li
+          button.btn.btn-blue.role-switch data-curr-role='pm'
+              | 切换到测试用户
+        - if current_user
           ul.nav.navbar-nav.login
             li.dropdown
               a role='button'
@@ -13,11 +16,15 @@ header.header.navbar.navbar-static.clear-fix
                 span.caret
               ul.dropdown-menu role='menu'
                 li
+                  a href=projects_path
+                    i.fa.fa-th-large
+                    | 任务列表
+                li
                   a rel="noflow" data-method="delete" href=users_session_path(current_user.id)
                     i.fa.fa-power-off
                     | 退出登录
-    - else
-        button.btn.btn-blue.login data-toggle='modal' data-target='#login'
-          | 登录
+        - else
+          button.btn.btn-blue.login data-toggle='modal' data-target='#signup'
+            | 登录/注册
 
 section.layout-fix.for-header

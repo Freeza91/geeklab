@@ -15,6 +15,7 @@ class Assignment < ActiveRecord::Base
 
   after_update :video_notice_to_tester
   after_update :auto_update_assignment_status
+  after_update :add_credit_to_user
 
   class << self
 
@@ -74,6 +75,14 @@ class Assignment < ActiveRecord::Base
   def auto_update_assignment_status
     if status == 'new' || status == 'test'
       AutoUpdateAssignmentJob.set(wait: (1.day / 2)).perform_later(id)
+    end
+  end
+
+  def add_credit_to_user
+    if status == "success"
+      user = User.find_by(id: tester_id)
+      credits = user.try(:credits) + self.project.credit.to_i
+      user && user.update_column(:credits, credits)
     end
   end
 end

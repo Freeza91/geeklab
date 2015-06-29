@@ -13,7 +13,7 @@ main role="main"
                   p.status class=("status_" + "#{project.status}")
                     i.fa.fa-exclamation-circle
                     = get_status_info(project.status)
-                  - if project.status == "not_accept" && project.try(:reasons).size > 0
+                  - if project.status == "not_accept" && project.reasons && project.reasons.size > 0
                     ol.comment
                       - project.reasons.each do |reason|
                         li

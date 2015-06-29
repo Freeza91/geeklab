@@ -12,6 +12,8 @@ html lang=session[:locale]
       = render 'shared/header_pm'
     - if controller_name == "stores"
       = render 'shared/header_store'
+    - if controller_name == "pages"
+      = render 'shared/header'
       <!--= render '/shared/flash'-->
 
     = yield

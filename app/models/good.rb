@@ -1,6 +1,6 @@
 class Good < ActiveRecord::Base
 
   has_many :orders
-  has_mang :pictures, as: :pictureable
+  has_many :pictures, as: :pictureable
 
 end

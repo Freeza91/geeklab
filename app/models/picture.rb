@@ -1,5 +1,5 @@
 class Picture < ActiveRecord::Base
 
-  belongs_to pictureable, polymorphic: true
+  belongs_to :pictureable, polymorphic: true
 
 end

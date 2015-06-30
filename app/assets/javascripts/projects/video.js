@@ -6,7 +6,8 @@ $(function () {
     el: '.evaluate',
     data: {
       quality: 'yes',
-      user: 'yes'
+      user: 'yes',
+      submited: false
     },
     methods: {
       submit: submitEvaluate
@@ -23,7 +24,6 @@ $(function () {
 
     var url = '/projects/' + vmData.projectId + '/assignments/'+ vmData.assignmentId + '/comments';
     //var url = '/projects/9/assignments/9/comment';
-    console.log(data);
     $.ajax({
       url: url,
       method: 'post',
@@ -31,12 +31,14 @@ $(function () {
       dataType: 'json'
     })
     .done(function (data, status) {
-      if(data.status === 0 && status.code === 1) {
-        location.href = location.href
+      console.log(data);
+      if(data.status === 0 && data.code === 1) {
+        vm.submited = true;
+        console.log(vm.submited);
       }
     })
     .error(function (errors, status) {
-
+      console.log(errors);
     });
   }
 });

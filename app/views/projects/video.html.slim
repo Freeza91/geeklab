@@ -29,24 +29,28 @@ main role="main"
                 .col-md-6
                   p
                     | 你觉得视频是否合格?
-                  label.radio-inline
-                    input type="radio" name="quality" value="yes" v-model="quality"
-                    span YES
-                  label.radio-inline
-                    input type="radio" name="quality" value="no" v-model="quality"
-                    span NO
+                  .radio v-show="!submited"
+                    label.radio-inline
+                      input type="radio" name="quality" value="yes" v-model="quality"
+                      span YES
+                    label.radio-inline
+                      input type="radio" name="quality" value="no" v-model="quality"
+                      span NO
+                  p v-text="quality" v-show="submited"
                 .col-md-6
                   p
                     | 你觉得TA是你的目标用户吗?
-                  label.radio-inline
-                    input type="radio" name="user" value="yes" v-model="user"
-                    span YES
-                  label.radio-inline
-                    input type="radio" name="user" value="no" v-model="user"
-                    span NO
+                  .radio v-show="!submited"
+                    label.radio-inline
+                      input type="radio" name="user" value="yes" v-model="user"
+                      span YES
+                    label.radio-inline
+                      input type="radio" name="user" value="no" v-model="user"
+                      span NO
+                  p v-text="user" v-show="submited"
                 input type="text" v-model="assignmentId" value=@assignment.id style="display:none"
                 input type="text" v-model="projectId" value=@project.id style="display: none"
-                .button.btn.btn-blue v-on="click: submit($event)"
+                .button.btn.btn-blue v-show="!submited" v-on="click: submit($event)"
                   | 提交
         p
           | 用户信息

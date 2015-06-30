@@ -19,7 +19,9 @@ class PicturesController < ApplicationController
 private
 
   def picture_params
-    params.permit(:url)
+    params.permit(:url).merge({
+      pictureable_type: "goods_content"
+    })
   end
 
 end

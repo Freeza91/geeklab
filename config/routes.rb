@@ -1,13 +1,5 @@
 Rails.application.routes.draw do
 
-  get 'orders/index'
-
-  get 'orders/show'
-
-  get 'orders/edit'
-
-  get 'orders/new'
-
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   root 'pages#home'
 
@@ -81,6 +73,7 @@ Rails.application.routes.draw do
   resources :stores
   resources :goods
   resources :orders
+  resources :pictures, only: :create
 
   require 'sidekiq/web'
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|

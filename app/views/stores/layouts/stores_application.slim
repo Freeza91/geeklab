@@ -1,0 +1,12 @@
+doctype html
+html lang=session[:locale]
+  head
+    title 极客实验室
+    = stylesheet_link_tag 'application', media: 'all'
+    = csrf_meta_tags
+
+  body class=(controller_name + ' ' + controller_name + '_' + action_name + ' ' + locale.to_s)
+    p 这里是stores layout
+    = yield
+
+

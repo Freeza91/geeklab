@@ -1,22 +1,21 @@
 class Stores::OrdersController < Stores::BaseController
 
   def index
-    @orders = Order.all
+    @orders = current_user.orders.all
   end
 
   def new
-    @order = Order.new
   end
 
   def create
-    json = { status: 0, code: 1, msg: '' }
+    json = { status: 0, code: 1, msg: '保存成功' }
 
-    @order = Order.new(order_params)
-    if @order.save
-      redirect_to order_path(@order)
-    else
-      render :new
+    @order = current_user.orders.build(order_params)
+    unless @order.save
+      json[:code], json[:msg] = 0, "#{@order.errors.full_messages}"
     end
+
+    render json: json
   end
 
   def show
@@ -28,10 +27,14 @@ class Stores::OrdersController < Stores::BaseController
   end
 
   def update
+    json = { status: 0, code: 1, msg: '更新成功' }
+
     @order = current_user.orders.find_by(id: params[:id])
-    if @order.update_attributes(order_params)
-    else
+    unless @order.update_attributes(order_params)
+      json[:code], json[:msg] = 0, "#{@order.errors.full_messages}"
     end
+
+    render json: json
   end
 
 private

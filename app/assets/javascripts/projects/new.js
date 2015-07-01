@@ -33,7 +33,8 @@ $(function () {
       },
       format: {
         to: function (value) {
-          return 'Android' + androidMap[value]
+          value = value === 0 ? "Android" + androidMap[value] : androidMap[value];
+          return value;
         },
         from: function (value) {
           return value;

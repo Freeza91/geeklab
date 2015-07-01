@@ -152,7 +152,6 @@ $(function () {
       var $ele = $(item),
           deadline = $ele.data('deadline'),
           now = new Date();
-      console.log(deadline);
       projectDeadline[index] = new Date(deadline);
       var times = projectDeadline[index] - now;
 
@@ -208,7 +207,6 @@ $(function () {
 
   // 显示comment, 当鼠标移到状态栏图标上时
   $('.projects-wrp').on('mouseenter', '.status', function (){
-    console.log('xxx');
     $(this).parents('.title').find('.comment').fadeIn();
   });
   $('.projects-wrp').on('mouseout', '.status', function (){

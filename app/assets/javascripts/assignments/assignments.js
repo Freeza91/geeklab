@@ -487,11 +487,20 @@ $(function () {
   }
 
   function assignmentTimeCountDown(count, $ele) {
-    var days = ~~ (count / (24 * 60 * 60 * 1000)), //天
-        hours = ~~ ((count / (60 * 60 * 1000)) % 24), //小时
-        minutes = ~~ ((count / (60 * 1000)) % 60), //分钟
-        seconds = ~~ ((count / 1000) % 60); //秒
-    $ele.text(days + '天' + hours + ':' + minutes + ':' + seconds);
+    var timeArr = [];
+    if(count > 24 * 60 * 60 * 1000) {
+      timeArr.push(~~ (count / (24 * 60 * 60 * 1000)) + '天');
+    }
+    if(count > 60 * 60 * 1000) {
+      timeArr.push(~~ ((count / (60 * 60 * 1000)) % 24) + '小时');
+    }
+    if(count > 60 * 1000) {
+      timeArr.push(~~ ((count / (60 * 1000)) % 60) + '分');
+    }
+    if(count > 1000) {
+      timeArr.push(~~ ((count / 1000) % 60) + '秒');
+    }
+    $ele.text(timeArr.join(''));
   }
 
   // 倒计时初始化

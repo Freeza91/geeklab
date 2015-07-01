@@ -1,9 +1,9 @@
-$hashids = Hashids.new Settings.hashids_secret_token, 4
+$hashids = Hashids.new Settings.hashids_secret_token, 2
 
 class ActiveRecord::Base
 
   # 加密id做参数
-  def to_param_hash
+  def to_param
     encode_id
   end
 
@@ -17,9 +17,10 @@ class ActiveRecord::Base
     $hashids.decode(id)[0]
   end
 
-  def self.find_by_encode_id(encode_id)
-    id = $hashids.decode(encode_id)[0]
-    find_by(id: id)
-  end
+  # def self.find_by(opt = {})
+  #   hash_id = opt[:id]
+  #   opt[:id] = $hashids.decode(hash_id)[0] if hash_id
+  #   where(opt).take
+  # end
 
 end

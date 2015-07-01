@@ -71,7 +71,9 @@ Rails.application.routes.draw do
   end
 
   resources :stores
-  resources :goods
+  resources :goods do
+    resources :good_details
+  end
   resources :orders
   resources :pictures, only: :create
 

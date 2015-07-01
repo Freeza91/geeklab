@@ -1,4 +1,4 @@
-class OrdersController < ApplicationController
+class Stores::OrdersController < Stores::BaseController
 
   def index
     @orders = Order.all

@@ -1,4 +1,4 @@
-class GoodsController < ApplicationController
+class Stores::GoodsController < Stores::BaseController
 
   before_filter :authenticate, except: [:index, :show]
 
@@ -7,7 +7,7 @@ class GoodsController < ApplicationController
   end
 
   def show
-    @good = Good.find_by(id: 1[:id])
+    @good = Good.find_by(id: [:id])
   end
 
   def new

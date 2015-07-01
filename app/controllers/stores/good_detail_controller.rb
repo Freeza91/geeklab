@@ -1,4 +1,4 @@
-class GoodDetailController < ApplicationController
+class Stores::GoodDetailController < Stores::BaseController
 
   def index
     @good_details = GoodDetail.all

@@ -1,0 +1,69 @@
+main role='main'
+  /section.banner
+    /.container-fluid
+      /.carousel.slide#banner-slide data-ride="carousel"
+        /<!-- carousel indicators -->
+        /ol.carousel-indicators
+          /li.active data-target="#banner-slide" data-slide-to="0"
+          /li data-target="#banner-slide" data-slide-to="1"
+          /li data-target="#banner-slide" data-slide-to="2"
+        /<!-- carousel inner wrap -->
+        /.carousel-inner role="listbox"
+          /div.item.active
+            /img src=image_path("banner/banner_index.png") alt="..."
+          /div.item
+            /img src=image_path("banner/banner_pm.jpg") alt="..."
+          /div.item
+            /img src=image_path("banner/banner_tester.jpg") alt="..."
+        /<!-- carousel controls -->
+        /a.carousel-control.left data-target="#banner-slide" role="button" data-slide="prev"
+          /span.glyphicon.glyphicon-chevron-left  aria-hidden="true"
+          /span.sr-only Previous
+        /a.carousel-control.right data-target="#banner-slide" role="button" data-slide="next"
+          /span.glyphicon.glyphicon-chevron-right  aria-hidden="true"
+          /span.sr-only Next
+  section.content
+    .container
+      .goods
+        .row
+          .col-md-6
+            .item.name-left
+              .name
+                span
+                  | 小米手环
+              .img-g.img
+              .img-s.img
+              a.btn.btn-base.btn-s.btn-rounded href="javascript: void(0)"
+                span 20
+                span 立即抢兑
+          .col-md-6
+            .item.name-right
+              .name
+                span
+                  | 小米手环
+              .img-g.img data-src=image_url("logo/logo.png")
+              .img-s.img
+              a.btn.btn-base.btn-s.btn-rounded href="javascript: void(0)"
+                span 20
+                span 立即抢兑
+        .row
+          .col-md-6
+            .item.name-right
+              .name
+                span
+                  | 小米手环
+              .img-g.img
+              .img-s.img
+              a.btn.btn-base.btn-s.btn-rounded href="javascript: void(0)"
+                span 20
+                span 立即抢兑
+          .col-md-6
+            .item.name-left
+              .name
+                span
+                  | 小米手环
+              .img-g.img
+              .img-s.img
+              a.btn.btn-base.btn-s.btn-rounded href="javascript: void(0)"
+                span 20
+                span 立即抢兑

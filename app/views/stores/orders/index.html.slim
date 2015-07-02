@@ -1,2 +1,4 @@
 h1 Orders#index
 p Find me in app/views/orders/index.html.slim
+- @orders.each do |order|
+  = order.name

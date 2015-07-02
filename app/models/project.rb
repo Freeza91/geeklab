@@ -84,7 +84,8 @@ class Project < ActiveRecord::Base
   end
 
   def auto_update_status
-     AutoUpdateProjectJob.set(wait: (1.day / 2)).perform_later(id) if status == 'wait_check'
+    self.update_column(:status, 'wait_check') if status_was == 'not_accept'
+    AutoUpdateProjectJob.set(wait: (1.day / 2)).perform_later(id) if status == 'wait_check'
   end
 
 end

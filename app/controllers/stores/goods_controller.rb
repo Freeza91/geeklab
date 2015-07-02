@@ -7,23 +7,21 @@ class Stores::GoodsController < Stores::BaseController
   end
 
   def show
-    @good = Good.find_by(id: [:id])
+    @good = Good.find_by(id: params[:id])
   end
 
   def new
-    @good = Good.new
-    3.times { @good.pictures.build }
   end
 
   def create
-    good = Good.new(good_params)
-    # if good.save
-    #   redirect_to good_path(good)
-    # else
-    #   render :new
-    # end
+    json = { status: 0, code: 1, msg: '创建成功' }
 
-    render text: 'nothing'
+    good = Good.new(good_params)
+    unless good.save
+      json[:code], json[:msg] = 0, "#{good.errors.full_messages}"
+    end
+
+    render json: json
   end
 
   def edit
@@ -31,25 +29,25 @@ class Stores::GoodsController < Stores::BaseController
   end
 
   def update
+    json = { status: 0, code: 1, msg: '更新成功' }
+
     good = Good.find_by(id: params[:id])
-    if good.upadte_attributes(good_params)
-      redirect_to good_path(good)
-    else
-      render :edit
+    unless good.upadte_attributes(good_params)
+      json[:code], json[:msg] = 0, "#{good.errors.full_messages}"
     end
+
+    render json: json
   end
 
 private
 
   def good_params
-    p params.require(:good).permit(:name, :stock, :describle, :cost,
-                                   pictures_attributes: [:id, :url, :_destroy])
-  end
-
-  def authenticate
-    authenticate_or_request_with_http_basic do |username, password|
-      username == "#{Settings.admin_username}" && password == "#{Settings.password}"
-    end if Rails.env.production?
+    pictures_attributes = {
+      "pictures_attributes": JSON.parse(params[:pictures_attributes])
+    }
+    params.merge!(pictures_attributes)
+   params.permit(:name, :stock, :describle, :cost,
+                 pictures_attributes: [:id, :url, :_destroy])
   end
 
 end

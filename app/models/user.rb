@@ -14,6 +14,8 @@ class User < ActiveRecord::Base
     @pm ||= Pm.find_by(id: id)
   end
 
+  has_many :orders
+
   after_update :deliver_approved_email
   before_save { self.email = email.to_s.downcase }
 

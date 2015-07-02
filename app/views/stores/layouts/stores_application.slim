@@ -2,11 +2,15 @@ doctype html
 html lang=session[:locale]
   head
     title 极客实验室
-    = stylesheet_link_tag 'application', media: 'all'
+    meta name="viewport" content="width=device-width, initial-scale=1"
+    = stylesheet_link_tag 'store', media: 'all'
     = csrf_meta_tags
 
   body class=(controller_name + ' ' + controller_name + '_' + action_name + ' ' + locale.to_s)
-    p 这里是stores layout
+    
+    = render "/stores/shared/header"
+    = render "stores/shared/header_password"
     = yield
-
-
+    = render "/stores/shared/footer"
+  
+  = javascript_include_tag 'store'

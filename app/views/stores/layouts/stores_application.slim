@@ -7,10 +7,11 @@ html lang=session[:locale]
     = csrf_meta_tags
 
   body class=(controller_name + ' ' + controller_name + '_' + action_name + ' ' + locale.to_s)
-    
+
     = render "/stores/shared/header"
     = render "stores/shared/header_password"
     = yield
+
     = render "/stores/shared/footer"
-  
+
   = javascript_include_tag 'store'

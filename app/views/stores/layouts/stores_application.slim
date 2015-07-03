@@ -9,8 +9,10 @@ html lang=session[:locale]
   body class=(controller_name + ' ' + controller_name + '_' + action_name + ' ' + locale.to_s)
     
     = render "/stores/shared/header"
-    = render "stores/shared/header_password"
+    /= render "stores/shared/header_password"
     = yield
     = render "/stores/shared/footer"
   
   = javascript_include_tag 'store'
+  - if !current_user
+    = render "stores/sign/sign_modal"

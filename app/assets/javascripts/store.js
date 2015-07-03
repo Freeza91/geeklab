@@ -7,4 +7,4 @@
 //= require bootstrap
 //
 // vue
-// require vue
+//= require vue

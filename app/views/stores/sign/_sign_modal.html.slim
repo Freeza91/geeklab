@@ -1,0 +1,45 @@
+.modal.fade.store-modal#sign role='dialog' data-backdrop='static'
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close type='button' data-dismiss='modal' aria-label='Close'
+          span aria-hidden='true'
+            | &times
+        .logo
+          img src=image_path("logo/logo.png")
+        .triangle.left
+      .modal-body
+        ul.list-unstyled.list-inline.sign-nav
+          li.active
+            a href="#login" aria-controls="login" role="tab" data-toggle="tab"
+              | 登录
+          li
+            a href="#regist" aria-controls="regist" role="tab" data-toggle="tab"
+              | 注册
+        .tab-content
+          .tab-pane.active#login role="tabpanel"
+            form.form
+              .form-field
+                input.form-input type="text" name="email" placeholder="邮箱"
+              .form-field
+                input.form-input type="password" name="password" placeholder="密码"
+              .form-field
+                label.checkbox-inline
+                  input type="checkbox"
+                  | 30天免登陆
+                a.pull-right href="javascript: void(0)"
+                  | 忘记密码?
+              .form-field.submit
+                input.btn.btn-base-reverse.btn-m.btn-rounded type="submit" value="登录"
+          .tab-pane#regist role="tabpanel"
+            form.form
+              .form-field
+                input.form-input type="text" name="email" placeholder="邮箱"
+              .form-field
+                input.form-input.with-addon type="text" name="code" placeholder="验证码"
+                span.form-input-addon
+                  | 发送验证码
+              .form-field
+                input.form-input type="password" name="password" placeholder="密码"
+              .form-field.submit
+                input.btn.btn-base-reverse.btn-m.btn-rounded type="submit" value="注册"

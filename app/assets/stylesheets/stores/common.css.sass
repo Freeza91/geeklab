@@ -1,0 +1,60 @@
+.top-header
+  background-color: #ffcc00
+  .navbar
+    margin-bottom: 0
+
+.header-password
+  position: relative
+  padding: 50px 0
+  .logo
+    text-align: center
+  .triangle
+    position: absolute
+    left: 50%
+    bottom: 0 
+    width: 30px
+    height: 30px
+    margin-left: -15px
+    background-color: #ffcc00
+    transform-origin: left bottom
+    transform: rotate(45deg)
+    z-index: 5
+
+.main-footer
+  background-color: #f9f9f9
+  padding-top: 30px
+  .footer-title
+    margin-bottom: 10px
+    color: #a0a0a0
+    font-size: 16px
+  .footer-content
+    li
+      position: relative
+      a,
+      span
+        font-size: 14px
+        color: #000
+        cursor: pointer
+    li
+      a:hover,
+      span:hover
+        color: #ffcc00
+    li + li
+      margin-top: 5px
+    .qrcode
+      position: absolute
+      width: 120px
+      height: 120px
+      left: 0
+      bottom: 100%
+      opacity: 0
+      transition: all .3s ease
+      img
+        width: 100%
+        height: 100%
+    li:hover
+      .qrcode
+        opacity: 1
+  .copyright
+    margin-top: 56px
+    color: #a0a0a0

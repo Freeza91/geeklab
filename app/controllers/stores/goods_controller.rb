@@ -1,7 +1,7 @@
 class Stores::GoodsController < Stores::BaseController
 
   before_filter :authenticate, except: [:index, :show]
-
+  layout false, except: [:index, :show]
   def index
     @goods = Good.all.page(params[:page]).per(10)
   end

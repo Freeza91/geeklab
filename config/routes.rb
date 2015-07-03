@@ -73,10 +73,7 @@ Rails.application.routes.draw do
   namespace :stores do
     root to: "base#index"
 
-    resources :goods do
-      resources :good_details
-    end
-
+    resources :goods
     resources :orders
     resources :pictures, only: :create
   end

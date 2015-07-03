@@ -338,6 +338,7 @@ DEPENDENCIES
   mina
   mina-sidekiq
   mini_magick
+  nested_form
   newrelic_rpm
   pg
   pry

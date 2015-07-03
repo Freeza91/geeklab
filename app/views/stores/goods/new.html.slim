@@ -1,2 +1,12 @@
 .container
-  p 创建商品
+  = nested_form_for [:stores, @good] do |good_form|
+    = good_form.text_field 'name'
+    table#picture
+      = good_form.fields_for :pictures do |picture_form|
+        = picture_form.file_field 'url'
+        = picture_form.link_to_remove "Remove this picture"
+
+    p= good_form.link_to_add "Add a picture", :pictures
+
+    div
+      p = good_form.submit "提交"

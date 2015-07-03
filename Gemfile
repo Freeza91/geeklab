@@ -10,6 +10,7 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'therubyracer'
+gem "nested_form"
 
 gem 'settingslogic'
 gem 'slim-rails'

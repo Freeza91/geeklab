@@ -34,4 +34,7 @@
 // 引入bootstrap插件
 //= require bootstrap.min
 
+// 引入nested_form
+//= require jquery_nested_form
+
 //= require_tree .

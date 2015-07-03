@@ -1,6 +1,7 @@
 .container
-  = nested_form_for @good, url: stores_good_path do |good_form|
+  = nested_form_for @good, url: "/stores/goods/#{@good.id}", mehtod: :put do |good_form|
     = good_form.text_field 'name'
+    = good_form.text_area 'describle', id: 'simditor'
     div
       table#picture
         = good_form.fields_for :pictures do |picture_form|

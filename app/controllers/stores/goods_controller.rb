@@ -1,7 +1,10 @@
 class Stores::GoodsController < Stores::BaseController
 
+  skip_before_filter :verify_authenticity_token, only: :save_image
+
   before_filter :authenticate, except: [:index, :show]
-  layout false, except: [:index, :show]
+  # layout false, except: [:index, :show]
+
   def index
     @goods = Good.all.page(params[:page]).per(10)
   end
@@ -13,6 +16,15 @@ class Stores::GoodsController < Stores::BaseController
   def new
     @good = Good.new
     picture = @good.pictures.build
+  end
+
+  def save_image
+    file = params[:upload_file]
+    p file
+    render json: {
+        success: true,
+        file_path: "http://7xjl4d.com2.z0.glb.qiniucdn.com/uploads-picture-url-10%2F33.jpg"
+      }
   end
 
   def create

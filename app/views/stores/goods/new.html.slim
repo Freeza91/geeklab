@@ -1,6 +1,7 @@
 .container
-  = nested_form_for [:stores, @good] do |good_form|
+  = nested_form_for [:stores, @good], url: '/stores/goods' do |good_form|
     = good_form.text_field 'name'
+    = good_form.text_area 'describle', id: 'simditor'
     table#picture
       = good_form.fields_for :pictures do |picture_form|
         = picture_form.file_field 'url'
@@ -8,5 +9,4 @@
 
     p= good_form.link_to_add "Add a picture", :pictures
 
-    div
-      p = good_form.submit "提交"
+    = good_form.submit "提交"

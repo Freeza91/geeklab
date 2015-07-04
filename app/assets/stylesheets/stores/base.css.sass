@@ -13,6 +13,8 @@ a:focus,
 a:visited
   color: #000
   text-decoration: none
+.color-gray
+  color: #a0a0a0
 
 /********************
  *      Button
@@ -30,9 +32,13 @@ a:visited
 .btn-base:hover
   background-color: #fff
 .btn-base-reverse
-  background-color: #fff
+  background-color: #f9f9f9
 .btn-base-reverse:hover
   background-color: #ffcc00
+.btn.disable
+  background-color: #a0a0a0 
+.btn.no-border
+  border: none
 .btn:hover,
 .btn:active,
 .btn:focus,
@@ -46,6 +52,13 @@ a:visited
 .btn-g
 .btn-rounded
   border-radius: 30px
+
+/********************
+ *      Nav
+ *******************/
+.nav > li > a:hover
+  background-color: transparent
+  color: #000
 
 /********************
  *      Modal
@@ -144,3 +157,33 @@ input::-moz-placeholder
   text-align: center
 input::-webkit-input-placeholder
   text-align: center
+
+/********************
+ *    Component
+ *******************/
+// 商品详情页带缩略图的图片预览
+.good-gallery
+  .main-pic
+    width: 480px
+    height: 480px
+    margin-bottom: 20px
+    > img
+      width: 100%
+      height: 100%
+  .gallery-thumb
+    ul
+      margin-left: 0
+    li
+      width: 80px
+      height: 80px
+      padding: 0
+      border-radius: 50%
+      overflow: hidden
+      cursor: pointer
+      + li
+        margin-left: 20px
+      img
+        width: 100%
+        height: 100%
+    li.good-selected
+      border: 2px solid #ffcc00

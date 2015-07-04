@@ -1,2 +1,39 @@
-h1 Goods#show
-p Find me in app/views/goods/show.html.slim
+main role="main"
+  section
+    .container
+      .row
+        .good-summary.clearfix
+          .col-md-6.col-sm-6
+            .good-gallery
+              .main-pic
+                img src=image_path("banner/banner_index.png")
+              .gallery-thumb
+                ul.list-unstyled.list-inline
+                  li.good-selected
+                    img src=image_path("logo/logo.png") data-src=image_path("banner/banner_index.png")
+                  li
+                    img src=image_path("logo/logo.png") data-src=image_path("banner/banner_index.png")
+          .col-md-6.col-sm-6
+            .good-info
+              .good-title
+                h3.good-main-title
+                  | 全国通用移动10元手机充值卡
+              .good-meta.clearfix
+                .cost
+                  span.color-gray 所需积分
+                  i.icon.fa.fa-diamond
+                  span 100
+                .sell-counter
+                  span.counter 20人
+                  span.color-gray 兑换成功
+              .good-intro
+                p
+                  | 本商品7*24小时全天均可充值(除运营商系统维护时间外)；
+                  | 正常情况1-15分钟即可到账，遇月初月末高峰可能会稍许延迟，
+                  | 具体到账时间以当地运营商查询到账时间为准，到账后一般会有短信提示。
+                p.color-gray
+                  | (最终解释权归 北京中明万长咨询管理有限公司 所有)
+          .good-action
+            button.btn.btn-base-reverse.btn-rounded.btn-m
+              | 立即兑换
+

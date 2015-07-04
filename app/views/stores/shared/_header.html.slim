@@ -3,6 +3,19 @@ header.top-header
       .container
         .navbar-header
           a.navbar-brand href="javascript: void(0)"
-            img src=image_path("logo/logo.png")
-        button.btn.btn-base.btn-s.btn-rounded.navbar-btn.pull-right data-toggle="modal" data-target="#sign"
-          | 注册/登录
+            img src=image_path("logo/logo_store.png")
+        - if current_user
+          .navbar-collapse.collapse
+            ul.nav.navbar-nav.navbar-right
+              li
+                a href="javascript: void(0)"
+                  = current_user.email
+              li
+                button.btn.btn-base.btn-s.btn-rounded.navbar-btn
+                  | 600 
+              li
+                a rel="noflow" data-method="delete" href=users_session_path(current_user.id)
+                  i.fa.fa-power-off
+        - else
+          button.btn.btn-base.btn-s.btn-rounded.navbar-btn.pull-right data-toggle="modal" data-target="#sign"
+            | 注册/登录

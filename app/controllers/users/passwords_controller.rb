@@ -19,10 +19,12 @@ class Users::PasswordsController < ApplicationController
     current_user.forget_me(cookies) if current_user
     #reset_session
 
-    from = [root_path, pms_path, testers_path]
+    from = [root_path, pms_path, testers_path, stores_root_path]
     path = URI.parse(request.referer || root_url).path
     referer = from.include?(path) ? path : root_path
     session[:redirect_path] = referer
+
+    render 'stores/password/send_email', layout: 'stores/layouts/stores_application' if(referer == stores_root_path)
   end
 
   def callback_reset

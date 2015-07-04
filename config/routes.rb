@@ -74,9 +74,13 @@ Rails.application.routes.draw do
     root to: "base#index"
 
     resources :goods do
-      resources :good_details
+      collection do
+        post 'new',  to: 'goods#save_image'
+      end
+      member do
+        post 'edit', to: 'goods#save_image'
+      end
     end
-
     resources :orders
     resources :pictures, only: :create
   end

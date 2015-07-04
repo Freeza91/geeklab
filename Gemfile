@@ -11,6 +11,9 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'therubyracer'
 
+gem "nested_form"
+gem 'simditor-rails'
+
 gem 'settingslogic'
 gem 'slim-rails'
 gem 'bcrypt'

@@ -1,2 +1,17 @@
-h1 Goods#edit
-p Find me in app/views/goods/edit.html.slim
+.container
+  = nested_form_for @good, url: "/stores/goods/#{@good.id}", mehtod: :put do |good_form|
+    = good_form.text_field 'name'
+    = good_form.text_area 'describle', id: 'simditor'
+    div
+      table#picture
+        = good_form.fields_for :pictures do |picture_form|
+          = picture_form.file_field 'url'
+          img(src=picture_form.object.url width="200" height="200")
+          = picture_form.link_to_remove "Remove this picture"
+          div
+            p &nbsp;&nbsp;&nbsp;
+    div
+      p= good_form.link_to_add "Add a picture", :pictures
+
+    div.container
+      p = good_form.submit "提交"

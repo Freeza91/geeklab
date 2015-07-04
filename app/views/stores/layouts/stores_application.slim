@@ -13,8 +13,9 @@ html lang=session[:locale]
     - else
       = render "/stores/shared/header"
     = yield
+
     = render "/stores/shared/footer"
-  
-  = javascript_include_tag 'store'
-  - if !current_user
-    = render "stores/sign/sign_modal"
+
+    - if !current_user
+      = render "stores/sign/sign_modal"
+    = javascript_include_tag 'store'

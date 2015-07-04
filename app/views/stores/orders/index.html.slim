@@ -1,4 +1,36 @@
-h1 Orders#index
-p Find me in app/views/orders/index.html.slim
-- @orders.each do |order|
-  = order.name
+main role="main"
+  section
+    .container
+      .order-list
+        table.order-table
+          colgroup
+            col.good
+            col.price
+            col.oparete
+          thead
+            tr.col-name
+              th
+                | 礼品兑换记录
+              th
+                | 单价(积分) 
+              th
+                | 操作
+          tbody
+            tr.gap-row
+            tr.order-header
+              td
+                span.dealtime
+                  | 2015-07-04
+                span.order-id
+                  | 订单号:&nbsp
+                  | 123456789
+              td
+              td
+            tr.order-content
+              td.good
+                a.pic href="javascript: void(0)" target="_blank"
+                  img src=image_path("logo/logo.png")
+                a href="javacript: void(0)" targe="_blank"
+                  | 礼品名称
+              td
+              td

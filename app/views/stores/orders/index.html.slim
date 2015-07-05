@@ -33,7 +33,7 @@ main role="main"
                   | 123456789
               td
               td
-                span.delete
+                span.delete data-toggle="modal" data-target="#order-delete"
                   | &times
             tr.order-content
               td.good
@@ -45,5 +45,10 @@ main role="main"
                 i.icon.fa.fa-diamond
                 | 100
               td
-                button.btn.btn-base-reverse.btn-rounded.btn-s
+                button.btn.btn-base-reverse.btn-rounded.btn-s data-toggle="modal" data-target="#order-detail"
                   | 卡密
+
+<!-- 删除订单记录 -->
+= render "stores/modals/order_delete"
+<!-- 电话充值卡信息 -->
+= render "stores/modals/order_detail"

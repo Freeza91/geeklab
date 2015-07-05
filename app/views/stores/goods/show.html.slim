@@ -34,6 +34,14 @@ main role="main"
                 p.color-gray
                   | (最终解释权归 北京中明万长咨询管理有限公司 所有)
           .good-action
-            button.btn.btn-base-reverse.btn-rounded.btn-m
+            button.btn.btn-base-reverse.btn-rounded.btn-m data-toggle="modal" data-target="#login-hint"
               | 立即兑换
+- if !current_user
+  <!-- 未登录提示 -->
+  = render "stores/modals/login_hint"
+
+<!-- 积分不足提示 -->
+= render "stores/modals/score_hint"
+<!-- 兑换成功 -->
+= render "stores/modals/exchange_success"
 

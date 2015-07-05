@@ -56,14 +56,19 @@ a:visited
 /********************
  *      Nav
  *******************/
-.nav > li > a:hover
-  background-color: transparent
-  color: #000
+.nav > li 
+  > a:hover,
+  > a:active,
+  > a:visited,
+  > a:focus
+    background-color: transparent
+    color: #000
+    outline: none
 
 /********************
  *      Modal
  *******************/
-.store-modal
+.sign-modal
   .modal-content
     border-radius: 0
   .modal-header
@@ -79,6 +84,33 @@ a:visited
       margin-right: -4px
   .logo
     text-align: center
+
+.hint-modal
+  .modal-dialog
+    width: 400px
+  .modal-content
+    border: 2px solid #000
+    border-radius: 0
+    box-shadow: none
+    -webkit-box-shadow: none
+  .hint-text,
+  .btn-wrp
+    text-align: center
+  .hint-text
+    padding-top: 35px
+    padding-bottom: 40px
+    .num
+      display: inline-block
+      width: 200px
+      height: 34px
+      margin-left: 20px
+      background-color: #f9f9f9
+      font-size: 16px
+      line-height: 34px
+  .btn-wrp
+    padding-bottom: 25px
+    .btn + .btn
+      margin-left: 40px
 
 /********************
  *      List

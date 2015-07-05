@@ -13,6 +13,9 @@
 // base.js 登录，注册
 //= require stores/base
 
+// good.js 商品页相关操作
+//= require stores/good
+
 // nested_form
 //= require jquery_nested_form
 

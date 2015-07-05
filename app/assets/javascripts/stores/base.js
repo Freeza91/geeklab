@@ -57,7 +57,7 @@ $(function () {
       remember_me: vm.rememberMe
     };
     $.ajax({
-      url: 'users/sessions/auth',
+      url: '/users/sessions/auth',
       method: 'post',
       data: data
     })

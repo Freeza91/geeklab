@@ -51,6 +51,22 @@ $(function () {
       });
     }
 
+    // 重置密码
+    if($('body').hasClass('passwords_edit_reset')) {
+      var vm = new Vue({
+        el: '#reset',
+        data: {
+          success: false,
+          error: false,
+          hint: '',
+          countDown: 5
+        },
+        methods: {
+          submit: resetPassword
+        }
+      })
+    }
+
     $('#sign .close').on('click', function () {
       // 关闭窗口是清理状态
       loginVm.error = false;
@@ -123,7 +139,8 @@ $(function () {
     var data = {
       email: vm.email,
       encrypted_password: vm.password,
-      code: vm.code
+      code: vm.code,
+      role: 'both'
     };
 
     $.ajax({
@@ -272,5 +289,44 @@ $(function () {
     .error(function (errors) {
       console.log(errors);
     });
+  }
+
+  function resetPassword (vm, event) {
+    console.log('xx');
+    event.preventDefault();
+
+    if(!vm.password || vm.password === '') {
+      vm.hint = '请输入新密码';
+      vm.error = true;
+      return false;
+    }
+    if(!formValid(vm.password, 'password')) {
+      vm.hint = '密码格式错误';
+      vm.error = true;
+      return false;
+    }
+    vm.error = false;
+    var user = {
+      encrypted_password: vm.password
+    };
+    $.ajax({
+      url: '/users/passwords/update_reset',
+      method: 'put',
+      data: {user: user}
+    })
+    .done(function (data) {
+      console.log(data);
+      vm.success = true;
+      var intervalId = setInterval(function () {
+        vm.countDown--;
+        if(vm.countDown === 0) {
+          clearInterval(intervalId);
+          location.href = data.redirect_to;
+        }
+      }, 1000);
+    })
+    .error(function (errors) {
+      console.log(errors);
+    })
   }
 });

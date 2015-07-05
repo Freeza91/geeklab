@@ -14,8 +14,14 @@ html lang=session[:locale]
       = render "/stores/shared/header"
     = yield
 
+    <!-- 返回顶部 -->
+    = render "/stores/shared/go_to_top"
+    <!-- footer开始 -->
     = render "/stores/shared/footer"
 
     - if !current_user
+      <!-- 登录框 -->
       = render "stores/sign/sign_modal"
+
+    <!-- 在最后加载js -->
     = javascript_include_tag 'store'

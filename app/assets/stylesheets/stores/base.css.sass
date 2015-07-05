@@ -15,6 +15,8 @@ a:visited
   text-decoration: none
 .color-gray
   color: #a0a0a0
+.color-yellow 
+  color: #ffcc00
 
 /********************
  *      Button
@@ -77,11 +79,11 @@ a:visited
     .triangle.left
       left: 25%
       bottom: 0
-      margin-left: -15px
+      margin-left: -21px
     .triangle.right
-      right: 25%
+      left: 75%
       bottom: 0
-      margin-right: -4px
+      margin-left: -19px
   .logo
     text-align: center
 
@@ -154,11 +156,13 @@ a:visited
   .form-input:focus
     outline: none
   .form-input.with-addon
+    float: left
     width: 50%
     border-top-right-radius: 0
     border-bottom-right-radius: 0
   .form-input-addon
-    display: inline-block
+    float: left
+    //display: inline-block
     width: 50%
     height: 38px
     background-color: #ffcc00
@@ -225,3 +229,11 @@ input::-webkit-input-placeholder
   position: fixed
   right: 60px
   bottom: 70px
+
+/********************
+ *   Transition
+ *******************/
+.expand-enter,
+.expand-leave
+  height: 0
+  opacity: 0

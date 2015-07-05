@@ -2,12 +2,16 @@
 //
 // jquery
 //= require jquery
+//= require jquery_ujs
 //
 // bootstrap
 //= require bootstrap
 //
 // vue
 //= require vue
+
+// base.js 登录，注册
+//= require stores/base
 
 // nested_form
 //= require jquery_nested_form

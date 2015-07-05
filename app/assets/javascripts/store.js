@@ -16,6 +16,9 @@
 // good.js 商品页相关操作
 //= require stores/good
 
+// order.js 订单也相关操作
+//= require stores/order
+
 // nested_form
 //= require jquery_nested_form
 

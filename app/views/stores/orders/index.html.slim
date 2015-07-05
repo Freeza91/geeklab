@@ -22,7 +22,7 @@ main role="main"
                 | 单价(积分) 
               th
                 | 操作
-          tbody
+          tbody.order-item data-id='1'
             tr.gap-row
             tr.order-header
               td
@@ -33,7 +33,7 @@ main role="main"
                   | 123456789
               td
               td
-                span.delete data-toggle="modal" data-target="#order-delete"
+                span.delete data-toggle="modal"
                   | &times
             tr.order-content
               td.good
@@ -45,7 +45,7 @@ main role="main"
                 i.icon.fa.fa-diamond
                 | 100
               td
-                button.btn.btn-base-reverse.btn-rounded.btn-s data-toggle="modal" data-target="#order-detail"
+                button.btn.btn-base-reverse.btn-rounded.btn-s.detail data-id="dksafh23kfa" data-pass="dafkh124hkdsf"
                   | 卡密
 
 <!-- 删除订单记录 -->

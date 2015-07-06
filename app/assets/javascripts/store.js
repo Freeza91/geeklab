@@ -19,6 +19,9 @@
 // order.js 订单也相关操作
 //= require stores/order
 
+// store 重置密码
+//= require stores/password
+
 // nested_form
 //= require jquery_nested_form
 

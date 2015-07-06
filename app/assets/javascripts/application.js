@@ -34,10 +34,11 @@
 // 引入bootstrap插件
 //= require bootstrap.min
 
-//= require_tree .
+
 //= require_tree ./assignments
 //= require_tree ./pages
 //= require_tree ./projects
 //= require_tree ./share
 //= require_tree ./testers
 //= require_tree ./users
+//= require_self

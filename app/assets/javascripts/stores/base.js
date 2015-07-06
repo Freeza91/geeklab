@@ -206,5 +206,4 @@ $(function () {
     }
     return result;
   }
-
 });

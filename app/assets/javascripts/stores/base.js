@@ -1,5 +1,9 @@
 $(function () {
   
+  // 页面内容不足时讲footer固定在底部
+  if($('body').height() < $(window).height()) {
+    $('.main-footer').addClass('fixed');
+  }
   // 初始化登录框
   if($('body').hasClass('store') && $('#sign').length > 0) {
     var loginVm = new Vue({

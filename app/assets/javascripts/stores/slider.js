@@ -30,16 +30,21 @@ $(function () {
   };
 
   var jssor_slider1 = new $JssorSlider$("slider", options);
+  
 
   //responsive code begin
   //you can remove responsive code if you don't want the slider scales while window resizes
   function ScaleSlider() {
       var parentWidth = jssor_slider1.$Elmt.parentNode.clientWidth;
       console.log(parentWidth);
-      if (parentWidth)
-          jssor_slider1.$ScaleWidth(Math.max(parentWidth, 800));
-      else
-          window.setTimeout(ScaleSlider, 30);
+      if (parentWidth){
+        jssor_slider1.$ScaleWidth(Math.max(parentWidth, 800));
+      } else {
+        window.setTimeout(ScaleSlider, 30);
+      }
+    // 设置arrow位置
+    $('#slider [u="arrowleft"]').css('left', parking - 17);
+    $('#slider [u="arrowright"]').css('right', parking - 22);
   }
   ScaleSlider();
 

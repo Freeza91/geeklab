@@ -75,10 +75,10 @@ Rails.application.routes.draw do
 
     resources :goods do
       collection do
-        post 'new',  to: 'goods#save_image'
+        post 'new',  to: 'goods#save_picture'
       end
       member do
-        post 'edit', to: 'goods#save_image'
+        post 'edit', to: 'goods#save_picture'
       end
     end
     resources :orders

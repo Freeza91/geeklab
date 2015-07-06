@@ -2,7 +2,7 @@ class Stores::GoodsController < Stores::BaseController
 
   skip_before_filter :verify_authenticity_token, only: :save_image
 
-  before_filter :authenticate, except: [:index, :show]
+  before_filter :authenticate, except: [:index, :show, :save_image]
   # layout false, except: [:index, :show]
 
   def index
@@ -18,13 +18,17 @@ class Stores::GoodsController < Stores::BaseController
     picture = @good.pictures.build
   end
 
-  def save_image
+  def save_picture
+    json = { status: 0, success: false, msg: '保存成功' }
     file = params[:upload_file]
-    p file
-    render json: {
-        success: true,
-        file_path: "http://7xjl4d.com2.z0.glb.qiniucdn.com/uploads-picture-url-10%2F33.jpg"
-      }
+    picture = Picture.new(url: params[:upload_file])
+    if picture.save
+      json[:success], json[:file_path] = true, picture.url.url
+    else
+      json[:msg] = "保存失败，错误信息为: #{picture.errors.full_messages}"
+    end
+
+    render json: json
   end
 
   def create
@@ -57,12 +61,8 @@ class Stores::GoodsController < Stores::BaseController
 private
 
   def good_params
-    # pictures_attributes = {
-    #   "pictures_attributes": JSON.parse(params[:pictures_attributes])
-    # }
-    # params.merge!(pictures_attributes)
-   p params.require(:good).permit(:name, :stock, :describle, :cost,
-                                  pictures_attributes: [:id, :url, :_destroy])
+    params.require(:good).permit(:name, :stock, :describle, :cost,
+                                 pictures_attributes: [:id, :url, :_destroy])
   end
 
 end

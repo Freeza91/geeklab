@@ -2,6 +2,7 @@
 //
 // jquery
 //= require jquery
+//= require jquery_ujs
 //
 // bootstrap
 //= require bootstrap

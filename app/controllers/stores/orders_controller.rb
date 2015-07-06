@@ -39,7 +39,7 @@ class Stores::OrdersController < Stores::BaseController
 private
 
   def order_params
-    params.require(:order).permit(:good_url, :good_name, :total_cost, :good_id)
+    params.require(:order).permit(:good_id)
   end
 
 end

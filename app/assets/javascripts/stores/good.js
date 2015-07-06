@@ -5,37 +5,43 @@ $(function () {
 
   $('.exchange').on('click', function () {
     var price = $(this).data('price'),
-        score = $(this).data('score');
+        score = $(this).data('score'),
+        id = $(this).data('id');
     if(score < price) {
       $('#score-hint').modal();
       return false;
     } else {
-      exchange();
+      exchange(id);
     }
   });
 
   $('#login-hint .confirm').on('click', showSignModal);
 
-  function exchange () {
-    $('#exchange-success').modal();
-    var counter = 4;
-    var intervalId = setInterval(function () {
-      $('#exchange-success .counter').text(counter--);
-      if(counter === 0){
-        location.href="/stores/orders/";
+  function exchange (goodId) {
+    var order = {
+      good_id: parseInt(goodId)
+    };
+    $.ajax({
+      url: '/stores/orders',
+      method: 'post',
+      data: {order: order}
+    })
+    .done(function (data) {
+      if(data.status === 0 && data.code === 1) {
+        // 兑换成功
+        $('#exchange-success').modal();
+        var counter = 4;
+        var intervalId = setInterval(function () {
+          $('#exchange-success .counter').text(counter--);
+          if(counter === 0){
+            location.href="/stores/orders/";
+          }
+        }, 1000);
       }
-    }, 1000);
-    //$.ajax({
-      //url: '',
-      //method: 'post',
-      //data: {}
-    //})
-    //.done(function (data) {
-      //if(data.status === 0 && data.code === 1) {
-        //// 兑换成功
-        //$('#exchange-success').modal();
-      //}
-    //});
+    })
+    .error(function (errors) {
+      console.log(errors);
+    });
   }
 
   function showSignModal () {

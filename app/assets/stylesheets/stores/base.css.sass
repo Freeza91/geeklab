@@ -241,8 +241,17 @@ input::-webkit-input-placeholder
 .go-to-top
   position: fixed
   right: 60px
-  bottom: 70px
-
+  bottom: 65px
+  .text
+    position: absolute
+    top: 0
+    right: 0
+    margin-right: -30px
+    visibility: hidden
+    color: #ffcc00
+.go-to-top:hover
+  .text
+    visibility: visible
 /********************
  *   Transition
  *******************/

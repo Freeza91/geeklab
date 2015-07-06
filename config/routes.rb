@@ -80,6 +80,8 @@ Rails.application.routes.draw do
       member do
         post 'edit', to: 'goods#save_picture'
       end
+
+      resources :skus
     end
     resources :orders
     resources :pictures, only: :create

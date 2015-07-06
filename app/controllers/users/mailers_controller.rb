@@ -26,6 +26,10 @@ class Users::MailersController < ApplicationController
               "http://localhost:3000/users/passwords/callback_reset"
             end
       url += "?reset_password_token=#{user.reset_password_token}"
+      if URI.parse(session[:redirect_path]).path.split('/')[1] == 'stores'
+        url += "&redirect_to=stores"
+      end
+      p url
       UserMailer.reset_password(user.id, url).deliver_later
       json[:msg] = email_target email
 

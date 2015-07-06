@@ -2,7 +2,20 @@ header.top-header
     nav.navbar
       .container
         .navbar-header
-          a.navbar-brand href="javascript: void(0)"
-            img src=image_path("logo/logo.png")
-        button.btn.btn-base.btn-s.btn-rounded.navbar-btn.pull-right
-          | 注册/登录
+          a.navbar-brand href=stores_root_path
+            img src=image_path("logo/logo_store.png")
+        - if current_user
+          .navbar-collapse.collapse
+            ul.nav.navbar-nav.navbar-right
+              li
+                a href=stores_orders_path
+                  = current_user.email
+              li
+                button.btn.btn-base.btn-s.btn-rounded.navbar-btn
+                  | 600 
+              li
+                a href="javascript: void(0)" data-toggle="modal" data-target="#logout-hint"
+                  i.fa.fa-power-off
+        - else
+          button.btn.btn-base.btn-s.btn-rounded.navbar-btn.pull-right data-toggle="modal" data-target="#sign"
+            | 注册/登录

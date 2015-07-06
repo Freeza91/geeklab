@@ -22,6 +22,26 @@ main role='main'
         /a.carousel-control.right data-target="#banner-slide" role="button" data-slide="next"
           /span.glyphicon.glyphicon-chevron-right  aria-hidden="true"
           /span.sr-only Next
+  section.banner
+    .container.hide#slider-width
+    .container-fluid style="padding-left: 0; padding-right: 0"
+      #slider style="position: relative; top: 0px; left: 0px; width: 1200px;
+          height: 400px; overflow: hidden;"
+        div u="slides" style="cursor: move; position: absolute; left: 0px; top:
+          0px; width: 1200px; height: 400px;
+              overflow: hidden;"
+          div
+            img u="image" src=image_path("banner/banner_tester.jpg") alt="..."
+          div
+            img u="image" src=image_path("banner/banner_tester.jpg") alt="..."
+          div
+            img u="image" src=image_path("banner/banner_tester.jpg") alt="..."
+        span u="arrowleft" class="jssora13l" style="top: 123px; left: 30px;"
+          span.icon.icon-outer-34
+            i.icon-inner.icon-arrow-left
+        span u="arrowright" class="jssora13r" style="top: 123px; right: 30px;"
+          span.icon.icon-outer-34
+            i.icon-inner.icon-arrow-right
   section.content
     .container
       .goods
@@ -34,7 +54,10 @@ main role='main'
               .img-g.img
               .img-s.img
               a.btn.btn-base.btn-s.btn-rounded href="javascript: void(0)"
-                span 20
+                span 
+                  span.icon.icon-outer-18
+                    i.icon-inner.icon-score
+                  | 20
                 span 立即抢兑
           .col-md-6
             .item.name-right
@@ -67,3 +90,7 @@ main role='main'
               a.btn.btn-base.btn-s.btn-rounded href="javascript: void(0)"
                 span 20
                 span 立即抢兑
+      p.bottom-hint
+        span.icon.icon-outer-18
+          i.icon-inner.icon-clock
+        | 更多兑换礼品，敬请期待

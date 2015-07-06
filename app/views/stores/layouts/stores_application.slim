@@ -6,12 +6,25 @@ html lang=session[:locale]
     = stylesheet_link_tag 'store', media: 'all'
     = csrf_meta_tags
 
-  body class=(controller_name + ' ' + controller_name + '_' + action_name + ' ' + locale.to_s)
-
-    = render "/stores/shared/header"
-    = render "stores/shared/header_password"
+  body class=(controller_name + ' ' + controller_name + '_' + action_name + ' ' + 'store')
+    
+    - if controller_name == "passwords"
+      = render "stores/shared/header_password"
+    - else
+      = render "/stores/shared/header"
     = yield
 
+    <!-- 返回顶部 -->
+    = render "/stores/shared/go_to_top"
+    <!-- footer开始 -->
     = render "/stores/shared/footer"
 
-  = javascript_include_tag 'store'
+    - if !current_user
+      <!-- 登录框 -->
+      = render "stores/sign/sign_modal"
+    - else
+      <!-- 退出登录确认 -->
+      = render "stores/modals/logout_hint"
+
+    <!-- 在最后加载js -->
+    = javascript_include_tag 'store'

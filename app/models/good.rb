@@ -2,7 +2,7 @@ class Good < ActiveRecord::Base
 
   has_many :orders
   has_many :pictures, as: :pictureable
-  has_many :skus
+  has_many :skus, dependent: :destroy
 
   validates :name, presence: true
 

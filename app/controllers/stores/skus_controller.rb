@@ -1,5 +1,6 @@
 class Stores::SkusController < ApplicationController
 
+  before_filter :authenticate
   before_action :find_good
 
   def index

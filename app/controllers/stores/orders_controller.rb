@@ -1,10 +1,9 @@
 class Stores::OrdersController < Stores::BaseController
 
+  before_action :require_login?
+
   def index
     @orders = current_user.orders.all
-  end
-
-  def new
   end
 
   def create
@@ -40,7 +39,7 @@ class Stores::OrdersController < Stores::BaseController
 private
 
   def order_params
-    params.require(:order).permit(:num, :good_name, :total_cost, :good_id)
+    params.require(:order).permit(:good_url, :good_name, :total_cost, :good_id)
   end
 
 end

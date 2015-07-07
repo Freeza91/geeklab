@@ -2,6 +2,7 @@ class Sku < ActiveRecord::Base
 
   belongs_to :good
 
+  scope :can_sell,  -> { where('num > ?', 0) }
   before_create :set_uuid
   after_create  :inc_good_stock
 
@@ -10,7 +11,7 @@ class Sku < ActiveRecord::Base
   end
 
   def inc_good_stock
-    IncGoodStockJob.perform_later(good_id)
+    IncGoodStockJob.perform_later(good_id, num)
   end
 
 end

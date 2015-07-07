@@ -1,7 +1,6 @@
 class Stores::OrdersController < Stores::BaseController
 
   before_action :require_login?
-  skip_before_filter :verify_authenticity_token, :create
 
   def index
     @orders = current_user.orders.all
@@ -10,8 +9,7 @@ class Stores::OrdersController < Stores::BaseController
   def create
     json = { status: 0, code: 1, msg: '创建订单成功' }
 
-    good = Good.find_by(id: params[:good_id])
-    p good
+    good = Good.find_by(id: params[:order][:good_id])
     if good && good.stock > 1
       @order = current_user.orders.build(order_params)
       sku = good.skus.can_sell.last
@@ -52,8 +50,7 @@ class Stores::OrdersController < Stores::BaseController
 private
 
   def order_params
-    # params.require(:order).permit(:good_id)
-    params.permit(:good_id)
+    params.require(:order).permit(:good_id)
   end
 
 end

@@ -4,7 +4,7 @@ class Good < ActiveRecord::Base
   has_many :pictures, as: :pictureable
   has_many :skus, dependent: :destroy
 
-  validates :name, :stock, :cost, presence: true
+  validates :name, :stock, :cost, :label, presence: true
 
   scope :show, -> { where(is_publish: true).where.not(status: 'off_shelves') }
 

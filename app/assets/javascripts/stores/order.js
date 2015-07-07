@@ -12,27 +12,55 @@ $(function () {
   });
 
   $('.order-item .detail').on('click', function () {
-    var id = $(this).data('id'),
-        pass= $(this).data('pass');
-    $('#order-detail').find('.card-id').text(id);
-    $('#order-detail').find('.card-pass').text(pass);
-    $('#order-detail').modal();
+    var id = $(this).data('id');
+    //var id = 2;
+    getCardInfo(id, showCardInfo);
   });
 
   $('#order-delete .confirm').on('click', function () {
-    console.log($curOrder, orderId);
-    // 删除订单
-    //$.ajax({
-      //url: '/stores/orders/' + orderId,
-      //method: 'delete'
-    //})
-    //.done(function () {
-      //if(data.status === 0 && data.code === 1) {
-        //$curOrder.remove();
-      //}
-    //})
-    //.error(function (errors) {
-      //console.log(errors);
-    //})
+   //删除订单
+    $('#order-delete').modal('hide');
+    deleteOrder(orderId, function () {
+      $curOrder.remove();
+    });
   });
+
+  function getCardInfo (id, callback) {
+    $.ajax({
+      url: '/stores/orders/' + id
+    }) 
+    .done(function (data) {
+      console.log(data);
+      if(data.msg !== '') {
+        callback(data.msg);
+      }
+    })
+    .error(function (errors) {
+      console.log(errors);
+    });
+  }
+
+  function showCardInfo(info) {
+    var info = info.split('&');
+    $('#order-detail').find('.card-id').text(info[0]);
+    $('#order-detail').find('.card-pass').text(info[1]);
+    $('#order-detail').modal();
+  }
+
+  function deleteOrder(id, callback) {
+    $.ajax({
+      url: '/stores/orders/' + id,
+      method: 'delete'
+    })
+    .done(function (data) {
+      if(data.status === 0 && data.code === 1) {
+        callback();
+      }
+    })
+    .error(function (errors) {
+      console.log(errors);
+    });
+  }
+
+
 });

@@ -14,10 +14,9 @@ class Stores::OrdersController < Stores::BaseController
       @order = current_user.orders.build(order_params)
       sku = good.skus.can_sell.last
       if sku
-        @order.sku_id = good.id
+        @order.sku_id = good.id && @order.generate_order_id
         unless @order.save && sku.update_column(:num, sku.num - 1) &&
                good.update_attributes(stock: good.stock - 1, used_num: good.used_num + 1 )
-
           json[:code], json[:msg] = 0, "#{@order.errors.full_messages}"
         end
       else
@@ -33,16 +32,16 @@ class Stores::OrdersController < Stores::BaseController
   def show
     json = { status: 0, code: 1, msg: '' }
     order = current_user.orders.find_by(id: params[:id])
-    json[:msg] = Sku.find_by(id: order.sku.try(:id))
+    json[:msg] = Sku.find_by(id: order.sku.try(:id)).try(:addition) if order
 
     render json: json
 
   end
 
-  def destory
+  def destroy
     json = { status: 0, code: 1, msg: '' }
     order = current_user.orders.find_by(id: params[:id])
-    unless order && order.destory
+    unless order && order.destroy
       json[:code], json[:msg] = 0, "已经删除或者没有权限"
     end
 

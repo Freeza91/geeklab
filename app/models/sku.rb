@@ -5,14 +5,15 @@ class Sku < ActiveRecord::Base
 
   scope :can_sell,  -> { where('num > ?', 0) }
   before_create :set_uuid
-  after_create  :inc_good_stock
+  after_save    :inc_good_stock
 
   def set_uuid
     self.uuid = SecureRandom.uuid
   end
 
   def inc_good_stock
-    IncGoodStockJob.perform_later(good_id, num)
+    inc_num = num - num_was.to_i
+    IncGoodStockJob.perform_later(good_id, inc_num)
   end
 
 end

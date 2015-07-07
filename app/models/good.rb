@@ -13,7 +13,7 @@ class Good < ActiveRecord::Base
   attr_accessor :available
 
   def available
-    if num == 0 || is_limit == true
+    if stock == 0 || is_limit == true
       false
     else
       true

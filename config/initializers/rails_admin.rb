@@ -27,7 +27,7 @@ RailsAdmin.config do |config|
     dashboard                     # mandatory
     index                         # mandatory
     new do
-      only ['TesterInfor']
+      only ['Project', 'Task', 'Good', 'Sku', 'Picture']
     end
     export
     bulk_delete

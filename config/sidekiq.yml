@@ -10,3 +10,4 @@ production: # work model
   - [update_project]
   - [pfop_video_images]
   - [start_assign, 10]
+  - [inc_good_stock, 5]

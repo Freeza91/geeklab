@@ -9,9 +9,14 @@ class Stores::OrdersController < Stores::BaseController
   def create
     json = { status: 0, code: 1, msg: '保存成功' }
 
-    @order = current_user.orders.build(order_params)
-    unless @order.save
-      json[:code], json[:msg] = 0, "#{@order.errors.full_messages}"
+    good = Good.find_by(order_params)
+    if good.stock > 1
+      @order = current_user.orders.build(order_params)
+      unless @order.save
+        json[:code], json[:msg] = 0, "#{@order.errors.full_messages}"
+      end
+    else
+      json[:code], json['msg'] = 2, '库存不足'
     end
 
     render json: json

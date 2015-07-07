@@ -1,5 +1,7 @@
 class Good < ActiveRecord::Base
 
+  default_scope { order('created_at desc') }
+
   has_many :orders
   has_many :pictures, as: :pictureable
   has_many :skus, dependent: :destroy

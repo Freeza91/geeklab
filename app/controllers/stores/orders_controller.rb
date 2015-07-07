@@ -14,7 +14,7 @@ class Stores::OrdersController < Stores::BaseController
       @order = current_user.orders.build(order_params)
       sku = good.skus.can_sell.last
       if sku
-        @order.sku_id = good.id && @order.generate_order_id
+        @order.sku_id = good.id
         unless @order.save && sku.update_column(:num, sku.num - 1) &&
                good.update_attributes(stock: good.stock - 1, used_num: good.used_num + 1 )
           json[:code], json[:msg] = 0, "#{@order.errors.full_messages}"

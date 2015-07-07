@@ -30,7 +30,6 @@ $(function () {
       url: '/stores/orders/' + id
     }) 
     .done(function (data) {
-      console.log(data);
       if(data.msg !== '') {
         callback(data.msg);
       }

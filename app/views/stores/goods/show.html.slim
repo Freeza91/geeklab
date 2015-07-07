@@ -6,7 +6,7 @@ main role="main"
           .col-md-6.col-sm-6
             .good-gallery
               .main-pic
-                img src=image_path("banner/banner_index.png")
+                img src=@good.pictures.first.url.url
               .gallery-thumb
                 ul.list-unstyled.list-inline
                   li.good-selected
@@ -17,20 +17,19 @@ main role="main"
             .good-info
               .good-title
                 h3.good-main-title
-                  | 全国通用移动10元手机充值卡
+                  = @good.name
               .good-meta.clearfix
                 .cost
                   span.color-gray 所需积分
                   i.icon.fa.fa-diamond
-                  span 100
+                  span
+                    = @good.cost.to_i
                 .sell-counter
                   span.counter 20人
                   span.color-gray 兑换成功
               .good-intro
                 p
-                  | 本商品7*24小时全天均可充值(除运营商系统维护时间外)；
-                  | 正常情况1-15分钟即可到账，遇月初月末高峰可能会稍许延迟，
-                  | 具体到账时间以当地运营商查询到账时间为准，到账后一般会有短信提示。
+                  = @good.describle
                 p.color-gray
                   | (最终解释权归 北京中明万长咨询管理有限公司 所有)
           .good-action
@@ -39,7 +38,7 @@ main role="main"
                 | 立即兑换
             - else
               button.btn.btn-base-reverse.btn-rounded.btn-m.exchange data-price='100' data-score='150' data-id="1"
-                | 立即兑换
+                = get_status_info(@good.status) 
 - if !current_user
   <!-- 未登录提示 -->
   = render "stores/modals/login_hint"

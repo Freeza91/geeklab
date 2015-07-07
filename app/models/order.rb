@@ -2,8 +2,9 @@ class Order < ActiveRecord::Base
 
   belongs_to :good
   belongs_to :user
+  belongs_to :sku
 
-  validates :good_id, presence: true
+  validates :good_id, :sku_id, :order_id, :user_id, presence: true
 
   before_create :set_order_id
 

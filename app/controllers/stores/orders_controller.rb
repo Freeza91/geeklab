@@ -3,7 +3,7 @@ class Stores::OrdersController < Stores::BaseController
   before_action :require_login?
 
   def index
-    @orders = current_user.orders.all
+    @orders = current_user.orders.includes(:good).all
   end
 
   def create
@@ -14,8 +14,10 @@ class Stores::OrdersController < Stores::BaseController
       @order = current_user.orders.build(order_params)
       sku = good.skus.can_sell.last
       if sku
+        @order.sku_id = good.id
         unless @order.save && sku.update_column(:num, sku.num - 1) &&
-          good.update_attributes(stock: good.stock - 1, used_num: good.used_num + 1 )
+               good.update_attributes(stock: good.stock - 1, used_num: good.used_num + 1 )
+
           json[:code], json[:msg] = 0, "#{@order.errors.full_messages}"
         end
       else
@@ -29,19 +31,19 @@ class Stores::OrdersController < Stores::BaseController
   end
 
   def show
-    @order = current_user.orders.includes(:good).find_by(id: params[:id])
+    json = { status: 0, code: 1, msg: '' }
+    order = current_user.orders.find_by(id: params[:id])
+    json[:msg] = Sku.find_by(id: order.sku.try(:id))
+
+    render json: json
+
   end
 
-  def edit
-    @order = current_user.orders.find_by(id: params[:id])
-  end
-
-  def update
-    json = { status: 0, code: 1, msg: '更新成功' }
-
-    @order = current_user.orders.find_by(id: params[:id])
-    unless @order.update_attributes(order_params)
-      json[:code], json[:msg] = 0, "#{@order.errors.full_messages}"
+  def destory
+    json = { status: 0, code: 1, msg: '' }
+    order = current_user.orders.find_by(id: params[:id])
+    unless order && order.destory
+      json[:code], json[:msg] = 0, "已经删除或者没有权限"
     end
 
     render json: json

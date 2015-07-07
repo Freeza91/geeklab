@@ -1,6 +1,7 @@
 class Sku < ActiveRecord::Base
 
   belongs_to :good
+  has_many   :orders
 
   scope :can_sell,  -> { where('num > ?', 0) }
   before_create :set_uuid

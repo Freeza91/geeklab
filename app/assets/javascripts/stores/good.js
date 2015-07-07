@@ -4,9 +4,9 @@ $(function () {
   }
 
   $('.exchange').on('click', function () {
-    var price = $(this).data('price'),
-        score = $(this).data('score'),
-        id = $(this).data('id');
+    var price = parseInt($(this).data('price')),
+        score = parseInt($(this).data('score')),
+        id = parseInt($(this).data('id'));
     if(score < price) {
       $('#score-hint').modal();
       return false;
@@ -27,16 +27,28 @@ $(function () {
       data: {order: order}
     })
     .done(function (data) {
-      if(data.status === 0 && data.code === 1) {
-        // 兑换成功
-        $('#exchange-success').modal();
-        var counter = 4;
-        var intervalId = setInterval(function () {
-          $('#exchange-success .counter').text(counter--);
-          if(counter === 0){
-            location.href="/stores/orders/";
-          }
-        }, 1000);
+      if(data.status === 0) {
+        switch(data.code) {
+          case 0:
+            // 失败, Todo
+            console.log('兑换失败');
+          break;
+          case 1:
+            // 成功
+            $('#exchange-success').modal();
+            var counter = 4;
+            var intervalId = setInterval(function () {
+              $('#exchange-success .counter').text(counter--);
+              if(counter === 0){
+                location.href="/stores/orders/";
+              }
+            }, 1000);
+          break;
+          case 2:
+            // 库存不足 Todo
+            console.log('库存不足');
+          break;
+        }
       }
     })
     .error(function (errors) {
@@ -48,4 +60,4 @@ $(function () {
     $('.modal.in').modal('hide');
     $('#sign').modal();
   }
-})
+});

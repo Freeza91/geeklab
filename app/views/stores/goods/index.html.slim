@@ -1,2 +1,4 @@
-h1 Goods#index
-p Find me in app/views/goods/index.html.slim
+- @goods.each do |good|
+  div
+    = good.name
+    = link_to '查看详情', stores_good_path(good)

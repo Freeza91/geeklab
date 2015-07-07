@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150706074122) do
+ActiveRecord::Schema.define(version: 20150707031414) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,7 +37,6 @@ ActiveRecord::Schema.define(version: 20150706074122) do
 
   create_table "goods", force: :cascade do |t|
     t.string   "name"
-    t.string   "stock"
     t.text     "describle"
     t.float    "cost"
     t.datetime "created_at",                 null: false
@@ -45,6 +44,7 @@ ActiveRecord::Schema.define(version: 20150706074122) do
     t.string   "status"
     t.boolean  "is_publish", default: false
     t.boolean  "is_limit",   default: false
+    t.integer  "stock",      default: 0
   end
 
   create_table "orders", force: :cascade do |t|

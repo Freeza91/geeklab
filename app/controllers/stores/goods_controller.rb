@@ -3,14 +3,13 @@ class Stores::GoodsController < Stores::BaseController
   skip_before_filter :verify_authenticity_token, only: :save_image
 
   before_filter :authenticate, except: [:index, :show, :save_image]
-  # layout false, except: [:index, :show]
 
   def index
-    @goods = Good.all.page(params[:page]).per(10)
+    @goods = Good.includes(:pictures).all.show.page(params[:page]).per(30)
   end
 
   def show
-    @good = Good.find_by(id: params[:id])
+    @good = Good.includes(:pictures).show.find_by(id: params[:id])
   end
 
   def new

@@ -25,10 +25,15 @@ main role="main"
                   span
                     = @good.cost.to_i
                 .sell-counter
-                  span.counter 
-                    = @good.used_num
-                    | 人
-                  span.color-gray 兑换成功
+                  span
+                    | 仅剩
+                  span.color-gray style="padding: 0 3px"
+                    = @good.stock
+                  span
+                    | 个
+                    /= @good.used_num
+                    /| 人
+                  /span.color-gray 兑换成功
               .good-intro
                 p
                   = @good.describle

@@ -17,4 +17,12 @@ module GoodsHelper
     end
   end
 
+  def get_name_class(index) 
+    if index % 4 == 0 || index % 4 == 3
+      'name-left'
+    else
+      'name-right'
+    end
+  end
+
 end

@@ -12,13 +12,28 @@ module ProjectsHelper
     info[status.to_sym]
   end
 
-  def get_city(level)
+  def get_city(city_level)
     city = [
       '北上广深',
       '省会城市',
       '其它'
     ]
-    city[level]
+    cities = ''
+    city_level.each_with_index do |level, index|
+      if index != 0
+        cities += ', '
+      end
+      cities += city[level-1]
+    end
+    cities
+  end
+
+  def parse_platform(platform)
+    platforms = {
+      'ios': 'iOS',
+      'android': 'Android'
+    }
+    platforms[platform.to_sym]
   end
 
     def get_device(device)

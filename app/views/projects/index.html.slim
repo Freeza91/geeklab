@@ -28,7 +28,7 @@ main role="main"
                       - @assignments[index].each do |assignment|
                         li.col-md-4
                           img src=("#{assignment.video}" + "?vframe/png/offset/0/w/480/h/200")
-                          a href=("/projects/" + "#{project.id}" + "/video/" + "#{assignment.id}") target="_blank"
+                          a.available href=("/projects/" + "#{project.id}" + "/video/" + "#{assignment.id}") target="_blank"
                             i.fa.fa-play-circle.fa-4x
                           - if !assignment.is_read
                             span.read-mark

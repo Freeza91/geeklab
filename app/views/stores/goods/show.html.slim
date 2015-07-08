@@ -25,12 +25,19 @@ main role="main"
                   span
                     = @good.cost.to_i
                 .sell-counter
-                  span
-                    | 仅剩
-                  span.color-gray style="padding: 0 3px"
-                    = @good.stock
-                  span
-                    | 个
+                  - if @good.stock > 200
+                    span
+                      | 有货
+                  - if @good.stock == 0
+                    span
+                      | 无货
+                  - else
+                    span
+                      | 仅剩
+                    span.color-gray style="padding: 0 3px"
+                      = @good.stock
+                    span
+                      | 个
                     /= @good.used_num
                     /| 人
                   /span.color-gray 兑换成功

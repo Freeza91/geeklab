@@ -10,15 +10,23 @@ class Stores::OrdersController < Stores::BaseController
     json = { status: 0, code: 1, msg: '创建订单成功' }
 
     good = Good.find_by(id: params[:order][:good_id])
-    if good && good.stock > 1
+    if good && good.stock > 0
+      if current_user.credits < good.cost
+        json[:code], json[:msg] = 3, '你的积分不够'
+        return render json: json
+      end
       @order = current_user.orders.build(order_params)
       sku = good.skus.can_sell.last
       if sku
         @order.sku_id = good.id
-        unless @order.save && sku.update_column(:num, sku.num - 1) &&
-               good.update_attributes(stock: good.stock - 1, used_num: good.used_num + 1 )
-          json[:code], json[:msg] = 0, "#{@order.errors.full_messages}"
+
+        ActiveRecord::Base.transaction do
+          @order.save
+          current_user.update_column(:credits, current_user.credits - good.cost)
+          sku.update_column(:num, sku.num - 1)
+          good.update_attributes(stock: good.stock - 1, used_num: good.used_num + 1 )
         end
+
       else
         json[:code], json['msg'] = 2, '库存不足'
       end

@@ -17,13 +17,13 @@ main role="main"
                 td
                   | 网站地址
                 td
-                  = @project.device
+                  = @project.platform
             - else
               tr
                 td
                   | 平台
                 td
-                  = @project.platform
+                  = parse_platform(@project.platform)
               tr
                 td
                   | 测试设备
@@ -33,7 +33,9 @@ main role="main"
                 td
                   | 系统要求
                 td
+                  = parse_platform(@project.platform)
                   = @project.requirement
+                  | 及以上
             tr
               td
                 | 产品简介
@@ -67,8 +69,7 @@ main role="main"
               td
                 | 城市级别
               td
-                - @project.user_feature.city_level.each do |level|
-                  = get_city(level - 1) + ","
+                = get_city(@project.user_feature.city_level)
             tr
               td
                 | 学历
@@ -100,8 +101,6 @@ main role="main"
               td
                 | 任务详情
               td
-                p
-                  | 温馨提示: 测试过程中请尽可能的大声而自信的说出你的真实感受
                 ul
                   - @project.tasks.each do |task|
                     li
@@ -137,7 +136,7 @@ main role="main"
             ul
               - if @assignments && @assignments.size > 0
                 - @assignments.each do |assignment|
-                  li
+                  li.available
                     a href=("/projects/" + "#{@project.id}" + "/video/" + "#{assignment.id}")
                       img src=("#{assignment.video}" + "?vframe/png/offset/0/w/480/h/200")
                     i.fa.fa-play-circle.fa-4x

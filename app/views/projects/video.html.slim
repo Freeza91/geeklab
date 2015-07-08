@@ -98,7 +98,7 @@ main role="main"
           ul
             - if @other_assignments && @other_assignments.try(:size) > 0
               - @other_assignments.each do |assignment|
-                li
+                li.available
                   a href=("/projects/" + "#{@project.id}" + "/video/" + "#{assignment.id}")
                     img src=image_path('logo/logo.png')
                   i.fa.fa-play-circle.fa-4x

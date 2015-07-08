@@ -177,6 +177,7 @@ $(function () {
     var days = ~~ (count / (24 * 60 * 60 * 1000)), //天
         hours = ~~ ((count / (60 * 60 * 1000)) % 24), //小时
         minutes = ~~ ((count / (60 * 1000)) % 60), //分钟
+    days = days < 10 ? '0' + days : days;
     hours = hours < 10 ? '0' + hours : hours;
     minutes = minutes < 10 ? '0' + minutes : minutes;
     $ele.find('.day').text(days);

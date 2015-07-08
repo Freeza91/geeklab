@@ -21,7 +21,7 @@ main role='main'
             i.icon-inner.icon-arrow-right
   section.content
     .container
-      .goods
+      .goods.clearfix
         - @goods.each_with_index do |good, index| 
           .col-md-6
             .item class=get_name_class(index)

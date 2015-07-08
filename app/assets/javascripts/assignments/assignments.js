@@ -409,7 +409,7 @@ $(function () {
 
     var $detailTable = $modal.find('table');
     var device = assignmentDetail.device[0].toUpperCase() + assignmentDetail.device.substr(1);
-    if(assignmentDetail.device === 0) {
+    if(assignmentDetail.device === '0') {
       // 新手任务
       $detailTable.removeClass('web').addClass('app');
       $detailTable.find('[name="device"]').text('任意设备');
@@ -489,16 +489,24 @@ $(function () {
   function assignmentTimeCountDown(count, $ele) {
     var timeArr = [];
     if(count > 24 * 60 * 60 * 1000) {
-      timeArr.push(~~ (count / (24 * 60 * 60 * 1000)) + '天');
+      var days = ~~ (count / (24 * 60 * 60 * 1000));
+      days = days < 10 ? '0' + days : days;
+      timeArr.push(days + '天');
     }
     if(count > 60 * 60 * 1000) {
-      timeArr.push(~~ ((count / (60 * 60 * 1000)) % 24) + '小时');
+      var hours = ~~ ((count / (60 * 60 * 1000)) % 24);
+      hours = hours < 10 ? '0' + hours : hours;
+      timeArr.push(hours + '小时');
     }
     if(count > 60 * 1000) {
+      var minutes = ~~ ((count / (60 * 1000)) % 60);
+      minutes = minutes < 10 ? '0' + minutes : minutes;
       timeArr.push(~~ ((count / (60 * 1000)) % 60) + '分');
     }
     if(count > 1000) {
-      timeArr.push(~~ ((count / 1000) % 60) + '秒');
+      var seconds = ~~ ((count / (60 * 1000)) % 60);
+      seconds = seconds < 10 ? '0' + seconds : seconds
+      timeArr.push(seconds + '秒');
     }
     $ele.text(timeArr.join(''));
   }

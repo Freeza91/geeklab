@@ -8,11 +8,14 @@ header.top-header
           .navbar-collapse.collapse
             ul.nav.navbar-nav.navbar-right
               li
-                a href=stores_orders_path
+                a href="javascript: void(0)"
                   = current_user.email
               li
                 button.btn.btn-base.btn-s.btn-rounded.navbar-btn
-                  | 600 
+                  a href=stores_orders_path
+                  span.icon.icon-outer-18 style="margin-bottom: -4px; margin-right: 5px"
+                    i.icon-inner.icon-score
+                  = current_user.credits 
               li
                 a href="javascript: void(0)" data-toggle="modal" data-target="#logout-hint"
                   i.fa.fa-power-off

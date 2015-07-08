@@ -40,9 +40,9 @@ main role="main"
                       | &times
                 tr.order-content
                   td.good
-                    a.pic href="javascript: void(0)" target="_blank"
+                    a.pic href=stores_good_path(order.good_id) target="_blank"
                       img src="#{order.good.pictures.first.url.url}"
-                    a.name href="javacript: void(0)" targe="_blank"
+                    a.name href=stores_good_path(order.good_id) targe="_blank"
                       = order.good.name
                   td.price
                     i.icon.fa.fa-diamond

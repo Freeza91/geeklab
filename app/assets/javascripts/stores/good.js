@@ -48,6 +48,10 @@ $(function () {
             // 库存不足 Todo
             console.log('库存不足');
           break;
+          case 3:
+            // 积分不够
+            $('#score-hint').modal();
+          break;
         }
       }
     })

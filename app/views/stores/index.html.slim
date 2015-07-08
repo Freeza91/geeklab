@@ -21,22 +21,23 @@ main role='main'
             i.icon-inner.icon-arrow-right
   section.content
     .container
-      .goods
-        - @goods.each_with_index do |good, index| 
-          .col-md-6
-            .item class=get_name_class(index)
-              .name
-                span
-                  = good.name 
-                  = index % 4
-              .img-g.img style="background-image: url(#{good.pictures[0].url.url})"
-              .img-s.img style="background-image: url(#{good.pictures[1].url.url})"
-              a.btn.btn-base.btn-s.btn-rounded href=stores_good_path(good.id)
-                span 
-                  span.icon.icon-outer-18
-                    i.icon-inner.icon-score
-                  = good.cost.to_i
-                span 立即抢兑
+      .goods.clearfix
+        - if @goods
+          - @goods.each_with_index do |good, index| 
+            .col-md-6
+              .item class=get_name_class(index)
+                .name
+                  span
+                    = good.name 
+                    = index % 4
+                .img-g.img style="background-image: url(#{good.pictures[0].url.url})"
+                .img-s.img style="background-image: url(#{good.pictures[1].url.url})"
+                a.btn.btn-base.btn-s.btn-rounded href=stores_good_path(good.id)
+                  span 
+                    span.icon.icon-outer-18
+                      i.icon-inner.icon-score
+                    = good.cost.to_i
+                  span 立即抢兑
       p.bottom-hint
         span.icon.icon-outer-18
           i.icon-inner.icon-clock

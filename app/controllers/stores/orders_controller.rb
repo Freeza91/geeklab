@@ -23,7 +23,7 @@ class Stores::OrdersController < Stores::BaseController
         ActiveRecord::Base.transaction do
           @order.save
           current_user.update_column(:credits, current_user.credits - good.cost)
-          sku.update_column(:num, sku.num - 1)
+          sku.update_column(:num, sku.num - 1) # skip inc_good_stock validate
           good.update_attributes(stock: good.stock - 1, used_num: good.used_num + 1 )
         end
 

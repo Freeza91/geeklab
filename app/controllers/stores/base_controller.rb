@@ -3,7 +3,7 @@ class Stores::BaseController < ApplicationController
   layout 'stores/layouts/stores_application'
 
   def index
-    @goods = Good.includes(:pictures).all.show.page(params[:page]).per(6)
+    @goods = Good.display.includes(:pictures).page(params[:page]).per(6)
     render 'stores/index'
   end
 

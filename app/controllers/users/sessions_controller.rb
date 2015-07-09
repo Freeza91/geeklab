@@ -57,6 +57,8 @@ private
       testers_url
     elsif refer_url.include? "pms"
       pms_url
+    elsif refer_url.include? 'stores'
+      stores_root_path
     else
       root_url
     end

@@ -27,7 +27,9 @@ module GoodsHelper
   end
 
   def get_assignment_url(user)
-    if user.to_tester.try(:tester_infors).blank?
+    if !current_user
+      testers_path
+    elsif user.to_tester.try(:tester_infors).blank?
       new_tester_path
     else
       tester_assignments_path(user.id)

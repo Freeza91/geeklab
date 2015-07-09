@@ -140,7 +140,8 @@ main role="main"
                     a href=("/projects/" + "#{@project.id}" + "/video/" + "#{assignment.id}")
                       img src=("#{assignment.video}" + "?vframe/png/offset/0/w/480/h/200")
                     i.fa.fa-play-circle.fa-4x
-              li
-                a href="javascript: void(0)"
-                  img
-                i.fa.fa-play-circle.fa-4x
+              - else
+                li
+                  a href="javascript: void(0)"
+                    img
+                  i.fa.fa-play-circle.fa-4x

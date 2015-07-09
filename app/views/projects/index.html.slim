@@ -12,7 +12,7 @@ main role="main"
                     = project.name
                   p.status class=("status_" + "#{project.status}")
                     i.fa.fa-exclamation-circle
-                    = get_status_info(project.status)
+                    = get_status_info(project.status, project.demand, @assignments[index].size)
                   - if project.status == "not_accept" && project.reasons && project.reasons.size > 0
                     ol.comment
                       - project.reasons.each do |reason|
@@ -42,20 +42,18 @@ main role="main"
                   span.total
                     | /
                     = project.demand
-                .count-down data-deadline="#{project.expired_at}"
-                  i.fa.fa-clock-o
-                  - if project.status == "failed"
-                    | 任务已结束
-                  - else
-                    span.day
-                      | 3
-                    | 天
-                    span.hour
-                      | 13
-                    | 时
-                    span.minute
-                      | 38
-                    | 分
+                - if project.demand != @assignments[index].size
+                  .count-down data-deadline="#{project.expired_at}"
+                    i.fa.fa-clock-o
+                    - if project.status == "failed"
+                      | 任务过期
+                    - else
+                      span.day
+                      | 天
+                      span.hour
+                      | 时
+                      span.minute
+                      | 分
       .load-more
         - if @projects.try(:size) < 10
           p

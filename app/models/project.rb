@@ -70,15 +70,15 @@ class Project < ActiveRecord::Base
   end
 
   def get_status
+
     return status unless status == 'underway'
 
     num = self.assignments.done.try(:size)
-    if expired? && num < demand
+    if !expired? && num < demand
       self.update_column(:status, 'failed')
     elsif num >= demand
       self.update_column(:status, 'finish')
     end
-
     status
   end
 

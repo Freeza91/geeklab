@@ -32,7 +32,6 @@ main role='main'
                 .name
                   span
                     = good.name 
-                    = index % 4
                 .img-g.img style="background-image: url(#{good.pictures[1].url.url})"
                 .img-s.img style="background-image: url(#{good.pictures[2].url.url})"
                 a.btn.btn-base.btn-s.btn-rounded href=stores_good_path(good.id)

@@ -1,12 +1,29 @@
 module GoodsHelper
   
-  def get_good_status(status)
-    info = {
-      'on_sell': '立即兑换',
-      'off_shelves': '被抢光了',
-      'coming_soon': 'comming soon'
-    }
-    info[status.to_sym]
+  def get_good_status(available, status)
+    if !available
+      '被抢光了'
+    else
+      info = {
+        'on_sell': '立即兑换',
+        'off_shelves': '已下架',
+        'coming_soon': 'comming soon'
+      }
+      info[status.to_sym]
+    end
+  end
+
+  def can_exchange(available, status)
+    if !available
+      'disable'
+    else
+      class_name = {
+        'on_sell': 'exchange',
+        'coming_soon': 'highlight no-border',
+        'off_shelves': 'disable'
+      }
+      class_name[status.to_sym]
+    end
   end
 
   def get_assignment_url(user)

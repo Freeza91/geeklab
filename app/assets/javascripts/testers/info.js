@@ -5,7 +5,8 @@ $(function () {
   // birth select init
   var birth = $('#birth').data('birth');
   $('#birth').dateSelect({
-    required: false
+    startYear: 1980,
+    required: true
   });
 
   // rails 中要怎么引用其他的js文件。
@@ -15,13 +16,13 @@ $(function () {
     //url: '/assets/cityselect_data.min',
     url: cityData,
     nodata: 'none',
-    required: false
+    required: true
   });
   $('#livingplace').citySelect({
     //url: '/assets/cityselect_data.min',
     url: cityData,
     nodata: 'none',
-    required: false
+    required: true
   });
 
   // profession select init
@@ -126,7 +127,7 @@ $(function () {
     // 不知道为什么不能从 professionselect_data.js中获取数据
     url: profession,
     nodata: 'none',
-    required: false
+    required: true
   });
 
   // 感情状况， 性取向, 教育程度， 收入 init
@@ -165,17 +166,17 @@ $(function () {
   $('#emotion').citySelect({
     url: emotionData,
     nodata: 'none',
-    required: false
+    required: true
   });
   $('#sex_orientation').citySelect({
     url: sexOrientationData,
     nodata: 'none',
-    required: false
+    required: true
   });
   $('#education').citySelect({
     url: educationData,
     nodata: 'none',
-    required: false
+    required: true
   });
   $('.info-form .submit').on('click', function (event) {
     event.preventDefault();

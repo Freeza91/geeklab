@@ -405,7 +405,7 @@ $(function () {
   function showAssignmentDetail (assignmentDetail) {
     var deviceMap = {
       'phone': 'Phone',
-      'tablet': 'Pad'
+      'ios': 'Pad'
     };
     var $modal = $('#assignment-detail');
     // 填信息

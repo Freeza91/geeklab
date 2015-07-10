@@ -18,7 +18,7 @@ class Stores::OrdersController < Stores::BaseController
       @order = current_user.orders.build(order_params)
       sku = good.skus.can_sell.last
       if sku
-        @order.sku_id = good.id
+        @order.sku_id = sku.id
 
         ActiveRecord::Base.transaction do
           @order.save

@@ -17,12 +17,20 @@ class Users::PasswordsController < ApplicationController
 
   def reset
     current_user.forget_me(cookies) if current_user
-    reset_session
+    #reset_session
 
-    from = [root_path, pms_path, testers_path]
+    from = [root_path, pms_path, testers_path, stores_root_path]
     path = URI.parse(request.referer || root_url).path
-    referer = from.include?(path) ? path : root_path
+    if path.split('/')[1] == 'stores'
+      # store可在任意页面登录
+      referer = request.referer
+    else
+      referer = from.include?(path) ? path : root_path
+    end
     session[:redirect_path] = referer
+
+    #render 'stores/password/send_email', layout: 'stores/layouts/stores_application' if(referer == stores_root_path)
+    render 'stores/password/send_email', layout: 'stores/layouts/stores_application' if(path.split('/')[1] == 'stores')
   end
 
   def callback_reset
@@ -30,7 +38,11 @@ class Users::PasswordsController < ApplicationController
     if @user
       if @user.reset_password_sent_at + 1.days >= Time.now
         cookies.signed[:reset_password_token] = params[:reset_password_token]
-        redirect_to edit_reset_users_passwords_path
+        if params[:redirect_to]
+          redirect_to edit_reset_users_passwords_path + "?redirect_to=" + params[:redirect_to]
+        else
+          redirect_to edit_reset_users_passwords_path
+        end
       else
         flash[:info] = 'token已经过期'
         redirect_to reset_users_passwords_path
@@ -40,8 +52,11 @@ class Users::PasswordsController < ApplicationController
     end
   end
 
- def edit_reset
+  def edit_reset
     @user = User.new
+    if params[:redirect_to] == 'stores'
+      render 'stores/password/reset', layout: 'stores/layouts/stores_application'
+    end
   end
 
   def update_reset

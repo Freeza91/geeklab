@@ -1,0 +1,67 @@
+main role="main"
+  section.projects-list.content-box data-pm-id="#{@current_user.id}"
+    .container
+      = render partial: 'projects/shared/add'
+      .projects-wrp.clear-fix
+        - @projects.each_with_index do |project, index|
+          .card data-project-id="#{project.id}"
+            .inner
+              header
+                h1.title
+                  a href=("/projects/" + "#{project.id}") target="_blank"
+                    = project.name
+                  p.status class=("status_" + "#{project.status}")
+                    i.fa.fa-exclamation-circle
+                    /= get_status_info(project.status, project.demand, @assignments[index].size)
+                    = get_status_info(project.get_status)
+                  - if project.status == "not_accept" && project.reasons && project.reasons.size > 0
+                    ol.comment
+                      - project.reasons.each do |reason|
+                        li
+                          = reason
+                  - if project.status != "underway"
+                    span.close.delete-project
+                      | &times
+              .content
+                .videos
+                  ul
+                    - if @assignments[index].try(:size) > 0
+                      - @assignments[index].each do |assignment|
+                        li.col-md-4
+                          img src=("#{assignment.video}" + "?vframe/png/offset/0/w/480/h/200")
+                          a.available href=("/projects/" + "#{project.id}" + "/video/" + "#{assignment.id}") target="_blank"
+                            i.fa.fa-play-circle.fa-4x
+                          - if !assignment.is_read
+                            span.read-mark
+                    - (project.demand - @assignments[index].size).times
+                      li.col-md-4
+                        a href="javascript: void(0)"
+                          i.fa.fa-play-circle.fa-4x
+                .progress-num
+                  span.done
+                    = @assignments[index].size
+                  span.total
+                    | /
+                    = project.demand
+                - if project.get_status != 'finish'
+                  .count-down data-deadline="#{project.expired_at}"
+                    i.fa.fa-clock-o
+                    - if project.get_status == "failed"
+                      | 任务过期
+                    - else
+                      span.day
+                      | 天
+                      span.hour
+                      | 时
+                      span.minute
+                      | 分
+      .load-more
+        - if @projects.try(:size) < 10
+          p
+            | 没有更多了
+        - else
+          button.btn.btn-blue
+            | 加载更多
+
+= render 'shared/confirm_modal'
+= render 'projects/shared/add_modal'

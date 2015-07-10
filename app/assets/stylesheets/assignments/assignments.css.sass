@@ -60,10 +60,12 @@
       font-size: 20px
       font-weight: normal
       cursor: pointer
+      text-decoration: underline
       .fa
         margin-right: 5px
     .title:hover
-      text-decoration: underline
+      //text-decoration: underline
+      color: #16a0c6
 
   .content
     height: 200px
@@ -102,7 +104,7 @@
       z-index: 10
       box-shadow: 0 0 5px #ccc
       > li
-        padding: 10px
+        padding: 7px
     .comment::before
       position: absolute
       top: 50%
@@ -150,6 +152,7 @@
 // 加载更多
 .load-more
   cursor: pointer
+  padding: 0 14px
   p
     text-align: center
   .btn
@@ -217,6 +220,16 @@
     padding: 0
     .fa
       margin-right: 8px
+
+// 不同设备显示不同的信息
+.table.web
+  .device,
+  .requirement,
+  .qrcode
+    display: none
+.table.app
+  .website
+    display: none
 
 // confirm modal
 #confirm-modal
@@ -441,5 +454,3 @@
     .miss-count > a:hover
       color: #16a0c6
       text-decoration: underline
-
-

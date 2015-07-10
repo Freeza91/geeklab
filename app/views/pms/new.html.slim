@@ -1,3 +1,325 @@
 section.content-box
-  .container
-    div 这里可以填写pm的表单
+    .project 
+      .top.clear-fix
+        .container
+          a href="javascript: void(0)"
+            | 选择测试方式
+          .form-pagination.place-right
+            ul
+              li
+                a.active href="javascript: void(0)"
+                  | 1
+              li
+                a href="javascript: void(0)"
+                  | 2
+              li
+                a href="javascript: void(0)"
+                  | 3
+              li
+                a href="javascript: void(0)"
+                  | 4
+      .title
+        .container
+          i.fa.fa-pencil
+          input type="text" name="name" maxlength="15" placeholder="请输入测试任务标题..."
+          span
+            |还可以输入
+          span
+            | 20
+          span
+            | 字
+      .container
+        .form
+          form
+            // web
+            .panel.panel-default
+              .panel-heading
+                | 测试网址
+              .panel-body
+                .form-group
+                  input.form-control type="text" maxlength="15" v-model="website"
+                p.js-len-control
+                  | 还可以输入
+                  span.js-len-count 15
+                  | 字
+            .panel.panel-default
+              .panel-heading
+                | 产品简介
+              .panel-body
+                .form-group
+                  input.form-control type="text" maxlength="15" v-model="introduction"
+                p.js-len-control
+                  | 还可以输入
+                  span.js-len-count 15
+                  | 字
+            // app
+            .panel.panel-default
+              .panel-heading
+                | 选择测试平台
+              .panel-body
+                label.radio-inline
+                  input type="radio" name="platform" value="android" v-model="platform"
+                  i.fa.fa-android.fa-5x
+                label.radio-inline
+                  input type="radio" name="platform" value="ios" v-model="platform"
+                  i.fa.fa-apple.fa-5x
+            .panel.panel-default
+              .panel-heading
+                | 用户系统要求
+              .panel-body
+                #slider-sys
+                  span.sys-value
+            .panel.panel-default
+              .panel-heading
+                | 用户应该使用什么设备
+              .panel-body
+                label.radio-inline
+                  input type="radio" name="device" value="tablet" v-model="device"
+                  i.fa.fa-tablet.fa-5x
+                label.radio-inline
+                  input type="radio" name="device" value="phone" v-model="device"
+                  i.fa.fa-mobile.fa-5x
+            .panel.panel-default
+              .panel-heading
+                | 产品简介
+              .panel-body
+                .form-group
+                  input.form-control type="text" maxlength="15"
+            .panel.panel-default
+              .panel-heading
+                | 应用下载二维码
+              .panel-body
+            // target user
+            .panel.panel-default
+              .panel-heading
+                | 测试用户个数
+              .panel-body
+                #slider-user 
+            .panel.panel-default
+              .panel-heading
+                | 年龄范围
+              .panel-body
+                #slider-age 
+            .panel.panel-default
+              .panel-heading
+                | 年收入
+              .panel-body
+                #slider-income 
+            .panel.panel-default
+              .panel-heading
+                | 性别
+                label.checkbox-inline.checkbox-default.checkall
+                  input type="checkbox" value="checkall"
+                  span
+                    | 全选
+              .panel-body
+                label.checkbox-inline.checkbox-default
+                  input type="checkbox" value="male"
+                  span
+                    | 男
+                label.checkbox-inline.checkbox-default
+                  input type="checkbox" value="female"
+                  span
+                    | 女
+            .panel.panel-default
+              .panel-heading
+                | 城市级别
+                label.checkbox-inline.checkbox-default.checkall
+                  input type="checkbox" value="checkall"
+                  span
+                    | 全选
+              .panel-body
+                label.checkbox-inline.checkbox-default
+                  input type="checkbox" value="一线城市"
+                  span
+                    | 一线城市
+                label.checkbox-inline.checkbox-default
+                  input type="checkbox" value="二线城市"
+                  span
+                    | 二线城市
+                label.checkbox-inline.checkbox-default
+                  input type="checkbox" value="三线城市"
+                  span
+                    | 三线城市
+            .panel.panel-default
+              .panel-heading
+                | 学历
+                label.checkbox-inline.checkbox-default.checkall
+                  input type="checkbox" value="checkall"
+                  span
+                    | 全选
+              .panel-body
+                label.checkbox-inline.checkbox-default
+                  input type="checkbox" value="高中及以下"
+                  span
+                    | 高中及以下
+                label.checkbox-inline.checkbox-default
+                  input type="checkbox" value="大专"
+                  span
+                    | 大专
+                label.checkbox-inline.checkbox-default
+                  input type="checkbox" value="本科"
+                  span
+                    | 本科
+                label.checkbox-inline.checkbox-default
+                  input type="checkbox" value="硕士"
+                  span
+                    | 硕士
+                label.checkbox-inline.checkbox-default
+                  input type="checkbox" value="博士"
+                  span
+                    | 博士
+            .panel.panel-default
+              .panel-heading
+                | 情感状况
+                label.checkbox-inline.checkbox-default.checkall
+                  input type="checkbox" value="checkall"
+                  span
+                    | 全选
+              .panel-body
+                label.checkbox-inline.checkbox-default
+                  input type="checkbox" value="单身"
+                  span
+                    | 单身
+                label.checkbox-inline.checkbox-default
+                  input type="checkbox" value="恋爱中"
+                  span
+                    | 恋爱中
+                label.checkbox-inline.checkbox-default
+                  input type="checkbox" value="已婚"
+                  span
+                    | 已婚
+            .panel.panel-default
+              .panel-heading
+                | 性取向
+                label.checkbox-inline.checkbox-default.checkall
+                  input type="checkbox" value="checkall"
+                  span
+                    | 全选
+              .panel-body
+                label.checkbox-inline.checkbox-default
+                  input type="checkbox" value="异性恋"
+                  span
+                    | 异性恋
+                label.checkbox-inline.checkbox-default
+                  input type="checkbox" value="同性恋"
+                  span
+                    | 同性恋
+                label.checkbox-inline.checkbox-default
+                  input type="checkbox" value="双性恋"
+                  span
+                    | 双性恋
+            .panel.panel-default
+              .panel-heading
+                | 兴趣标签
+                label.checkbox-inline.checkbox-default.checkall
+                  input type="checkbox" value="checkall"
+                  span
+                    | 全选
+              .panel-body
+                .row style="margin-bottom: 20px"
+                  label.checkbox-inline.checkbox-default
+                    input type="checkbox" value="足球"
+                    span
+                      | 足球
+                  label.checkbox-inline.checkbox-default
+                    input type="checkbox" value="健身"
+                    span
+                      | 健身
+                  label.checkbox-inline.checkbox-default
+                    input type="checkbox" value="旅游"
+                    span
+                      | 旅游
+                  label.checkbox-inline.checkbox-default
+                    input type="checkbox" value="二次元"
+                    span
+                      | 二次元
+                .row
+                  label.checkbox-inline.checkbox-default
+                    input type="checkbox" value="音乐"
+                    span
+                      | 音乐
+                  label.checkbox-inline.checkbox-default
+                    input type="checkbox" value="看书"
+                    span
+                      | 看书
+                  label.checkbox-inline.checkbox-default
+                    input type="checkbox" value="电影"
+                    span
+                      | 电影
+                  label.checkbox-inline.checkbox-default
+                    input type="checkbox" value="星座"
+                    span
+                      | 星座
+            // 测试任务
+            .panel.panel-default
+              .panel-heading
+                | 测试情景
+              .panel-body
+                textarea.form-control
+                p.js-len-control
+                  | 还可以输入
+                  span.js-len-count 140
+                  | 字
+            .panel.panel-default
+              .panel-heading
+                | 测试任务
+              .panel-body
+                textarea.form-control placeholder="任务一"
+                p.js-len-control
+                  | 还可以输入
+                  span.js-len-count 140
+                  | 字
+                textarea.form-control placeholder="任务二"
+                p.js-len-control
+                  | 还可以输入
+                  span.js-len-count 140
+                  | 字
+                textarea.form-control placeholder="任务三"
+                p.js-len-control
+                  | 还可以输入
+                  span.js-len-count 140
+                  | 字
+            // 联系方式
+            .panel.panel-default
+              .panel-heading
+                | 姓名
+              .panel-body
+                .form-group
+                  input.form-control type="text" maxlength="15"
+                p.js-len-control
+                  | 还可以输入
+                  span.js-len-count 15
+                  | 字
+            .panel.panel-default
+              .panel-heading
+                | 手机
+              .panel-body
+                .form-group
+                  input.form-control type="text" maxlength="15"
+                p.js-len-control
+                  | 还可以输入
+                  span.js-len-count 15
+                  | 字
+            .panel.panel-default
+              .panel-heading
+                | 邮箱
+              .panel-body
+                .form-group
+                  input.form-control type="email" maxlength="15"
+                p.js-len-control
+                  | 还可以输入
+                  span.js-len-count 15
+                  | 字
+            .panel.panel-default
+              .panel-heading
+                | 公司
+              .panel-body
+                .form-group
+                  input.form-control type="text" maxlength="15"
+                p.js-len-control
+                  | 还可以输入
+                  span.js-len-count 15
+                  | 字
+    .getvalue.btn.btn-blue
+      | get value

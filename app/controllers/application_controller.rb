@@ -30,6 +30,21 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def limit_ip?(from)
+    ip = (request.remote_ip || request.ip) + "-" + from
+    counter = $redis.get(ip).to_i
+    return true if counter > 5
+    $redis.incr(ip)
+    $redis.expire(ip, 15 * 1.minute) if counter == 1
+
+    false
+  end
+
+  def is_pm?
+    @is_pm ||= ['both', 'pm'].include?(current_user.role)
+    redirect_to pms_path unless @is_pm
+  end
+
 private
 
   def from_session

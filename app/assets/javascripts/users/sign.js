@@ -116,10 +116,10 @@ $(function () {
                 location.href = location.href
               break;
               case 2:
-                $form.find('.hint').text('邮箱已被注册').slideDown();
+                $form.children('.hint').text('邮箱已被注册').slideDown();
               break;
               case 3:
-                $form.find('.hint').text('验证码错误或已过期').slideDown();
+                $form.children('.hint').text('验证码错误或已过期').slideDown();
               break;
             }
           }  

@@ -1,0 +1,192 @@
+.project
+  .top
+    background-color: #eee
+    padding: 10px 0
+  .title
+    background-color: #f8f8f8
+    margin-bottom: 20px
+    padding: 10px 0
+    .form-group
+      margin-bottom: 0
+      position: relative
+    .js-len-control
+      position: absolute
+      right: 5px
+      top: 9px
+    [type="text"]
+      width: 40%
+      padding: 5px
+      display: inline-block
+      margin-right: 10px
+    .fa
+      font-size: 18px
+      margin-right: 15px
+  .panel
+    border-radius: 0
+  .panel-heading
+    position: relative
+    text-align: center
+    height: 41px
+    .name
+      float: left
+  .hint-info
+    color: #a94442
+  .msg
+    color: #a0a0a0
+    padding-top: 15px
+    .fa
+      font-size: 18px
+      padding-right: 5px
+  .panel-body
+    text-align: center
+    padding-top: 35px
+    padding-bottom: 20px
+  .radio-inline
+    margin-left: 0
+    padding-left: 0
+  [type="radio"]
+    display: none
+    + .fa
+      //border: 4px solid #dadada
+      background-color: #dadada
+      color: #fff
+      width: 100px
+      height: 100px
+      text-align: center
+      line-height: 100px
+      transition: all .5s ease
+  [type="radio"]:checked
+    + .fa
+      color: #fff
+      background-color: #16a0c6
+
+.form-pagination
+  ul
+    list-style: none
+    > li
+      float: left
+      > a
+        padding: 7px 10px
+        background-color: #dadada
+        color: #fff
+        position: relative
+      > a.active
+        background-color: #16a0c6
+      > a:focus
+        text-decoration: none
+    > li:not(:last-child)
+      > a
+        margin-right: 30px
+      > a::after
+        position: absolute
+        left: 100%
+        top: 50%
+        content: ''
+        width: 30px
+        height: 0
+        border: 1px dotted #dadada
+.checkbox-default.checkall
+  position: absolute
+  right: 10px
+  top: 8px
+  [type="checkbox"]
+    display: inline
+    margin-top: 7px
+  [type="checkbox"] + span
+    width: 50px
+    height: 25px
+    line-height: 25px
+    font-size: 13px
+
+// text input length hint
+.js-len-control
+  margin-bottom: 0
+  text-align: right
+  font-size: 13px
+  .js-len-count
+    color: #16a0c6
+    margin: 0 2px
+  .js-len-count.warn
+    color: #a94442
+
+// user slider
+#slider-user
+  .noUi-horizontal
+  .noUi-handle
+    background-color: #16a0c6
+    border-color: #16a0c6
+#slider-age,
+#slider-income
+  .noUi-handle
+    position: relative
+    .slider-value
+      position: absolute
+      left: 0
+      bottom: 100%
+      width: 60px
+      height: 30px
+      line-height: 30px
+      margin-left: -25px
+      margin-bottom: 15px
+      background-color: #f8f8f8
+      color: #a0a0a0
+
+// step switch
+.step-switch
+  text-align: center
+  .btn
+    width: 120px
+    height: 34px
+  .btn + .btn
+    margin-left: 20px
+
+// task
+.add-task
+  width: 100%
+// sortable
+.sortable
+  list-style: none
+  padding: 0
+  > li
+    position: relative
+    .handle
+      position: absolute
+      left: 0
+      top: 0
+    .drag-handle,
+    .delete-handle
+      height: 46px
+      color: #fff
+      background-color: #a0a0a0
+      margin-bottom: 1px
+      padding: 0 7px
+    .drag-handle
+      cursor: move
+    .drag-handle:hover,
+    .delete-handle:hover
+      background-color: #16a0c6
+    .fa
+      line-height: 46px
+      font-size: 1.5em
+  > .sortable-dragging
+    .drag-handle
+      background-color: #16a0c6
+  textarea
+    padding-left: 35px
+
+// qrcode preview
+.qrcode-preview
+  display: none
+  width: 100px
+  height: 100px
+  margin: 10px
+  transition: all .5s ease
+.qrcode-preview[src]
+  display: inline
+
+
+// task length limit hint
+.task-limit
+  margin-top: 15px
+  color: #a94442
+  transition: all 1s ease

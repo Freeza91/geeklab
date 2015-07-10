@@ -19,11 +19,11 @@
     height: 38px
   .login
     position: absolute
-    top: 9px 
+    top: 9px
     right: 20px
     min-width: 78px
-  .login:hover
-    opacity: .8
+  //.login:hover
+    //opacity: .8
 
 .header.scroll-down
   //background-color: rgba(255, 255, 255, .5)
@@ -59,15 +59,21 @@
       font-size: 14px
       > .fa
         margin-right: 8px
+      .icon-inner.hover
+        display: none
     > li > a:hover
       background-color: #16a0c6
       color: #fff
+      .icon-inner
+        display: none 
+      .icon-inner.hover
+        display: inherit
   .score
     > .fa
       margin: 0 8px
   .tester-mark
     padding: 4px 8px
-    border: 1px solid #a0a0a0
+    border: 1px solid #eee
     color: #a0a0a0
     > .fa
       margin-right: 3px

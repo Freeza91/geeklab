@@ -12,7 +12,7 @@ $(function () {
     //播放视频
     //任务倒计时
     // 瀑布流加载
-    
+
   // 保存testId
   var testerId = $('.assignments-list').data('testerId');
   var assignmentId = 0; // 当前执行操作的任务id
@@ -72,7 +72,7 @@ $(function () {
     $('#video').click();
   });
 
-  // 取消上传 
+  // 取消上传
   $('.assignments-wrp').on('click', '.upload-cancel', function () {
     uploadAjax.abort();
     $card.find('.operator.uploading').hide();
@@ -178,7 +178,7 @@ $(function () {
     var $this = $(this);
 
     $card = $this.parents('.card');
-    assignmentId = $card.data('assignmentId'); 
+    assignmentId = $card.data('assignmentId');
 
     getAssignmentVideoUrl(testerId, assignmentId, function(video) {
       playVideo(video);
@@ -187,7 +187,7 @@ $(function () {
 
   // 关闭视频播放modal
   $('#video-player [data-dismiss="modal"]').on('click', function () {
-    $curVideo.pause(); 
+    $curVideo.pause();
   });
   // 上传视频
   function uploadVideo(file, token, callback) {
@@ -214,6 +214,13 @@ $(function () {
           case 0:
             $card.find('.operator.uploading').hide();
             $card.find('.operator.upload-failed').fadeIn();
+            // 恢复上传进度圆环
+            $card.find('.progressCircle .inner').css({
+              'transform': 'rotate(0)',
+              '-o-transform': 'rotate(0)',
+              '-moz-transform': 'rotate(0)',
+              '-webkit-transform': 'rotate(0)'
+            });
           break;
           case 1:
             callback(data);
@@ -255,7 +262,7 @@ $(function () {
     })
   }
 
- 
+
   // 显示操作的提示信息
   /* @param options  Object 显示的提示信息
    * options.title  String 标题
@@ -294,7 +301,7 @@ $(function () {
       case 'deleteAssignment':
         // 删除任务
         deleteAssigment (testerId, assignmentId, function () {
-          // 删除任务后的回调， 将当前卡片重页面上移除  
+          // 删除任务后的回调， 将当前卡片重页面上移除
           $card.remove();
         });
       break;
@@ -328,7 +335,7 @@ $(function () {
 
   // 播放视频
   function playVideo (video) {
-    var $modal = $('#video-player'); 
+    var $modal = $('#video-player');
     // 移除现有的video
     $modal.find('video').remove();
     // 创建新的video
@@ -360,7 +367,7 @@ $(function () {
       .error(function (errors, status) {
         console.log(errors);
       });
-    } 
+    }
   }
 
   // 删除视频
@@ -396,20 +403,48 @@ $(function () {
   }
 
   function showAssignmentDetail (assignmentDetail) {
+    var deviceMap = {
+      'phone': 'Phone',
+      'ios': 'Pad'
+    };
     var $modal = $('#assignment-detail');
     // 填信息
     $modal.find('.title .name').text(assignmentDetail.name);
-    $modal.find('.qrcode img').attr('src', assignmentDetail.qr_code)
 
     var $detailTable = $modal.find('table');
+    //var device = assignmentDetail.device[0].toUpperCase() + assignmentDetail.device.substr(1);
+    var device = deviceMap[assignmentDetail.device];
+    if(assignmentDetail.device === '0') {
+      // 新手任务
+      $detailTable.removeClass('web').addClass('app');
+      $detailTable.find('[name="device"]').text('任意设备');
+      $detailTable.find('[name="requirement"]').text('无限制');
+    }
+    if (assignmentDetail.device === 'web') {
+      $detailTable.removeClass('app').addClass('web');
+      $detailTable.find('[name="website"]').text(assignmentDetail.platform);
+      $modal.find('.qrcode').hide();
+    } else {
+      $detailTable.removeClass('web').addClass('app');
+      switch(assignmentDetail.platform) {
+        case 'ios':
+          $detailTable.find('[name="device"]').text('i' + device);
+          $detailTable.find('[name="requirement"]').text('iOS ' + assignmentDetail.requirement + '及以上');
+        break;
+        case 'android':
+          $detailTable.find('[name="device"]').text('Android ' + device);
+          $detailTable.find('[name="requirement"]').text('Android ' + assignmentDetail.requirement + '及以上');
+        break;
+      }
+      assignmentDetail.qr_code && $modal.find('.qrcode').show().find('img').attr('src', assignmentDetail.qr_code);
+    }
+
     $detailTable.find('[name="profile"]').text(assignmentDetail.profile);
-    $detailTable.find('[name="device"]').text(assignmentDetail.device);
-    $detailTable.find('[name="requirement"]').text(assignmentDetail.requirement);
     $detailTable.find('[name="situation"]').text(assignmentDetail.desc);
 
     var taskHtml = '';
     assignmentDetail.tasks.forEach(function (task, index) {
-      taskHtml += '<li><i class="fa fa-check-circle"></i><span>' + task.content + '</span></li>'  
+      taskHtml += '<li><i class="fa fa-check-circle"></i><span>' + task.content + '</span></li>'
     });
     $detailTable.find('ul').html(taskHtml);
     $('#assignment-detail').modal();
@@ -426,6 +461,7 @@ $(function () {
   // 每次新加载时候清理之前所有的倒计时，重新初始化
   // 处理方式太暴力了，以后优化
   function assignmentTimeCountDownInit () {
+    var max_times = 1000 * 60 * 60 * 24 * 100;
     $('.time').each(function (index, item) {
       //countDownInterval[index] = setInterval(assignmentTimeCountDown(deadline, $ele));
       var $ele = $(item),
@@ -434,7 +470,6 @@ $(function () {
 
       assignmentDeadline[index] = new Date(deadline);
       var times = assignmentDeadline[index] - now;
-      var max_times = 60 * 60 * 24 * 100;
 
       if(times <= 0 || times > max_times) {
         return false;
@@ -457,11 +492,28 @@ $(function () {
   }
 
   function assignmentTimeCountDown(count, $ele) {
-    var days = ~~ (count / (24 * 60 * 60 * 1000)), //天
-        hours = ~~ ((count / (60 * 60 * 1000)) % 24), //小时
-        minutes = ~~ ((count / (60 * 1000)) % 60), //分钟
-        seconds = ~~ ((count / 1000) % 60); //秒
-    $ele.text(days + '天' + hours + ':' + minutes + ':' + seconds);
+    var timeArr = [];
+    if(count > 24 * 60 * 60 * 1000) {
+      var days = ~~ (count / (24 * 60 * 60 * 1000));
+      days = days < 10 ? '0' + days : days;
+      timeArr.push(days + '天');
+    }
+    if(count > 60 * 60 * 1000) {
+      var hours = ~~ ((count / (60 * 60 * 1000)) % 24);
+      hours = hours < 10 ? '0' + hours : hours;
+      timeArr.push(hours + '小时');
+    }
+    if(count > 60 * 1000) {
+      var minutes = ~~ ((count / (60 * 1000)) % 60);
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      timeArr.push(~~ ((count / (60 * 1000)) % 60) + '分');
+    }
+    if(count > 1000) {
+      var seconds = ~~ ((count / (60 * 1000)) % 60);
+      seconds = seconds < 10 ? '0' + seconds : seconds
+      timeArr.push(seconds + '秒');
+    }
+    $ele.text(timeArr.join(''));
   }
 
   // 倒计时初始化
@@ -492,7 +544,7 @@ $(function () {
   }
 
   function appendAssignments (assignments) {
-    var $assignmentsWrp = $('.assignments-wrp'); 
+    var $assignmentsWrp = $('.assignments-wrp');
     // 复制一个card作为模板
     var $assignmentCard = $('.card:last').clone();
     var cards = [];
@@ -515,7 +567,7 @@ $(function () {
     })
     assignmentTimeCountDownInit();
   }
-  
+
   // 自定义xhr对象获取上传进度
   function customeXhr () {
     var xhr = $.ajaxSettings.xhr();
@@ -586,12 +638,12 @@ $(function () {
       case 'delete':
         $card.find('.operator.wait-upload').fadeIn();
       break;
-    } 
+    }
   }
 
   // 播放视频按钮的hover事件
   //$('.assignments').on('mouseenter', '.video-play', function () {
-    //$card = $(this).parents('.card');  
+    //$card = $(this).parents('.card');
     ////$(this).css('z-index', 5);
     //$card.find('.inner-mask').show();
   //});
@@ -618,10 +670,10 @@ $(function () {
   caculateCommentPosition();
 
   // 显示comment, 当鼠标移到状态栏图标上时
-  $('.assignments-wrp').on('mouseenter', '.status .fa', function (){
+  $('.assignments-wrp').on('mouseenter', '.status p', function (){
     $(this).parents('.status').find('.comment').fadeIn();
   });
-  $('.assignments-wrp').on('mouseout', '.status .fa', function (){
+  $('.assignments-wrp').on('mouseout', '.status p', function (){
     $(this).parents('.status').find('.comment').fadeOut();
   });
 
@@ -651,18 +703,24 @@ $(function () {
   }
 
   if($('body').hasClass('assignments_join')) {
-    initOperators(); 
- 
+    initOperators();
+
     // 二级导航
     $('.assignments-subnav a').on('click', function () {
       var $this = $(this);
-      var target = $this.data('target');
+      var target = $this.data('target'),
+          hash = $this.data('hash');
       $this.parents('ul').find('.active').removeClass('active');
       $this.addClass('active');
       $('.assignments-wrp.active').removeClass('active').hide();
       $(target).fadeIn().addClass('active');
+      location.hash = hash;
     });
 
+    var hash = location.hash.substr(1);
+    if(hash === 'done') {
+      $('[data-hash="done"]').click();
+    }
   }
 
 });

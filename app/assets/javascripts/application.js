@@ -16,9 +16,17 @@
 
 // 引入 cityselect
 //= require jquery.cityselect
-
 // 引入 dateselect
 //= require jquery.dateselect
+
+// import vue
+//= require vue
+
+// 引入noUiSlider, a range slider plugin
+//= require jquery.nouislider
+
+// html5sortable
+//= require jquery.sortable
 
 // 引入 表单验证
 //= require form.valid
@@ -26,4 +34,11 @@
 // 引入bootstrap插件
 //= require bootstrap.min
 
-//= require_tree .
+
+//= require_tree ./assignments
+//= require_tree ./pages
+//= require_tree ./projects
+//= require_tree ./share
+//= require_tree ./testers
+//= require_tree ./users
+//= require_self

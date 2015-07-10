@@ -1,0 +1,4 @@
+- @goods.each do |good|
+  div
+    = good.name
+    = link_to '查看详情', stores_good_path(good)

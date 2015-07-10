@@ -5,7 +5,8 @@ $(function () {
   // birth select init
   var birth = $('#birth').data('birth');
   $('#birth').dateSelect({
-    required: false
+    startYear: 1980,
+    required: true
   });
 
   // rails 中要怎么引用其他的js文件。
@@ -15,13 +16,13 @@ $(function () {
     //url: '/assets/cityselect_data.min',
     url: cityData,
     nodata: 'none',
-    required: false
+    required: true
   });
   $('#livingplace').citySelect({
     //url: '/assets/cityselect_data.min',
     url: cityData,
     nodata: 'none',
-    required: false
+    required: true
   });
 
   // profession select init
@@ -126,7 +127,7 @@ $(function () {
     // 不知道为什么不能从 professionselect_data.js中获取数据
     url: profession,
     nodata: 'none',
-    required: false
+    required: true
   });
 
   // 感情状况， 性取向, 教育程度， 收入 init
@@ -162,38 +163,20 @@ $(function () {
       {'p': '博士'}
     ]
   };
-  var incomeData = {
-    'citylist': [
-      {'p': '2万以下'},
-      {'p': '2-5万'},
-      {'p': '5-8万'},
-      {'p': '8-10万'},
-      {'p': '10-15万'},
-      {'p': '15-30万'},
-      {'p': '30-50万'},
-      {'p': '50-100万'},
-      {'p': '100万以上'},
-    ]
-  };
   $('#emotion').citySelect({
     url: emotionData,
     nodata: 'none',
-    required: false
+    required: true
   });
   $('#sex_orientation').citySelect({
     url: sexOrientationData,
     nodata: 'none',
-    required: false
+    required: true
   });
   $('#education').citySelect({
     url: educationData,
     nodata: 'none',
-    required: false
-  });
-  $('#income').citySelect({
-    url: incomeData,
-    nodata: 'none',
-    required: false
+    required: true
   });
   $('.info-form .submit').on('click', function (event) {
     event.preventDefault();
@@ -220,7 +203,9 @@ $(function () {
           if($item.hasClass('required')) {
             $el = $item.find('input');
             infoName = $item.find('input').data('infoName');
-            valided = textValid($el, infoName);
+            if(!textValid($el, infoName)) {
+              valided = false;
+            }
           }
         break;
         case 'radio':
@@ -275,9 +260,7 @@ $(function () {
     })
     .done(function (data, status, xhr) {
       if(data.status === 0 && data.code === 1) {
-        var $modal = $('#info-modal');
-        $modal.find('.title').text('个人信息已保存');
-        $modal.find('.content').text('新手任务已发送至你的邮箱，完成任务即可成为体验师');
+        var $modal = $('#form-finish');
         $modal.on('hide.bs.modal', function () {
           location.href = '/testers';
         });
@@ -333,4 +316,12 @@ $(function () {
     })
   }
   verticalMiddleTitle();
+
+  function showHint () {
+      var $modal = $('#info-modal');
+      $modal.find('.title').text('成为体验师，需要先完成个人信息。');
+      //$modal.find('.content').text('成为体验师，需要先完成个人信息。');
+      $modal.modal();
+  }
+  showHint();
 });

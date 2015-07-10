@@ -8,7 +8,11 @@ class Users::SessionsController < ApplicationController
 
   def auth
     json = { status: 0, code: 1, msg: '', url: '' }
-    email = params[:email]
+    if limit_ip?("auth")
+      json[:code], json[:url] = -1, root_path
+      return render json: json
+    end
+    email = params[:email].to_s.downcase
     @user = User.find_by(email: email)
     if @user && @user.valid_password?(params[:encrypted_password])
       session[:id] = @user.id
@@ -53,6 +57,8 @@ private
       testers_url
     elsif refer_url.include? "pms"
       pms_url
+    elsif refer_url.include? 'stores'
+      stores_root_path
     else
       root_url
     end

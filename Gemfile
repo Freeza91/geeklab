@@ -11,15 +11,20 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'therubyracer'
 
+gem "nested_form"
+gem 'simditor-rails'
+
 gem 'settingslogic'
 gem 'slim-rails'
 gem 'bcrypt'
 gem 'kaminari'
+gem 'hashids'
 
 gem 'rest-client'
 gem 'qiniu'
 gem 'carrierwave'
 gem 'carrierwave-qiniu'
+gem 'mini_magick'
 
 gem 'sendgrid'
 gem 'redis'
@@ -34,6 +39,9 @@ gem 'font-awesome-rails'
 gem 'newrelic_rpm'
 
 gem 'rails_admin', :git => 'git://github.com/sferik/rails_admin.git'
+
+# vue.js
+gem 'vuejs-rails'
 
 group :development, :test do
   gem 'byebug'
@@ -51,6 +59,10 @@ group :development, :test do
   gem 'quiet_assets'
 
   gem 'guard-livereload', '~> 2.4', require: false
+
+  # db infor
+  gem 'rails_db_info'
+  gem 'rails-erd'
 end
 
 group :production do

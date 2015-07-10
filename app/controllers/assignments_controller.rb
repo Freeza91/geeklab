@@ -5,10 +5,10 @@ class AssignmentsController < ApplicationController
     tester = current_user.to_tester
     assignments = tester.assignments
     if tester.approved
-      @assignments = assignments.new_tasks.page(params[:page]).per(10)
+      @assignments = assignments.new_tasks.order("id desc").page(params[:page]).per(10)
       @num = assignments.not_view_num(tester.last_view_time)
     else
-      @assignments = assignments.test_task.page(params[:page]).per(10)
+      @assignments = assignments.test_task.order("id desc").page(params[:page]).per(10)
       @num = nil
     end
 
@@ -52,11 +52,11 @@ class AssignmentsController < ApplicationController
   def miss
     tester = current_user.to_tester
     assignments = tester.assignments
-    @assignments =  assignments.missing.page(params[:page]).per(10)
+    @assignments =  assignments.missing.order("id desc").page(params[:page]).per(10)
 
     respond_to do |format|
       format.html do
-        tester.update_attribute(:last_view_time, Time.now)
+        tester.update_column(:last_view_time, Time.now)
       end
       format.json do
         json = {status: 0, code: 1, assignments: [] }
@@ -70,22 +70,22 @@ class AssignmentsController < ApplicationController
   end
 
   def not_interest
-    current_user.update_attribute(:last_view_time, Time.now)
+    current_user.update_column(:last_view_time, Time.now)
     render json: { status: 0, code: 1 }
   end
 
   def join
     tester = current_user.to_tester
     assignments = tester.assignments
-    tester.update_attribute(:last_view_time, Time.now)
-    @assignments_ing =  assignments.take_part_ing.page(params[:page]).per(10)
+    tester.update_column(:last_view_time, Time.now)
+    @assignments_ing =  assignments.take_part_ing.order("id desc").page(params[:page]).per(10)
     @assignments_done = Kaminari.paginate_array(assignments.take_part_done).page(params[:page]).per(10)
   end
 
   def ing
     tester = current_user.to_tester
     assignments = tester.assignments
-    assignments_ing =  assignments.take_part_ing.page(params[:page]).per(10)
+    assignments_ing =  assignments.take_part_ing.order("id desc").page(params[:page]).per(10)
     json = {status: 0, code: 1, assignments_ing: [] }
     assignments_ing.each do |a|
       json[:assignments_ing] << a.to_json_with_project
@@ -97,7 +97,7 @@ class AssignmentsController < ApplicationController
   def done
     tester = current_user.to_tester
     assignments = tester.assignments
-    assignments_done = Kaminari.paginate_array(assignments.take_part_done).page(params[:page]).per(10)
+    assignments_done = Kaminari.paginate_array(assignments.take_part_done.order("id desc")).page(params[:page]).per(10)
     json = {status: 0, code: 1, assignments_done: [] }
     assignments_done.each do |a|
       json[:assignments_done] << a.to_json_with_project
@@ -113,7 +113,8 @@ class AssignmentsController < ApplicationController
       return render json: json
     end
 
-    unless assignment && delete_video_at_qiniu(assignment, {}) && assignment.destroy
+    # unless assignment && delete_video_at_qiniu(assignment, {}) && assignment.destroy
+    unless assignment && assignment.update_attribute(:status, 'never_show')
       json[:code], json[:msg] = 0, '没有权限删除这个任务或者此任务已经不存在'
     end
 

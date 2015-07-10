@@ -2,7 +2,7 @@ class Users::MailersController < ApplicationController
 
   def send_confirmation
     json = { status: 0, code: 1, email: '' }
-    email = params[:email]
+    email = params[:email].to_s.downcase
     code = generate_code
     $redis.set(email, code)
     $redis.expire(email, 1800) # set 30 mintues
@@ -14,18 +14,22 @@ class Users::MailersController < ApplicationController
   def send_reset_password
     json = {msg: '', code: 1, status: 0 }
 
-    email = params[:email]
+    email = params[:email].to_s.downcase
     user = User.find_by(email: email) || current_user
     if user
       user.generate_reset_password_token
       user.save(validate: false)
 
       url = if Rails.env.production?
-              'http://50.116.16.150/users/passwords/callback_reset'
+              "#{Settings.domain}/users/passwords/callback_reset"
             else Rails.env.development? || Rails.env.test?
-              'http://localhost:3000/users/passwords/callback_reset'
+              "http://localhost:3000/users/passwords/callback_reset"
             end
       url += "?reset_password_token=#{user.reset_password_token}"
+      if URI.parse(session[:redirect_path]).path.split('/')[1] == 'stores'
+        url += "&redirect_to=stores"
+      end
+      p url
       UserMailer.reset_password(user.id, url).deliver_later
       json[:msg] = email_target email
 

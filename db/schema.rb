@@ -11,19 +11,62 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150603065837) do
+ActiveRecord::Schema.define(version: 20150707073501) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "assignments", force: :cascade do |t|
-    t.integer "project_id"
-    t.integer "tester_id"
-    t.string  "status"
-    t.string  "video"
-    t.boolean "is_transfer", default: false
-    t.boolean "is_sexy",     default: false
-    t.string  "comment",                     array: true
+    t.integer  "project_id"
+    t.integer  "tester_id"
+    t.string   "status"
+    t.string   "video"
+    t.boolean  "is_transfer", default: false
+    t.boolean  "is_sexy",     default: false
+    t.string   "reasons",                     array: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "is_read",     default: false
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.boolean "target_user"
+    t.integer "assignment_id"
+    t.boolean "qualified"
+  end
+
+  create_table "goods", force: :cascade do |t|
+    t.string   "name"
+    t.text     "describle"
+    t.float    "cost"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.string   "status"
+    t.boolean  "is_publish", default: false
+    t.boolean  "is_limit",   default: false
+    t.integer  "stock",      default: 0
+    t.integer  "used_num",   default: 0
+    t.string   "label"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.string   "good_name"
+    t.float    "total_cost"
+    t.integer  "good_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "user_id"
+    t.string   "order_id"
+    t.string   "good_url"
+    t.integer  "sku_id"
+  end
+
+  create_table "pictures", force: :cascade do |t|
+    t.integer  "pictureable_id"
+    t.string   "pictureable_type"
+    t.string   "url"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
   create_table "projects", force: :cascade do |t|
@@ -39,10 +82,23 @@ ActiveRecord::Schema.define(version: 20150603065837) do
     t.string   "phone"
     t.string   "email"
     t.string   "company"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
     t.integer  "credit"
     t.integer  "demand",       default: 1
+    t.integer  "pm_id"
+    t.string   "status",       default: "wait_check"
+    t.string   "reasons",                                          array: true
+  end
+
+  create_table "skus", force: :cascade do |t|
+    t.json     "attr"
+    t.uuid     "uuid"
+    t.integer  "good_id"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.string   "addition"
+    t.integer  "num",        default: 0
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -102,7 +158,8 @@ ActiveRecord::Schema.define(version: 20150603065837) do
     t.datetime "reset_password_sent_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "last_view_time",         default: '2015-05-26 13:43:52'
+    t.datetime "last_view_time",         default: '2015-05-21 11:37:35'
+    t.integer  "credits",                default: 0
   end
 
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", unique: true, using: :btree

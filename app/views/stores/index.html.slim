@@ -1,0 +1,46 @@
+main role='main'
+  section.banner
+    .container.hide#slider-width
+    .container-fluid style="padding-left: 0; padding-right: 0"
+      #slider style="position: relative; top: 0px; left: 0px; width: 1200px;
+          height: 400px; overflow: hidden;"
+        div u="slides" style="cursor: move; position: absolute; left: 0px; top:
+          0px; width: 1200px; height: 400px;
+              overflow: hidden;"
+          div
+            a href=get_assignment_url(current_user) target="_blank"
+              img u="image" src=image_path("stores/banner_1.jpg") alt="..."
+          div
+            a href=get_assignment_url(current_user) target="_blank"
+              img u="image" src=image_path("stores/banner_2.jpg") alt="..."
+          div
+            a href=get_assignment_url(current_user) target="_blank"
+              img u="image" src=image_path("stores/banner_3.jpg") alt="..."
+        span u="arrowleft" class="jssora13l" style="top: 123px; left: 30px;"
+          span.icon-img.icon-outer-34
+            i.icon-inner.icon-arrow-left
+        span u="arrowright" class="jssora13r" style="top: 123px; right: 30px;"
+          span.icon-img.icon-outer-34
+            i.icon-inner.icon-arrow-right
+  section.content
+    .container
+      .goods.clearfix
+        - if @goods
+          - @goods.each_with_index do |good, index| 
+            .col-md-6
+              .item class=get_name_class(index)
+                .name
+                  span
+                    = good.name 
+                .img-g.img style="background-image: url(#{good.pictures[1].url.url})"
+                .img-s.img style="background-image: url(#{good.pictures[2].url.url})"
+                a.btn.btn-base.btn-s.btn-rounded href=stores_good_path(good.id)
+                  span 
+                    span.icon-img.icon-outer-18
+                      i.icon-inner.icon-score
+                    = good.cost.to_i
+                  span 立即抢兑
+      p.bottom-hint
+        span.icon-img.icon-outer-18
+          i.icon-inner.icon-clock
+        | 更多兑换礼品，敬请期待

@@ -1,0 +1,73 @@
+main role="main"
+  section
+    .container
+      .row
+        - if @good
+          .good-summary.clearfix
+            .col-md-6.col-sm-6
+              .good-gallery
+                .main-pic
+                  img src=@good.pictures.first.url.url
+                /.gallery-thumb
+                  /ul.list-unstyled.list-inline
+                    /li.good-selected
+                      /img src=image_path("logo/logo.png") data-src=image_path("banner/banner_index.png")
+                    /li
+                      /img src=image_path("logo/logo.png") data-src=image_path("banner/banner_index.png")
+            .col-md-6.col-sm-6
+              .good-info
+                .good-title
+                  h3.good-main-title
+                    = @good.name
+                .good-meta.clearfix
+                  .cost
+                    span.color-gray 所需积分
+                    span.icon-img.icon-outer-18 style="margin: 0 10px -4px 20px"
+                      i.icon-inner.icon-score
+                    span
+                      = @good.cost.to_i
+                  - if @good.status == 'on_sell'
+                    .sell-counter
+                      - if !@good.available || @good.stock == 0
+                        span
+                          | 无货
+                      - else
+                        - if @good.stock > 200
+                          span
+                            | 有货
+                        - else
+                            span
+                              | 仅剩
+                            span.color-gray style="padding: 0 3px"
+                              = @good.stock
+                            span
+                              | 个
+                        /= @good.used_num
+                        /| 人
+                      /span.color-gray 兑换成功
+                .good-intro
+                  p
+                    = @good.describle
+                  p.color-gray
+                    | (最终解释权归 北京中明万长咨询管理有限公司 所有)
+            .good-action
+              - if !current_user
+                button.btn.btn-base-reverse.btn-rounded.btn-m data-toggle="modal" data-target="#login-hint"
+                  | 立即兑换
+              - else
+                button.btn.btn-base-reverse.btn-rounded.btn-m class=can_exchange(@good.available, @good.status)  data-price=@good.cost data-score=current_user.to_tester.credits data-id=@good.id
+                  = get_good_status(@good.available, @good.status) 
+        - else
+          p.bottom-hint
+            span.icon.icon-outer-18
+              i.icon-inner.icon-flag
+            | 商品不存在 
+- if !current_user
+  <!-- 未登录提示 -->
+  = render "stores/modals/login_hint"
+- if @good
+  <!-- 积分不足提示 -->
+  = render "stores/modals/score_hint"
+  <!-- 兑换成功 -->
+  = render "stores/modals/exchange_success"
+

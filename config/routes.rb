@@ -36,6 +36,21 @@ Rails.application.routes.draw do
   end
 
   resources :pms
+  resources :projects do
+    collection do
+      get 'web/new', to: 'projects#web'
+      get 'app/new', to: 'projects#app'
+      get 'video', to: 'projects#video'
+    end
+
+    member do
+      get 'video/:assignments_id', to: 'projects#video'
+    end
+
+    resources :assignments, only: :show do
+      resources :comments, only: :create
+    end
+  end
 
   resources :testers do
     resources :assignments do
@@ -55,7 +70,22 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :stores
+  namespace :stores do
+    root to: "base#index"
+
+    resources :goods do
+      collection do
+        post 'new',  to: 'goods#save_picture'
+      end
+      member do
+        post 'edit', to: 'goods#save_picture'
+      end
+
+      resources :skus
+    end
+    resources :orders
+    resources :pictures, only: :create
+  end
 
   require 'sidekiq/web'
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|

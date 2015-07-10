@@ -13,10 +13,10 @@ main role="main"
       nav.assignments-subnav
         ul
           li
-            a.active href="javascript: void(0)" data-target="#assignments-ing"
+            a.active href="javascript: void(0)" data-target="#assignments-ing" data-hash="ing"
               | 进行中
           li
-            a href="javascript: void(0)" data-target="#assignments-done"
+            a href="javascript: void(0)" data-target="#assignments-done" data-hash="done"
               | 已完成
       .assignments-wrp.clear-fix.active#assignments-ing
         -  @assignments_ing.each do |assignment|
@@ -46,11 +46,11 @@ main role="main"
                     = get_status_info(assignment.status)
                     - if assignment.status == "not_accept"
                       i.fa.fa-exclamation-circle
-                  - if assignment.status == "not_accept" && assignment.comment.size > 0
+                  - if assignment.status == "not_accept" && assignment.reasons.size > 0
                     ol.comment
-                      - assignment.comment.each do |comment|
+                      - assignment.reasons.each do |reason|
                         li
-                          = comment
+                          = reason
               footer
                 .timer
                    - if Time.now + 50.years > assignment.project.expired_at
@@ -59,7 +59,8 @@ main role="main"
                       span.time data-deadline="#{assignment.project.expired_at}"
                         | 00:00:00
                 .score
-                  i.fa.fa-diamond
+                  span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"
+                    i.icon-inner.icon-score
                   span.number
                     = assignment.project.credit
       .assignments-wrp.clear-fix#assignments-done
@@ -89,11 +90,11 @@ main role="main"
                     - else
                       | 任务已过期
                       i.fa.fa-exclamation-circle
-                  - if assignment.status != "success" && assignment.comment.size > 0
+                  - if assignment.status != "success" && assignment.reasons.size > 0
                     ol.comment
-                      - assignment.comment.each do |comment|
+                      - assignment.reasons.each do |reason|
                         li
-                          = comment
+                          = reason
               footer
                 .timer
                    - if Time.now + 50.years > assignment.project.expired_at
@@ -102,9 +103,10 @@ main role="main"
                       span.time data-deadline="#{assignment.project.expired_at}"
                         | 00:00:00
                 .score
-                  i.fa.fa-diamond
+                  span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"
+                    i.icon-inner.icon-score
                   span.number
-                    | 10
+                    = assignment.project.credit  
       .load-more
         - if @assignments_ing.try(:size) < 10
           p

@@ -1,0 +1,199 @@
+.projects_show,
+.projects_video,
+.projects_index
+  background-color: #eee
+
+.projects_video,
+.projects_show
+  .title
+    font-size: 16px
+    line-height: 25px
+    .fa
+      margin-right: 5px
+      vertical-align: top
+      font-size: 1.5em
+.table-1
+  border: 3px solid #dadada
+
+// 任务详情页视频视频列表
+.video-list
+  > ul
+    list-style: none
+    margin: 0
+    padding: 0
+    > li
+      position: relative
+      box-shadow: 0 0 5px #aaa
+      .fa-play-circle
+        position: absolute
+        top: 50%
+        left: 50%
+        margin-top: -28px
+        margin-left: -24px
+        cursor: pointer
+      img
+        width: 100%
+        height: 150px
+    > li.available
+      .fa:hover
+        color: #fff
+    > li + li
+      margin-top: 15px
+
+.evaluate
+  background-color: #fff
+  padding: 5% 10%
+  text-align: center
+  min-height: 120px
+  .radio-inline
+    margin-left: 0
+    padding-left: 0
+  [type="radio"]
+    display: none
+    + span
+      border: 3px solid #dadada
+      display: inline-block
+      background-color: #dadada
+      color: #fff
+      width: 120px
+      height: 120px
+      text-align: center
+      line-height: 120px
+      transition: all .5s ease
+  [type="radio"]:checked
+    + span
+      color: #fff
+      background-color: #16a0c6
+  .btn
+    width: 120px
+    margin-top: 30px
+
+.projects-list
+  .videos
+    ul
+      height: 240px
+      margin: 0
+      padding: 0
+      list-style: none
+      > li
+        position: relative
+        background-color: #eee
+        background-clip: content-box
+        height: 120px
+        padding: 10px
+        img
+          width: 100%
+          height: 100%
+        a
+          position: absolute
+          top: 50%
+          left: 50%
+          margin-top: -28px
+          margin-left: -24px
+          color: #a0a0a0
+        a.available:hover
+          color: #fff
+  .card
+    header
+      background-color: #f9f9f9
+    .title
+      position: relative
+      margin: 0
+      a
+        color: #313131
+      a:hover
+        color: #16a0c6
+    .content
+      position: relative
+      background-color: #fff
+      height: 240px
+    .comment
+      display: none
+      position: absolute
+      width: 200px
+      background-color: #fff
+      z-index: 10
+      box-shadow: 0 0 5px #ccc
+      font-size: 15px
+      > li
+        padding: 7px
+    .comment::before
+      position: absolute
+      top: 50%
+      right: 100%
+      margin-top: -10px
+      content: ''
+      display: block
+      width: 0
+      height: 0
+      border-top: 10px solid transparent
+      border-right: 10px solid #fff
+      border-bottom: 10px solid transparent
+
+  .progress-num
+    position: absolute
+    right: 75px
+    bottom: 55px
+    .done
+    .total
+      color: #a0a0a0
+  .status
+    font-size: 17px
+    position: absolute
+    right: 55px
+    top: 2px
+
+  // 不同状态的提示
+  .status.status_wait_check
+    color: rgba(23, 160, 198, 1)
+  .status.status_checking
+    color: rgba(255, 241, 0, 1)
+  .status_not_accept
+    color: rgba(235, 97, 0, 1)
+  .status.status_failed
+    color: rgba(160, 160, 160, 1)
+  .status.status_success,
+  .status.status_underway,
+  .status.status_finish
+    color: rgba(50, 177, 108, 1)
+
+// 添加project
+.add-project
+  position: fixed
+  top: 140px
+  left: 20px
+  width: 70px
+  height: 70px
+  padding: 7px
+  border-radius: 50%
+  background-color: #fff
+  border: 2px solid #16a0c6
+  box-shadow: 0 0 10px rgba(22, 160, 198, .8)
+  text-align: center
+  line-height: 25px
+  cursor: pointer
+  z-index: 10
+  p
+    margin-bottom: 0
+
+// 是否看过的标记
+.read-mark
+  position: absolute
+  background-image: image_url('icon/new_38.png')
+  top: 10px
+  right: 10px
+  width: 38px
+  height: 38px
+.count-down
+  position: absolute
+  right: 10px
+  bottom: 20px
+  color: #a0a0a0
+  > span
+    font-size: 15px
+    color: #16a0c6
+    margin-left: 7px
+  > .fa-clock-o
+    font-size: 23px
+    vertical-align: bottom
+    margin-right: 5px

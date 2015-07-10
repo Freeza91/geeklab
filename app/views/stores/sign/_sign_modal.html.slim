@@ -1,0 +1,56 @@
+.modal.fade.sign-modal#sign role='dialog' data-backdrop='static'
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close type='button' data-dismiss='modal' aria-label='Close'
+          span aria-hidden='true'
+            | &times
+        .logo
+          img src=image_path("logo/logo_store.png")
+        .triangle.left
+      .modal-body
+        ul.list-unstyled.list-inline.sign-nav
+          li.active
+            a href="#login" aria-controls="login" role="tab" data-toggle="tab"
+              | 登录
+          li
+            a href="#regist" aria-controls="regist" role="tab" data-toggle="tab"
+              | 注册
+        .tab-content
+          .tab-pane.active#login role="tabpanel"
+            form.form
+              .form-field v-class="error ? 'error': ''"
+                input.form-input type="text" name="email" placeholder="邮箱" v-model="email"
+              .form-field v-class="error ? 'error': ''"
+                input.form-input type="password" name="password" placeholder="密码" v-model="password"
+              .form-field
+                label.checkbox-inline
+                  input type="checkbox" v-model="rememberMe"
+                  | 30天免登陆
+                a.pull-right href="/users/passwords/reset" targe="_blank"
+                  | 忘记密码?
+              .form-field.submit
+                p.form-hint.error v-show="error"
+                  | 邮箱或密码输入错误, 请重新输入
+                input.btn.btn-base-reverse.btn-m.btn-rounded type="submit" value="登录" v-on="click: submit(this, $event)"
+          .tab-pane#regist role="tabpanel"
+            form.form
+              .form-field v-class="error.email ? 'error': ''"
+                input.form-input type="text" name="email" placeholder="邮箱" v-model="email"
+              .form-field v-class="error.code ? 'error': ''"
+                input.form-input.with-addon type="text" name="code" placeholder="验证码" v-model="code"
+                p.form-input-addon v-on="click: sendCode(this)" v-class="canSendCode ? '': 'disable'"
+                  span.color-yellow v-text="countDown" v-show="countDown !== 60"
+                  span v-show="countDown !== 60"
+                    | 秒后重新发送
+                  span v-show="countDown === 60"
+                    | 发送验证码
+                a.color-yellow href="{{mailbox}}" target="_blank" v-show="!!mailbox"
+                  | 进入邮箱
+              .form-field v-class="error.password ? 'warn': ''"
+                input.form-input type="password" name="password" placeholder="密码" v-model="password"
+                p.form-hint
+                  | 6-16个字符，可包括数字、字母、下划线
+              .form-field.submit
+                p.form-hint.error v-show="error.regist" v-text="hint"
+                input.btn.btn-base-reverse.btn-m.btn-rounded type="submit" value="注册" v-on="click: submit(this, $event)"

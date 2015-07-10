@@ -403,12 +403,17 @@ $(function () {
   }
 
   function showAssignmentDetail (assignmentDetail) {
+    var deviceMap = {
+      'phone': 'Phone',
+      'tablet': 'Pad'
+    };
     var $modal = $('#assignment-detail');
     // 填信息
     $modal.find('.title .name').text(assignmentDetail.name);
 
     var $detailTable = $modal.find('table');
-    var device = assignmentDetail.device[0].toUpperCase() + assignmentDetail.device.substr(1);
+    //var device = assignmentDetail.device[0].toUpperCase() + assignmentDetail.device.substr(1);
+    var device = deviceMap[assignmentDetail.device];
     if(assignmentDetail.device === '0') {
       // 新手任务
       $detailTable.removeClass('web').addClass('app');
@@ -427,7 +432,7 @@ $(function () {
           $detailTable.find('[name="requirement"]').text('iOS ' + assignmentDetail.requirement + '及以上');
         break;
         case 'android':
-          $detailTable.find('[name="device"]').text('Android' + device);
+          $detailTable.find('[name="device"]').text('Android ' + device);
           $detailTable.find('[name="requirement"]').text('Android ' + assignmentDetail.requirement + '及以上');
         break;
       }

@@ -15,8 +15,9 @@ main role="main"
                 p.describle
                   = assignment.project.profile
               .content
-                .icon-wrp
-                  i.fa.fa-file-video-o.fa-4x
+                .operator.wait_upload
+                  .icon-wrp style="margin-top: 70px"
+                    i.fa.fa-file-video-o.fa-4x
                 .status class=("status_" + "#{assignment.status}")
                   p
                     = get_status_info(assignment.status)

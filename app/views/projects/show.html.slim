@@ -5,7 +5,7 @@ main role="main"
         p.title
           - if @project.device == "web"
           - else
-            i.fa.fa-mobile.fa-2x
+            i.fa.fa-mobile
           = @project.name
           - if @project.status == "wait_check" || @project.status == "not_accept"
             a.place-right href=("/projects/" + "#{@project.id}" + "/edit")
@@ -34,6 +34,7 @@ main role="main"
                   | 系统要求
                 td
                   = parse_platform(@project.platform)
+                  | &nbsp
                   = @project.requirement
                   | 及以上
             tr
@@ -140,8 +141,8 @@ main role="main"
                     a href=("/projects/" + "#{@project.id}" + "/video/" + "#{assignment.id}")
                       img src=("#{assignment.video}" + "?vframe/png/offset/0/w/480/h/200")
                     i.fa.fa-play-circle.fa-4x
-              - else
-                li
-                  a href="javascript: void(0)"
-                    img
-                  i.fa.fa-play-circle.fa-4x
+              /- else
+                /li
+                  /a href="javascript: void(0)"
+                    /img
+                  /i.fa.fa-play-circle.fa-4x

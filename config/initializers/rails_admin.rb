@@ -66,6 +66,7 @@ RailsAdmin.config do |config|
       field :role
       field :username
       field :email
+      field :credits
       field :approved
     end
   end
@@ -117,6 +118,7 @@ RailsAdmin.config do |config|
       field :requirement
       field :platform
       field :expired_at
+      field :desc
       field :contact_name
       field :phone
       field :email

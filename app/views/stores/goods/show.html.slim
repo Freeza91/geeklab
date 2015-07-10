@@ -26,24 +26,25 @@ main role="main"
                       i.icon-inner.icon-score
                     span
                       = @good.cost.to_i
-                  .sell-counter
-                    - if @good.stock > 200
-                      span
-                        | 有货
-                    - else
-                      - if @good.stock == 0
+                  - if @good.status == 'on_sell'
+                    .sell-counter
+                      - if !@good.available || @good.stock == 0
                         span
                           | 无货
                       - else
-                        span
-                          | 仅剩
-                        span.color-gray style="padding: 0 3px"
-                          = @good.stock
-                        span
-                          | 个
-                      /= @good.used_num
-                      /| 人
-                    /span.color-gray 兑换成功
+                        - if @good.stock > 200
+                          span
+                            | 有货
+                        - else
+                            span
+                              | 仅剩
+                            span.color-gray style="padding: 0 3px"
+                              = @good.stock
+                            span
+                              | 个
+                        /= @good.used_num
+                        /| 人
+                      /span.color-gray 兑换成功
                 .good-intro
                   p
                     = @good.describle

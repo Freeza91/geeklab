@@ -5,11 +5,11 @@ class Stores::GoodsController < Stores::BaseController
   before_filter :authenticate, except: [:index, :show, :save_image]
 
   def index
-    @goods = Good.includes(:pictures).all.show.page(params[:page]).per(30)
+    @goods = Good.display.includes(:pictures).page(params[:page]).per(30)
   end
 
   def show
-    @good = Good.includes(:pictures).show.find_by(id: params[:id])
+    @good = Good.publish.includes(:pictures).find_by(id: params[:id])
   end
 
   def new

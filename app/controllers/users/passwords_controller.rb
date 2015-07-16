@@ -38,7 +38,11 @@ class Users::PasswordsController < ApplicationController
     if @user
       if @user.reset_password_sent_at + 1.days >= Time.now
         cookies.signed[:reset_password_token] = params[:reset_password_token]
-        redirect_to edit_reset_users_passwords_path + "?redirect_to=" + params[:redirect_to]
+        if params[:redirect_to]
+          redirect_to edit_reset_users_passwords_path + "?redirect_to=" + params[:redirect_to]
+        else
+          redirect_to edit_reset_users_passwords_path
+        end
       else
         flash[:info] = 'token已经过期'
         redirect_to reset_users_passwords_path

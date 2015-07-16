@@ -3,7 +3,11 @@ p
   color: $font_color
   font-size: 14px
 .banner_index
-  background: #fff image-url('banner/banner_index.png') center center no-repeat
+  //background: #fff image-url('banner/banner_index.png') center center no-repeat
+  background-color: #fff
+  background-image: image_url('banner/banner_index_l.jpg'), image_url('banner/banner_index_m.jpg'), image_url('banner/banner_index_r.jpg')
+  background-position: left top, center center, right top
+  background-repeat: no-repeat, no-repeat
   height: 795px
   transition: all 1s ease
   .role

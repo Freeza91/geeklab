@@ -8,10 +8,11 @@ class Order < ActiveRecord::Base
 
   validates :good_id, :sku_id, :user_id, presence: true
 
-  before_save :set_order_id
+  after_create :set_order_id
 
   def set_order_id
     self.order_id = generate_order_id
+    save(validate: false)
   end
 
   def generate_order_id

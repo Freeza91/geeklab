@@ -12,8 +12,8 @@ $(function () {
     'wait_check': '等待审核',
     'checking': '正在审核',
     'not_accept': '审核未通过',
-    'success': '任务成功',
-    'failed': '任务失败'
+    'success': '审核成功',
+    'failed': '任务过期'
   };
   $('.projects-wrp').on('click', '.delete-project', function () {
     $card = $(this).parents('.card');

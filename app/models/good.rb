@@ -6,17 +6,23 @@ class Good < ActiveRecord::Base
   has_many :pictures, as: :pictureable
   has_many :skus, dependent: :destroy
 
-  validates :name, :stock, :cost, :label, presence: true
+  validates :name, :stock, :cost, :label, :describle, :status, presence: true
 
-  scope :show, -> { where(is_publish: true).where.not(status: 'off_shelves') }
+  scope :publish, -> { where(is_publish: true ) }
+  scope :display, -> { publish.where.not(status: 'off_shelves') }
+
 
   accepts_nested_attributes_for :pictures, allow_destroy: true
 
-  attr_accessor :available
+  attr_reader :available
 
   def available
-    if stock == 0 || is_limit == true
-      false
+    if status == "on_sell"
+      if stock == 0 || is_limit == true
+        false
+      else
+        true
+      end
     else
       true
     end

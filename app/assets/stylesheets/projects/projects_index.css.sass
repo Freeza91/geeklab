@@ -10,7 +10,8 @@
     line-height: 25px
     .fa
       margin-right: 5px
-      vertical-align: middle
+      vertical-align: top
+      font-size: 1.5em
 .table-1
   border: 3px solid #dadada
 
@@ -100,6 +101,8 @@
       margin: 0
       a
         color: #313131
+      a:hover
+        color: #16a0c6
     .content
       position: relative
       background-color: #fff
@@ -149,7 +152,9 @@
     color: rgba(235, 97, 0, 1)
   .status.status_failed
     color: rgba(160, 160, 160, 1)
-  .status.status_success
+  .status.status_success,
+  .status.status_underway,
+  .status.status_finish
     color: rgba(50, 177, 108, 1)
 
 // 添加project

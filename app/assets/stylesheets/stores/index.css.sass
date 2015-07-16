@@ -44,7 +44,7 @@
       z-index: 15
       > span:last-child
         display: none
-      .icon
+      .icon-img
         margin-right: 5px
         margin-bottom: -4px
     .btn:hover
@@ -82,8 +82,10 @@
       margin-left: -30px
 
 // 首页banner
-#banner-slide
-  height: 400px
-  overflow: hidden
+#slider
   img
-    height: 400px
+    transition: all .5s ease
+    -webkit-transition: all .5s ease
+  img:hover
+    transform: scale(1.05)
+    -webkit-transform: scale(1.05)

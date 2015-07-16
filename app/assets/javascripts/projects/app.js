@@ -162,7 +162,8 @@ $(function () {
         {
           content: ''
         }
-      ]
+      ],
+      tasksLimited: false
     },
     methods: {
       previousStep: previousStep,
@@ -360,8 +361,8 @@ $(function () {
     if(vm.tasks.length < 5) {
       vm.tasks.push({
         content: ''
-      });
-    } else {
+      }); } else {
+      console.log('xxx');
       vm.tasksLimited = true;
       setTimeout(function () {
         vm.tasksLimited = false;

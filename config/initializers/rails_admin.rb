@@ -66,6 +66,7 @@ RailsAdmin.config do |config|
       field :role
       field :username
       field :email
+      field :credits
       field :approved
     end
   end
@@ -117,6 +118,7 @@ RailsAdmin.config do |config|
       field :requirement
       field :platform
       field :expired_at
+      field :desc
       field :contact_name
       field :phone
       field :email
@@ -158,4 +160,42 @@ RailsAdmin.config do |config|
 
   end
 
+  config.model "Good" do
+    edit do
+      field :name
+      field :describle
+      field :cost
+      field :status
+      field :is_publish
+      field :is_limit
+      field :stock
+      field :used_num
+      field :label
+
+      field :pictures do
+        orderable true
+      end
+
+    end
+  end
+
+  config.model "Sku" do
+    edit do
+      field :attr
+      field :addition
+      field :num
+
+      field :good
+    end
+  end
+
+  config.model "Order" do
+    edit do
+      field :order_id
+
+      field :good
+      field :user
+      field :sku
+    end
+  end
 end

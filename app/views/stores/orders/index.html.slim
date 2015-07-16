@@ -4,7 +4,7 @@ main role="main"
       - if @orders.try(:size) == 0
         .reset-wrp
           p
-            span.icon.icon-outer-18 style="margin-bottom: -3px; margin-right: 5px"
+            span.icon-img.icon-outer-18 style="margin-bottom: -3px; margin-right: 5px"
               i.icon-inner.icon-flag
             | sorry, 你还没有兑换礼品噢!
           a.btn.btn-base-reverse.btn-rounded.btn-s href=stores_root_path
@@ -45,7 +45,8 @@ main role="main"
                     a.name href=stores_good_path(order.good_id) targe="_blank"
                       = order.good.name
                   td.price
-                    i.icon.fa.fa-diamond
+                    span.icon-img.icon-outer-18 style="margin: 0 10px -4px 0"
+                      i.icon-inner.icon-score
                     = order.good.cost.to_i
                   td
                     button.btn.btn-base-reverse.btn-rounded.btn-s.detail data-id="#{order.id}"

@@ -10,6 +10,8 @@ module GoodsHelper
   end
 
   def get_assignment_url(user)
+    return '' unless user 
+
     if user.to_tester.try(:tester_infors).blank?
       new_tester_path
     else

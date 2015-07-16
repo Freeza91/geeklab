@@ -8,7 +8,7 @@ module Rememberable
 
   def remember_me(cookies)
     cookies.signed[:id] = {
-      value: self.id,
+      value: self.to_params,
       expires: 1.month.from_now
     }
   end

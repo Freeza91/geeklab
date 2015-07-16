@@ -19,7 +19,9 @@ class ActiveRecord::Base
 
   def self.find_by(opt = {})
     hash_id = opt[:id]
-    opt[:id] = $hashids.decode(hash_id)[0] if hash_id
+    p opt
+    opt[:id] = $hashids.decode(hash_id.to_s)[0] unless hash_id.to_s.empty?
+    p opt
     where(opt).take
   end
 

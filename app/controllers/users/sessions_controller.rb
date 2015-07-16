@@ -15,7 +15,7 @@ class Users::SessionsController < ApplicationController
     email = params[:email].to_s.downcase
     @user = User.find_by(email: email)
     if @user && @user.valid_password?(params[:encrypted_password])
-      session[:id] = @user.id
+      session[:id] = @user.to_params
       @user.remember_me(cookies) if params[:remember_me] == 'true'
       json[:msg] = '登陆成功'
       json[:url] =

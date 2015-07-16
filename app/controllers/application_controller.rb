@@ -53,7 +53,7 @@ private
 
   def from_cookies
     User.find_by(id: cookies.signed[:id]).tap do |user|
-      session[:id] = user.try(:id)
+      user && session[:id] = user.to_params
     end if cookies.signed[:id]
   end
 

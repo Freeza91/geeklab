@@ -40,7 +40,7 @@ class Stores::OrdersController < Stores::BaseController
   def show
     json = { status: 0, code: 1, msg: '' }
     order = current_user.orders.find_by(id: params[:id])
-    json[:msg] = Sku.find_by(id: order.sku.try(:id)).try(:addition) if order
+    json[:msg] = Sku.find_by(id: $hashids.encode(order.sku.try(:id)).try(:addition) if order
 
     render json: json
 

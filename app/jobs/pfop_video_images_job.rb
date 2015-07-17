@@ -2,7 +2,7 @@ class PfopVideoImagesJob < ActiveJob::Base
   queue_as :pfop_video_images
 
   def perform(id)
-    assignment = Assignment.find_by(id: id)
+    assignment = Assignment.find_by(id: $hashids.encode(id))
     if assignment && assignment.is_transfer
       duration = get_video_info(assignment.video, duration)
       # 每个视频维持30张截图
@@ -26,10 +26,12 @@ class PfopVideoImagesJob < ActiveJob::Base
 
   def capture_and_save_picture(video_url, n, assignments_id, tester_id)
     video = (URI.parse video_url).path.to_s[1..-1].to_s
+    hash_tester_id = $hashids.encode(tester_id)
+    hash_assignment_id = $hashids.encode(assignment_id)
     callback = if Rails.env.development?
-      "#{Settings.ngork_domain}/testers/#{tester_id}/assignments/#{assignments_id}/callback_from_qiniu_video_images"
+      "#{Settings.ngork_domain}/testers/#{hash_tester_id}/assignments/#{hash_assignment_id}/callback_from_qiniu_video_images"
     else
-      "#{Settings.domain}/testers/#{tester_id}/assignments/#{assignments_id}/callback_from_qiniu_video_images"
+      "#{Settings.domain}/testers/#{hash_tester_id}/assignments/#{hash_assignment_id}/callback_from_qiniu_video_images"
     end
 
     pfop_policy = Qiniu::Fop::Persistance::PfopPolicy.new("#{Settings.qiniu_bucket}", video,

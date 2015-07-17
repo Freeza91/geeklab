@@ -24,7 +24,11 @@ class ApplicationController < ActionController::Base
     _, domain = email.match(/\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i).captures
     domains = %w(qq.com 163.com 126.com sohu.com sina.com gmail.com 21cn.com)
     if domains.include? domain
-      "http://mail.#{domain}/"
+      if domain == 'gmail.com'
+        "https://mail.google.com"
+      else
+        "http://mail.#{domain}/"
+      end
     else
       ""
     end

@@ -6,21 +6,21 @@ end
 
 class ActiveRecord::Base
 
-    def to_params
-      encode_id
-    end
+  def to_params(attribute = id)
+    encode_id(attribute)
+  end
 
-    # 加密id
-    def encode_id
-      $hashids.encode(id)
-    end
+  # 加密
+  def encode_id(attribute)
+    $hashids.encode(attribute)
+  end
 
-    def self.find_by(opt = {})
-      hash_id = opt[:id]
-      opt[:id] = $hashids.decode(hash_id.to_s)[0] unless hash_id.to_s.empty?
+  def self.find_by(opt = {})
+    hash_id = opt[:id]
+    opt[:id] = $hashids.decode(hash_id.to_s)[0] unless hash_id.to_s.empty?
 
-      where(opt).take
-    end
+    where(opt).take
+  end
 
 end
 

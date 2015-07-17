@@ -6,7 +6,8 @@ $(function () {
   $('.exchange').on('click', function () {
     var price = parseInt($(this).data('price')),
         score = parseInt($(this).data('score')),
-        id = parseInt($(this).data('id'));
+        //id = parseInt($(this).data('id'));
+        id = $(this).data('id');
     if(score < price) {
       $('#score-hint').modal();
       return false;
@@ -19,7 +20,7 @@ $(function () {
 
   function exchange (goodId) {
     var order = {
-      good_id: parseInt(goodId)
+      good_id: goodId
     };
     $.ajax({
       url: '/stores/orders',

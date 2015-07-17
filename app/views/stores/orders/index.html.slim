@@ -25,7 +25,7 @@ main role="main"
                 th
                   | 操作
             - @orders.each do |order|
-              tbody.order-item data-id="#{order.id}"
+              tbody.order-item data-id="#{order.to_params}"
                 tr.gap-row
                 tr.order-header
                   td
@@ -40,16 +40,16 @@ main role="main"
                       | &times
                 tr.order-content
                   td.good
-                    a.pic href=stores_good_path(order.good_id) target="_blank"
+                    a.pic href=stores_good_path(order.to_params(order.good_id)) target="_blank"
                       img src="#{order.good.pictures.first.url.url}"
-                    a.name href=stores_good_path(order.good_id) targe="_blank"
+                    a.name href=stores_good_path(order.to_params(order.good_id)) targe="_blank"
                       = order.good.name
                   td.price
                     span.icon-img.icon-outer-18 style="margin: 0 10px -4px 0"
                       i.icon-inner.icon-score
                     = order.good.cost.to_i
                   td
-                    button.btn.btn-base-reverse.btn-rounded.btn-s.detail data-id="#{order.id}"
+                    button.btn.btn-base-reverse.btn-rounded.btn-s.detail data-id="#{order.to_params}"
                       | 卡密
 
 <!-- 删除订单记录 -->

@@ -1,9 +1,9 @@
 main role="main"
-  section.assignments-list.content-box data-tester-id="#{@current_user.to_tester.id}"
+  section.assignments-list.content-box data-tester-id="#{@current_user.to_tester.to_params}"
     .container
       .assignments-wrp.clear-fix
         - @assignments.each do |assignment|
-          .card data-assignment-id="#{assignment.id}" data-status="#{assignment.status}"
+          .card data-assignment-id="#{assignment.to_params}" data-status="#{assignment.status}"
             .inner
               header
                 h1.title 

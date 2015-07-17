@@ -59,7 +59,9 @@ class Stores::OrdersController < Stores::BaseController
 private
 
   def order_params
-    params.require(:order).permit(:good_id)
+    opt = params.require(:order).permit(:good_id)
+    opt[:good_id] = $hashids.decode(opt['good_id'])[0] if opt['good_id']
+    opt
   end
 
 end

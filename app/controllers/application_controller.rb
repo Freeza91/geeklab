@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
   def limit_ip?(from)
     ip = (request.remote_ip || request.ip) + "-" + from
     counter = $redis.get(ip).to_i
-    return true if counter > 5
+    return true if counter > 50
     $redis.incr(ip)
     $redis.expire(ip, 15 * 1.minute) if counter == 1
 

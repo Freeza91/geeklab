@@ -29,7 +29,8 @@ module QiniuAbout
   def callback_from_qiniu
     json = { status: 0, code: 0, msg: '上传文件不成功' }
     id = $redis.get(params[:auth_token])
-    if id && tester = Tester.find_by(id: id)
+
+    if id && tester = Tester.find_by(id: $hashids.encode(id.to_i))
       assignment = Assignment.find_by(id: params[:assignment_id])
       if assignment.try(:tester_id) == tester.id
         video = "http://" + Settings.qiniu_bucket_domain + "/" + params[:key_name].to_s

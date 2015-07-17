@@ -233,8 +233,16 @@ $(function () {
       if(status === 'abort') {
         return false;
       } else {
+        // 上传出错
         $card.find('.operator.uploading').hide();
         $card.find('.operator.upload-failed').fadeIn();
+        // 恢复上传进度圆环
+        $card.find('.progressCircle .inner').css({
+          'transform': 'rotate(0)',
+          '-o-transform': 'rotate(0)',
+          '-moz-transform': 'rotate(0)',
+          '-webkit-transform': 'rotate(0)'
+        });
       }
     });
   }

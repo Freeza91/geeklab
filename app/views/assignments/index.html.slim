@@ -3,16 +3,16 @@ main role="main"
     .container
       ul.nav.nav-pills
         li.current
-          a href=tester_assignments_path(current_user.id)
+          a href=tester_assignments_path(current_user.to_params)
             | 新任务
         li
-          a href=join_tester_assignments_path(current_user.id)
+          a href=join_tester_assignments_path(current_user.to_params)
             | 我参与的
-  section.assignments-list.content-box data-tester-id="#{@current_user.to_tester.id}"
+  section.assignments-list.content-box data-tester-id="#{@current_user.to_tester.to_params}"
     .container
       .assignments-wrp.clear-fix
         - @assignments.each do |assignment|
-          .card data-assignment-id="#{assignment.id}"
+          .card data-assignment-id="#{assignment.to_params}"
             .inner
               header
                 h1.title 

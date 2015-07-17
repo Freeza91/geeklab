@@ -104,7 +104,8 @@ $(function () {
 
     for(var i = 0; i < projects.length; i++) {
       // name
-      $projectCard.find('.title sapn:first').text(projects[i].name)
+      $projectCard.find('.title a').text(projects[i].name)
+      $projectCard.find('.title a').attr('href', '/projects/' + projects[i].id);
       // status
       $projectCard.find('.status').removeClass().addClass('status status_' + projects[i].status).find('span').text(statusMap[projects[i].status]);
       // 完成进度

@@ -27,8 +27,13 @@ class AssignmentsController < ApplicationController
   def show
     assignment = Assignment.find_by(id: params[:id])
     json = { status: 0, code: 1 }
-    project = assignment.project
-    json[:project] = project.to_json_with_tasks
+    if assignment
+      project = assignment.project
+      json[:project] = project.to_json_with_tasks
+    else
+      json[:code], json[:msg] = 0, '项目为空'
+    end
+
     render json: json
   end
 

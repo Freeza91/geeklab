@@ -41,7 +41,7 @@ class Project < ActiveRecord::Base
 
   def to_json_to_pm
     {
-      id: id,
+      id: self.to_params,
       name: name,
       profile: profile,
       device: device,
@@ -61,7 +61,7 @@ class Project < ActiveRecord::Base
 
   def to_json_for_index
     {
-      id: id,
+      id: self.to_params,
       name: name,
       status: get_status,
       demand: demand,

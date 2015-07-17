@@ -10,7 +10,7 @@ class UserMailer < ApplicationMailer
 
   def reset_password(user_id, url)
     @url = url
-    user = User.find_by(id: user_id)
+    user = User.find_by(id: $hashids.encode(user_id))
     return unless user
     @email = user.email
     sendgrid_category "Reset Password "

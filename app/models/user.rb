@@ -7,11 +7,11 @@ class User < ActiveRecord::Base
   include Mobileable
 
   def to_tester
-    @tester ||= Tester.find_by(id: id)
+    @tester ||= Tester.find_by(id: self.to_params)
   end
 
   def to_pm
-    @pm ||= Pm.find_by(id: id)
+    @pm ||= Pm.find_by(id: self.to_params)
   end
 
   has_many :orders

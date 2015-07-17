@@ -16,7 +16,7 @@ class ProjectsController < ApplicationController
       format.json do
         json = {status: 0, code: 1, assignments: [], projects: [] }
         @projects.each do |project|
-          json[:projects] << project
+          json[:projects] << project.to_json_for_index
         end
         @assignments.each do |a|
           json[:assignments] << a
@@ -82,8 +82,12 @@ class ProjectsController < ApplicationController
 
     project = current_user.to_pm.projects.find_by(id: params[:id])
 
-    unless project && project.update(project_params)
-      json[:code], json[:msg] = 0, "更新不成功:#{project.errors.full_messages}"
+    if project
+      unless project.update(project_params)
+        json[:code], json[:msg] = 0, "更新不成功:#{project.errors.full_messages}"
+      end
+    else
+      json[:code], json[:msg] = 0, "没有找到这个项目"
     end
 
     render json: json

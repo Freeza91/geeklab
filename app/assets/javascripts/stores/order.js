@@ -13,6 +13,7 @@ $(function () {
 
   $('.order-item .detail').on('click', function () {
     var id = $(this).data('id');
+    console.log(id);
     //var id = 2;
     getCardInfo(id, showCardInfo);
   });

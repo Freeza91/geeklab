@@ -13,7 +13,7 @@ header.header.navbar.navbar-static.clear-fix
                 span.caret
               ul.dropdown-menu role='menu'
                 li
-                  a rel="noflow" data-method="delete" href=users_session_path(current_user.id)
+                  a rel="noflow" data-method="delete" href=users_session_path(current_user.to_params)
                     i.fa.fa-power-off
                     | 退出登录
     - else

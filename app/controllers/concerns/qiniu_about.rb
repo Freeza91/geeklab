@@ -88,8 +88,8 @@ private
     $redis.expire(auth_token, 1.days)
 
     key_name = generate_key_name(file_name)
-    callback_path = "/testers/#{params[:tester_id]}/assignments/#{params[:assignment_id]}/callback_from_qiniu"
-    persistentNotify_path = "/testers/#{params[:tester_id]}/assignments/#{params[:assignment_id]}/callback_from_qiniu_transfer"
+    callback_path = "/assignments/#{params[:assignment_id]}/callback_from_qiniu"
+    persistentNotify_path = "/assignments/#{params[:assignment_id]}/callback_from_qiniu_transfer"
 
     callbackUrl = if Rails.env.development?
       "#{Settings.ngork_domain}#{callback_path}"

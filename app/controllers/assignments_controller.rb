@@ -1,6 +1,8 @@
 class AssignmentsController < ApplicationController
   include QiniuAbout
 
+  before_action :require_login?
+
   def index
     tester = current_user.to_tester
     assignments = tester.assignments

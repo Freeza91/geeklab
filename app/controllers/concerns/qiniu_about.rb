@@ -86,10 +86,11 @@ private
     auth_token = generate_qiniu_auth_token
     $redis.set(auth_token, current_user.id)
     $redis.expire(auth_token, 1.days)
+    hash_id = $hashids.encode(current_user.id)
 
     key_name = generate_key_name(file_name)
-    callback_path = "/assignments/#{params[:assignment_id]}/callback_from_qiniu"
-    persistentNotify_path = "/assignments/#{params[:assignment_id]}/callback_from_qiniu_transfer"
+    callback_path = "/assignments/#{id}/callback_from_qiniu"
+    persistentNotify_path = "/assignments/#{id}/callback_from_qiniu_transfer?tester_id=#{hash_id}"
 
     callbackUrl = if Rails.env.development?
       "#{Settings.ngork_domain}#{callback_path}"

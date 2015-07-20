@@ -333,6 +333,12 @@ $(function () {
           case 1:
             callback(data.video);
           break;
+          case 2:
+            // 视频正在转码
+            var $modal = $('#info-modal');
+            $modal.find('.title').text('视频正在处理中，请稍候');
+            $modal.modal();
+          break;
         }
       }
     })

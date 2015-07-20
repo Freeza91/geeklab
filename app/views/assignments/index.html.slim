@@ -3,10 +3,10 @@ main role="main"
     .container
       ul.nav.nav-pills
         li.current
-          a href=tester_assignments_path(current_user.to_params)
+          a href=assignments_path
             | 新任务
         li
-          a href=join_tester_assignments_path(current_user.to_params)
+          a href=join_assignments_path
             | 我参与的
   section.assignments-list.content-box data-tester-id="#{@current_user.to_tester.to_params}"
     .container

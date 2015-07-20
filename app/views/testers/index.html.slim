@@ -10,7 +10,7 @@ main role='main'
             a.btn.btn-blue href=new_tester_path
               | 成为体验师
           - else
-            a.btn.btn-blue href=tester_assignments_path(current_user.id)
+            a.btn.btn-blue href=assignments_path
               - if current_user.approved
                 | 体验产品
               - else

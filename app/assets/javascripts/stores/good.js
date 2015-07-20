@@ -3,22 +3,41 @@ $(function () {
     return false;
   }
 
-  $('.exchange').on('click', function () {
-    var price = parseInt($(this).data('price')),
-        score = parseInt($(this).data('score')),
-        //id = parseInt($(this).data('id'));
-        id = $(this).data('id');
+  $('#login-hint .confirm').on('click', showSignModal);
+
+  function showSignModal () {
+    $('.modal.in').modal('hide');
+    $('#sign').modal();
+  }
+
+
+  var goodVm = new Vue({
+    el: '#good',
+    data: {
+
+    },
+    methods: {
+      toggleGallery: toggleGallery,
+      exchange: exchange
+    }
+  });
+
+  function toggleGallery (picUrl, event) {
+    goodVm.galleryMain = picUrl;
+    $('.good-selected').removeClass('good-selected');
+    event.target.className += 'good-selected';
+  }
+
+  function exchange(id, price, score) {
     if(score < price) {
       $('#score-hint').modal();
       return false;
     } else {
-      exchange(id);
+      sendExchange(id);
     }
-  });
+  }
 
-  $('#login-hint .confirm').on('click', showSignModal);
-
-  function exchange (goodId) {
+  function sendExchange (goodId) {
     var order = {
       good_id: goodId
     };
@@ -59,10 +78,5 @@ $(function () {
     .error(function (errors) {
       console.log(errors);
     });
-  }
-
-  function showSignModal () {
-    $('.modal.in').modal('hide');
-    $('#sign').modal();
   }
 });

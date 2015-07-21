@@ -119,7 +119,7 @@ $(function () {
               delete $(this)[0].files;
               // 上传成功后跳转至正在进行中的任务页面
               if(location.pathname.split('/').pop() === 'assignments') {
-                location.href = '/testers/' + testerId + '/assignments/join';
+                location.href = '/assignments/join';
               }
             });
           }
@@ -249,7 +249,7 @@ $(function () {
 
   // 获取上传视屏的token
   function getUploadToken(userId, assignmentId, filename, callback) {
-    var url = '/testers/' + userId + '/assignments/' + assignmentId +'/upload_token/';
+    var url = '/assignments/' + assignmentId +'/upload_token/';
     $.ajax({
       url: url,
       data: {
@@ -319,7 +319,7 @@ $(function () {
 
   // 获取视频url
   function getAssignmentVideoUrl (testerId, assignmentId, callback) {
-    var url = '/testers/' + testerId + '/assignments/' + assignmentId + '/get_video';
+    var url = '/assignments/' + assignmentId + '/get_video';
 
     $.ajax({
       url: url
@@ -332,6 +332,12 @@ $(function () {
           break;
           case 1:
             callback(data.video);
+          break;
+          case 2:
+            // 视频正在转码
+            var $modal = $('#info-modal');
+            $modal.find('.title').text('视频正在处理中，请稍候');
+            $modal.modal();
           break;
         }
       }
@@ -362,7 +368,7 @@ $(function () {
   // 向服务器发送删除任务的请求
   function deleteAssigment (testerId, assignmentId, callback) {
     if(assignmentId) {
-      var url = '/testers/' + testerId + '/assignments/' + assignmentId;
+      var url = '/assignments/' + assignmentId;
       $.ajax({
         url: url,
         method: 'delete'
@@ -380,7 +386,7 @@ $(function () {
 
   // 删除视频
   function deleteVideo (testerId, assignmentId, callback) {
-    var url = '/testers/' + testerId + '/assignments/' + assignmentId + '/delete_video';
+    var url = '/assignments/' + assignmentId + '/delete_video';
     $.ajax({
       url: url,
       method: 'delete'
@@ -396,7 +402,7 @@ $(function () {
   }
 
   function getAssignmentDetail (testerId, assignmentId, callback){
-    var url = '/testers/' + testerId + '/assignments/' + assignmentId;
+    var url = '/assignments/' + assignmentId;
     $.ajax({
       url: url,
     })
@@ -528,7 +534,7 @@ $(function () {
   assignmentTimeCountDownInit();
 
   function getAssignmentPaging (page, callback) {
-    var url = '/testers/' + testerId + '/assignments?page=' + page;
+    var url = '/assignments?page=' + page;
 
     $.ajax({
       url: url,
@@ -696,7 +702,7 @@ $(function () {
   });
   // 关闭过期任务提示
   function closeMissAssignmentsReminder ($reminder) {
-    var url = '/testers/' + testerId + '/assignments/not_interest';
+    var url = '/assignments/not_interest';
     $.ajax({
       url: url
     })

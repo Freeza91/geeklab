@@ -1,5 +1,5 @@
 module GoodsHelper
-  
+
   def get_good_status(available, status)
     if !available
       '被抢光了'
@@ -32,11 +32,11 @@ module GoodsHelper
     elsif user.to_tester.try(:tester_infors).blank?
       new_tester_path
     else
-      tester_assignments_path(user.id)
+      assignments_path
     end
   end
 
-  def get_name_class(index) 
+  def get_name_class(index)
     if index % 4 == 0 || index % 4 == 3
       'name-left'
     else

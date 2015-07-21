@@ -49,25 +49,25 @@ RailsAdmin.config do |config|
       field :email
       field :approved
       field :credits
+      field :created_at
     end
   end
 
   config.model "Pm" do
     edit do
-      field :role
       field :username
       field :email
-      field :approved
+      field :created_at
     end
   end
 
   config.model "Tester" do
     edit do
-      field :role
       field :username
       field :email
       field :credits
       field :approved
+      field :created_at
     end
   end
 
@@ -81,6 +81,7 @@ RailsAdmin.config do |config|
       field :is_sexy
       field :reasons, :pg_int_array
       field :is_read
+      field :created_at
 
       field :comment
 
@@ -107,6 +108,8 @@ RailsAdmin.config do |config|
       field :mobile_phone
       field :wechat
       field :ali_pay
+
+      field :created_at
     end
   end
 
@@ -139,6 +142,8 @@ RailsAdmin.config do |config|
 
       field :user_feature
 
+      field :created_at
+
     end
   end
 
@@ -156,6 +161,8 @@ RailsAdmin.config do |config|
       field :interest,            :pg_int_array
       field :profession,          :pg_int_array
       field :personality,         :pg_int_array
+
+      field :created_at
     end
 
   end
@@ -196,6 +203,8 @@ RailsAdmin.config do |config|
       field :good
       field :user
       field :sku
+
+      field :created_at
     end
   end
 end

@@ -1,4 +1,6 @@
 class AssignmentsController < ApplicationController
+
+  before_action :require_login?
   include QiniuAbout
 
   def index
@@ -44,9 +46,9 @@ class AssignmentsController < ApplicationController
       if assignment.is_transfer && !assignment.is_sexy
         json[:video] = assignment.video
       elsif assignment.is_sexy
-        json[:code], json[:msg] = 0, '视频资源涉及黄色内容，不予显示'
+        json[:code], json[:msg] = 1, '视频资源涉及黄色内容，不予显示'
       elsif !assignment.is_transfer
-        json[:code], json[:msg] = 0, '视频资源正在处理中，请稍后查看'
+        json[:code], json[:msg] = 2, '视频资源正在处理中，请稍后查看'
       end
     else
       json[:code], json[:msg] = 0, '没有权限查看视频资源'

@@ -3,8 +3,21 @@ class Stores::BaseController < ApplicationController
   layout 'stores/layouts/stores_application'
 
   def index
-    @goods = Good.display.includes(:pictures).page(params[:page]).per(6)
-    render 'stores/index'
+
+    respond_to do |format|
+      format.html { render '/stores/index' }
+      format.json do
+        json = { status: 0, code: 1, goods:[] }
+
+        @goods = Good.display.includes(:pictures).page(params[:page]).per(9)
+        @goods.each do |good|
+          json[:goods] << good.to_json_with_pictures
+        end
+
+        render json: json
+      end
+    end
+
   end
 
   def authenticate

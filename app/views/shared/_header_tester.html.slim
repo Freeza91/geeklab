@@ -26,13 +26,13 @@ header.header.navbar.navbar-static.clear-fix
                     i.fa.fa-user
                     | 个人信息
                 - else
-                  a href=edit_tester_path(current_user.id)
+                  a href=edit_tester_path(current_user.to_params)
                     i.fa.fa-user
                     | 个人信息
               // 完成个人信息后显示任务列表
               - if !current_user.to_tester.try(:tester_infors).blank?
                 li
-                  a href=tester_assignments_path(current_user.id)
+                  a href=assignments_path
                     i.fa.fa-th-large
                     | 任务列表
               li
@@ -43,7 +43,7 @@ header.header.navbar.navbar-static.clear-fix
                     i.icon-inner.icon-score.hover style="margin-bottom: 4px"
                   | 积分商城
               li
-                a rel="noflow" data-method="delete" href=users_session_path(current_user.id)
+                a rel="noflow" data-method="delete" href=users_session_path(current_user.to_params)
                   i.fa.fa-power-off
                   | 退出登录
       - else

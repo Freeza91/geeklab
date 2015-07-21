@@ -29,7 +29,8 @@ module QiniuAbout
   def callback_from_qiniu
     json = { status: 0, code: 0, msg: '上传文件不成功' }
     id = $redis.get(params[:auth_token])
-    if id && tester = Tester.find_by(id: id)
+
+    if id && tester = Tester.find_by(id: $hashids.encode(id.to_i))
       assignment = Assignment.find_by(id: params[:assignment_id])
       if assignment.try(:tester_id) == tester.id
         video = "http://" + Settings.qiniu_bucket_domain + "/" + params[:key_name].to_s
@@ -85,10 +86,11 @@ private
     auth_token = generate_qiniu_auth_token
     $redis.set(auth_token, current_user.id)
     $redis.expire(auth_token, 1.days)
+    hash_id = $hashids.encode(current_user.id)
 
     key_name = generate_key_name(file_name)
-    callback_path = "/testers/#{params[:tester_id]}/assignments/#{params[:assignment_id]}/callback_from_qiniu"
-    persistentNotify_path = "/testers/#{params[:tester_id]}/assignments/#{params[:assignment_id]}/callback_from_qiniu_transfer"
+    callback_path = "/assignments/#{id}/callback_from_qiniu"
+    persistentNotify_path = "/assignments/#{id}/callback_from_qiniu_transfer?tester_id=#{hash_id}"
 
     callbackUrl = if Rails.env.development?
       "#{Settings.ngork_domain}#{callback_path}"

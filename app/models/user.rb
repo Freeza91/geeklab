@@ -7,11 +7,11 @@ class User < ActiveRecord::Base
   include Mobileable
 
   def to_tester
-    @tester ||= Tester.find_by(id: id)
+    @tester ||= Tester.find_by(id: self.to_params)
   end
 
   def to_pm
-    @pm ||= Pm.find_by(id: id)
+    @pm ||= Pm.find_by(id: self.to_params)
   end
 
   has_many :orders
@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
   before_save { self.email = email.to_s.downcase }
 
   def deliver_approved_email
-    task_url = "#{Settings.domain}/testers/#{id}/assignments"
+    task_url = "#{Settings.domain}/assignments"
     title = "你已经通过审核，正是成为一个测试用户"
     UserMailer.novice_task_approved(email, title, task_url).deliver_later if approved && !approved_was
   end

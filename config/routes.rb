@@ -52,21 +52,20 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :testers do
-    resources :assignments do
-      post 'callback_from_qiniu'
-      post 'callback_from_qiniu_transfer'
-      post 'callback_from_qiniu_video_images'
-      get 'upload_token'
-      get 'get_video'
-      delete 'delete_video'
-      collection do
-        get 'miss'
-        get 'join'
-        get 'not_interest'
-        get 'ing'
-        get 'done'
-      end
+  resources :testers
+  resources :assignments do
+    post 'callback_from_qiniu'
+    post 'callback_from_qiniu_transfer'
+    post 'callback_from_qiniu_video_images'
+    get 'upload_token'
+    get 'get_video'
+    delete 'delete_video'
+    collection do
+      get 'miss'
+      get 'join'
+      get 'not_interest'
+      get 'ing'
+      get 'done'
     end
   end
 

@@ -55,7 +55,7 @@ main role="main"
                 button.btn.btn-base-reverse.btn-rounded.btn-m data-toggle="modal" data-target="#login-hint"
                   | 立即兑换
               - else
-                button.btn.btn-base-reverse.btn-rounded.btn-m class=can_exchange(@good.available, @good.status)  data-price=@good.cost data-score=current_user.to_tester.credits data-id=@good.id
+                button.btn.btn-base-reverse.btn-rounded.btn-m class=can_exchange(@good.available, @good.status) data-price=@good.cost data-score=current_user.to_tester.credits data-id=@good.to_params
                   = get_good_status(@good.available, @good.status) 
         - else
           p.bottom-hint

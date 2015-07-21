@@ -14,7 +14,7 @@ class Users::RegistrationsController < ApplicationController
     @user = User.new(user_params)
     if value && value == params[:user][:code]
       if @user.save
-        session[:id] = @user.id
+        session[:id] = @user.to_params
         @user.remember_me(cookies)
 
         json[:url] =

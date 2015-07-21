@@ -1,4 +1,6 @@
 class AssignmentsController < ApplicationController
+
+  before_action :require_login?
   include QiniuAbout
 
   def index
@@ -27,8 +29,13 @@ class AssignmentsController < ApplicationController
   def show
     assignment = Assignment.find_by(id: params[:id])
     json = { status: 0, code: 1 }
-    project = assignment.project
-    json[:project] = project.to_json_with_tasks
+    if assignment
+      project = assignment.project
+      json[:project] = project.to_json_with_tasks
+    else
+      json[:code], json[:msg] = 0, '项目为空'
+    end
+
     render json: json
   end
 
@@ -39,9 +46,9 @@ class AssignmentsController < ApplicationController
       if assignment.is_transfer && !assignment.is_sexy
         json[:video] = assignment.video
       elsif assignment.is_sexy
-        json[:code], json[:msg] = 0, '视频资源涉及黄色内容，不予显示'
+        json[:code], json[:msg] = 1, '视频资源涉及黄色内容，不予显示'
       elsif !assignment.is_transfer
-        json[:code], json[:msg] = 0, '视频资源正在处理中，请稍后查看'
+        json[:code], json[:msg] = 2, '视频资源正在处理中，请稍后查看'
       end
     else
       json[:code], json[:msg] = 0, '没有权限查看视频资源'

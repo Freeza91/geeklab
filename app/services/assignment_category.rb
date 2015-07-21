@@ -2,7 +2,7 @@ module AssignmentCategory
   class << self
 
     def assignment_to_tester(project_id)
-      project = Project.find_by(id: project_id)
+      project = Project.find_by(id: $hashids.encode(project_id))
       return unless project
       @user_feature = project.user_feature
 

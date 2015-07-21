@@ -64,7 +64,8 @@ class Assignment < ActiveRecord::Base
 
   def video_notice_to_tester
     if status == 'not_accept' || status == "success"
-      task_url = "#{Settings.domain}/testers/#{tester_id}/assignments/join"
+      hash_tester_id = self.to_params(tester_id)
+      task_url = "#{Settings.domain}/assignments/join"
       name = self.project.name
       email_to = self.tester.tester_infors.first.email_contract || email
       UserMailer.video_check_failed(email_to, name, task_url + "#ing").deliver_later if status == "not_accept"
@@ -80,7 +81,8 @@ class Assignment < ActiveRecord::Base
 
   def add_credit_to_user
     if status == "success"
-      user = User.find_by(id: tester_id)
+      hash_tester_id = self.to_params(tester_id)
+      user = User.find_by(id: hash_tester_id)
       credits = user.try(:credits) + self.project.credit.to_i
       user && user.update_column(:credits, credits)
     end

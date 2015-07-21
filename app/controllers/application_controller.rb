@@ -24,7 +24,11 @@ class ApplicationController < ActionController::Base
     _, domain = email.match(/\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i).captures
     domains = %w(qq.com 163.com 126.com sohu.com sina.com gmail.com 21cn.com)
     if domains.include? domain
-      "http://mail.#{domain}/"
+      if domain == 'gmail.com'
+        "https://mail.google.com"
+      else
+        "http://mail.#{domain}/"
+      end
     else
       ""
     end
@@ -33,7 +37,7 @@ class ApplicationController < ActionController::Base
   def limit_ip?(from)
     ip = (request.remote_ip || request.ip) + "-" + from
     counter = $redis.get(ip).to_i
-    return true if counter > 5
+    return true if counter > 50
     $redis.incr(ip)
     $redis.expire(ip, 15 * 1.minute) if counter == 1
 
@@ -53,7 +57,7 @@ private
 
   def from_cookies
     User.find_by(id: cookies.signed[:id]).tap do |user|
-      session[:id] = user.try(:id)
+      user && session[:id] = user.to_params
     end if cookies.signed[:id]
   end
 

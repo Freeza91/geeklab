@@ -1,109 +1,110 @@
 main role="main"
   section.content-box
     .container
-      .col-md-9
-        p.title
-          i.fa.fa-mobile.fa-2x
-          = @project.try(:name)
-        .video-player
-          video controls="controls" style="width: 100%; height: 100%"
-            /source src="http://7xjcsq.com2.z0.glb.qiniucdn.com/copy-1434955521wScCUpQT.mp4"
-            source src=@assignment.try(:video);
-        p
-          | 视频评价
-          - if @assignment.comment
-            .evaluate
-              .col-md-6
-                p
-                  | 你觉得视频是否合格?
-                p
-                  = @assignment.comment.qualified ? "yes" : "no"
-              .col-md-6
-                p
-                  | 你觉得TA是你的目标用户吗?
-                p
-                  = @assignment.comment.target_user ? "yes" : "no"
-          - else
-            .evaluate
-              form
+      - if @project
+        .col-md-9
+          p.title
+            i.fa.fa-mobile.fa-2x
+            = @project.try(:name)
+          .video-player
+            video controls="controls" style="width: 100%; height: 100%"
+              /source src="http://7xjcsq.com2.z0.glb.qiniucdn.com/copy-1434955521wScCUpQT.mp4"
+              source src=@assignment.try(:video);
+          p
+            | 视频评价
+            - if @assignment.comment
+              .evaluate
                 .col-md-6
                   p
                     | 你觉得视频是否合格?
-                  .radio v-show="!submited"
-                    label.radio-inline
-                      input type="radio" name="quality" value="yes" v-model="quality"
-                      span YES
-                    label.radio-inline
-                      input type="radio" name="quality" value="no" v-model="quality"
-                      span NO
-                  p v-text="quality" v-show="submited"
+                  p
+                    = @assignment.comment.qualified ? "yes" : "no"
                 .col-md-6
                   p
                     | 你觉得TA是你的目标用户吗?
-                  .radio v-show="!submited"
-                    label.radio-inline
-                      input type="radio" name="user" value="yes" v-model="user"
-                      span YES
-                    label.radio-inline
-                      input type="radio" name="user" value="no" v-model="user"
-                      span NO
-                  p v-text="user" v-show="submited"
-                input type="text" v-model="assignmentId" value=@assignment.id style="display:none"
-                input type="text" v-model="projectId" value=@project.id style="display: none"
-                .button.btn.btn-blue v-show="!submited" v-on="click: submit($event)"
-                  | 提交
-        p
-          | 用户信息
-        table.table.table-1
-          tbody
-            tr
-              td
-                | 性别
-              td
-                = @assignment.tester.tester_infors[0].sex
-            tr
-              td
-                | 年龄
-              td
-                = @assignment.tester.tester_infors[0].age
-            tr
-              td
-                | 居住地
-              td
-                = @assignment.tester.tester_infors[0].livingplace
-            tr
-              td
-                | 情感状况
-              td
-                = @assignment.tester.tester_infors[0].emotional_status
-            tr
-              td
-                | 教育程度
-              td
-                = @assignment.tester.tester_infors[0].education
-            tr
-              td
-                | 职业信息
-              td
-                = @assignment.tester.tester_infors[0].profession 
-            tr
-              td
-                | 兴趣爱好
-              td
-                = @assignment.tester.tester_infors[0].interest.join(', ') 
-      .col-md-3
-        p
-          | 测试视频
-        .video-list
-          ul
-            - if @other_assignments && @other_assignments.try(:size) > 0
-              - @other_assignments.each do |assignment|
-                li.available
-                  a href=("/projects/" + "#{@project.id}" + "/video/" + "#{assignment.id}")
-                    img src=("#{assignment.video}" + "?vframe/png/offset/0/w/480/h/200")
-                  i.fa.fa-play-circle.fa-4x
-            /- else
-              /li
-                /a href="javascript: void(0)"
-                  /img
-                /i.fa.fa-play-circle.fa-4x
+                  p
+                    = @assignment.comment.target_user ? "yes" : "no"
+            - else
+              .evaluate
+                form
+                  .col-md-6
+                    p
+                      | 你觉得视频是否合格?
+                    .radio v-show="!submited"
+                      label.radio-inline
+                        input type="radio" name="quality" value="yes" v-model="quality"
+                        span YES
+                      label.radio-inline
+                        input type="radio" name="quality" value="no" v-model="quality"
+                        span NO
+                    p v-text="quality" v-show="submited"
+                  .col-md-6
+                    p
+                      | 你觉得TA是你的目标用户吗?
+                    .radio v-show="!submited"
+                      label.radio-inline
+                        input type="radio" name="user" value="yes" v-model="user"
+                        span YES
+                      label.radio-inline
+                        input type="radio" name="user" value="no" v-model="user"
+                        span NO
+                    p v-text="user" v-show="submited"
+                  input type="text" v-model="assignmentId" value=@assignment.id style="display:none"
+                  input type="text" v-model="projectId" value=@project.id style="display: none"
+                  .button.btn.btn-blue v-show="!submited" v-on="click: submit($event)"
+                    | 提交
+          p
+            | 用户信息
+          table.table.table-1
+            tbody
+              tr
+                td
+                  | 性别
+                td
+                  = @assignment.tester.tester_infors[0].sex
+              tr
+                td
+                  | 年龄
+                td
+                  = @assignment.tester.tester_infors[0].age
+              tr
+                td
+                  | 居住地
+                td
+                  = @assignment.tester.tester_infors[0].livingplace
+              tr
+                td
+                  | 情感状况
+                td
+                  = @assignment.tester.tester_infors[0].emotional_status
+              tr
+                td
+                  | 教育程度
+                td
+                  = @assignment.tester.tester_infors[0].education
+              tr
+                td
+                  | 职业信息
+                td
+                  = @assignment.tester.tester_infors[0].profession 
+              tr
+                td
+                  | 兴趣爱好
+                td
+                  = @assignment.tester.tester_infors[0].interest.join(', ') 
+        .col-md-3
+          p
+            | 测试视频
+          .video-list
+            ul
+              - if @other_assignments && @other_assignments.try(:size) > 0
+                - @other_assignments.each do |assignment|
+                  li.available
+                    a href=("/projects/" + "#{@project.to_params}" + "/video/" + "#{assignment.to_params}")
+                      img src=("#{assignment.video}" + "?vframe/png/offset/0/w/480/h/200")
+                    i.fa.fa-play-circle.fa-4x
+              /- else
+                /li
+                  /a href="javascript: void(0)"
+                    /img
+                  /i.fa.fa-play-circle.fa-4x

@@ -20,6 +20,10 @@ class Stores::BaseController < ApplicationController
 
   end
 
+  def help
+    render '/stores/help'
+  end
+
   def authenticate
     authenticate_or_request_with_http_basic do |username, password|
       username == "#{Settings.admin_username}" && password == "#{Settings.password}"

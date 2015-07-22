@@ -14,11 +14,18 @@ $(function () {
   var goodVm = new Vue({
     el: '#good',
     data: {
-
+      showAddr: false,
+      error: {
+        name: false,
+        phone: false,
+        addr: false
+      },
+      setAddr: true
     },
     methods: {
       toggleGallery: toggleGallery,
-      exchange: exchange
+      exchange: exchange,
+      checkValue: checkValue
     }
   });
 
@@ -28,13 +35,72 @@ $(function () {
     event.target.className += 'good-selected';
   }
 
-  function exchange(id, price, score) {
+  function exchange(vm) {
+    var id = vm.id,
+        score = vm.score,
+        price = vm.price;
     if(score < price) {
       $('#score-hint').modal();
       return false;
+    } else if(!vm.showAddr) {
+      checkStock(vm, function (vm) {
+        getAddr(vm, function(vm, data) {
+          showAddrForm(vm, data); 
+        });
+      });
     } else {
-      sendExchange(id);
+      checkStock(vm, function (vm) {
+        sendExchange(vm.id);
+      });
+      console.log(vm.name, vm.phone, vm.addr, vm.setAddr);
+      //sendExchange(id);
     }
+  }
+
+  function getAddr (vm, callback) {
+    var url = '';
+    console.log('getAddr executed');
+    callback(vm)
+    //$.ajax({
+      //url: url
+    //})
+    //.done(function (data) {
+      //if(data) {
+        //callback(vm, data);
+      //}
+    //})
+    //.error(function (errors) {
+      //console.log(errors);
+    //});
+  }
+
+  function showAddrForm (vm, addrInfo) {
+    console.log(!!addrInfo);
+    if(addrInfo) {
+      vm.name = addrInfo.name;
+      vm.phone = addrInfo.phone;
+      vm.addr = addrInfo.addr;
+    }
+    vm.showAddr = true;
+  }
+
+  function checkStock (vm, callback) {
+    var url = '';
+    console.log('checkStock executed');
+    callback(vm);
+    //$.ajax({
+      //url: url,
+    //}) 
+    //.done(function (data) {
+      //if(data.statu === 0 && data.code === 1) {
+        //callback(vm); 
+      //} else {
+        //// 提示库存不足
+      //}
+    //})
+    //.error(function (errors) {
+      //console.log(errors);
+    //});
   }
 
   function sendExchange (goodId) {
@@ -78,5 +144,33 @@ $(function () {
     .error(function (errors) {
       console.log(errors);
     });
+  }
+
+  function checkValue (vm, modelName, type, value, length) {
+    if (!value) {
+      // 没有输入时不作检测
+      return false;
+    }
+    if (!valid(type, value, length)) {
+      vm.error[modelName] = true;
+    } else {
+      vm.error[modelName] = false; 
+    }
+  }
+
+  function valid (type, value, length) {
+    var result = true;
+    switch(type) {
+      case 'length':
+        if (value.length > length) {
+          result = false;
+        }
+      break;
+      case 'phone':
+        var mobileReg = /^1[3|5|7|8][0-9]{9}$/;
+        result = mobileReg.test(value);
+      break;
+    }
+    return result;
   }
 });

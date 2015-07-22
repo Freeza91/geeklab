@@ -2,18 +2,21 @@ main role="role"
   section
     .container
       .linear-guide
-        .item
+        .item index="1"
           .info
             | 注册 & 登录
-        .item
+        .item index="2"
           .info
             | 正式上任前，请先完成一个扫描问答吧
-        .item
+        .item index="3"
           .info
             | 完成新手任务，完成「新手任务」，斩获第一笔积分，正式成为体验师
-        .item
+        .item index="4"
           .info
             | 持续完成更多有趣的任务，加速赚取积分
-        .item
+        .item index="5"
           .info
             | 尽情兑换各式大礼吧！
+      div style="text-align: center"
+        a.btn.btn-base.btn-m.btn-rounded href=get_assignment_url(current_user)
+          | 现在就去

@@ -16,13 +16,17 @@ $(function () {
     //url: '/assets/cityselect_data.min',
     url: cityData,
     nodata: 'none',
-    required: true
+    required: true,
+    prov: '北京',
+    city: '北京'
   });
   $('#livingplace').citySelect({
     //url: '/assets/cityselect_data.min',
     url: cityData,
     nodata: 'none',
-    required: true
+    required: true,
+    prov: '北京',
+    city: '北京'
   });
 
   // profession select init
@@ -127,7 +131,10 @@ $(function () {
     // 不知道为什么不能从 professionselect_data.js中获取数据
     url: profession,
     nodata: 'none',
-    required: true
+    required: true,
+    prov: '信息技术',
+    city: '互联网'
+
   });
 
   // 感情状况， 性取向, 教育程度， 收入 init
@@ -166,7 +173,7 @@ $(function () {
   $('#emotion').citySelect({
     url: emotionData,
     nodata: 'none',
-    required: true
+    required: true,
   });
   $('#sex_orientation').citySelect({
     url: sexOrientationData,

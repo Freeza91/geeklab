@@ -40,7 +40,7 @@ $(function () {
       return false;
     }
     checkGoodStatus(vm, function (vm, data) {
-      if (!vm.virtual && !vm.showAddr) {
+      if (vm.virtual === 'false' && !vm.showAddr) {
         // 不是虚拟商品时填写地址
         showAddrForm(vm, data.address);
       } else {

@@ -3,58 +3,58 @@ $(function () {
     return false;
   }
 
-  var ordersVm = new Vue({
-    el: 'orders',
-    data: {
-      page: 1,
-      orders: []
-    },
-    methods: {
-      prevPage: prevPage,
-      nextPage: nextPage
-    }
-  });
-  function prevPage (vm) {
-    vm.page--;
-    getGoodPagin(vm.page);
-  }
+  //var ordersVm = new Vue({
+    //el: 'orders',
+    //data: {
+      //page: 1,
+      //orders: []
+    //},
+    //methods: {
+      //prevPage: prevPage,
+      //nextPage: nextPage
+    //}
+  //});
+  //function prevPage (vm) {
+    //vm.page--;
+    //getGoodPagin(vm.page);
+  //}
 
-  function nextPage (vm) {
-    vm.page++;
-    getGoodPagin(vm.page);
-  }
+  //function nextPage (vm) {
+    //vm.page++;
+    //getGoodPagin(vm.page);
+  //}
 
-  function getOrderPaging (page, callback) {
-    var url = '/stores/orders',
-        cacheKey = 'page' + page;
+  //function getOrderPaging (page, callback) {
+    //var url = '/stores/orders',
+        //cacheKey = 'page' + page;
 
-    // 先检查缓存
-    if(localStorage.hasOwnProperty(cacheKey)) {
-      console.log('fetch data from localStorage');
-      ordersVm.goods = JSON.parse(localStorage[cacheKey]);
-    } else {
-      console.log('fetch data from server');
-      $.ajax({
-        url: url,
-        dataType: 'json',
-        data: {
-          page: page,
-        }
-      })
-      .done(function (data) {
-        if(data.status === 0 && data.code === 1) {
-          ordersVm.goods = data.goods;
-          // 将数据缓存在localStorage
-          localStorage['page' + page] = JSON.stringify(data.goods);
-        }
-      })
-      .error(function (errors) {
-        console.log(errors);
-      });
-    }
-  }
-  // 获取第一页
-  getOrderPaging(1);
+    //// 先检查缓存
+    //if(localStorage.hasOwnProperty(cacheKey)) {
+      //console.log('fetch data from localStorage');
+      //ordersVm.goods = JSON.parse(localStorage[cacheKey]);
+    //} else {
+      //console.log('fetch data from server');
+      //$.ajax({
+        //url: url,
+        //dataType: 'json',
+        //data: {
+          //page: page,
+        //}
+      //})
+      //.done(function (data) {
+        //if(data.status === 0 && data.code === 1) {
+          //ordersVm.goods = data.goods;
+          //// 将数据缓存在localStorage
+          //localStorage['page' + page] = JSON.stringify(data.goods);
+        //}
+      //})
+      //.error(function (errors) {
+        //console.log(errors);
+      //});
+    //}
+  //}
+  //// 获取第一页
+  //getOrderPaging(1);
 
   var $curOrder,
       orderId;
@@ -85,7 +85,7 @@ $(function () {
     }) 
     .done(function (data) {
       if(data.msg !== '') {
-        callback(data.msg, 'virtual');
+        callback(data.msg, data.virtual);
       }
     })
     .error(function (errors) {
@@ -93,13 +93,13 @@ $(function () {
     });
   }
 
-  function showCardInfo(info, type) {
+  function showCardInfo(info, virtual) {
     var info = info.split('&'),
         $modal = $('#order-detail');
 
     $modal.find('.card-id').text(info[0]);
     $modal.find('.card-pass').text(info[1]);
-    if(type === 'virtual') {
+    if(virtual) {
       $modal.find('.good-virtual').show();
       $modal.find('.good-reality').hide();
     } else {

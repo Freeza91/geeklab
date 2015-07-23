@@ -59,11 +59,13 @@ class Stores::OrdersController < Stores::BaseController
     if order
       if order.virtual?
         json[:msg] = Sku.find_by(id: $hashids.encode(order.sku.try(:id))).try(:addition)
+        json[:virtual] = true
       else
         json[:msg] = order.address.try(:addition)
+        json[:virtual] = false
       end
     else
-      json = { status: 0, code: 0, msg:  '这个订单不存在！' }
+      json = { status: 0, code: 0, msg:  '这个订单不存在!' }
     end
 
     render json: json

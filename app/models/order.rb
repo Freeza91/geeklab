@@ -29,10 +29,12 @@ class Order < ActiveRecord::Base
   def to_json
     {
       id: self.to_params,
+      created_at: created_at.strftime('%F'),
       order_num: order_id,
+      cost: self.good.cost,
       good_id: self.to_params(self.good_id),
       good_name: self.good.name,
-      good_pic: self.good.pictures.first.url.try(:url)
+      good_pic: self.good.pictures.first.url.try(:url),
     }
   end
 end

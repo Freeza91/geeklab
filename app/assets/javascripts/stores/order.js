@@ -3,97 +3,96 @@ $(function () {
     return false;
   }
 
-  //var ordersVm = new Vue({
-    //el: 'orders',
-    //data: {
-      //page: 1,
-      //orders: []
-    //},
-    //methods: {
-      //prevPage: prevPage,
-      //nextPage: nextPage
-    //}
-  //});
-  //function prevPage (vm) {
-    //vm.page--;
-    //getGoodPagin(vm.page);
-  //}
-
-  //function nextPage (vm) {
-    //vm.page++;
-    //getGoodPagin(vm.page);
-  //}
-
-  //function getOrderPaging (page, callback) {
-    //var url = '/stores/orders',
-        //cacheKey = 'page' + page;
-
-    //// 先检查缓存
-    //if(localStorage.hasOwnProperty(cacheKey)) {
-      //console.log('fetch data from localStorage');
-      //ordersVm.goods = JSON.parse(localStorage[cacheKey]);
-    //} else {
-      //console.log('fetch data from server');
-      //$.ajax({
-        //url: url,
-        //dataType: 'json',
-        //data: {
-          //page: page,
-        //}
-      //})
-      //.done(function (data) {
-        //if(data.status === 0 && data.code === 1) {
-          //ordersVm.goods = data.goods;
-          //// 将数据缓存在localStorage
-          //localStorage['page' + page] = JSON.stringify(data.goods);
-        //}
-      //})
-      //.error(function (errors) {
-        //console.log(errors);
-      //});
-    //}
-  //}
-  //// 获取第一页
-  //getOrderPaging(1);
-
-  var $curOrder,
-      orderId;
-  
-  $('.order-item .delete').on('click', function () {
-    $curOrder = $(this).parents('.order-item');
-    orderId = $curOrder.data('id');
-    $('#order-delete').modal();
+  var ordersVm = new Vue({
+    el: '#orders',
+    data: {
+      page: 1,
+      orders: [],
+    },
+    methods: {
+      prevPage: prevPage,
+      nextPage: nextPage,
+      showDetail: showDetail,
+      deleteOrder: deleteOrder
+    }
   });
+  function prevPage (vm) {
+    vm.page--;
+    getGoodPagin(vm.page);
+  }
 
-  $('.order-item .detail').on('click', function () {
-    var id = $(this).data('id');
-    //var id = 2;
-    getCardInfo(id, showCardInfo);
-  });
+  function nextPage (vm) {
+    vm.page++;
+    getGoodPagin(vm.page);
+  }
 
-  $('#order-delete .confirm').on('click', function () {
-   //删除订单
-    $('#order-delete').modal('hide');
-    deleteOrder(orderId, function () {
-      $curOrder.remove();
-    });
-  });
+  function getOrderPaging (page, callback) {
+    var url = '/stores/orders',
+        cacheKey = 'page' + page;
 
-  function getCardInfo (id, callback) {
     $.ajax({
-      url: '/stores/orders/' + id
-    }) 
+      url: url,
+      dataType: 'json',
+      data: {
+        page: page,
+      }
+    })
     .done(function (data) {
-      if(data.msg !== '') {
-        callback(data.msg, data.virtual);
+      if(data.status === 0 && data.code === 1) {
+        ordersVm.orders = data.orders;
       }
     })
     .error(function (errors) {
       console.log(errors);
     });
   }
+  // 获取第一页
+  getOrderPaging(1);
 
-  function showCardInfo(info, virtual) {
+  var $curOrder,
+      orderId;
+  
+  $('#order-delete .confirm').on('click', function () {
+   //删除订单
+    $('#order-delete').modal('hide');
+    sendDeleteOrderRequest (orderId, function () {
+      $curOrder.remove();
+    });
+  });
+
+  function showDetail (order) {
+    var orderId = order.id;
+    getOrderInfo(orderId, function (data) {
+      if (data.msg) {
+        showOrderInfo(data.msg, data.virtual);
+      } else {
+        // todo 暂无物流信息提醒
+        console.log('暂无物流信息');
+      }
+    });
+  }
+  
+  function deleteOrder (order, event) {
+    orderId = order.id;
+    $curOrder  = $(event.target).parents('.order-item');
+    $('#order-delete').modal();
+  }
+
+  function getOrderInfo (id, callback) {
+    var url =  '/stores/orders/' + id
+
+    $.ajax({
+      url: '/stores/orders/' + id
+    }) 
+    .done(function (data) {
+      callback(data);
+    })
+    .error(function (errors) {
+      console.log(errors);
+    });
+  }
+
+  function showOrderInfo(info, virtual) {
     var info = info.split('&'),
         $modal = $('#order-detail');
 
@@ -109,7 +108,7 @@ $(function () {
     $modal.modal();
   }
 
-  function deleteOrder(id, callback) {
+  function sendDeleteOrderRequest(id, callback) {
     $.ajax({
       url: '/stores/orders/' + id,
       method: 'delete'
@@ -123,6 +122,5 @@ $(function () {
       console.log(errors);
     });
   }
-
 
 });

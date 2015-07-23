@@ -27,29 +27,29 @@ $(function () {
           cacheKey = 'page' + page;
 
       // 先检查缓存
-      if(localStorage.hasOwnProperty(cacheKey)) {
-        console.log('fetch data from localStorage');
-        indexVm.goods = JSON.parse(localStorage[cacheKey]);
-      } else {
-        console.log('fetch data from server');
-        $.ajax({
-          url: url,
-          dataType: 'json',
-          data: {
-            page: page,
-          }
-        })
-        .done(function (data) {
-          if(data.status === 0 && data.code === 1) {
-            indexVm.goods = data.goods;
-            // 将数据缓存在localStorage
-            localStorage['page' + page] = JSON.stringify(data.goods);
-          }
-        })
-        .error(function (errors) {
-          console.log(errors);
-        });
-      }
+      //if(localStorage.hasOwnProperty(cacheKey)) {
+        //console.log('fetch data from localStorage');
+        //indexVm.goods = JSON.parse(localStorage[cacheKey]);
+      //} else {
+        //console.log('fetch data from server');
+      $.ajax({
+        url: url,
+        dataType: 'json',
+        data: {
+          page: page,
+        }
+      })
+      .done(function (data) {
+        if(data.status === 0 && data.code === 1) {
+          indexVm.goods = data.goods;
+          // 将数据缓存在localStorage
+          localStorage['page' + page] = JSON.stringify(data.goods);
+        }
+      })
+      .error(function (errors) {
+        console.log(errors);
+      });
+      //}
     }
     // 获取商品列表第一页
     getGoodPaging(1);

@@ -83,6 +83,8 @@ main role="main"
   <!-- 未登录提示 -->
   = render "stores/modals/login_hint"
 - if @good
+  <!-- 库存不足提示 -->
+  = render "stores/modals/stock_hint"
   <!-- 积分不足提示 -->
   = render "stores/modals/score_hint"
   <!-- 兑换成功 -->

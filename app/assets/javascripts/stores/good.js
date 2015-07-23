@@ -36,25 +36,23 @@ $(function () {
   }
 
   function exchange(vm) {
-    var id = vm.id,
-        score = vm.score,
-        price = vm.price;
-    if(score < price) {
-      $('#score-hint').modal();
+    if(!$(event.target).hasClass('exchange')) {
       return false;
-    } else if(!vm.showAddr) {
-      checkStock(vm, function (vm) {
-        getAddr(vm, function(vm, data) {
-          showAddrForm(vm, data); 
-        });
-      });
-    } else {
-      checkStock(vm, function (vm) {
-        sendExchange(vm.id);
-      });
-      console.log(vm.name, vm.phone, vm.addr, vm.setAddr);
-      //sendExchange(id);
     }
+    var price = vm.price;
+    checkScore(vm, function(vm) {
+      checkStock(vm, function(vm) {
+        if (!vm.showAddr) {
+          // 填写地址
+          getAddr(vm, function(vm, data) {
+            showAddrForm(vm, data);
+          });
+        } else {
+          // 生成订单
+          sendExchange(vm.id);
+        }
+      });
+    });
   }
 
   function getAddr (vm, callback) {
@@ -84,6 +82,26 @@ $(function () {
     vm.showAddr = true;
   }
 
+  function checkScore (vm, callback) {
+    var url = '';
+    console.log('checkScore executed')
+    callback(vm);
+    //$.ajax({
+      //url: url
+    //})
+    //.done(function (data) {
+      //if (score > price) {
+        //// 积分充足
+        //callback(data);
+      //} else {
+        //// 提示积分不够
+        //$('#score-hint').modal();
+      //}
+    //})
+    //.error(function (errors) {
+
+    //});
+  }
   function checkStock (vm, callback) {
     var url = '';
     console.log('checkStock executed');
@@ -95,7 +113,8 @@ $(function () {
       //if(data.statu === 0 && data.code === 1) {
         //callback(vm); 
       //} else {
-        //// 提示库存不足
+        // 提示库存不足
+        // $('#stock-hint').modal();
       //}
     //})
     //.error(function (errors) {
@@ -104,6 +123,10 @@ $(function () {
   }
 
   function sendExchange (goodId) {
+    console.log('sendExchange executed');
+    console.log('goodId: ', goodId);
+    return false;
+
     var order = {
       good_id: goodId
     };

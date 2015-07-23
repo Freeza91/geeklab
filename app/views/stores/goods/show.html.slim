@@ -56,7 +56,7 @@ main role="main"
                   .form-field v-class="error.name ? 'error': ''" style="width: 48%; float: left; margin-right: 4%"
                     input.form-input type="text" placeholder="收件人" v-model="name" v-on="blur: checkValue(this, 'name', 'length', name, 20)"
                   .form-field v-class="error.phone ? 'error': ''" style="width: 48%; float: left"
-                    input.form-input type="password" placeholder="手机" v-model="phone" v-on="blur: checkValue(this, 'phone', 'phone', phone )"
+                    input.form-input type="text" placeholder="手机" v-model="phone" v-on="blur: checkValue(this, 'phone', 'phone', phone )"
                   .form-field v-class="error.addr ? 'error': ''"
                     input.form-input type="text" placeholder="地址" v-model="addr" v-on="blur: checkValue(this, 'addr', 'length', addr, 50 )"
                   .form-field

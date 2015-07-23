@@ -66,8 +66,7 @@ $(function () {
       if (data.msg) {
         showOrderInfo(data.msg, data.virtual);
       } else {
-        // todo 暂无物流信息提醒
-        console.log('暂无物流信息');
+        $('#express-hint').modal();
       }
     });
   }

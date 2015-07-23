@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   end
 
   has_many :orders
+  has_many :addresses
 
   after_update :deliver_approved_email
   before_save { self.email = email.to_s.downcase }

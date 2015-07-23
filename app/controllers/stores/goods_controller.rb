@@ -57,6 +57,18 @@ class Stores::GoodsController < Stores::BaseController
     render json: json
   end
 
+  def lookup
+    json = { status: 0, code: 1, msg: '可以下订单' }
+
+    good = Good.find_by(id: params[:id])
+    unless good || good.stock > 0
+      json['code'], json['msg'] = 0, '库存不足'
+    end
+
+    render json: json
+
+  end
+
 private
 
   def good_params

@@ -31,7 +31,7 @@ $(function () {
     }) 
     .done(function (data) {
       if(data.msg !== '') {
-        callback(data.msg);
+        callback(data.msg, 'virtual');
       }
     })
     .error(function (errors) {
@@ -39,11 +39,20 @@ $(function () {
     });
   }
 
-  function showCardInfo(info) {
-    var info = info.split('&');
-    $('#order-detail').find('.card-id').text(info[0]);
-    $('#order-detail').find('.card-pass').text(info[1]);
-    $('#order-detail').modal();
+  function showCardInfo(info, type) {
+    var info = info.split('&'),
+        $modal = $('#order-detail');
+
+    $modal.find('.card-id').text(info[0]);
+    $modal.find('.card-pass').text(info[1]);
+    if(type === 'virtual') {
+      $modal.find('.good-virtual').show();
+      $modal.find('.good-reality').hide();
+    } else {
+      $modal.find('.good-reality').show();
+      $modal.find('.good-virtual').hide();
+    }
+    $modal.modal();
   }
 
   function deleteOrder(id, callback) {

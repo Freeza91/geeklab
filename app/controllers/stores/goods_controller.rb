@@ -39,7 +39,6 @@ class Stores::GoodsController < Stores::BaseController
 
     render text: good
 
-    # render json: json
   end
 
   def edit
@@ -55,6 +54,27 @@ class Stores::GoodsController < Stores::BaseController
     end
 
     render json: json
+  end
+
+  def lookup
+    json = { status: 0, code: 1, msg: '可以下订单' }
+
+    unless current_user
+      json['code'], json['msg'] = 0, '需要登录才能继续'
+      return render json: json
+    end
+
+    good = Good.find_by(id: params[:id])
+    if good && good.stock > 0
+      unless good.virtual?
+        json['address'] = current_user.addresses.first.to_json
+      end
+    else
+      json['code'], json['msg'] = 0, '库存不足'
+    end
+
+    render json: json
+
   end
 
 private

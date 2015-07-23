@@ -77,7 +77,8 @@ Rails.application.routes.draw do
         post 'new',  to: 'goods#save_picture'
       end
       member do
-        post 'edit', to: 'goods#save_picture'
+        get 'lookup', to: 'goods#lookup'
+        post 'edit',  to: 'goods#save_picture'
       end
 
       resources :skus

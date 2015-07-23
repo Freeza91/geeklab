@@ -34,7 +34,7 @@ module QiniuAbout
       assignment = Assignment.find_by(id: params[:assignment_id])
       if assignment.try(:tester_id) == tester.id
         video = "http://" + Settings.qiniu_bucket_domain + "/" + params[:key_name].to_s
-        assignment.update_attributes(video: video, status: "wait_check")
+        assignment.update_attributes(video: video, status: "wait_check", is_transfer: false)
         json[:code] = 1
         json[:video] = video
         json[:msg] = '上传文件成功'
@@ -109,7 +109,7 @@ private
       callbackUrl: callbackUrl,
       callbackBody: "auth_token=#{auth_token}&key_name=#{key_name}&assignment_id=#{id}",
       deadline: 1.days.from_now.to_i,
-      persistentOps: "avthumb/mp4/vb/256k/wmImage/" + qiniu_encode("#{Settings.water_picture}") + "|saveas/" + qiniu_encode("#{Settings.qiniu_bucket}:copy-#{key_name}") ,
+      persistentOps: "avthumb/mp4/vb/512k/s/800x480/wmImage/" + qiniu_encode("#{Settings.water_picture}") + "/wmGravity/SouthWest" + "|saveas/" + qiniu_encode("#{Settings.qiniu_bucket}:copy-#{key_name}") ,
       persistentNotifyUrl: persistentNotifyUrl
     }
     Qiniu::Auth.generate_uptoken(put_policy)

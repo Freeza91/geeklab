@@ -60,17 +60,21 @@ class Stores::GoodsController < Stores::BaseController
     json = { status: 0, code: 1, msg: '可以下订单' }
 
     unless current_user
-      json['code'], json['msg'] = 0, '需要登录才能继续'
+      json['code'], json['msg'] = 1, '需要登录才能继续'
       return render json: json
     end
 
     good = Good.find_by(id: params[:id])
-    if good && good.stock > 0
-      unless good.virtual?
-        json['address'] = current_user.addresses.first.to_json
+    if good
+      if current_user.to_tester.credits < good.cost
+        json['code'], json['msg'] = 2, '积分不足' 
+      elsif good.stock > 0
+        unless good.virtual?
+          json['address'] = current_user.addresses.first
+        end
+      else
+        json['code'], json['msg'] = 3, '库存不足'
       end
-    else
-      json['code'], json['msg'] = 0, '库存不足'
     end
 
     render json: json

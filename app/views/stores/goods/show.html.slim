@@ -72,8 +72,7 @@ main role="main"
                   = get_good_status(@good.available, @good.status) 
             - if current_user
               input.hidden type="text" value="#{@good.to_params}" v-model="id"
-              input.hidden type="text" value="#{@good.cost}" v-model="price"
-              input.hidden type="text" value="#{current_user.to_tester.credits}" v-model="score"
+              input.hidden type="text" value="#{@good.virtual?}" v-model="virtual"
         - else
           p.bottom-hint
             span.icon.icon-outer-18

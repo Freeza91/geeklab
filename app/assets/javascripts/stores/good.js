@@ -20,7 +20,7 @@ $(function () {
         phone: false,
         addr: false
       },
-      setAddr: true
+      setAddr: true,
     },
     methods: {
       toggleGallery: toggleGallery,
@@ -39,97 +39,66 @@ $(function () {
     if(!$(event.target).hasClass('exchange')) {
       return false;
     }
-    var price = vm.price;
-    checkScore(vm, function(vm) {
-      checkStock(vm, function(vm) {
-        if (!vm.showAddr) {
-          // 填写地址
-          getAddr(vm, function(vm, data) {
-            showAddrForm(vm, data);
-          });
-        } else {
-          // 生成订单
-          sendExchange(vm.id);
-        }
-      });
+    checkGoodStatus(vm, function (vm, data) {
+      if (!vm.virtual && !vm.showAddr) {
+        // 不是虚拟商品时填写地址
+        showAddrForm(vm, data.address);
+      } else {
+        // 生成订单
+        var order = {
+          good_id: vm.id,
+          address: {
+            name: vm.name,
+            tel: vm.phone,
+            location: vm.addr,
+            is_save: vm.setAddr
+          }
+        };
+        createOrder(order);
+      }
     });
   }
 
-  function getAddr (vm, callback) {
-    var url = '';
-    console.log('getAddr executed');
-    callback(vm)
-    //$.ajax({
-      //url: url
-    //})
-    //.done(function (data) {
-      //if(data) {
-        //callback(vm, data);
-      //}
-    //})
-    //.error(function (errors) {
-      //console.log(errors);
-    //});
+  function checkGoodStatus (vm, callback) {
+    var url = '/stores/goods/' + vm.id + '/lookup'
+
+    $.ajax({
+      url: url
+    })
+    .done(function (data) {
+      if(data.status === 0) {
+        switch (data.code) {
+          case 1:
+            // 可以下订单
+            callback(vm, data);
+          break;
+          case 2:
+            // 积分不足
+            $('#score-hint').modal();
+          break;
+          case 3:
+            // 库存不足
+            $('#stock-hint').modal();
+          break;
+        }
+      }
+    })
+    .error(function (errors) {
+      console.log(errors); 
+    })
   }
 
   function showAddrForm (vm, addrInfo) {
-    console.log(!!addrInfo);
     if(addrInfo) {
-      vm.name = addrInfo.name;
-      vm.phone = addrInfo.phone;
-      vm.addr = addrInfo.addr;
+      vm.$set('name', addrInfo.name);
+      vm.$set('phone', addrInfo.tel);
+      vm.$set('addr', addrInfo.location);
     }
     vm.showAddr = true;
   }
 
-  function checkScore (vm, callback) {
-    var url = '';
-    console.log('checkScore executed')
-    callback(vm);
-    //$.ajax({
-      //url: url
-    //})
-    //.done(function (data) {
-      //if (score > price) {
-        //// 积分充足
-        //callback(data);
-      //} else {
-        //// 提示积分不够
-        //$('#score-hint').modal();
-      //}
-    //})
-    //.error(function (errors) {
+  function createOrder (order) {
 
-    //});
-  }
-  function checkStock (vm, callback) {
-    var url = '';
-    console.log('checkStock executed');
-    callback(vm);
-    //$.ajax({
-      //url: url,
-    //}) 
-    //.done(function (data) {
-      //if(data.statu === 0 && data.code === 1) {
-        //callback(vm); 
-      //} else {
-        // 提示库存不足
-        // $('#stock-hint').modal();
-      //}
-    //})
-    //.error(function (errors) {
-      //console.log(errors);
-    //});
-  }
-
-  function sendExchange (goodId) {
-    console.log('sendExchange executed');
-    console.log('goodId: ', goodId);
-    return false;
-
-    var order = {
-      good_id: goodId
-    };
     $.ajax({
       url: '/stores/orders',
       method: 'post',
@@ -155,7 +124,7 @@ $(function () {
           break;
           case 2:
             // 库存不足 Todo
-            console.log('库存不足');
+            $('#stock-hint').modal();
           break;
           case 3:
             // 积分不够

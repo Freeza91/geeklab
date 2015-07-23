@@ -19,9 +19,12 @@ class Stores::OrdersController < Stores::BaseController
       sku = good.skus.can_sell.last
       if sku
         @order.sku_id = sku.id
+        address = @order.build_address(address_params)
+        address.user_id = current_user.id if save_address?
 
         ActiveRecord::Base.transaction do
           @order.save
+          address.save
           current_user.update_column(:credits, current_user.credits - good.cost)
           sku.update_column(:num, sku.num - 1) # skip inc_good_stock validate
           good.update_attributes(stock: good.stock - 1, used_num: good.used_num + 1 )
@@ -62,6 +65,15 @@ private
     opt = params.require(:order).permit(:good_id)
     opt[:good_id] = $hashids.decode(opt['good_id'])[0] if opt['good_id']
     opt
+  end
+
+  def address_params
+    params.require(:order).require(:address)
+          .permit(:name, :tel, :location)
+  end
+
+  def save_address?
+    params['order']['address']['is_save']
   end
 
 end

@@ -28,6 +28,11 @@ class Good < ActiveRecord::Base
     end
   end
 
+  def virtual?
+    return true if label == '充值卡'
+    false
+  end
+
   def to_json_with_pictures
     {
       id: self.to_params,

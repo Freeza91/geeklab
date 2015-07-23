@@ -26,4 +26,13 @@ class Order < ActiveRecord::Base
     false
   end
 
+  def to_json
+    {
+      id: self.to_params,
+      order_num: order_id,
+      good_id: self.to_params(self.good_id),
+      good_name: self.good.name,
+      good_pic: self.good.pictures.first.url.try(:url)
+    }
+  end
 end

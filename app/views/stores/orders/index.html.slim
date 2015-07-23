@@ -10,7 +10,7 @@ main role="main"
           a.btn.btn-base-reverse.btn-rounded.btn-s href=stores_root_path
             | 去兑换
       - else
-        .order-list
+        .order-list#orders
           table.order-table
             colgroup
               col.good
@@ -24,6 +24,31 @@ main role="main"
                   | 单价(积分) 
                 th
                   | 操作
+            /tbody.order-item v-repeat="order: orders" v-attr="data-id: order.id"
+              /tr.gap-row
+              /tr.order-header
+                /td
+                  /span.dealtime
+                    /| {{order.created_at}}
+                  /span.order-id.color-gray
+                    /| 订单号:&nbsp{{order.order_id}}
+                /td
+                /td
+                  /span.delete data-toggle="modal"
+                    /| &times
+              /tr.order-content
+                /td.good
+                  /a.pic v-attr="href: order.good_url" target="_blank"
+                    /img v-attr="src: order.good_pic"
+                  /a.name v-attr="href: order.good_url" target="_blank"
+                    /| {{order.good_name}}
+                /td.price
+                  /span.icon-img.icon-outer-18 style="margin: 0 10px -4px 0"
+                    /i.icon-inner.icon-score
+                  /| {{order.cost}}
+                /td
+                  /button.btn.btn-base-reverse.btn-rounded.btn-s.detail v-attr="data-id: order.id"
+                    /| 详情
             - @orders.each do |order|
               tbody.order-item data-id="#{order.to_params}"
                 tr.gap-row

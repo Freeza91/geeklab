@@ -3,7 +3,20 @@ class Stores::OrdersController < Stores::BaseController
   before_action :require_login?
 
   def index
-    @orders = current_user.orders.includes(:good).page(params[:page]).per(10)
+    @orders = current_user.orders.includes(:good).all
+    respond_to do |format|
+      format.html { render '/stores/orders/index' }
+      format.json do
+        json = { status: 0, code: 1, orders:[] }
+
+        @orders = current_user.orders.includes(:good).page(params[:page]).per(9)
+        @orders.each do |order|
+          json[:orders] << order.to_json
+        end
+
+        render json: json
+      end
+    end
   end
 
   def create

@@ -13,9 +13,6 @@
 // base.js 登录，注册
 //= require stores/base
 
-// index.js 首页商品列表
-//= require stores/index
-
 // good.js 商品页相关操作
 //= require stores/good
 

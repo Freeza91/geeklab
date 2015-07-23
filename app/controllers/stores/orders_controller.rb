@@ -3,7 +3,7 @@ class Stores::OrdersController < Stores::BaseController
   before_action :require_login?
 
   def index
-    @orders = current_user.orders.includes(:good).all
+    @orders = current_user.orders.includes(:good).page(params[:page]).per(10)
   end
 
   def create
@@ -43,7 +43,15 @@ class Stores::OrdersController < Stores::BaseController
   def show
     json = { status: 0, code: 1, msg: '' }
     order = current_user.orders.find_by(id: params[:id])
-    json[:msg] = Sku.find_by(id: $hashids.encode(order.sku.try(:id))).try(:addition) if order
+    if order
+      if order.virtual?
+        json[:msg] = Sku.find_by(id: $hashids.encode(order.sku.try(:id))).try(:addition)
+      else
+        json[:msg] = order.address.try(:addition)
+      end
+    else
+      json = { status: 0, code: 0, msg:  '这个订单不存在！' }
+    end
 
     render json: json
 

@@ -20,4 +20,10 @@ class Order < ActiveRecord::Base
     "%.10s" % SecureRandom.uuid
   end
 
+  def virtual?
+    label = self.good.label
+    return true if label == '充值卡'
+    false
+  end
+
 end

@@ -199,6 +199,7 @@ $(function () {
     $form.find('.has-error').removeClass('has-error').find('.form-control-feedback').addClass('sr-only');
     // 表单是否通过验证的标志
     var valided = true;
+    var errorPosition;
 
     $infoSet.each(function(index,item) {
       var $item = $(item)
@@ -215,6 +216,7 @@ $(function () {
             infoName = $item.find('input').data('infoName');
             if(!textValid($el, infoName)) {
               valided = false;
+              errorPosition = updateErrorPosition($item.offset(), errorPosition);
             }
           }
         break;
@@ -223,6 +225,7 @@ $(function () {
           if(value === undefined) {
             $item.addClass('has-error').find('.form-control-feedback').removeClass('sr-only');
             valided = false;
+            errorPosition = updateErrorPosition($item.offset(), errorPosition);
           }
         break;
         case 'checkbox':
@@ -231,6 +234,7 @@ $(function () {
           if($item.hasClass('required') && $checkboxSet.length === 0) {
             $item.addClass('has-error').find('.form-control-feedback').removeClass('sr-only')
             valided = false;
+            errorPosition = updateErrorPosition($item.offset(), errorPosition);
           }
           $checkboxSet.each(function (index, checkbox) {
             value.push($(checkbox).val());
@@ -240,9 +244,9 @@ $(function () {
           $selectSet = $item.find('select');
           for(var i = 0; i < $selectSet.length; i++) {
             var $select = $($selectSet[i]);
-            console.log($select.val());
             if($select.val() === '') {
               valided = false;
+              errorPosition = updateErrorPosition($item.offset(), errorPosition);
               $item.addClass('has-error').find('.form-control-feedback').removeClass('sr-only');
               break;
             } else {
@@ -260,6 +264,9 @@ $(function () {
 
     console.log(valided);
     if(!valided) {
+      // 滚动到最高处的错误位置
+      scrollToErrorArea(errorPosition);
+      errorPosition = undefined;
       return false;
     }
 
@@ -334,4 +341,26 @@ $(function () {
       $modal.modal();
   }
   showHint();
+
+  function updateErrorPosition (newErrorPosition, errorPosition) {
+    if (errorPosition) {
+      if (newErrorPosition.top < errorPosition.top) {
+        return newErrorPosition;
+      } else {
+        return errorPosition;
+      }
+    } else {
+      return newErrorPosition;
+    }
+  }
+
+  function scrollToErrorArea (errorPosition) {
+    var errorTop = errorPosition.top,
+        windowVerticalCenter = $(window).height() / 2;
+    if (errorTop < windowVerticalCenter) {
+      $(window).scrollTop(0);
+    } else {
+      $(window).scrollTop(errorTop - windowVerticalCenter);
+    }
+  }
 });

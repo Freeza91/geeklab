@@ -84,7 +84,7 @@ $(function () {
       }
     })
     .error(function (errors) {
-      console.log(errors); 
+      console.log(errors);
     })
   }
 
@@ -146,7 +146,7 @@ $(function () {
     if (!valid(type, value, length)) {
       vm.error[modelName] = true;
     } else {
-      vm.error[modelName] = false; 
+      vm.error[modelName] = false;
     }
   }
 

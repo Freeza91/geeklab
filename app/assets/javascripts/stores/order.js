@@ -51,7 +51,7 @@ $(function () {
 
   var $curOrder,
       orderId;
-  
+
   $('#order-delete .confirm').on('click', function () {
    //删除订单
     $('#order-delete').modal('hide');
@@ -70,7 +70,7 @@ $(function () {
       }
     });
   }
-  
+
   function deleteOrder (order, event) {
     orderId = order.id;
     $curOrder  = $(event.target).parents('.order-item');
@@ -82,7 +82,7 @@ $(function () {
 
     $.ajax({
       url: '/stores/orders/' + id
-    }) 
+    })
     .done(function (data) {
       callback(data);
     })

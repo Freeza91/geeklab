@@ -61,6 +61,8 @@ class Stores::OrdersController < Stores::BaseController
         json[:virtual] = true
       else
         json[:msg] = order.address.try(:addition)
+        p order.address.parse_status
+        json[:express_status] = order.address.parse_status
         json[:virtual] = false
       end
     else

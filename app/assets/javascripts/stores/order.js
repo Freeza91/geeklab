@@ -63,11 +63,7 @@ $(function () {
   function showDetail (order) {
     var orderId = order.id;
     getOrderInfo(orderId, function (data) {
-      if (data.msg) {
-        showOrderInfo(data.msg, data.virtual);
-      } else {
-        $('#express-hint').modal();
-      }
+      showOrderInfo(data);
     });
   }
 
@@ -91,16 +87,22 @@ $(function () {
     });
   }
 
-  function showOrderInfo(info, virtual) {
-    var info = info.split('&'),
+  function showOrderInfo(data) {
+    var info,
         $modal = $('#order-detail');
-
-    $modal.find('.card-id').text(info[0]);
-    $modal.find('.card-pass').text(info[1]);
-    if(virtual) {
+    if (data.msg) {
+      info = data.msg.split('&');
+      $modal.find('.card-id').text(info[0]);
+      $modal.find('.card-pass').text(info[1]);
+    } else {
+      $modal.find('.card-id').text('暂无');
+      $modal.find('.card-pass').text('暂无');
+    }
+    if(data.virtual) {
       $modal.find('.good-virtual').show();
       $modal.find('.good-reality').hide();
     } else {
+      $modal.find('.express-status').text(data.express_status);
       $modal.find('.good-reality').show();
       $modal.find('.good-virtual').hide();
     }

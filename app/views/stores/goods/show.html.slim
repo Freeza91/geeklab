@@ -53,22 +53,22 @@ main role="main"
               #user-addr style="padding-top: 40px" v-show="showAddr"
                 form.form
                   .form-field v-class="error.name ? 'error': ''" style="width: 48%; float: left; margin-right: 4%"
-                    input.form-input type="text" placeholder="收件人" v-model="name" v-on="blur: checkValue(this, 'name', 'length', name, 20)"
+                    input.form-input type="text" placeholder="姓名" v-model="name" v-on="blur: checkValue(this, 'name', 'length', name, 20)"
                   .form-field v-class="error.phone ? 'error': ''" style="width: 48%; float: left"
-                    input.form-input type="text" placeholder="手机" v-model="phone" v-on="blur: checkValue(this, 'phone', 'phone', phone )"
+                    input.form-input type="text" placeholder="手机号" v-model="phone" v-on="blur: checkValue(this, 'phone', 'phone', phone )"
                   .form-field v-class="error.addr ? 'error': ''"
-                    input.form-input type="text" placeholder="地址" v-model="addr" v-on="blur: checkValue(this, 'addr', 'length', addr, 50 )"
+                    input.form-input type="text" placeholder="收获地址" v-model="addr" v-on="blur: checkValue(this, 'addr', 'length', addr, 50 )"
                   .form-field
                     label.checkbox-inline
                       input type="checkbox" v-model="setAddr"
-                      | 设为默认地址
+                      | 设为我的常用地址
             .good-action
               - if !current_user
                 button.btn.btn-base-reverse.btn-rounded.btn-m data-toggle="modal" data-target="#login-hint"
                   | 立即兑换
               - else
-                button.btn.btn-base-reverse.btn-rounded.btn-m class=can_exchange(@good.available, @good.status) v-on="click: exchange(this)"
-                  = get_good_status(@good.available, @good.status) 
+                button.btn.btn-base-reverse.btn-rounded.btn-m class=can_exchange(@good.available, @good.status) v-on="click: exchange(this, $event)"
+                  = get_good_status(@good.available, @good.status)
             - if current_user
               input.hidden type="text" value="#{@good.to_params}" v-model="id"
               input.hidden type="text" value="#{@good.virtual?}" v-model="virtual"
@@ -76,7 +76,7 @@ main role="main"
           p.bottom-hint
             span.icon.icon-outer-18
               i.icon-inner.icon-flag
-            | 商品不存在 
+            | 商品不存在
 - if !current_user
   <!-- 未登录提示 -->
   = render "stores/modals/login_hint"

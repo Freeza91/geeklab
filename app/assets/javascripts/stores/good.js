@@ -35,15 +35,17 @@ $(function () {
     event.target.className += 'good-selected';
   }
 
-  function exchange(vm) {
+  function exchange(vm, event) {
     if(!$(event.target).hasClass('exchange')) {
       return false;
     }
+    event.target.innerText = '确认兑换'
     checkGoodStatus(vm, function (vm, data) {
       if (vm.virtual === 'false' && !vm.showAddr) {
         // 不是虚拟商品时填写地址
         showAddrForm(vm, data.address);
       } else {
+        // 检查地址输入
         // 生成订单
         var order = {
           good_id: vm.id,

@@ -6,7 +6,7 @@ html lang=session[:locale]
     meta charset="utf-8"
     = stylesheet_link_tag 'store', media: 'all'
     = csrf_meta_tags
-    / <!-- 在最后加载js -->
+    <!-- 在最后加载js -->
     = javascript_include_tag 'store'
 
   body class=(controller_name + ' ' + controller_name + '_' + action_name + ' ' + 'store')
@@ -28,5 +28,3 @@ html lang=session[:locale]
     - else
       <!-- 退出登录确认 -->
       = render "stores/modals/logout_hint"
-
-

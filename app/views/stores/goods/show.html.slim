@@ -8,8 +8,7 @@ main role="main"
               .good-gallery
                 .main-pic
                   input.hidden type="text" value="#{@good.pictures.first.url.url}" v-model="galleryMain"
-                  /img src=@good.pictures.first.url.url
-                  img src="{{galleryMain}}"
+                  img v-attr="src: galleryMain"
                 .gallery-thumb
                   ul.list-unstyled.list-inline
                     - @good.pictures.each_with_index do |picture, index|

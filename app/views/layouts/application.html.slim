@@ -1,14 +1,16 @@
 doctype html
 html lang=session[:locale]
-  head 
+  head
     title 极客实验室
     meta charset="utf-8"
     meta name="render" content="webkit"
     = stylesheet_link_tag 'application', media: 'all'
     = csrf_meta_tags
+    / <!-- 最后加载js文件 -->
+    = javascript_include_tag 'application'
 
   body class=(controller_name + ' ' + controller_name + '_' + action_name + ' ' + locale.to_s)
-    - if controller_name == 'testers' || controller_name == "assignments" 
+    - if controller_name == 'testers' || controller_name == "assignments"
       = render '/shared/header_tester'
     - if controller_name == "pms" || controller_name == 'projects'
       = render 'shared/header_pm'
@@ -31,6 +33,3 @@ html lang=session[:locale]
       <!-- 登陆框结束 -->
 
     = render '/shared/info_modal'
-
-    <!-- 最后加载js文件 -->
-    = javascript_include_tag 'application'

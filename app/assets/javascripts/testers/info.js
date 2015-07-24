@@ -6,7 +6,10 @@ $(function () {
   var birth = $('#birth').data('birth');
   $('#birth').dateSelect({
     startYear: 1980,
-    required: true
+    required: true,
+    year: 1980,
+    month: 1,
+    date: 1
   });
 
   // rails 中要怎么引用其他的js文件。

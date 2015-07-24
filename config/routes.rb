@@ -71,13 +71,14 @@ Rails.application.routes.draw do
 
   namespace :stores do
     root to: "base#index"
-
+    get 'help', to: 'base#help'
     resources :goods do
       collection do
         post 'new',  to: 'goods#save_picture'
       end
       member do
-        post 'edit', to: 'goods#save_picture'
+        get 'lookup', to: 'goods#lookup'
+        post 'edit',  to: 'goods#save_picture'
       end
 
       resources :skus

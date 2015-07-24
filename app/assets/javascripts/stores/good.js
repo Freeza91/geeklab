@@ -3,25 +3,102 @@ $(function () {
     return false;
   }
 
-  $('.exchange').on('click', function () {
-    var price = parseInt($(this).data('price')),
-        score = parseInt($(this).data('score')),
-        //id = parseInt($(this).data('id'));
-        id = $(this).data('id');
-    if(score < price) {
-      $('#score-hint').modal();
-      return false;
-    } else {
-      exchange(id);
+  $('#login-hint .confirm').on('click', showSignModal);
+
+  function showSignModal () {
+    $('.modal.in').modal('hide');
+    $('#sign').modal();
+  }
+
+
+  var goodVm = new Vue({
+    el: '#good',
+    data: {
+      showAddr: false,
+      error: {
+        name: false,
+        phone: false,
+        addr: false
+      },
+      setAddr: true,
+    },
+    methods: {
+      toggleGallery: toggleGallery,
+      exchange: exchange,
+      checkValue: checkValue
     }
   });
 
-  $('#login-hint .confirm').on('click', showSignModal);
+  function toggleGallery (picUrl, event) {
+    goodVm.galleryMain = picUrl;
+    $('.good-selected').removeClass('good-selected');
+    event.target.className += 'good-selected';
+  }
 
-  function exchange (goodId) {
-    var order = {
-      good_id: goodId
-    };
+  function exchange(vm) {
+    if(!$(event.target).hasClass('exchange')) {
+      return false;
+    }
+    checkGoodStatus(vm, function (vm, data) {
+      if (vm.virtual === 'false' && !vm.showAddr) {
+        // 不是虚拟商品时填写地址
+        showAddrForm(vm, data.address);
+      } else {
+        // 生成订单
+        var order = {
+          good_id: vm.id,
+          address: {
+            name: vm.name,
+            tel: vm.phone,
+            location: vm.addr,
+            is_save: vm.setAddr
+          }
+        };
+        createOrder(order);
+      }
+    });
+  }
+
+  function checkGoodStatus (vm, callback) {
+    var url = '/stores/goods/' + vm.id + '/lookup'
+
+    $.ajax({
+      url: url
+    })
+    .done(function (data) {
+      if(data.status === 0) {
+        switch (data.code) {
+          case 1:
+            // 可以下订单
+            callback(vm, data);
+          break;
+          case 2:
+            // 积分不足
+            $('#score-hint').modal();
+          break;
+          case 3:
+            // 库存不足
+            $('#stock-hint').modal();
+          break;
+        }
+      }
+    })
+    .error(function (errors) {
+      console.log(errors); 
+    })
+  }
+
+  function showAddrForm (vm, addrInfo) {
+    if(addrInfo) {
+      vm.$set('name', addrInfo.name);
+      vm.$set('phone', addrInfo.tel);
+      vm.$set('addr', addrInfo.location);
+    }
+    vm.showAddr = true;
+  }
+
+  function createOrder (order) {
+
     $.ajax({
       url: '/stores/orders',
       method: 'post',
@@ -47,7 +124,7 @@ $(function () {
           break;
           case 2:
             // 库存不足 Todo
-            console.log('库存不足');
+            $('#stock-hint').modal();
           break;
           case 3:
             // 积分不够
@@ -61,8 +138,31 @@ $(function () {
     });
   }
 
-  function showSignModal () {
-    $('.modal.in').modal('hide');
-    $('#sign').modal();
+  function checkValue (vm, modelName, type, value, length) {
+    if (!value) {
+      // 没有输入时不作检测
+      return false;
+    }
+    if (!valid(type, value, length)) {
+      vm.error[modelName] = true;
+    } else {
+      vm.error[modelName] = false; 
+    }
+  }
+
+  function valid (type, value, length) {
+    var result = true;
+    switch(type) {
+      case 'length':
+        if (value.length > length) {
+          result = false;
+        }
+      break;
+      case 'phone':
+        var mobileReg = /^1[3|5|7|8][0-9]{9}$/;
+        result = mobileReg.test(value);
+      break;
+    }
+    return result;
   }
 });

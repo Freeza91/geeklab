@@ -1,20 +1,21 @@
 main role="main"
   section
     .container
-      .row
+      #good.row
         - if @good
           .good-summary.clearfix
-            .col-md-6.col-sm-6
+            .col-md-6.col-sm-6.col-xs-6
               .good-gallery
                 .main-pic
-                  img src=@good.pictures.first.url.url
-                /.gallery-thumb
-                  /ul.list-unstyled.list-inline
-                    /li.good-selected
-                      /img src=image_path("logo/logo.png") data-src=image_path("banner/banner_index.png")
-                    /li
-                      /img src=image_path("logo/logo.png") data-src=image_path("banner/banner_index.png")
-            .col-md-6.col-sm-6
+                  input.hidden type="text" value="#{@good.pictures.first.url.url}" v-model="galleryMain"
+                  /img src=@good.pictures.first.url.url
+                  img src="{{galleryMain}}"
+                .gallery-thumb
+                  ul.list-unstyled.list-inline
+                    - @good.pictures.each_with_index do |picture, index|
+                      li v-on="mouseenter: toggleGallery('#{picture.url.url}', $event)"
+                        img src=picture.url.url
+            .col-md-6.col-sm-6.col-xs-6
               .good-info
                 .good-title
                   h3.good-main-title
@@ -50,13 +51,28 @@ main role="main"
                     = @good.describle
                   p.color-gray
                     | (最终解释权归 北京中明万长咨询管理有限公司 所有)
+              #user-addr style="padding-top: 40px" v-show="showAddr"
+                form.form
+                  .form-field v-class="error.name ? 'error': ''" style="width: 48%; float: left; margin-right: 4%"
+                    input.form-input type="text" placeholder="收件人" v-model="name" v-on="blur: checkValue(this, 'name', 'length', name, 20)"
+                  .form-field v-class="error.phone ? 'error': ''" style="width: 48%; float: left"
+                    input.form-input type="text" placeholder="手机" v-model="phone" v-on="blur: checkValue(this, 'phone', 'phone', phone )"
+                  .form-field v-class="error.addr ? 'error': ''"
+                    input.form-input type="text" placeholder="地址" v-model="addr" v-on="blur: checkValue(this, 'addr', 'length', addr, 50 )"
+                  .form-field
+                    label.checkbox-inline
+                      input type="checkbox" v-model="setAddr"
+                      | 设为默认地址
             .good-action
               - if !current_user
                 button.btn.btn-base-reverse.btn-rounded.btn-m data-toggle="modal" data-target="#login-hint"
                   | 立即兑换
               - else
-                button.btn.btn-base-reverse.btn-rounded.btn-m class=can_exchange(@good.available, @good.status) data-price=@good.cost data-score=current_user.to_tester.credits data-id=@good.to_params
+                button.btn.btn-base-reverse.btn-rounded.btn-m class=can_exchange(@good.available, @good.status) v-on="click: exchange(this)"
                   = get_good_status(@good.available, @good.status) 
+            - if current_user
+              input.hidden type="text" value="#{@good.to_params}" v-model="id"
+              input.hidden type="text" value="#{@good.virtual?}" v-model="virtual"
         - else
           p.bottom-hint
             span.icon.icon-outer-18
@@ -66,6 +82,8 @@ main role="main"
   <!-- 未登录提示 -->
   = render "stores/modals/login_hint"
 - if @good
+  <!-- 库存不足提示 -->
+  = render "stores/modals/stock_hint"
   <!-- 积分不足提示 -->
   = render "stores/modals/score_hint"
   <!-- 兑换成功 -->

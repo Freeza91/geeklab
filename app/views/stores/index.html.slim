@@ -29,8 +29,8 @@ main role='main'
           .item v-class="name-left: $index % 4 === 0 || $index
             % 4 === 3, name-right:  $index % 4 === 1 || $index
             % 4 === 2"
-            .name
-              span
+            .name.vertical-center
+              span.vertical-item
                 | {{good.name}}
             .img-g.img v-attr="style: 'background-image: url(' + good.pictures[1] + ')'"
             .img-s.img v-attr="style: 'background-image: url(' + good.pictures[2] + ')'"

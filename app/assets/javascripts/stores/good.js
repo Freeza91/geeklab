@@ -46,6 +46,14 @@ $(function () {
         showAddrForm(vm, data.address);
       } else {
         // 检查地址输入
+        checkAddr(vm);
+        var error = vm.error;
+        for(key in error) {
+          if(error.hasOwnProperty(key) && error[key]) {
+            // 检测不通过
+            return false;
+          }
+        }
         // 生成订单
         var order = {
           good_id: vm.id,
@@ -150,6 +158,13 @@ $(function () {
     } else {
       vm.error[modelName] = false;
     }
+  }
+
+  function checkAddr (vm) {
+    // 检测是否为空
+    vm.name ? '' : vm.error.name = true;
+    vm.phone ? '' : vm.error.phone = true;
+    vm.addr ? '' : vm.error.addr = true;
   }
 
   function valid (type, value, length) {

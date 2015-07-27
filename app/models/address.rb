@@ -8,7 +8,7 @@ class Address < ActiveRecord::Base
   def parse_status
     status = {
       'wait_send': '等待发货',
-      'sending': '发货中',
+      'sending': '正在配送',
       'send_success': '配送成功'
     }
     status[self.status.to_sym]

@@ -2,7 +2,7 @@ class Stores::GoodsController < Stores::BaseController
 
   skip_before_filter :verify_authenticity_token, only: :save_image
 
-  before_filter :authenticate, except: [:index, :show, :save_image]
+  before_filter :authenticate, except: [:index, :show, :save_image, :lookup]
 
   def index
     @goods = Good.display.includes(:pictures).page(params[:page]).per(30)
@@ -67,7 +67,7 @@ class Stores::GoodsController < Stores::BaseController
     good = Good.find_by(id: params[:id])
     if good
       if current_user.to_tester.credits < good.cost
-        json['code'], json['msg'] = 2, '积分不足' 
+        json['code'], json['msg'] = 2, '积分不足'
       elsif good.stock > 0
         unless good.virtual?
           json['address'] = current_user.addresses.first

@@ -15,7 +15,7 @@ a:visited
   text-decoration: none
 .color-gray
   color: #a0a0a0
-.color-yellow 
+.color-yellow
   color: #ffcc00
 
 /********************
@@ -38,7 +38,7 @@ a:visited
 .btn-base-reverse:hover
   background-color: #ffcc00
 .btn.disable
-  background-color: #a0a0a0 
+  background-color: #a0a0a0
   cursor: default
 .btn-base-reverse.highlight
   background-color: #ffcc00
@@ -61,7 +61,7 @@ a:visited
 /********************
  *      Nav
  *******************/
-.nav > li 
+.nav > li
   > a:hover,
   > a:active,
   > a:visited,
@@ -151,6 +151,19 @@ a:visited
   z-index: 5
   transition: all 1s ease
 
+// 垂直居中
+// 利用inline元素的vertical-align:middle属性
+.vertical-center
+  text-align: center
+  .vertical-item
+    display: inline-block
+    vertical-align: middle
+.vertical-center::after
+  content: ''
+  height: 100%
+  vertical-align: middle
+  display: inline-block
+
 /********************
  *      Form
  *******************/
@@ -158,6 +171,7 @@ a:visited
   margin-bottom: 50px
   .form-field
     margin-bottom: 15px
+    position: relative
   .form-field.submit
     margin-top: 40px
     text-align: center
@@ -201,6 +215,14 @@ a:visited
     margin-bottom: 7px
   .form-hint.error
     color: #e40909
+  .hint-text
+    position: absolute
+    right: 8px
+    top: 8px
+    background-color: #f00
+    color: #fff
+    padding: 0 2px
+    border-radius: 6px
 
 // placeholder 居中
 input::-ms-input-placeholder

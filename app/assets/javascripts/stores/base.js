@@ -1,9 +1,5 @@
 $(function () {
-  
-  // 页面内容不足时讲footer固定在底部
-  if($('body').height() < $(window).height()) {
-    $('.main-footer').addClass('fixed');
-  }
+
   // 初始化登录框
   if($('body').hasClass('store') && $('#sign').length > 0) {
     var loginVm = new Vue({
@@ -52,7 +48,7 @@ $(function () {
         $('#sign .triangle').removeClass('right').addClass('left');
       } else {
         $('#sign .triangle').removeClass('left').addClass('right');
-      } 
+      }
     });
   }
 
@@ -123,7 +119,7 @@ $(function () {
       if(data.status === 0){
         switch(data.code) {
           case 1:
-            // 注册成功 
+            // 注册成功
             location.reload();
           break;
           case 2:
@@ -153,7 +149,7 @@ $(function () {
       return false;
     }
     if(!formValid(vm.email, 'email')) {
-      vm.hint = '邮箱格式错误,请重新输入'; 
+      vm.hint = '邮箱格式错误,请重新输入';
       vm.error.regist = true;
       return false;
     }
@@ -176,7 +172,7 @@ $(function () {
     .done(function (data) {
       if(data.status === 0 && data.code === 1) {
         if(data.email) {
-          vm.mailbox = data.email 
+          vm.mailbox = data.email
         }
       }
     })
@@ -191,7 +187,7 @@ $(function () {
       case 'email':
         var emailReg = /^[0-9a-zA-Z_-]+@([0-9a-zA-Z]+.)+[a-zA-Z]$/;
         result = emailReg.test(value);
-      break; 
+      break;
       case 'password':
         var passwordReg = /[0-9a-zA-Z_]{6,16}/;
         result = passwordReg.test(value);

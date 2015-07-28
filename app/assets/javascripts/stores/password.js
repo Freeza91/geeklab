@@ -38,7 +38,7 @@ $(function () {
       case 'email':
         var emailReg = /^[0-9a-zA-Z_-]+@([0-9a-zA-Z]+.)+[a-zA-Z]$/;
         result = emailReg.test(value);
-      break; 
+      break;
       case 'password':
         var passwordReg = /[0-9a-zA-Z_]{6,16}/;
         result = passwordReg.test(value);
@@ -69,7 +69,7 @@ $(function () {
       vm.error = true;
       return false;
     }
-    
+
     vm.canSendEmail = false;
     vm.error = false;
     var intervalId = setInterval(function () {

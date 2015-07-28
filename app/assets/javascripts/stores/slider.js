@@ -30,7 +30,7 @@ $(function () {
   };
 
   var jssor_slider1 = new $JssorSlider$("slider", options);
-  
+
 
   //responsive code begin
   //you can remove responsive code if you don't want the slider scales while window resizes

@@ -35,15 +35,25 @@ $(function () {
     event.target.className += 'good-selected';
   }
 
-  function exchange(vm) {
+  function exchange(vm, event) {
     if(!$(event.target).hasClass('exchange')) {
       return false;
     }
+    event.target.innerText = '确认兑换'
     checkGoodStatus(vm, function (vm, data) {
       if (vm.virtual === 'false' && !vm.showAddr) {
         // 不是虚拟商品时填写地址
         showAddrForm(vm, data.address);
       } else {
+        // 检查地址输入
+        checkAddr(vm);
+        var error = vm.error;
+        for(key in error) {
+          if(error.hasOwnProperty(key) && error[key]) {
+            // 检测不通过
+            return false;
+          }
+        }
         // 生成订单
         var order = {
           good_id: vm.id,
@@ -84,7 +94,7 @@ $(function () {
       }
     })
     .error(function (errors) {
-      console.log(errors); 
+      console.log(errors);
     })
   }
 
@@ -146,8 +156,15 @@ $(function () {
     if (!valid(type, value, length)) {
       vm.error[modelName] = true;
     } else {
-      vm.error[modelName] = false; 
+      vm.error[modelName] = false;
     }
+  }
+
+  function checkAddr (vm) {
+    // 检测是否为空
+    vm.name ? '' : vm.error.name = true;
+    vm.phone ? '' : vm.error.phone = true;
+    vm.addr ? '' : vm.error.addr = true;
   }
 
   function valid (type, value, length) {

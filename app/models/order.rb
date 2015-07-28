@@ -37,4 +37,5 @@ class Order < ActiveRecord::Base
       good_pic: self.good.pictures.first.url.try(:url),
     }
   end
+
 end

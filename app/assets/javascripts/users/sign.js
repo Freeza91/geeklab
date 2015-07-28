@@ -9,14 +9,14 @@ $(function () {
     //}
     var form = $this.data('form');
     var $form = $this.parents('.modal').find(form);
- 
+
     // 获取表单数据
     var data = {};
     data.email = $form.find('[name="email"]').val();
     data.encrypted_password = $form.find('[name="encrypted_password"]').val();
     data.remember_me = $form.find('[name="remember_me"]').is(':checked');
     //data.role = getRole();
- 
+
     var valided = true;
     // 判断邮箱是否为空 && 格式是否正确
     if(data.email === '') {
@@ -24,7 +24,7 @@ $(function () {
       valided = false;
     } else {
       if(!formValid(data.email, 'email')) {
-        $form.find('.form-control-feedback[for="email"]').text('格式错误').parent().addClass('has-error');
+        $form.find('.form-control-feedback[for="email"]').text('邮箱格式错误').parent().addClass('has-error');
         valided = false;
       }
     }
@@ -68,7 +68,7 @@ $(function () {
   });
 
   $('button[name="regist"]').on('click', function (event) {
-    
+
     event.preventDefault();
 
     var $this = $(this);
@@ -77,7 +77,7 @@ $(function () {
     }
     var form = $this.data('form');
     var $form = $this.parents('.modal').find(form);
-    
+
     var user = {};
     user.email = $form.find('[name="email"]').val();
     user.code = $form.find('[name="code"]').val();
@@ -122,10 +122,10 @@ $(function () {
                 $form.children('.hint').text('验证码错误或已过期').slideDown();
               break;
             }
-          }  
+          }
         })
         .error(function(errors, status) {
-          console.log(data); 
+          console.log(data);
         });
       });
     }
@@ -170,7 +170,7 @@ $(function () {
     var $email = $('#form-regist').find('[name="email"]');
     if(!emailValid(email, $email)) {
         return false;
-    } else { 
+    } else {
       emailRegisted(email, $email, function () {
         $.ajax({
           url: '/users/mailers/send_confirmation',
@@ -200,18 +200,18 @@ $(function () {
           }
         })
         .error(function(errors, status) {
-          console.log(errors); 
+          console.log(errors);
         });
       });
     }
   });
-  
+
   // 注册邮箱是否可用的检测
   $('[type="email"]').on('blur', function () {
 
     var $this = $(this);
     var email = $this.val();
-    
+
     if(email === '') {
       return false;
     }
@@ -222,7 +222,7 @@ $(function () {
     }
   });
   $('#form-regist #password').on('blur', function () {
-    
+
     var $this = $(this);
     var password = $this.val();
 
@@ -337,7 +337,7 @@ $(function () {
       //case 'email':
         //var emailReg = /^[0-9a-zA-Z_-]+@([0-9a-zA-Z]+.)+[a-z]$/;
         //result = emailReg.test(value);
-      //break; 
+      //break;
       //case 'password':
         //var passwordReg = /[0-9a-zA-Z_]{6,16}/;
         //result = passwordReg.test(value);
@@ -361,7 +361,7 @@ $(function () {
       $form.find('button[type="submit"]').removeClass('btn-blue').addClass('btn-gray disabled');
     }
   }
-  
+
   // 翻转动画触发
   $('.flip-trigger').on('click', function () {
     var $flip = $($(this).data('target'));
@@ -399,7 +399,7 @@ $(function () {
   $('[name="send-email"]').on('click', function (event) {
 
     event.preventDefault();
-    
+
     var $this = $(this);
     if($this.hasClass('disabled')) {
       return false;
@@ -445,7 +445,7 @@ $(function () {
                 $this.text('发送邮件').removeClass('disabled btn-gray').addClass('btn-blue');
                 $form.find('.hind').addClass('hidden');
                 clearInterval(interval);
-              } 
+              }
             }
             var interval = setInterval(emailCountDown, 1000)
           break;
@@ -458,7 +458,7 @@ $(function () {
   });
 
   $('[name="reset"]').on('click', function (event) {
-    
+
     event.preventDefault();
 
     var $this = $(this);
@@ -474,7 +474,7 @@ $(function () {
     var passwordReg = /[0-9a-zA-Z_]{6,16}/;
 
     user.encrypted_password = $pwd.find('input').val();
-    
+
     if(user.encrypted_password === '') {
       $pwd.addClass('has-error').find('.form-control-feedback').text('请输入密码');
       return false;
@@ -498,11 +498,11 @@ $(function () {
           $('.info').find('.count').text(count--);
         } else {
           location.href = data.redirect_to;
-        }  
+        }
       }, 1000);
     })
     .error(function(errors, status) {
-      
+
     });
   });
 });

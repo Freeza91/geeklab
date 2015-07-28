@@ -29,28 +29,28 @@ main role='main'
           .item v-class="name-left: $index % 4 === 0 || $index
             % 4 === 3, name-right:  $index % 4 === 1 || $index
             % 4 === 2"
-            .name
-              span
+            .name.vertical-center
+              span.vertical-item
                 | {{good.name}}
             .img-g.img v-attr="style: 'background-image: url(' + good.pictures[1] + ')'"
             .img-s.img v-attr="style: 'background-image: url(' + good.pictures[2] + ')'"
-            a.btn.btn-base.btn-s.btn-rounded v-attr="href: '/stores/goods/' + good.id"
-              span 
+            a.btn.btn-base.btn-s.btn-rounded v-attr="href: '/stores/goods/' + good.id" target="_blank"
+              span
                 span.icon-img.icon-outer-18
                   i.icon-inner.icon-score
-                | {{good.cost}}                
+                | {{good.cost}}
               span 立即抢兑
         /- if @goods
-          /- @goods.each_with_index do |good, index| 
+          /- @goods.each_with_index do |good, index|
             /.col-md-6
               /.item class=get_name_class(index)
                 /.name
                   /span
-                    /= good.name 
+                    /= good.name
                 /.img-g.img style="background-image: url(#{good.pictures[1].url.url})"
                 /.img-s.img style="background-image: url(#{good.pictures[2].url.url})"
                 /a.btn.btn-base.btn-s.btn-rounded href=stores_good_path(good.to_params)
-                  /span 
+                  /span
                     /span.icon-img.icon-outer-18
                       /i.icon-inner.icon-score
                     /= good.cost.to_i

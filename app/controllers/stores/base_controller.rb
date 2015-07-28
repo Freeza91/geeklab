@@ -26,7 +26,7 @@ class Stores::BaseController < ApplicationController
 
   def authenticate
     authenticate_or_request_with_http_basic do |username, password|
-      username == "#{Settings.admin_username}" && password == "#{Settings.password}"
+      username == "#{Settings.admin_username}" && password == "#{Settings.admin_password}"
     end if Rails.env.production?
   end
 

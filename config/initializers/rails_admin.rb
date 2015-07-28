@@ -81,6 +81,7 @@ RailsAdmin.config do |config|
       field :is_sexy
       field :reasons, :pg_int_array
       field :is_read
+      field :beginner
       field :created_at
 
       field :comment

@@ -21,6 +21,7 @@ class Project < ActiveRecord::Base
   before_save { self.email = email.to_s.downcase }
   after_update :prepare_assign
   after_save :auto_update_status
+  after_save :set_expired_at
 
   mount_uploader :qr_code, QrCodeUploader
 
@@ -94,6 +95,10 @@ class Project < ActiveRecord::Base
 
   def is_beigner?
     !beginner
+  end
+
+  def set_expired_at
+    update_column(:expired_at, Time.now + 100.years) unless is_beigner?
   end
 
   def auto_update_status

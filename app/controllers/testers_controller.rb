@@ -46,6 +46,18 @@ class TestersController < ApplicationController
 
   def update
     json = { status: 0, code: 1, msg: '创建成功', url: testers_path }
+
+    if user = current_user
+      hashids = $hashids.encode(user.id)
+      unless hashids == params[:id]
+        json[:code], json[:msg] = 3, '没有权限'
+        return render json: json
+      end
+    else
+      json[:code], json[:msg] = 2, "没有登录"
+      return render json: json
+    end
+
     tester = Tester.find_by(id: params[:id])
     if tester && tester_infors = tester.tester_infors
       @tester_infor = tester_infors.last.tap &model_block

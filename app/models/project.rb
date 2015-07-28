@@ -24,7 +24,8 @@ class Project < ActiveRecord::Base
 
   mount_uploader :qr_code, QrCodeUploader
 
-  scope :success, -> { where(status: 'success') }
+  scope :success,           -> { where(status: 'success') }
+  scope :collect_beigning,  -> { where(beginner: true) }
 
   def to_json_with_tasks
     {
@@ -88,7 +89,11 @@ class Project < ActiveRecord::Base
 
   def prepare_assign
     StartAssignJob.perform_later(id) if status == 'success' &&
-                                        expired? && id != Project.first.id
+                                        expired? && is_beigner?
+  end
+
+  def is_beigner?
+    !beginner
   end
 
   def auto_update_status

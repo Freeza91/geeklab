@@ -23,7 +23,10 @@ class User < ActiveRecord::Base
   def deliver_approved_email
     task_url = "#{Settings.domain}/assignments"
     title = "你已经通过审核，正是成为一个测试用户"
-    UserMailer.novice_task_approved(email, title, task_url).deliver_later if approved && !approved_was
+    if approved && !approved_was
+      update_column(:approved_time, Time.now)
+      UserMailer.novice_task_approved(email, title, task_url).deliver_later
+    end
   end
 
 end

@@ -8,8 +8,8 @@ module QiniuAbout
                                             :callback_from_qiniu_transfer,
                                             :callback_from_qiniu_video_images]
 
-    skip_before_filter :verify_authenticity_token, :only => [:callback_from_qiniu,                                                       :callback_from_qiniu_transfer,
-                                                             :callback_from_qiniu_video_images]
+    # skip_before_filter :verify_authenticity_token, :only => [:callback_from_qiniu,                                                       :callback_from_qiniu_transfer,
+    #                                                          :callback_from_qiniu_video_images]
   end
 
   def upload_token

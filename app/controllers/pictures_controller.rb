@@ -1,6 +1,6 @@
 class PicturesController < ApplicationController
 
-  skip_before_filter :verify_authenticity_token, only: :create
+  # skip_before_filter :verify_authenticity_token, only: :create
 
   def create
     json = { status: 0, code: 1, msg: '上传成功', url: '' }

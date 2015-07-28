@@ -81,7 +81,6 @@ RailsAdmin.config do |config|
       field :is_sexy
       field :reasons, :pg_int_array
       field :is_read
-      field :beginner
       field :created_at
 
       field :comment
@@ -133,6 +132,7 @@ RailsAdmin.config do |config|
       field :qr_code
       field :reasons,           :pg_int_array
       field :assign_time
+      field :beginner
 
       field :tasks do
         orderable true

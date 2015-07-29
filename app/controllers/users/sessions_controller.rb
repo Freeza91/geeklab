@@ -8,7 +8,8 @@ class Users::SessionsController < ApplicationController
 
   def auth
     json = { status: 0, code: 1, msg: '', url: '' }
-    if limit_ip?("auth")
+    email = params[:email].to_s.downcase
+    if limit_ip?("auth:#{email}")
       json[:code], json[:url] = -1, root_path
       return render json: json
     end

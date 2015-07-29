@@ -1,36 +1,21 @@
-main role='main'
+main.with-top-bg role='main'
   section.content
     .container
-      .goods.clearfix
-        .col-md-6 v-repeat="good: goods"
-          .item v-class="name-left: $index % 4 === 0 || $index
-            % 4 === 3, name-right:  $index % 4 === 1 || $index
-            % 4 === 2"
-            .name.vertical-center
+      #good-list
+        ul.good-list.bg-even.clearfix
+          li.good-item v-repeat="good: goods"
+            .good-price.vertical-center
               span.vertical-item
-                | {{good.name}}
-            .img-g.img v-attr="style: 'background-image: url(' + good.pictures[1] + ')'"
-            .img-s.img v-attr="style: 'background-image: url(' + good.pictures[2] + ')'"
-            a.btn.btn-base.btn-s.btn-rounded v-attr="href: '/stores/goods/' + good.id" target="_blank"
-              span
-                span.icon-img.icon-outer-18
+                span.icon-img.icon-outer-18 style="margin-right: 4px; margin-bottom: -5px"
                   i.icon-inner.icon-score
                 | {{good.cost}}
-              span 立即抢兑
-        /- if @goods
-          /- @goods.each_with_index do |good, index|
-            /.col-md-6
-              /.item class=get_name_class(index)
-                /.name
-                  /span
-                    /= good.name
-                /.img-g.img style="background-image: url(#{good.pictures[1].url.url})"
-                /.img-s.img style="background-image: url(#{good.pictures[2].url.url})"
-                /a.btn.btn-base.btn-s.btn-rounded href=stores_good_path(good.to_params)
-                  /span
-                    /span.icon-img.icon-outer-18
-                      /i.icon-inner.icon-score
-                    /= good.cost.to_i
+            .good-content
+              .good-img
+                a v-attr="href: '/stores/goods/' + good.id" target="_blank"
+                  img v-attr="src: good.pictures[1]"
+              .good-name
+                span
+                  | {{good.name}}
       p.bottom-hint
         span.icon-img.icon-outer-18
           i.icon-inner.icon-clock

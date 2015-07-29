@@ -1,85 +1,49 @@
 // geeklab store main stylesheet
 
 // 首页商品展示
-.goods
+.good-list
+  list-style: none
+  > li
+    float: left
+    width: 160px
+    margin-left: 20px
+    margin-right: 20px
+.bg-even
+  height: 490px
+  background: image_url("stores/index_bg_1.png") center bottom no-repeat
+.bg-odd
+  background-image: image_url("stores/index_bg_2.png")
+.good-list
   background-color: #fff
-  .row:nth-child(odd)
-  .row:nth-child(even)
-  .item
+  padding-left: 150px
+  padding-right: 150px
+  .good-item
     position: relative
-    height: 500px
     text-align: center
-    .name
-      position: absolute
-      width: 200px
-      height: 200px
-      background-color: rgba(255, 204, 0, .8)
-      border-radius: 50%
-      z-index: 10
-      span
-        width: 90%
-    .img
-      position: absolute
-      background-image: image_url("logo/logo.png")
-      background-color: #ccc
-      background-position: center center
-      background-size: 100%
+    .good-price
+      width: 70px
+      height: 30px
+      margin-left: auto
+      margin-right: auto
+      background-color: #fcc714
+      border-top-left-radius: 10px
+      border-top-right-radius: 10px
+    .good-content
+      height: 180px
+      background-color: #fef6d9
       background-repeat: no-repeat
-      border-radius: 50%
-    .img:hover
-      background-size: 110%
-    .img-g
-      width: 240px
-      height: 240px
-      z-index: 5
-    .img-s
-      width: 160px
-      height: 160px
-    .btn
-      position: absolute
-      top: 50%
-      left: 50%
-      margin-top: -19px
-      margin-left: -50px
-      z-index: 15
-      > span:last-child
-        display: none
-      .icon-img
-        margin-right: 5px
-        margin-bottom: -4px
-    .btn:hover
-      > span:first-child
-        display: none
-      > span:last-child
-        display: inline
-  .name-left
-    .name
-      right: 50%
-      bottom: 50%
-      margin-right: -30px
-      margin-bottom: -30px
-    .img-g
-      left: 50%
-      bottom: 50%
-      margin-bottom: -30px
-    .img-s
-      top: 50%
-      right: 50%
-      margin-right: -30px
-  .name-right
-    .name
-      top: 50%
-      left: 50%
-      margin-top: -30px
-      margin-left: -30px
-    .img-g
-      top: 50%
-      right: 50%
-      margin-top: -30px
-    .img-s
-      left: 50%
-      bottom: 50%
-      margin-left: -30px
+      border-top-left-radius:  40px
+      border-top-right-radius: 40px
+    .good-img
+      padding-top: 40px
+      img
+        width: 140px
+        height: 80px
+    .good-name
+      height: 29px
+      margin-top: 20px
+      background: image_url('stores/good_name_bg.png') no-repeat center center
+      line-height: 29px
 
 // 首页banner
 #slider

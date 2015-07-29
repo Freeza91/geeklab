@@ -1,7 +1,7 @@
 $(function () {
   if($('body').hasClass('store') && $('body').hasClass('base_index')) {
     var indexVm = new Vue({
-      el: '.goods',
+      el: '#good-list',
       data: {
         page: 1,
         goods: []

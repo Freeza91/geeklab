@@ -21,7 +21,7 @@ header.header.navbar.navbar-static.clear-fix
               span.caret
             ul.dropdown-menu role='menu'
               li
-                - if current_user.to_tester.try(:tester_infors).blank?
+                - if current_user.to_tester.try(:tester_infor)
                   a href='/testers/new'
                     i.fa.fa-user
                     | 个人信息
@@ -30,7 +30,7 @@ header.header.navbar.navbar-static.clear-fix
                     i.fa.fa-user
                     | 个人信息
               // 完成个人信息后显示任务列表
-              - if !current_user.to_tester.try(:tester_infors).blank?
+              - if current_user.to_tester.try(:tester_infor)
                 li
                   a href=assignments_path
                     i.fa.fa-th-large

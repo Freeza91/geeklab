@@ -8,7 +8,7 @@ class TesterInfor < ActiveRecord::Base
             :mobile_phone,
             presence: true
 
-  belongs_to :tester, inverse_of: :tester_infors
+  belongs_to :tester, inverse_of: :tester_infor
 
   before_save { self.email_contract = email_contract.to_s.downcase }
 

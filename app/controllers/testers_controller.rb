@@ -40,22 +40,28 @@ class TestersController < ApplicationController
     @devices = ['iPhone', 'iPad', 'Android Phone', 'Android Pad']
     @personality = ['温柔', '粗犷', '活泼', '老城', '内向', '开朗', '豪爽', '沉默', '急躁', '稳重']
     @interests = ['足球', '健身', '旅游', '二次元', '音乐', '看书', '电影', '星座']
-    @tester_infor = @current_user.to_tester.tester_infors[0]
-    render 'testers/edit'
+    @tester_infor = current_user.to_tester.tester_infor
+
+    if @tester_infor
+      render 'testers/edit'
+    else
+      redirect_to new_tester_path
+    end
+
   end
 
   def update
     json = { status: 0, code: 1, msg: '创建成功', url: testers_path }
-    tester = Tester.find_by(id: params[:id])
-    if tester && tester_infors = tester.tester_infors
-      @tester_infor = tester_infors.last.tap &model_block
+    tester = current_user.to_tester
+    if tester && tester_infor = tester.tester_infor
+      @tester_infor = tester_infor.tap &model_block
       unless @tester_infor.save
         json[:code] = 0
         json[:msg] = @tester_infor.errors.full_messages
       end
     else
       json[:code] = 0
-      json[:msg] = '没有找到相关的testerinfors'
+      json[:msg] = '没有找到相关的tester信息'
     end
 
     render json: json
@@ -97,6 +103,6 @@ private
 private
 
   def already_create?
-    redirect_to edit_tester_path(current_user) if current_user.to_tester.tester_infors.size >= 1
+    redirect_to edit_tester_path(current_user.to_params) if current_user.to_tester.tester_infor
   end
 end

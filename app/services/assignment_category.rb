@@ -12,7 +12,7 @@ module AssignmentCategory
           # send assignment
           Assignment.create(tester_id: infor.tester_id, project_id: project.id, status: 'new')
           # deliver email to tester
-          task_url = "#{Settings.domain}/testers/#{infor.tester_id}/assignments"
+          task_url = "#{Settings.domain}/assignments"
           mail_to = infor.tester.tester_infor.email_contract || infor.tester.email
           UserMailer.new_task_notice(mail_to, project.name, task_url).deliver_later
         end

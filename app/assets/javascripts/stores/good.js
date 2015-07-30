@@ -71,13 +71,7 @@ $(function () {
       } else {
         // 生成订单
         var order = {
-          good_id: vm.id,
-          address: {
-            name: vm.name,
-            tel: vm.phone,
-            location: vm.addr,
-            is_save: vm.setAddr
-          }
+          good_id: vm.id
         };
         createOrder(order);
       }

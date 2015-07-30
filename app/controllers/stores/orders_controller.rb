@@ -31,12 +31,16 @@ class Stores::OrdersController < Stores::BaseController
       sku = good.skus.can_sell.last
       if sku
         @order.sku_id = sku.id
-        address = @order.build_address(address_params)
-        address.user_id = current_user.id if save_address?
+        flag = false
+        if save_address?
+          address = @order.build_address(address_params)
+          address.user_id = current_user.id
+          flag = true
+        end
 
         ActiveRecord::Base.transaction do
           @order.save
-          address.save
+          address.save  if flag
           current_user.update_column(:credits, current_user.credits - good.cost)
           sku.update_column(:num, sku.num - 1) # skip inc_good_stock validate
           good.update_attributes(stock: good.stock - 1, used_num: good.used_num + 1 )
@@ -96,7 +100,7 @@ private
   end
 
   def save_address?
-    params['order']['address']['is_save']
+    params['order']['address'] && params['order']['address']['is_save']
   end
 
 end

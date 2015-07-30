@@ -48,7 +48,8 @@ class Users::RegistrationsController < ApplicationController
   def is_emails_exist
     json = { code: 1, status: 0, msg: "" }
     email = params[:email].to_s.downcase
-    unless User.find_by(email: email)
+
+    if User.find_by(email: email)
       json[:code], json[:msg] = 0, "已经注册过了"
     end
 

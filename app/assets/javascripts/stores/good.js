@@ -10,7 +10,6 @@ $(function () {
     $('#sign').modal();
   }
 
-
   var goodVm = new Vue({
     el: '#good',
     data: {
@@ -39,21 +38,37 @@ $(function () {
     if(!$(event.target).hasClass('exchange')) {
       return false;
     }
-    event.target.innerText = '确认兑换'
+    if (vm.virtual === 'false') {
+      // 不是虚拟物品时修改按钮文本
+      event.target.innerText = '确认兑换'
+    }
     checkGoodStatus(vm, function (vm, data) {
-      if (vm.virtual === 'false' && !vm.showAddr) {
-        // 不是虚拟商品时填写地址
-        showAddrForm(vm, data.address);
-      } else {
-        // 检查地址输入
-        checkAddr(vm);
-        var error = vm.error;
-        for(key in error) {
-          if(error.hasOwnProperty(key) && error[key]) {
-            // 检测不通过
-            return false;
+      if(vm.virtual === 'false') {
+        // 不是虚拟商品
+        if(!vm.showAddr) {
+          showAddrForm(vm, data.address);
+        } else {
+          checkAddr(vm);
+          var error = vm.error;
+          for(key in error) {
+            if(error.hasOwnProperty(key) && error[key]) {
+              // 检测不通过
+              return false;
+            }
           }
+          // 生成订单
+          var order = {
+            good_id: vm.id,
+            address: {
+              name: vm.name,
+              tel: vm.phone,
+              location: vm.addr,
+              is_save: vm.setAddr
+            }
+          };
+          createOrder(order);
         }
+      } else {
         // 生成订单
         var order = {
           good_id: vm.id,

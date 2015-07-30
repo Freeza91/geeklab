@@ -41,7 +41,6 @@ class Stores::OrdersController < Stores::BaseController
           sku.update_column(:num, sku.num - 1) # skip inc_good_stock validate
           good.update_attributes(stock: good.stock - 1, used_num: good.used_num + 1 )
         end
-
       else
         json[:code], json['msg'] = 2, '库存不足'
       end

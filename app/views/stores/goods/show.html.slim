@@ -52,15 +52,15 @@ main role="main"
                     | (最终解释权归 北京中明万长咨询管理有限公司 所有)
               #user-addr style="padding-top: 40px" v-show="showAddr"
                 form.form
-                  .form-field v-class="error.name ? 'error': ''" style="width: 48%; display: inline-block; margin-right: 3%"
+                  .form-field.with-hint-text v-class="error.name ? 'error': ''" style="width: 48%; display: inline-block; margin-right: 3%"
                     input.form-input type="text" placeholder="姓名" v-model="name" v-on="focus: error.name = false, blur: checkValue(this, 'name', 'length', name, 20)"
                     span.hint-text v-show="error.name"
                       | 1-20个字符
-                  .form-field v-class="error.phone ? 'error': ''" style="width: 48%; display: inline-block"
+                  .form-field.with-hint-text v-class="error.phone ? 'error': ''" style="width: 48%; display: inline-block"
                     input.form-input type="text" placeholder="手机号" v-model="phone" v-on="focus: error.phone = false, blur: checkValue(this, 'phone', 'phone', phone )"
                     span.hint-text v-show="error.phone"
                       | 手机号格式错误
-                  .form-field v-class="error.addr ? 'error': ''"
+                  .form-field.with-hint-text v-class="error.addr ? 'error': ''"
                     input.form-input type="text" placeholder="收货地址" v-model="addr" v-on="focus: error.addr = false, blur: checkValue(this, 'addr', 'length', addr, 50 )"
                     span.hint-text v-show="error.addr"
                       | 1-50个字符

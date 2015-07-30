@@ -25,7 +25,7 @@ class TestersController < ApplicationController
       # default: project.first is new tester task
       a = Assignment.create(project_id: Project.first.try(:id), tester_id: current_user.id,  status: 'test')
 
-      task_url = "#{Settings.domain}/testers/#{current_user.id}/assignments"
+      task_url = "#{Settings.domain}/assignments"
       UserMailer.new_task_notice(@tester_infor.email_contract || current_user.email,
                                  a.project.name, task_url).deliver_later
     else

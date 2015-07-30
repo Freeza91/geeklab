@@ -11,16 +11,15 @@ module AssignmentCategory
         if select_tester(infor, get_device(project.platform, project.device))
           # send assignment
           tester = infor.tester
-          if tester.assignments.map(&:project_id).inlucde?(project_id)
-             || tester.approved_time >= project.assign_time
-            # 在规定的测试分发之间之内
-            # 确保之前没有被分发过
+          if tester.assignments.map(&:project_id).include?(project_id) ||
+             tester.approved_time < project.assign_time
+            # 之前已经有被分发 || 没在设定的测试分发之间之内
             next
           end
 
           Assignment.create(tester_id: infor.tester_id, project_id: project.id, status: 'new')
           # deliver email to tester
-          task_url = "#{Settings.domain}/testers/#{infor.tester_id}/assignments"
+          task_url = "#{Settings.domain}/assignments"
           mail_to = infor.tester.tester_infor.email_contract || infor.tester.email
           UserMailer.new_task_notice(mail_to, project.name, task_url).deliver_later
         end

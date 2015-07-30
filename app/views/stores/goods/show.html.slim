@@ -70,7 +70,7 @@ main role="main"
                       | 设为我的常用地址
             .good-action
               - if !current_user
-                button.btn.btn-base-reverse.btn-rounded.btn-m data-toggle="modal" data-target="#login-hint"
+                button.btn.btn-base.btn-rounded.btn-m data-toggle="modal" data-target="#login-hint"
                   | 立即兑换
               - else
                 button.btn.btn-base-reverse.btn-rounded.btn-m class=can_exchange(@good.available, @good.status) v-on="click: exchange(this, $event)"

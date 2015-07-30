@@ -98,7 +98,11 @@ class Project < ActiveRecord::Base
   end
 
   def set_expired_at
-    update_column(:expired_at, Time.now + 100.years) unless is_beigner?
+    if beginner
+      update_column(:expired_at, Time.now + 100.years)
+    elsif beginner_was && !beginner
+      update_column(:expired_at, DateTime.new(2015,3,2))
+    end
   end
 
   def auto_update_status

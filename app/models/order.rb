@@ -22,7 +22,7 @@ class Order < ActiveRecord::Base
 
   def virtual?
     label = self.good.label
-    return true if label == '充值卡'
+    return true if label == '0'
     false
   end
 

@@ -29,7 +29,7 @@ class Good < ActiveRecord::Base
   end
 
   def virtual?
-    return true if label == '充值卡'
+    return true if label == '0'
     false
   end
 

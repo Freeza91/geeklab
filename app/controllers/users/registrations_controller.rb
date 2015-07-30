@@ -10,6 +10,10 @@ class Users::RegistrationsController < ApplicationController
   def create
     json = { status: 0, code: 1, msg: [], url: ''}
     email = params[:user][:email].to_s.downcase
+    if limit_ip?("register:#{email}")
+      json[:code], json[:msg] = -1, "休息会在注册吧"
+      return render json: json
+    end
     value = $redis.get(email) if $redis.exists email
     @user = User.new(user_params)
     if value && value == params[:user][:code]
@@ -36,26 +40,17 @@ class Users::RegistrationsController < ApplicationController
   end
 
   def edit
-    @user = User.find_by(email: '1@qq.com')
   end
 
   def update
-    @user = User.find_by(email: '1@qq.com')
-    user_params.map do |key, value|
-      @user.update_attribute(key, value)
-    end
-    render text: @user.to_json
   end
 
   def is_emails_exist
-    json = { code: 1, status: 0 }
-    if limit_ip?("email")
-      json[:code] = -1
-      return render json: json
-    else
-      unless User.find_by(email: params[:email].to_s.downcase)
-        json[:code] = 0
-      end
+    json = { code: 1, status: 0, msg: "" }
+    email = params[:email].to_s.downcase
+
+    if User.find_by(email: email)
+      json[:code], json[:msg] = 0, "已经注册过了"
     end
 
     render json: json

@@ -171,6 +171,7 @@ $(function () {
     if(!emailValid(email, $email)) {
         return false;
     } else {
+      $this.addClass('disabled')
       emailRegisted(email, $email, function () {
         $.ajax({
           url: '/users/mailers/send_confirmation',
@@ -202,7 +203,9 @@ $(function () {
         .error(function(errors, status) {
           console.log(errors);
         });
-      });
+      }, function errorHandle(errorParam){
+        errorParam.removeClass('disabled');
+      }, $this);
     }
   });
 

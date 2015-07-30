@@ -32,7 +32,7 @@
               .form-field.submit
                 p.form-hint.error v-show="error"
                   | 邮箱或密码输入错误, 请重新输入
-                input.btn.btn-base-reverse.btn-m.btn-rounded type="submit" value="登录" v-on="click: submit(this, $event)"
+                input.btn.btn-base.btn-m.btn-rounded type="submit" value="登录" v-on="click: submit(this, $event)"
           .tab-pane#regist role="tabpanel"
             form.form
               .form-field v-class="error.email ? 'error': ''"
@@ -53,4 +53,4 @@
                   | 6-16个字符，可包括数字、字母、下划线
               .form-field.submit
                 p.form-hint.error v-show="error.regist" v-text="hint"
-                input.btn.btn-base-reverse.btn-m.btn-rounded type="submit" value="注册" v-on="click: submit(this, $event)"
+                input.btn.btn-base.btn-m.btn-rounded type="submit" value="注册" v-on="click: submit(this, $event)"

@@ -4,8 +4,8 @@ class TesterInfor < ActiveRecord::Base
             :birthplace, :livingplace, :device,
             :emotional_status, :sex_orientation,
             :education, :profession, :income,
-            :personality, :interest, :email_contract,
-            :mobile_phone,
+            :email_contract,:mobile_phone,
+            # :personality, :interest,
             presence: true
 
   belongs_to :tester, inverse_of: :tester_infor

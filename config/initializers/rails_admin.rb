@@ -131,6 +131,8 @@ RailsAdmin.config do |config|
       field :status
       field :qr_code
       field :reasons,           :pg_int_array
+      field :assign_time
+      field :beginner
 
       field :tasks do
         orderable true

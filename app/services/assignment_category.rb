@@ -10,6 +10,13 @@ module AssignmentCategory
         # select tester
         if select_tester(infor, get_device(project.platform, project.device))
           # send assignment
+          tester = infor.tester
+          if tester.assignments.map(&:project_id).include?(project_id) ||
+             tester.approved_time < project.assign_time
+            # 之前已经有被分发 || 没在设定的测试分发之间之内
+            next
+          end
+
           Assignment.create(tester_id: infor.tester_id, project_id: project.id, status: 'new')
           # deliver email to tester
           task_url = "#{Settings.domain}/assignments"

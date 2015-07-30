@@ -3,7 +3,7 @@ class Good < ActiveRecord::Base
   default_scope { order('created_at desc') }
 
   has_many :orders
-  has_many :pictures, as: :pictureable
+  has_many :pictures, as: :pictureable, dependent: :destroy
   has_many :skus, dependent: :destroy
 
   validates :name, :stock, :cost, :label, :describle, :status, presence: true

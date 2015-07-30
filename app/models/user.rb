@@ -14,8 +14,8 @@ class User < ActiveRecord::Base
     @pm ||= Pm.find_by(id: self.to_params)
   end
 
-  has_many :orders
-  has_many :addresses
+  has_many :orders,   dependent: :destroy
+  has_many :addresses,dependent: :destroy
 
   after_update :deliver_approved_email
   before_save { self.email = email.to_s.downcase }

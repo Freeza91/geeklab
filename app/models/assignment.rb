@@ -11,7 +11,7 @@ class Assignment < ActiveRecord::Base
 
   belongs_to :tester,  inverse_of: :assignments
   belongs_to :project, inverse_of: :assignments
-  has_one    :comment
+  has_one    :comment, dependent: :destroy
 
   after_update :video_notice_to_tester
   after_update :auto_update_assignment_status

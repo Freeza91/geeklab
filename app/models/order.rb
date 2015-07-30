@@ -5,7 +5,7 @@ class Order < ActiveRecord::Base
   belongs_to :good
   belongs_to :user
   belongs_to :sku
-  has_one    :address
+  has_one    :address, dependent: :destroy
 
   validates :good_id, :sku_id, :user_id, presence: true
 

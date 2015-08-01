@@ -150,8 +150,40 @@ main
     margin-left: 15px
 
 // 订单列表
+.order-item
+  float: left
+  position: relative
+  padding-left: 10px
+  padding-right: 10px
+  .order-bg
+    height: 100px
+    background: image_url("stores/order_bg.png") center bottom no-repeat
+    transition: all .5s ease
+  .good-item
+    margin-top: -18px
+  .order-detail
+    position: absolute
+    bottom: 0
+    left: 100%
+  .order-detail.left
+    right: 100%
+  .order-detail.right
+    left: 100%
+.order-item:hover
+  .order-bg
+    height: 120px
+.order-list-bg
+  height: 73px
+  background: image_url("stores/order_list_bg.png") center top no-repeat
+.order-item.active
+  .order-bg
+    height: 320px
+
 .order-list
-  padding-top: 40px
+  width: 735px
+  height: 520px
+  margin-left: auto
+  margin-right: auto
 .order-table
   width: 100%
   col.good

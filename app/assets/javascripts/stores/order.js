@@ -13,7 +13,8 @@ $(function () {
       prevPage: prevPage,
       nextPage: nextPage,
       showDetail: showDetail,
-      deleteOrder: deleteOrder
+      deleteOrder: deleteOrder,
+      selectOrder: selectOrder
     }
   });
   function prevPage (vm) {
@@ -122,6 +123,11 @@ $(function () {
     .error(function (errors) {
       console.log(errors);
     });
+  }
+
+  function selectOrder(event) {
+    $('.order-item.active').removeClass('active');
+    $(event.target).parents('.order-item').addClass('active');
   }
 
 });

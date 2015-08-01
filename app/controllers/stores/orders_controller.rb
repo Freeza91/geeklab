@@ -8,7 +8,7 @@ class Stores::OrdersController < Stores::BaseController
       format.json do
         json = { status: 0, code: 1, orders:[] }
 
-        @orders = current_user.orders.includes(:good).page(params[:page]).per(10)
+        @orders = current_user.orders.includes(:good).page(params[:page]).per(4)
         @orders.each do |order|
           json[:orders] << order.to_json
         end

@@ -6,7 +6,7 @@ main role="main"
           .good-summary.clearfix
             .col-md-6.col-sm-6.col-xs-6
               .good-gallery
-                .main-pic
+                .main-pic.vertical-center
                   input.hidden type="text" value="#{@good.pictures.first.url.url}" v-model="galleryMain"
                   img v-attr="src: galleryMain"
                 .gallery-thumb

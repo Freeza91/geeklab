@@ -36,6 +36,8 @@ main role="main"
                   | {{$key}}
                 span.info
                   | {{$value}}
+              button.btn.btn-s.btn-base.btn-rounded.delete-btn v-on="click: deleteOrder(order, $event)"
+                | 扔掉
         .order-list-bg
 
 <!-- 删除订单记录 -->

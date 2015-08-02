@@ -26,11 +26,11 @@ main role="main"
                 .good-name
                   span
                     | {{order.good_name}}
-            .order-detail
-              h5
+            .order-detail v-class="right: $index <=1, left: $index > 1"
+              .order-name
                 | {{order.good_name}}
-              .order-id
-                | {{order.order_num}}
+              .order-id.color-gray
+                | 订单号:&nbsp{{order.order_num}}
               .detail-item
                 span.name
                   | 卡号

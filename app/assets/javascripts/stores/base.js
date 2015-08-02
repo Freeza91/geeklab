@@ -23,10 +23,15 @@ $(function () {
     var registVm = new Vue({
       el: '#regist',
       data: {
-        hint: '',
         mailbox: '',
         countDown: 60,
         canSendCode: true,
+        hint: {
+          email: '',
+          code: '',
+          password: '',
+          regist: ''
+        },
         error: {
           email: false,
           password: false,
@@ -35,6 +40,8 @@ $(function () {
         }
       },
       methods: {
+        checkEmailFormat: checkEmailFormat,
+        checkPasswordFormat: checkPasswordFormat,
         sendCode: sendCode,
         submit: regist
       }
@@ -65,6 +72,7 @@ $(function () {
     if(!checkLoginInfo(vm)) {
       return false;
     }
+    clearHint(vm.hint);
     var data = {
       email: vm.email,
       encrypted_password: vm.password,
@@ -81,7 +89,6 @@ $(function () {
         switch(data.code) {
           case 0:
             // 登录失败
-            vm.hint.email = '';
             vm.error.email = true;
             vm.error.all = true;
           break;
@@ -99,23 +106,10 @@ $(function () {
 
   function regist(vm, event) {
     event.preventDefault();
-    if(!vm.email || vm.email === '') {
-      console.log(vm.email);
-      vm.hint = '请输入邮箱';
-      vm.error.email = true;
-      vm.error.regist = true;
+    if(!checkRegistInfo(vm)) {
       return false;
     }
-    if(!formValid(vm.email, 'email')) {
-      vm.hint = '邮箱格式错误';
-      vm.error.email = true;
-      vm.error.regist = true;
-      return false;
-    }
-    if(!formValid(vm.password, 'password')) {
-      vm.error.password = true;
-      return false;
-    }
+    clearHint(vm.hint);
     var data = {
       email: vm.email,
       encrypted_password: vm.password,
@@ -137,13 +131,13 @@ $(function () {
           break;
           case 2:
             // 邮箱已被注册
-            vm.hint='邮箱已被注册，请重新输入';
+            vm.hint.regist='邮箱已被注册，请重新输入';
             vm.error.regist = true;
             vm.error.email = true;
           break;
           case 3:
             // 验证码错误
-            vm.hint='验证码错误或过期';
+            vm.hint.regist='验证码错误或过期';
             vm.error.regist = true;
             vm.error.code = true;
           break;
@@ -197,7 +191,7 @@ $(function () {
   function checkLoginInfo (vm) {
     var email = vm.email,
         password = vm.password;
-    validated = true;
+        validated = true;
 
     // 检查邮箱
     if(email) {
@@ -211,6 +205,32 @@ $(function () {
     }
     return validated;
   }
+
+  function checkRegistInfo (vm) {
+    var email = vm.email,
+        password = vm.password,
+        validated = true;
+    if(email) {
+      if(!checkEmailFormat(vm)) {
+        validated = false;
+      }
+    } else {
+      vm.hint.email = '请输入邮箱';
+      vm.error.email = true;
+      validated = false;
+    }
+    if(password) {
+      if(!checkPasswordFormat(vm)) {
+        validated = false;
+      }
+    } else {
+      vm.hint.password = '请输入密码';
+      vm.error.password = true;
+      validated = false;
+    }
+    return validated;
+  }
+
   function checkEmailFormat (vm) {
     var email = vm.email;
     if(email && !formValid(email, 'email')) {
@@ -220,6 +240,34 @@ $(function () {
     }
     return true;
   }
+  function checkPasswordFormat (vm) {
+    var password = vm.password;
+    if(password && !formValid(password, 'password')) {
+      vm.error.password = true;
+      vm.hint.password = '密码格式错误';
+      return false;
+    }
+    return true;
+  }
+  function isEmailRegisted (vm) {
+    var email = vm.email,
+        validated = true;
+    emailRegisted(email, function () {
+      vm.hint.emal = '邮箱已被注册';
+      vm.error.email = true;
+      validated = false;
+    });
+    return validated
+  }
+
+  function clearHint (hint) {
+    for(key in hint) {
+      if(hint.hasOwnProperty(key)) {
+        hint[key] = '';
+      }
+    }
+  }
+
   function formValid (value, type) {
     var result;
     switch(type){
@@ -242,7 +290,7 @@ $(function () {
     return result;
   }
 
-  function emailRegisted(email, callback, errorHandle, errorParam) {
+  function emailRegisted(email, callback) {
     $.ajax({
       url: '/users/registrations/is_emails_exist',
       data: {email: email}
@@ -252,13 +300,13 @@ $(function () {
         switch(data.code) {
           case 0:
             // 不可用，已被注册
-          break;
-          case 1:
-            // 可用
             if(callback !== undefined) {
               callback();
             }
-            break;
+          break;
+          case 1:
+            // 可用
+          break;
         }
       }
     })

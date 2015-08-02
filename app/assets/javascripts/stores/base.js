@@ -11,7 +11,7 @@ $(function () {
         },
         error: {
           email: false,
-          all: false
+          login: false
         }
       },
       methods: {

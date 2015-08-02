@@ -5,10 +5,17 @@ $(function () {
     var loginVm = new Vue({
       el: '#login',
       data: {
-        error: false,
-        rememberMe: true
+        rememberMe: true,
+        hint: {
+          email: ''
+        },
+        error: {
+          email: false,
+          all: false
+        }
       },
       methods: {
+        checkEmailFormat: checkEmailFormat,
         submit: login
       }
     });
@@ -43,6 +50,7 @@ $(function () {
       }
       $('#sign [href="#login"]').click();
     });
+
     $('#sign [data-toggle="tab"]').on('click', function () {
       if($(this).attr('href') === '#login') {
         $('#sign .triangle').removeClass('right').addClass('left');
@@ -54,6 +62,9 @@ $(function () {
 
   function login(vm, event) {
     event.preventDefault();
+    if(!checkLoginInfo(vm)) {
+      return false;
+    }
     var data = {
       email: vm.email,
       encrypted_password: vm.password,
@@ -70,7 +81,9 @@ $(function () {
         switch(data.code) {
           case 0:
             // 登录失败
-            vm.error = true;
+            vm.hint.email = '';
+            vm.error.email = true;
+            vm.error.all = true;
           break;
           case 1:
             // 登录成功
@@ -181,11 +194,37 @@ $(function () {
     });
   }
 
+  function checkLoginInfo (vm) {
+    var email = vm.email,
+        password = vm.password;
+    validated = true;
+
+    // 检查邮箱
+    if(email) {
+      if(!checkEmailFormat(vm)) {
+        validated = false;
+      }
+    } else {
+      vm.error.email = true;
+      vm.hint.email = '请输入邮箱';
+      validated = false;
+    }
+    return validated;
+  }
+  function checkEmailFormat (vm) {
+    var email = vm.email;
+    if(email && !formValid(email, 'email')) {
+      vm.error.email = true;
+      vm.hint.email = '邮箱格式错误';
+      return false;
+    }
+    return true;
+  }
   function formValid (value, type) {
     var result;
     switch(type){
       case 'email':
-        var emailReg = /^[0-9a-zA-Z_-]+@([0-9a-zA-Z]+.)+[a-zA-Z]$/;
+        var emailReg = /^(\w)+(\.\w+)*@(\w)+((\.\w{2,3}){1,3})$/;
         result = emailReg.test(value);
       break;
       case 'password':
@@ -201,5 +240,30 @@ $(function () {
         break;
     }
     return result;
+  }
+
+  function emailRegisted(email, callback, errorHandle, errorParam) {
+    $.ajax({
+      url: '/users/registrations/is_emails_exist',
+      data: {email: email}
+    })
+    .done(function (data, status, xhr) {
+      if(data.status === 0) {
+        switch(data.code) {
+          case 0:
+            // 不可用，已被注册
+          break;
+          case 1:
+            // 可用
+            if(callback !== undefined) {
+              callback();
+            }
+            break;
+        }
+      }
+    })
+    .error(function (errors, status) {
+      console.log(errors);
+    });
   }
 });

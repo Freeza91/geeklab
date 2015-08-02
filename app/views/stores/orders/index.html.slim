@@ -31,16 +31,11 @@ main role="main"
                 | {{order.good_name}}
               .order-id.color-gray
                 | 订单号:&nbsp{{order.order_num}}
-              .detail-item
+              .detail-item v-repeat="order.detail"
                 span.name
-                  | 卡号
+                  | {{$key}}
                 span.info
-                  | dhfkhdaskfhkdhfksdh
-              .detail-item
-                span.name
-                  | 密码
-                span.info
-                  | dhfkhdaskfhkdhfksdh
+                  | {{$value}}
         .order-list-bg
 
 <!-- 删除订单记录 -->

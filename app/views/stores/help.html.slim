@@ -26,3 +26,16 @@ main role="role"
           | 5
         span
           | 尽情兑换各式吧
+javascript:
+  $(function () {
+    var index = 1;
+    var intervalId = setInterval(function(){
+      $('#step-' + index).addClass('flyInAnimation');
+      if(index < 5) {
+        index += 1;
+      } else {
+        clearInterval(intervalId);
+      }
+    }, 500);
+  });
+

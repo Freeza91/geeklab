@@ -191,14 +191,14 @@ main
   .order-bg
     height: 320px
   .order-detail.right
-    -webkit-animation: gradualOpacityFromLeft 1s linear .5s 1normal forwards
-    -moz-animation: gradualOpacityFromLeft 1s linear .5s 1normal forwards
-    -o-animation: gradualOpacityFromLeft 1s linear .5s 1normal forwards
+    -webkit-animation: gradualOpacityFromLeft 1s linear .5s 1 normal forwards
+    -moz-animation: gradualOpacityFromLeft 1s linear .5s 1 normal forwards
+    -o-animation: gradualOpacityFromLeft 1s linear .5s 1 normal forwards
     animation: gradualOpacityFromLeft 1s linear .5s 1 normal forwards
   .order-detail.left
-    -webkit-animation: gradualOpacityFromRight 1s linear .5s 1normal forwards
-    -moz-animation: gradualOpacityFromRight 1s linear .5s 1normal forwards
-    -o-animation: gradualOpacityFromRight 1s linear .5s 1normal forwards
+    -webkit-animation: gradualOpacityFromRight 1s linear .5s 1 normal forwards
+    -moz-animation: gradualOpacityFromRight 1s linear .5s 1 normal forwards
+    -o-animation: gradualOpacityFromRight 1s linear .5s 1 normal forwards
     animation: gradualOpacityFromRight 1s linear .5s 1 normal forwards
 .order-detail
   width: 280px
@@ -245,9 +245,11 @@ main
   position: relative
   .step
     position: absolute
-    max-width: 235px
+    max-width: 240px
     color: #fef6d9
     line-height: 40px
+    opacity: 0
+    margin-left: 100px
   #step-1
     top: 370px
     left: 170px
@@ -270,6 +272,11 @@ main
     border-radius: 50%
     color: #fef6d9
     font-size: 16px
+  .flyInAnimation
+    -webkit-animation: flyIn 1s linear 0s 1 normal forwards
+    -moz-animation: flyIn 1s linear 0s 1 normal forwards
+    -o-animation: flyIn 1s linear 0s 1 normal forwards
+    animation: flyIn 1s linear 0s 1 normal forwards
 
 // 首页底部提示信息
 .bottom-hint
@@ -348,3 +355,33 @@ main
   to
     opacity: 1
     right: 100%
+
+// 赚取积分页面动画
+@keyframes flyIn
+  from
+    opacity: 0
+    margin-left: 100px
+  to
+    opacity: 1
+    margin-left: 0
+@-o-keyframes flyIn
+  from
+    opacity: 0
+    margin-left: 100px
+  to
+    opacity: 1
+    margin-left: 0
+@-moz-keyframes flyIn
+  from
+    opacity: 0
+    margin-left: 100px
+  to
+    opacity: 1
+    margin-left: 0
+@-webkit-keyframes flyIn
+  from
+    opacity: 0
+    margin-left: 100px
+  to
+    opacity: 1
+    margin-left: 0

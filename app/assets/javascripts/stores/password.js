@@ -33,6 +33,7 @@ $(function () {
       }
     })
   }
+
   function checkEmail (vm) {
     var email = vm.email;
     if(email) {
@@ -120,10 +121,9 @@ $(function () {
   }
 
   function resetPassword (vm, event) {
-    console.log('xx');
     event.preventDefault();
 
-    if(!vm.password || vm.password === '') {
+    if(!vm.password) {
       vm.hint = '请输入新密码';
       vm.error = true;
       return false;

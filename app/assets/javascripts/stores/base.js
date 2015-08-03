@@ -40,7 +40,7 @@ $(function () {
         }
       },
       methods: {
-        checkEmailFormat: checkEmailFormat,
+        checkEmail: checkEmail,
         checkPasswordFormat: checkPasswordFormat,
         sendCode: sendCode,
         submit: regist
@@ -231,6 +231,12 @@ $(function () {
     return validated;
   }
 
+  function checkEmail (vm) {
+    if(checkEmailFormat(vm)) {
+      isEmailRegisted(vm);
+    }
+  }
+
   function checkEmailFormat (vm) {
     var email = vm.email;
     if(email && !formValid(email, 'email')) {
@@ -253,7 +259,7 @@ $(function () {
     var email = vm.email,
         validated = true;
     emailRegisted(email, function () {
-      vm.hint.emal = '邮箱已被注册';
+      vm.hint.email = '邮箱已被注册';
       vm.error.email = true;
       validated = false;
     });
@@ -299,13 +305,13 @@ $(function () {
       if(data.status === 0) {
         switch(data.code) {
           case 0:
-            // 不可用，已被注册
+            // 已被注册
             if(callback !== undefined) {
               callback();
             }
           break;
           case 1:
-            // 可用
+            // 未被注册
           break;
         }
       }

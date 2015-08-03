@@ -38,7 +38,7 @@
           .tab-pane#regist role="tabpanel"
             form.form
               .form-field.with-hint-text v-class="error.email ? 'error': ''"
-                input.form-input type="text" name="email" placeholder="邮箱" v-model="email" v-on="focus: error.email = false, blur: checkEmailFormat(this)"
+                input.form-input type="text" name="email" placeholder="邮箱" v-model="email" v-on="focus: error.email = false, blur: checkEmail(this)"
                 span.hint-text v-show="error.email"
                   | {{hint.email}}
               .form-field.clearfix v-class="error.code ? 'error': ''"

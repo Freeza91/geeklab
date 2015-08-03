@@ -20,35 +20,40 @@ main role="main"
           /a.btn.btn-base-reverse.btn-rounded.btn-s href=stores_root_path
             /| 去兑换
       - else
-        .order-list.clearfix#orders
-          .order-item v-repeat="order: orders" v-on="click: selectOrder($event)"
-            .order-bg
-            .good-item
-              .good-price.vertical-center
-                span.vertical-item
-                  span.icon-img.icon-outer-18 style="margin-right: 4px; margin-bottom: -5px"
-                    i.icon-inner.icon-score
-                  | {{order.cost}}
-              .good-content
-                .good-img
-                  a v-attr="href: '/stores/goods/' + order.good_id" target="_blank"
-                    img v-attr="src: order.good_pic"
-                .good-name
-                  span
-                    | {{order.good_name}}
-            .order-detail v-class="right: $index <=1, left: $index > 1"
-              .order-name
-                | {{order.good_name}}
-              .order-id.color-gray
-                | 订单号:&nbsp{{order.order_num}}
-              .detail-item v-repeat="order.detail"
-                span.name
-                  | {{$key}}
-                span.info
-                  | {{$value}}
-              button.btn.btn-s.btn-base.btn-rounded.delete-btn v-on="click: deleteOrder(order, $event)"
-                | 扔掉
-        .order-list-bg
+        #orders
+          .order-list.clearfix
+            .order-item v-repeat="order: orders" v-on="click: selectOrder($event)"
+              .order-bg
+              .good-item
+                .good-price.vertical-center
+                  span.vertical-item
+                    span.icon-img.icon-outer-18 style="margin-right: 4px; margin-bottom: -5px"
+                      i.icon-inner.icon-score
+                    | {{order.cost}}
+                .good-content
+                  .good-img
+                    a v-attr="href: '/stores/goods/' + order.good_id" target="_blank"
+                      img v-attr="src: order.good_pic"
+                  .good-name
+                    span
+                      | {{order.good_name}}
+              .order-detail v-class="right: $index <=1, left: $index > 1"
+                .order-name
+                  | {{order.good_name}}
+                .order-id.color-gray
+                  | 订单号:&nbsp{{order.order_num}}
+                .detail-item v-repeat="order.detail"
+                  span.name
+                    | {{$key}}
+                  span.info
+                    | {{$value}}
+                button.btn.btn-s.btn-base.btn-rounded.delete-btn v-on="click: deleteOrder(order, $event)"
+                  | 扔掉
+          .order-list-bg
+            .prev.pagination v-on="click: prevPage(this)"
+              i.fa.fa-arrow-left
+            .next.pagination
+              i.fa.fa-arrow-right v-on="click: nextPage(this)"
 
 <!-- 删除订单记录 -->
 = render "stores/modals/order_delete"

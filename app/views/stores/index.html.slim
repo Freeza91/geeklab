@@ -3,90 +3,6 @@ main.bg-green.with-top-bg role='main'
     .container
       #good-list
         ul.bg-even.clearfix
-          li
-            .good-item
-              .good-price.vertical-center
-                span.vertical-item
-                  span.icon-img.icon-outer-18 style="margin-right: 4px; margin-bottom: -5px"
-                    i.icon-inner.icon-score
-                  | 100
-              .good-content
-                .good-img
-                  a target="_blank" href="/stores/goods/63v5B7WX"
-                    img src="http://7xjl4d.com2.z0.glb.qiniucdn.com/uploads-picture-url-5%2F__240px.png"
-                .good-name
-                  span
-                    | 中国移动10元充值卡
-          li
-            .good-item
-              .good-price.vertical-center
-                span.vertical-item
-                  span.icon-img.icon-outer-18 style="margin-right: 4px; margin-bottom: -5px"
-                    i.icon-inner.icon-score
-                  | 100
-              .good-content
-                .good-img
-                  a target="_blank" href="/stores/goods/63v5B7WX"
-                    img src="http://7xjl4d.com2.z0.glb.qiniucdn.com/uploads-picture-url-5%2F__240px.png"
-                .good-name
-                  span
-                    | 中国移动10元充值卡
-          li
-            .good-item
-              .good-price.vertical-center
-                span.vertical-item
-                  span.icon-img.icon-outer-18 style="margin-right: 4px; margin-bottom: -5px"
-                    i.icon-inner.icon-score
-                  | 100
-              .good-content
-                .good-img
-                  a target="_blank" href="/stores/goods/63v5B7WX"
-                    img src="http://7xjl4d.com2.z0.glb.qiniucdn.com/uploads-picture-url-5%2F__240px.png"
-                .good-name
-                  span
-                    | 中国移动10元充值卡
-          li
-            .good-item
-              .good-price.vertical-center
-                span.vertical-item
-                  span.icon-img.icon-outer-18 style="margin-right: 4px; margin-bottom: -5px"
-                    i.icon-inner.icon-score
-                  | 100
-              .good-content
-                .good-img
-                  a target="_blank" href="/stores/goods/63v5B7WX"
-                    img src="http://7xjl4d.com2.z0.glb.qiniucdn.com/uploads-picture-url-5%2F__240px.png"
-                .good-name
-                  span
-                    | 中国移动10元充值卡
-          li
-            .good-item
-              .good-price.vertical-center
-                span.vertical-item
-                  span.icon-img.icon-outer-18 style="margin-right: 4px; margin-bottom: -5px"
-                    i.icon-inner.icon-score
-                  | 100
-              .good-content
-                .good-img
-                  a target="_blank" href="/stores/goods/63v5B7WX"
-                    img src="http://7xjl4d.com2.z0.glb.qiniucdn.com/uploads-picture-url-5%2F__240px.png"
-                .good-name
-                  span
-                    | 中国移动10元充值卡
-          li
-            .good-item
-              .good-price.vertical-center
-                span.vertical-item
-                  span.icon-img.icon-outer-18 style="margin-right: 4px; margin-bottom: -5px"
-                    i.icon-inner.icon-score
-                  | 100
-              .good-content
-                .good-img
-                  a target="_blank" href="/stores/goods/63v5B7WX"
-                    img src="http://7xjl4d.com2.z0.glb.qiniucdn.com/uploads-picture-url-5%2F__240px.png"
-                .good-name
-                  span
-                    | 中国移动10元充值卡
           li v-repeat="good: goods"
             .good-item
               .good-price.vertical-center
@@ -101,3 +17,7 @@ main.bg-green.with-top-bg role='main'
                 .good-name
                   span
                     | {{good.name}}
+        .prev.pagination v-on="click: prevPage"
+          i.fa.fa-arrow-left
+        .next.pagination
+          i.fa.fa-arrow-right v-on="click: nextPage"

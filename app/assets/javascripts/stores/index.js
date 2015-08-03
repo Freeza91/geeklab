@@ -4,7 +4,8 @@ $(function () {
       el: '#good-list',
       data: {
         page: 1,
-        goods: []
+        goods: [],
+        lastPage: false
       },
       methods: {
         prevPage: prevPage,
@@ -13,13 +14,19 @@ $(function () {
     });
 
     function prevPage () {
-      indexVm.page--;
-      getGoodPagin(indexVm.page);
+      if(indexVm.page === 1) {
+        return false;
+      }
+      indexVm.page -= 1;
+      getGoodPaging(indexVm.page);
     }
 
     function nextPage () {
-      indexVm.page++;
-      getGoodPagin(indexVm.page);
+      if(indexVm.lastPage) {
+        return false;
+      }
+      indexVm.page += 1;
+      getGoodPaging(indexVm.page);
     }
 
     function getGoodPaging (page) {
@@ -41,9 +48,16 @@ $(function () {
       })
       .done(function (data) {
         if(data.status === 0 && data.code === 1) {
-          indexVm.goods = data.goods;
+          if(data.goods.length > 0) {
+            indexVm.goods = data.goods;
+          } else {
+            indexVm.page -= 1;
+          }
+          if(data.goods.length < 8) {
+            indexVm.lastPage = true;
+          }
           // 将数据缓存在localStorage
-          localStorage['page' + page] = JSON.stringify(data.goods);
+          //localStorage['page' + page] = JSON.stringify(data.goods);
         }
       })
       .error(function (errors) {

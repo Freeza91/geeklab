@@ -18,6 +18,7 @@ $(function () {
         return false;
       }
       indexVm.page -= 1;
+      indexVm.lastPage = false;
       getGoodPaging(indexVm.page);
     }
 
@@ -52,6 +53,7 @@ $(function () {
             indexVm.goods = data.goods;
           } else {
             indexVm.page -= 1;
+            indexVm.lastPage = true;
           }
           if(data.goods.length < 8) {
             indexVm.lastPage = true;

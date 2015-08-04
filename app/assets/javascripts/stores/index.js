@@ -1,17 +1,5 @@
 $(function () {
   if($('body').hasClass('store') && $('body').hasClass('base_index')) {
-    var indexVm = new Vue({
-      el: '#good-list',
-      data: {
-        page: 1,
-        goods: [],
-        lastPage: false
-      },
-      methods: {
-        prevPage: prevPage,
-        nextPage: nextPage
-      }
-    });
     var $goodUl = $('#good-list > ul');
 
     function prevPage () {
@@ -69,15 +57,28 @@ $(function () {
       });
       //}
     }
+    function changeGoodListBg (page) {
+      if(page % 2 === 0) {
+        $goodUl.removeClass('bg-odd').addClass('bg-even');
+      } else {
+        $goodUl.removeClass('bg-even').addClass('bg-odd');
+      }
+    }
+
+    var indexVm = new Vue({
+      el: '#good-list',
+      data: {
+        page: 1,
+        goods: [],
+        lastPage: false
+      },
+      methods: {
+        prevPage: prevPage,
+        nextPage: nextPage
+      }
+    });
     // 获取商品列表第一页
     getGoodPaging(1);
   }
 
-  function changeGoodListBg (page) {
-    if(page % 2 === 0) {
-      $goodUl.removeClass('bg-odd').addClass('bg-even');
-    } else {
-      $goodUl.removeClass('bg-even').addClass('bg-odd');
-    }
-  }
 });

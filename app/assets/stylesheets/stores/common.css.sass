@@ -9,11 +9,19 @@ main
     border: none
   .navbar-nav
     > li
-      > a:hover
-        opacity: .6
+      > a
+        line-height: 28px
     .active
       > a
         color: #458887
+  .dropdown:hover
+    [role="button"]
+      color: #458887
+    .caret
+      transition: all .3s ease
+      transform: rotate(180deg)
+    .dropdown-menu
+      display: block
 
 .header-password
   position: relative

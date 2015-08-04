@@ -4,7 +4,10 @@ class Stores::OrdersController < Stores::BaseController
 
   def index
     respond_to do |format|
-      format.html { render '/stores/orders/index' }
+      format.html do
+        @num = current_user.orders.includes(:good).page(params[:page]).per(4).try(:size);
+        render '/stores/orders/index'
+      end
       format.json do
         json = { status: 0, code: 1, orders:[] }
 

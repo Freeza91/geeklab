@@ -1,7 +1,7 @@
 main.with-brand role="main"
   section
     .container
-      - if @orders.try(:size) == 0
+      - if @num == 0
         .no-order
           .no-order-bg
           .content

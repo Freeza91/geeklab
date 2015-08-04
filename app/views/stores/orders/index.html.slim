@@ -1,81 +1,59 @@
-main role="main"
+main.with-brand role="main"
   section
     .container
       - if @orders.try(:size) == 0
-        .reset-wrp
-          p
-            span.icon-img.icon-outer-18 style="margin-bottom: -3px; margin-right: 5px"
-              i.icon-inner.icon-flag
-            | sorry, 你还没有兑换礼品噢!
-          a.btn.btn-base-reverse.btn-rounded.btn-s href=stores_root_path
-            | 去兑换
+        .no-order
+          .no-order-bg
+          .content
+            p
+              span.icon-img.icon-outer-24
+                i.icon-inner.icon-devil
+            p
+              | 你暂时还没有兑换礼品噢!
+            a.btn.btn-base.btn-rounded.btn-s href=stores_root_path
+              | 去兑换
       - else
-        .order-list#orders
-          table.order-table
-            colgroup
-              col.good
-              col.price
-              col.operate
-            thead
-              tr.col-name
-                th
-                  | 礼品兑换记录
-                th
-                  | 单价(积分)
-                th
-                  | 操作
-            tbody.order-item v-repeat="order: orders" v-attr="data-id: order.id"
-              tr.gap-row
-              tr.order-header
-                td
-                  span.dealtime
-                    | {{order.created_at}}
-                  span.order-id.color-gray
-                    | 订单号:&nbsp{{order.order_num}}
-                td
-                td
-                  span.delete v-on="click: deleteOrder(order, $event)"
-                    | &times
-              tr.order-content
-                td.good
-                  a.pic v-attr="href: '/stores/goods/' + order.good_id" target="_blank"
-                    img v-attr="src: order.good_pic"
-                  a.name v-attr="href: '/stores/goods/' + order.good_id" target="_blank"
-                    | {{order.good_name}}
-                td.price
-                  span.icon-img.icon-outer-18 style="margin: 0 10px -4px 0"
-                    i.icon-inner.icon-score
-                  | {{order.cost}}
-                td
-                  button.btn.btn-base-reverse.btn-rounded.btn-s v-attr="data-id: order.id" v-on="click: showDetail(order)"
-                    | 详情
-            /- @orders.each do |order|
-              /tbody.order-item data-id="#{order.to_params}"
-                /tr.gap-row
-                /tr.order-header
-                  /td
-                    /span.dealtime
-                      /= order.created_at.strftime('%F')
-                    /span.order-id.color-gray
-                      /| 订单号:&nbsp
-                      /= order.order_id
-                  /td
-                  /td
-                    /span.delete data-toggle="modal"
-                      /| &times
-                /tr.order-content
-                  /td.good
-                    /a.pic href=stores_good_path(order.to_params(order.good_id)) target="_blank"
-                      /img src="#{order.good.pictures.first.url.url}"
-                    /a.name href=stores_good_path(order.to_params(order.good_id)) targe="_blank"
-                      /= order.good.name
-                  /td.price
-                    /span.icon-img.icon-outer-18 style="margin: 0 10px -4px 0"
-                      /i.icon-inner.icon-score
-                    /= order.good.cost.to_i
-                  /td
-                    /button.btn.btn-base-reverse.btn-rounded.btn-s.detail data-id="#{order.to_params}"
-                      /| 详情
+        #orders
+          .order-list.clearfix
+            .order-item v-repeat="order: orders" v-on="click: selectOrder($event)"
+              .order-bg
+              .good-item
+                .good-price.vertical-center
+                  span.vertical-item
+                    span.icon-img.icon-outer-18 style="margin-right: 4px; margin-bottom: -5px"
+                      i.icon-inner.icon-score
+                    | {{order.cost}}
+                .good-content
+                  .good-img
+                    a v-attr="href: '/stores/goods/' + order.good_id" target="_blank"
+                      img v-attr="src: order.good_pic"
+                  .good-name
+                    span
+                      | {{order.good_name}}
+              .order-detail v-class="right: $index <=1, left: $index > 1"
+                .order-name
+                  | {{order.good_name}}
+                .order-id.color-gray
+                  | 订单号:&nbsp{{order.order_num}}
+                .detail-item v-repeat="order.detail"
+                  span.name
+                    | {{$key}}
+                  span.info
+                    | {{$value}}
+                button.btn.btn-s.btn-base.btn-rounded.delete-btn v-on="click: deleteOrder(order, $event)"
+                  | 扔掉
+          .order-list-bg
+            .prev.pagination v-on="click: prevPage(this)"
+              i.fa.fa-arrow-left
+            .next.pagination
+              i.fa.fa-arrow-right v-on="click: nextPage(this)"
+  /= render partial: "stores/shared/brand", locals: {title: ['我的实验室']}
+  .brand.vertical-center
+    .page-title.vertical-item
+      p
+        | 我的实验室
+      p
+        = current_user.credits
 
 <!-- 删除订单记录 -->
 = render "stores/modals/order_delete"

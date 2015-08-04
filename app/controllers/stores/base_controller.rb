@@ -9,7 +9,7 @@ class Stores::BaseController < ApplicationController
       format.json do
         json = { status: 0, code: 1, goods:[] }
 
-        @goods = Good.display.includes(:pictures).page(params[:page]).per(9)
+        @goods = Good.display.includes(:pictures).page(params[:page]).per(8)
         @goods.each do |good|
           json[:goods] << good.to_json_with_pictures
         end

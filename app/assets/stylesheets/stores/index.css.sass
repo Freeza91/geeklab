@@ -1,85 +1,38 @@
 // geeklab store main stylesheet
 
 // 首页商品展示
-.goods
-  background-color: #fff
-  .row:nth-child(odd)
-  .row:nth-child(even)
-  .item
-    position: relative
-    height: 500px
-    text-align: center
-    .name
-      position: absolute
-      width: 200px
-      height: 200px
-      background-color: rgba(255, 204, 0, .8)
-      border-radius: 50%
-      z-index: 10
-      span
-        width: 90%
-    .img
-      position: absolute
-      background-image: image_url("logo/logo.png")
-      background-color: #ccc
-      background-position: center center
-      background-size: 100%
-      background-repeat: no-repeat
-      border-radius: 50%
-    .img:hover
-      background-size: 110%
-    .img-g
-      width: 240px
-      height: 240px
-      z-index: 5
-    .img-s
-      width: 160px
-      height: 160px
-    .btn
-      position: absolute
-      top: 50%
-      left: 50%
-      margin-top: -19px
-      margin-left: -50px
-      z-index: 15
-      > span:last-child
-        display: none
-      .icon-img
-        margin-right: 5px
-        margin-bottom: -4px
-    .btn:hover
-      > span:first-child
-        display: none
-      > span:last-child
-        display: inline
-  .name-left
-    .name
-      right: 50%
-      bottom: 50%
-      margin-right: -30px
-      margin-bottom: -30px
-    .img-g
-      left: 50%
-      bottom: 50%
-      margin-bottom: -30px
-    .img-s
-      top: 50%
-      right: 50%
-      margin-right: -30px
-  .name-right
-    .name
-      top: 50%
-      left: 50%
-      margin-top: -30px
-      margin-left: -30px
-    .img-g
-      top: 50%
-      right: 50%
-      margin-top: -30px
-    .img-s
-      left: 50%
-      bottom: 50%
-      margin-left: -30px
+#good-list
+  position: relative
+  padding-top: 60px
+  padding-bottom: 57px
+  > ul
+    padding-left: 170px
+    padding-right: 170px
+    list-style: none
+    > li
+      float: left
+      padding: 0 20px 50px
+  .good-img
+    img:hover
+      transform: scale(1.14)
+      -webkit-transform: scale(1.14)
+  .prev
+    top: 260px
+    left: 50%
+    margin-left: -470px
+  .next
+    top: 260px
+    right: 50%
+    margin-right: -470px
+.bg-even
+  height: 490px
+  background: image_url("stores/index_bg_1.png") center bottom no-repeat
+.bg-odd
+  height: 490px
+  background: image_url("stores/index_bg_2.png") center bottom no-repeat
+.good-list
+  padding-left: 170px
+  padding-right: 170px
 
 // 首页banner
 #slider

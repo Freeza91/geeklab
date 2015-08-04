@@ -7,36 +7,45 @@
 a
   color: #000
 a:hover
-  color: #ffcc00
   text-decoration: none
 a:focus,
 a:visited
-  color: #000
+  //color: #000
   text-decoration: none
 .color-gray
   color: #a0a0a0
 .color-yellow
-  color: #ffcc00
+  color: #fef6d9
+.color-green
+  color: #458887
 
 /********************
  *      Button
  *******************/
 
 .btn
+  height: 38px
   transition: all .5s ease
 .btn-base,
 .btn-base-reverse
-  height: 38px
-  color: #000
-  border: 2px solid #000
-.btn-base
-  background-color: #ffcc00
+  color: #fef6d9
+  //border: 2px solid #000
 .btn-base:hover
-  background-color: #fff
+  color: #fef6d9
+.btn-base
+  background-color: #458887
+.btn-base:hover
+  background-color: #8fb8b8
 .btn-base-reverse
   background-color: #f9f9f9
 .btn-base-reverse:hover
   background-color: #ffcc00
+.btn-special
+  color: #fef6d9
+  background-color: #fcc714
+.btn-special:hover
+  color: #fef6d9
+  background-color: #458887
 .btn.disable
   background-color: #a0a0a0
   cursor: default
@@ -67,7 +76,6 @@ a:visited
   > a:visited,
   > a:focus
     background-color: transparent
-    color: #000
     outline: none
 
 /********************
@@ -107,7 +115,7 @@ a:visited
   .modal-dialog
     width: 400px
   .modal-content
-    border: 2px solid #000
+    background-color: #ffcc00
     border-radius: 0
     box-shadow: none
     -webkit-box-shadow: none
@@ -171,7 +179,8 @@ a:visited
   margin-bottom: 50px
   .form-field
     margin-bottom: 15px
-    position: relative
+    //position: relative
+    text-align: left
   .form-field.submit
     margin-top: 40px
     text-align: center
@@ -179,12 +188,14 @@ a:visited
     width: 100%
     height: 38px
     padding: 5px 16px
-    background-color: #f9f9f9
-    border: none
+    background-color: #fff
+    border: 2px solid #458887
     border-radius: 38px
     font-size: 14px
+    text-align: center
   .form-input:focus
     outline: none
+    background-color: #fef6d9
   .form-input.with-addon
     float: left
     width: 50%
@@ -215,6 +226,8 @@ a:visited
     margin-bottom: 7px
   .form-hint.error
     color: #e40909
+  .with-hint-text
+    position: relative
   .hint-text
     position: absolute
     right: 8px
@@ -224,26 +237,52 @@ a:visited
     padding: 0 2px
     border-radius: 6px
 
-// placeholder 居中
+// placeholder样式
 input::-ms-input-placeholder
   text-align: center
+  color: #458887
 input::-moz-placeholder
   text-align: center
+  color: #458887
 input::-webkit-input-placeholder
   text-align: center
+  color: #458887
 
 /********************
  *    Component
  *******************/
+// dropdown menu
+.dropdown-menu
+  padding: 0
+  border: none
+  border-radius: 0
+  box-shadow: none
+  -webkit-box-shadow: none
+  > li
+    > a
+      padding: 5px 0
+      background-color: #458887
+      background-clip: padding-box
+      text-align: center
+      color: #fef6d9
+    > a:hover
+      color: #fef6d9
+      background-color: #8fb8b8
+// 顶部背景
+.with-top-bg
+  padding-top: 60px
+  background-image: image_url('stores/index_top_bg.png')
+  background-repeat: repeat-x
 // 商品详情页带缩略图的图片预览
 .good-gallery
   .main-pic
     width: 480px
     height: 480px
     margin-bottom: 20px
+    background: #fef6d9
+    text-align: center
     > img
-      width: 100%
-      height: 100%
+      width: 440px
   .gallery-thumb
     ul
       margin-left: 0
@@ -262,32 +301,49 @@ input::-webkit-input-placeholder
     li.good-selected
       border: 2px solid #ffcc00
 
-// 赚取积分说明页面步骤
-.linear-guide
-  width: 600px
-  max-width: 100%
-  margin: 60px auto 20px
+// 单个商品
+.good-item
+  width: 160px
   text-align: center
-  .item
-    position: relative
-    border-left: 6px solid #ffcc00
-    .info
-      padding: 0 0 50px 30px
-      text-align: left
-      color: #a0a0a0
-      font-size: 16px
-  .item:last-child
-    border-color: #fff
-  .item:before
-    content: attr(index)
-    display: block
-    position: absolute
-    top: 0
-    left: -13px
-    width: 20px
-    height: 20px
-    border-radius: 10px
-    background-color: #ffcc00
+  .good-price
+    width: 70px
+    height: 30px
+    margin-left: auto
+    margin-right: auto
+    background-color: #fcc714
+    border-top-left-radius: 10px
+    border-top-right-radius: 10px
+  .good-content
+    height: 180px
+    background-color: #fef6d9
+    background-repeat: no-repeat
+    border-top-left-radius:  40px
+    border-top-right-radius: 40px
+  .good-img
+    padding-top: 40px
+    img
+      width: 140px
+      height: 80px
+      transition: all .3s ease
+  .good-name
+    height: 29px
+    margin-top: 20px
+    background: image_url('stores/good_name_bg.png') no-repeat center center
+    line-height: 29px
+
+// 翻页按钮
+.pagination
+  position: absolute
+  margin: 0
+  padding: 6px 11px
+  border-radius: 20px
+  background-color: #458887
+  color: #fcc714
+  font-size: 18px
+  cursor: pointer
+.pagination:hover
+  color: #fef6d9
+
 // 返回顶部小按钮
 .go-to-top
   position: fixed
@@ -303,6 +359,26 @@ input::-webkit-input-placeholder
 .go-to-top:hover
   .text
     visibility: visible
+
+// 左上角brand
+.with-brand
+  position: relative
+.brand
+  position: absolute
+  top: 0
+  left: 0
+  width: 200px
+  height: 147px
+  background: image_url("stores/brand_bg.png") left top no-repeat
+  .page-title
+    position: relative
+    left: 40px
+    width: 70px
+    color: #fef6d9
+    p
+      margin: 0
+      text-align: center
+
 /********************
  *   Transition
  *******************/

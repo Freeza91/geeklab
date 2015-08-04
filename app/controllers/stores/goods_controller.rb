@@ -1,6 +1,6 @@
 class Stores::GoodsController < Stores::BaseController
 
-  skip_before_filter :verify_authenticity_token, only: :save_image
+  # skip_before_filter :verify_authenticity_token, only: :save_image
 
   before_filter :authenticate, except: [:index, :show, :save_image, :lookup]
 

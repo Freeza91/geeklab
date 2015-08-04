@@ -4,28 +4,27 @@ header.top-header
         .navbar-header
           a.navbar-brand href=stores_root_path
             img src=image_path("logo/logo_store.png")
-        .navbar-collapse.collapse
-          /ul.nav.navbar-nav style="margin-top: 4px"
-            /li class=(request.path == "/stores" ? "active" : "")
-              /a href=stores_root_path
-                /| 首页
-            /li class=(request.path == "/stores/help" ? "active" : "")
-              /a href=stores_help_path
-                /| 如何赚取积分
+        .navbar-collapse.collapse style="padding-left: 300px"
+          ul.nav.navbar-nav.main-nav
+            li class=(request.path == "/stores" ? "active" : "")
+              a href=stores_root_path
+                | 首页
+            li class=(request.path == "/stores/help" ? "active" : "")
+              a href=stores_help_path
+                | 如何赚取积分
           - if current_user
             ul.nav.navbar-nav.navbar-right
-              li
-                a href="javascript: void(0)"
-                  = current_user.email
-              li
-                button.btn.btn-base.btn-s.btn-rounded.navbar-btn
-                  a href=stores_orders_path style="position:absolute; width: 100px; height: 38px; top: 8px; left: 0"
-                  span.icon-img.icon-outer-18 style="margin-bottom: -4px; margin-right: 5px"
-                    i.icon-inner.icon-score
-                  = current_user.credits
-              li
-                a href="javascript: void(0)" data-toggle="modal" data-target="#logout-hint"
-                  i.fa.fa-power-off. style="font-size: 18px; padding-top: 3px"
+              li.dropdown
+                a.color-green role='button'
+                  =current_user.email
+                  span.caret
+                ul.dropdown-menu role='menu'
+                  li
+                    a href=stores_orders_path
+                      | 我的实验室
+                  li
+                    a href="javascript: void(0)" data-toggle="modal" data-target="#logout-hint"
+                      | 退出登录
           - else
             button.btn.btn-base.btn-s.btn-rounded.navbar-btn.pull-right data-toggle="modal" data-target="#sign"
               | 注册/登录

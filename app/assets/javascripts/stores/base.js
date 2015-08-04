@@ -5,10 +5,17 @@ $(function () {
     var loginVm = new Vue({
       el: '#login',
       data: {
-        error: false,
-        rememberMe: true
+        rememberMe: true,
+        hint: {
+          email: ''
+        },
+        error: {
+          email: false,
+          login: false
+        }
       },
       methods: {
+        checkEmailFormat: checkEmailFormat,
         submit: login
       }
     });
@@ -16,10 +23,15 @@ $(function () {
     var registVm = new Vue({
       el: '#regist',
       data: {
-        hint: '',
         mailbox: '',
         countDown: 60,
         canSendCode: true,
+        hint: {
+          email: '',
+          code: '',
+          password: '',
+          regist: ''
+        },
         error: {
           email: false,
           password: false,
@@ -28,6 +40,8 @@ $(function () {
         }
       },
       methods: {
+        checkEmail: checkEmail,
+        checkPasswordFormat: checkPasswordFormat,
         sendCode: sendCode,
         submit: regist
       }
@@ -43,6 +57,7 @@ $(function () {
       }
       $('#sign [href="#login"]').click();
     });
+
     $('#sign [data-toggle="tab"]').on('click', function () {
       if($(this).attr('href') === '#login') {
         $('#sign .triangle').removeClass('right').addClass('left');
@@ -54,6 +69,10 @@ $(function () {
 
   function login(vm, event) {
     event.preventDefault();
+    if(!checkLoginInfo(vm)) {
+      return false;
+    }
+    clearHint(vm.hint);
     var data = {
       email: vm.email,
       encrypted_password: vm.password,
@@ -70,7 +89,8 @@ $(function () {
         switch(data.code) {
           case 0:
             // 登录失败
-            vm.error = true;
+            vm.error.email = true;
+            vm.error.all = true;
           break;
           case 1:
             // 登录成功
@@ -86,23 +106,10 @@ $(function () {
 
   function regist(vm, event) {
     event.preventDefault();
-    if(!vm.email || vm.email === '') {
-      console.log(vm.email);
-      vm.hint = '请输入邮箱';
-      vm.error.email = true;
-      vm.error.regist = true;
+    if(!checkRegistInfo(vm)) {
       return false;
     }
-    if(!formValid(vm.email, 'email')) {
-      vm.hint = '邮箱格式错误';
-      vm.error.email = true;
-      vm.error.regist = true;
-      return false;
-    }
-    if(!formValid(vm.password, 'password')) {
-      vm.error.password = true;
-      return false;
-    }
+    clearHint(vm.hint);
     var data = {
       email: vm.email,
       encrypted_password: vm.password,
@@ -124,13 +131,13 @@ $(function () {
           break;
           case 2:
             // 邮箱已被注册
-            vm.hint='邮箱已被注册，请重新输入';
+            vm.hint.regist='邮箱已被注册，请重新输入';
             vm.error.regist = true;
             vm.error.email = true;
           break;
           case 3:
             // 验证码错误
-            vm.hint='验证码错误或过期';
+            vm.hint.regist='验证码错误或过期';
             vm.error.regist = true;
             vm.error.code = true;
           break;
@@ -181,11 +188,97 @@ $(function () {
     });
   }
 
+  function checkLoginInfo (vm) {
+    var email = vm.email,
+        password = vm.password;
+        validated = true;
+
+    // 检查邮箱
+    if(email) {
+      if(!checkEmailFormat(vm)) {
+        validated = false;
+      }
+    } else {
+      vm.error.email = true;
+      vm.hint.email = '请输入邮箱';
+      validated = false;
+    }
+    return validated;
+  }
+
+  function checkRegistInfo (vm) {
+    var email = vm.email,
+        password = vm.password,
+        validated = true;
+    if(email) {
+      if(!checkEmailFormat(vm)) {
+        validated = false;
+      }
+    } else {
+      vm.hint.email = '请输入邮箱';
+      vm.error.email = true;
+      validated = false;
+    }
+    if(password) {
+      if(!checkPasswordFormat(vm)) {
+        validated = false;
+      }
+    } else {
+      vm.hint.password = '请输入密码';
+      vm.error.password = true;
+      validated = false;
+    }
+    return validated;
+  }
+
+  function checkEmail (vm) {
+    if(checkEmailFormat(vm)) {
+      isEmailRegisted(vm);
+    }
+  }
+
+  function checkEmailFormat (vm) {
+    var email = vm.email;
+    if(email && !formValid(email, 'email')) {
+      vm.error.email = true;
+      vm.hint.email = '邮箱格式错误';
+      return false;
+    }
+    return true;
+  }
+  function checkPasswordFormat (vm) {
+    var password = vm.password;
+    if(password && !formValid(password, 'password')) {
+      vm.error.password = true;
+      vm.hint.password = '密码格式错误';
+      return false;
+    }
+    return true;
+  }
+  function isEmailRegisted (vm) {
+    var email = vm.email,
+        validated = true;
+    emailRegisted(email, function () {
+      vm.hint.email = '邮箱已被注册';
+      vm.error.email = true;
+      validated = false;
+    });
+    return validated
+  }
+
+  function clearHint (hint) {
+    for(key in hint) {
+      if(hint.hasOwnProperty(key)) {
+        hint[key] = '';
+      }
+    }
+  }
+
   function formValid (value, type) {
     var result;
     switch(type){
       case 'email':
-        var emailReg = /^[0-9a-zA-Z_-]+@([0-9a-zA-Z]+.)+[a-zA-Z]$/;
+        var emailReg = /^(\w)+(\.\w+)*@(\w)+((\.\w{2,3}){1,3})$/;
         result = emailReg.test(value);
       break;
       case 'password':
@@ -201,5 +294,30 @@ $(function () {
         break;
     }
     return result;
+  }
+
+  function emailRegisted(email, callback) {
+    $.ajax({
+      url: '/users/registrations/is_emails_exist',
+      data: {email: email}
+    })
+    .done(function (data, status, xhr) {
+      if(data.status === 0) {
+        switch(data.code) {
+          case 0:
+            // 已被注册
+            if(callback !== undefined) {
+              callback();
+            }
+          break;
+          case 1:
+            // 未被注册
+          break;
+        }
+      }
+    })
+    .error(function (errors, status) {
+      console.log(errors);
+    });
   }
 });

@@ -8,22 +8,31 @@ $(function () {
     data: {
       page: 1,
       orders: [],
+      lastPage: false
     },
     methods: {
       prevPage: prevPage,
       nextPage: nextPage,
       showDetail: showDetail,
-      deleteOrder: deleteOrder
+      deleteOrder: deleteOrder,
+      selectOrder: selectOrder
     }
   });
   function prevPage (vm) {
-    vm.page--;
-    getGoodPagin(vm.page);
+    if(vm.page === 1) {
+      return false;
+    }
+    vm.page -= 1;
+    vm.lastPage = false;
+    getOrderPaging(vm.page);
   }
 
   function nextPage (vm) {
+    if(vm.lastPage) {
+      return false;
+    }
     vm.page++;
-    getGoodPagin(vm.page);
+    getOrderPaging(vm.page);
   }
 
   function getOrderPaging (page, callback) {
@@ -39,7 +48,15 @@ $(function () {
     })
     .done(function (data) {
       if(data.status === 0 && data.code === 1) {
-        ordersVm.orders = data.orders;
+        if(data.orders.length > 0) {
+          ordersVm.orders = data.orders;
+        } else {
+          ordersVm.page -= 1;
+          ordersVm.lastPage = true;
+        }
+        if(data.orders.length < 4) {
+          ordersVm.lastPage = true;
+        }
       }
     })
     .error(function (errors) {
@@ -122,6 +139,11 @@ $(function () {
     .error(function (errors) {
       console.log(errors);
     });
+  }
+
+  function selectOrder(event) {
+    $('.order-item.active').removeClass('active');
+    $(event.target).parents('.order-item').addClass('active');
   }
 
 });

@@ -1,11 +1,17 @@
 main.with-brand role="role"
   section#get-scores
+    - if current_user && current_user.to_tester.try(:tester_infor)
+      a.btn.btn-special.btn-rounded.btn-s href=assignments_path style="position: absolute; top: 200px; left: 50%; margin-left: -40px"
+        | 赚积分去
+    - else
+      a.btn.btn-special.btn-rounded.btn-s href=new_tester_path style="position: absolute; top: 200px; left: 50%; margin-left: -40px"
+        | 赚积分去
     #steps
       .step#step-1
         span.index
           | 1
         span
-          | 注册&登录
+          | 注册&nbsp&amp&nbsp登录
       .step#step-2
         span.index
           | 2

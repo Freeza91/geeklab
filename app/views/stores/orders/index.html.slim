@@ -40,7 +40,7 @@ main.with-brand role="main"
                     | {{$key}}
                   span.info
                     | {{$value}}
-                button.btn.btn-s.btn-base.btn-rounded.delete-btn v-on="click: deleteOrder(order, $event)"
+                button.btn.btn-s.btn-base.btn-rounded.delete-btn v-on="click: deleteOrder(order, $index, $event)"
                   | 扔掉
           .order-list-bg
             .prev.pagination v-on="click: prevPage(this)"

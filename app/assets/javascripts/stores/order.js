@@ -67,13 +67,13 @@ $(function () {
   getOrderPaging(1);
 
   var $curOrder,
-      orderId;
-
+      orderId,
+      orderIndex;
   $('#order-delete .confirm').on('click', function () {
    //删除订单
     $('#order-delete').modal('hide');
     sendDeleteOrderRequest (orderId, function () {
-      $curOrder.remove();
+      ordersVm.orders.$remove(orderIndex)
     });
   });
 
@@ -84,8 +84,9 @@ $(function () {
     });
   }
 
-  function deleteOrder (order, event) {
+  function deleteOrder (order, index, event) {
     orderId = order.id;
+    orderIndex = index;
     $curOrder  = $(event.target).parents('.order-item');
     $('#order-delete').modal();
   }

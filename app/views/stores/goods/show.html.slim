@@ -24,7 +24,7 @@ main role="main"
                     span.color-gray 所需积分
                     span.icon-img.icon-outer-18 style="margin: 0 10px -4px 20px"
                       i.icon-inner.icon-score
-                    span
+                    span.color-yellow
                       = @good.cost.to_i
                   - if @good.status == 'on_sell'
                     .sell-counter

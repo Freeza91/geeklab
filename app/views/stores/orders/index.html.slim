@@ -1,4 +1,4 @@
-main role="main"
+main.with-brand role="main"
   section
     .container
       - if @orders.try(:size) == 0
@@ -12,13 +12,6 @@ main role="main"
               | 你暂时还没有兑换礼品噢!
             a.btn.btn-base.btn-rounded.btn-s href=stores_root_path
               | 去兑换
-        /.reset-wrp
-          /p
-            /span.icon-img.icon-outer-18 style="margin-bottom: -3px; margin-right: 5px"
-              /i.icon-inner.icon-flag
-            /| sorry, 你还没有兑换礼品噢!
-          /a.btn.btn-base-reverse.btn-rounded.btn-s href=stores_root_path
-            /| 去兑换
       - else
         #orders
           .order-list.clearfix
@@ -54,6 +47,13 @@ main role="main"
               i.fa.fa-arrow-left
             .next.pagination
               i.fa.fa-arrow-right v-on="click: nextPage(this)"
+  /= render partial: "stores/shared/brand", locals: {title: ['我的实验室']}
+  .brand.vertical-center
+    .page-title.vertical-item
+      p
+        | 我的实验室
+      p
+        = current_user.credits
 
 <!-- 删除订单记录 -->
 = render "stores/modals/order_delete"

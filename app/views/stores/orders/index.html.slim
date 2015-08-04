@@ -21,7 +21,7 @@ main.with-brand role="main"
                 .good-price.vertical-center
                   span.vertical-item
                     span.icon-img.icon-outer-18 style="margin-right: 4px; margin-bottom: -5px"
-                      i.icon-inner.icon-score
+                      i.icon-inner.icon-score-old
                     | {{order.cost}}
                 .good-content
                   .good-img
@@ -53,6 +53,8 @@ main.with-brand role="main"
       p
         | 我的实验室
       p
+        span.icon-img.icon-outer-18 style="margin-right: 5px; vertical-align: middle"
+          i.icon-inner.icon-score-shadow
         = current_user.credits
 
 <!-- 删除订单记录 -->

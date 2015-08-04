@@ -12,6 +12,7 @@ $(function () {
         nextPage: nextPage
       }
     });
+    var $goodUl = $('#good-list > ul');
 
     function prevPage () {
       if(indexVm.page === 1) {
@@ -51,6 +52,7 @@ $(function () {
         if(data.status === 0 && data.code === 1) {
           if(data.goods.length > 0) {
             indexVm.goods = data.goods;
+            changeGoodListBg(page);
           } else {
             indexVm.page -= 1;
             indexVm.lastPage = true;
@@ -69,5 +71,13 @@ $(function () {
     }
     // 获取商品列表第一页
     getGoodPaging(1);
+  }
+
+  function changeGoodListBg (page) {
+    if(page % 2 === 0) {
+      $goodUl.removeClass('bg-odd').addClass('bg-even');
+    } else {
+      $goodUl.removeClass('bg-even').addClass('bg-odd');
+    }
   }
 });

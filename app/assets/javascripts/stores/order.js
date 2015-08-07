@@ -8,7 +8,9 @@ $(function () {
     data: {
       page: 1,
       orders: [],
-      lastPage: false
+      lastPage: false,
+      // 当前页订单是否被全部删除的标志位
+      emptyCurPage: false
     },
     methods: {
       prevPage: prevPage,
@@ -31,7 +33,9 @@ $(function () {
     if(vm.lastPage) {
       return false;
     }
-    vm.page++;
+    if(!vm.emptyCurPage) {
+      vm.page += 1;
+    }
     getOrderPaging(vm.page);
   }
 
@@ -51,12 +55,21 @@ $(function () {
         if(data.orders.length > 0) {
           ordersVm.orders = data.orders;
         } else {
+          if(ordersVm.emptyCurPage) {
+            if(ordersVm.page === 1) {
+              location.reload();
+            }
+            ordersVm.page -= 1;
+            ordersVm.lastPage = true;
+            getOrderPaging(ordersVm.page);
+          }
           ordersVm.page -= 1;
           ordersVm.lastPage = true;
         }
         if(data.orders.length < 4) {
           ordersVm.lastPage = true;
         }
+        ordersVm.emptyCurPage = false;
       }
     })
     .error(function (errors) {
@@ -74,6 +87,9 @@ $(function () {
     $('#order-delete').modal('hide');
     sendDeleteOrderRequest (orderId, function () {
       ordersVm.orders.$remove(orderIndex)
+      if(ordersVm.orders.length === 0) {
+        ordersVm.emptyCurPage = true;
+      }
     });
   });
 

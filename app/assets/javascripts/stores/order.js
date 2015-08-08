@@ -159,8 +159,13 @@ $(function () {
   }
 
   function selectOrder(event) {
-    $('.order-item.active').removeClass('active');
-    $(event.target).parents('.order-item').addClass('active');
+    var $order = $(event.target).parents('.order-item');
+    if($order.hasClass('active')) {
+      $order.removeClass('active');
+    } else {
+      $('.order-item.active').removeClass('active');
+      $order.addClass('active');
+    }
   }
 
 });

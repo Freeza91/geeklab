@@ -48,8 +48,6 @@ main role="main"
                 .good-intro
                   p
                     = @good.describle
-                  p.color-gray
-                    | (最终解释权归 北京中明万长咨询管理有限公司 所有)
               #user-addr style="padding-top: 40px" v-show="showAddr"
                 form.form
                   .form-field.with-hint-text v-class="error.name ? 'error': ''" style="width: 48%; display: inline-block; margin-right: 3%"
@@ -68,13 +66,13 @@ main role="main"
                     label.checkbox-inline
                       input type="checkbox" v-model="setAddr"
                       | 设为我的常用地址
-            .good-action
-              - if !current_user
-                button.btn.btn-base.btn-rounded.btn-m data-toggle="modal" data-target="#login-hint"
-                  | 立即兑换
-              - else
-                button.btn.btn-base.btn-rounded.btn-m class=can_exchange(@good.available, @good.status) v-on="click: exchange(this, $event)"
-                  = get_good_status(@good.available, @good.status)
+              .good-action v-class="showAddr ? '' : 'fixed'"
+                - if !current_user
+                  button.btn.btn-base.btn-rounded.btn-m data-toggle="modal" data-target="#login-hint"
+                    | 立即兑换
+                - else
+                  button.btn.btn-base.btn-rounded.btn-m class=can_exchange(@good.available, @good.status) v-on="click: exchange(this, $event)"
+                    = get_good_status(@good.available, @good.status)
             - if current_user
               input.hidden type="text" value="#{@good.to_params}" v-model="id"
               input.hidden type="text" value="#{@good.virtual?}" v-model="virtual"

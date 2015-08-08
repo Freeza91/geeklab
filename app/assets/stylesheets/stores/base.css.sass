@@ -21,6 +21,9 @@ a:visited
 .color-green
   color: #458887
 
+h1, h2, h3, h4, h5, h6
+  margin: 0
+
 /********************
  *      Button
  *******************/
@@ -262,14 +265,14 @@ input::-webkit-input-placeholder
   -webkit-box-shadow: none
   > li
     > a
-      padding: 5px 0
-      background-color: #458887
+      padding: 10px 0
+      background-color: #fcc714
       background-clip: padding-box
       text-align: center
       color: #fef6d9
     > a:hover
       color: #fef6d9
-      background-color: #8fb8b8
+      background-color: #458887
 // 顶部背景
 .with-top-bg
   padding-top: 60px
@@ -336,15 +339,22 @@ input::-webkit-input-placeholder
 // 翻页按钮
 .pagination
   position: absolute
+  width: 37px
+  height: 37px
   margin: 0
-  padding: 6px 11px
+  //padding: 6px 11px
   border-radius: 20px
   background-color: #458887
+  text-align: center
+  line-height: 37px
   color: #fcc714
   font-size: 18px
   cursor: pointer
 .pagination:hover
   color: #fef6d9
+.pagination.disable
+  color: #a0a0a0
+  cursor: default
 
 // 返回顶部小按钮
 .go-to-top

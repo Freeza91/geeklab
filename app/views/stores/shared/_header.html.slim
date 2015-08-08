@@ -15,13 +15,16 @@ header.top-header
           - if current_user
             ul.nav.navbar-nav.navbar-right
               li.dropdown
-                a.color-green role='button'
+                a role='button'
                   =current_user.email
                   span.caret
                 ul.dropdown-menu role='menu'
                   li
                     a href=stores_orders_path
                       | 我的实验室
+                      span.icon-img.icon-outer-18 style="margin-right: 5px; margin-left: 5px; vertical-align: middle"
+                        i.icon-inner.icon-score-shadow
+                      = current_user.credits
                   li
                     a href="javascript: void(0)" data-toggle="modal" data-target="#logout-hint"
                       | 退出登录

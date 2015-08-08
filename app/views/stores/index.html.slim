@@ -13,11 +13,12 @@ main.bg-green.with-top-bg role='main'
               .good-content
                 .good-img
                   a v-attr="href: '/stores/goods/' + good.id" target="_blank"
-                    img v-attr="src: good.pictures[1]"
+                    img v-attr="src: good.pictures[0]"
                 .good-name
                   span
                     | {{good.name}}
-        .prev.pagination v-on="click: prevPage"
+        .prev.pagination v-on="click: prevPage" v-class="page === 1 ? 'disable' : ''"
           i.fa.fa-arrow-left
-        .next.pagination
-          i.fa.fa-arrow-right v-on="click: nextPage"
+        .next.pagination v-on="click: nextPage" v-class="lastPage ? 'disable' : ''"
+          i.fa.fa-arrow-right
+        div

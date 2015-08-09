@@ -41,6 +41,10 @@ main.with-brand role="main"
                     | {{$key}}
                   span.info
                     | {{$value}}
+                  span.addition v-if="!order.virtual && $key === '物流公司'"
+                    | {{order.express_status}}
+                  a.addition href="http://www.kuaidi100.com" target="_blank" v-if="!order.virtual && $key === '快递单号'"
+                    | 查看物流
                 button.btn.btn-s.btn-base.btn-rounded.delete-btn v-on="click: deleteOrder(order, $index, $event)"
                   | 扔掉
           .order-list-bg

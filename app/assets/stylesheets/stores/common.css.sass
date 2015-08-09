@@ -226,22 +226,36 @@ main
   .order-name
     font-size: 16px
   .detail-item
+    position: relative
     margin-top: 10px
+    a,
     span
       display: inline-block
       height: 40px
       line-height: 40px
-      text-align: center
+      //text-align: center
     .name
       width: 80px
       background-color: #ffcc00
       border-top-left-radius: 20px
       border-bottom-left-radius: 20px
+      text-align: center
     .info
       width: 200px
+      padding-left: 30px
       background-color: #fef6d9
       border-top-right-radius: 20px
       border-bottom-right-radius: 20px
+    .addition
+      position: absolute
+      top: 0
+      right: 10px
+    span.addition
+      color: #a0a0a0
+    a.addition
+      color: #458887
+    a.addition:hover
+      color: #8fb8b8
 // 没有订单时
 .no-order
   .no-order-bg

@@ -1,8 +1,32 @@
 main.bg-green.with-top-bg role='main'
   section.content
-    .container
+  .container.hide#slider-width
+  .container-fluid style="padding: 190px 0 50px"
+    #slider style="position: relative; top: 0px; left: 0px; width: 900px;
+        height: 360px;"
+      div u="slides" style="cursor: move; position: absolute; left: 0px; top:
+        0px; width: 900px; height: 360px;
+            overflow: hidden;"
+        div
+          a href=get_assignment_url(current_user) target="_blank"
+            img u="image" src=image_path("stores/index_bg_1.png")
+        div
+          a href=get_assignment_url(current_user) target="_blank"
+            img u="image" src=image_path("stores/index_bg_2.png")
+        div
+          a href=get_assignment_url(current_user) target="_blank"
+            img u="image" src=image_path("stores/index_bg_1.png")
+        div
+          a href=get_assignment_url(current_user) target="_blank"
+            img u="image" src=image_path("stores/index_bg_2.png")
+      /span u="arrowleft" class="jssora13l" style="top: 123px; left: 30px;"
+        /span.icon-img.icon-outer-34
+          /i.icon-inner.icon-arrow-left
+      /span u="arrowright" class="jssora13r" style="top: 123px; right: 30px;"
+        /span.icon-img.icon-outer-34
+          /i.icon-inner.icon-arrow-right
       #good-list
-        ul.bg-even.clearfix
+        ul.clearfix
           li v-repeat="good: goods"
             .good-item
               .good-price.vertical-center
@@ -21,4 +45,3 @@ main.bg-green.with-top-bg role='main'
           i.fa.fa-arrow-left
         .next.pagination v-on="click: nextPage" v-class="lastPage ? 'disable' : ''"
           i.fa.fa-arrow-right
-        div

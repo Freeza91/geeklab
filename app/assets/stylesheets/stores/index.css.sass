@@ -2,12 +2,18 @@
 
 // 首页商品展示
 #good-list
-  position: relative
-  padding-top: 60px
-  padding-bottom: 57px
+  //position: relative
+  //padding-top: 60px
+  //padding-bottom: 57px
+  position: absolute
+  top: -130px
+  width: 100%
   > ul
-    padding-left: 170px
-    padding-right: 170px
+    //padding-left: 170px
+    //padding-right: 170px
+    width: 800px
+    margin: 0 auto
+    padding: 0
     list-style: none
     > li
       float: left
@@ -17,11 +23,11 @@
       transform: scale(1.14)
       -webkit-transform: scale(1.14)
   .prev
-    top: 260px
+    top: 202px
     left: 50%
     margin-left: -470px
   .next
-    top: 260px
+    top: 202px
     right: 50%
     margin-right: -470px
 .bg-even
@@ -34,11 +40,3 @@
   padding-left: 170px
   padding-right: 170px
 
-// 首页banner
-#slider
-  img
-    transition: all .5s ease
-    -webkit-transition: all .5s ease
-  img:hover
-    transform: scale(1.05)
-    -webkit-transform: scale(1.05)

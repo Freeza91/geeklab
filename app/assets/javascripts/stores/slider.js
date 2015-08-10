@@ -6,18 +6,17 @@ $(function () {
       slideWidth = $('#slider-width').width();
   $('#slider').css('width', width);
   $('#slider [u="slides"]').css('width', width);
-  var parking = (width - slideWidth) / 2;
+  var parking = (width - 900) / 2;
   var options = {
-      $AutoPlay: true,
+      $AutoPlay: false,
       $AutoPlayInterval: 5000, // 自动播放间隔
 
       $PauseOnHover: 1,                               //[Optional] Whether to pause when mouse over if a slideshow is auto playing, default value is false
 
       $ArrowKeyNavigation: true,   			            //Allows arrow key to navigate or not
-      //$SlideWidth: 900,                                   //[Optional] Width of every slide in pixels, the default is width of 'slides' container
-      $SlideWidth: slideWidth,                                   //[Optional] Width of every slide in pixels, the default is width of 'slides' container
-      $SlideHeight: 400,                                  //[Optional] Height of every slide in pixels, the default is width of 'slides' container
-      $SlideSpacing: 0, 					                //Space between each slide in pixels
+      $SlideWidth: 900,                                   //[Optional] Width of every slide in pixels, the default is width of 'slides' container
+      $SlideHeight: 360,                                  //[Optional] Height of every slide in pixels, the default is width of 'slides' container
+      $SlideSpacing: parking, 					                //Space between each slide in pixels
       $DisplayPieces: 2,                                  //Number of pieces to display (the slideshow would be disabled if the value is set to greater than 1), the default value is 1
       $ParkingPosition: parking,                                //The offset position to park slide (this options applys only when slideshow disabled).
 
@@ -42,19 +41,8 @@ $(function () {
       window.setTimeout(ScaleSlider, 30);
     }
     // 设置arrow位置
-    $('#slider [u="arrowleft"]').css('left', parking - 17);
-    $('#slider [u="arrowright"]').css('right', parking - 22);
-    // 调整img高度和位置
-    $('#slider img')
-    .removeAttr('style')
-    .css({
-      'width': slideWidth,
-      'height': 'auto',
-      'position': 'absolute',
-      'left': 0,
-      'bottom': 0,
-      'cursor': 'pointer'
-    });
+    $('#slider [u="arrowleft"]').css('top', 202);
+    $('#slider [u="arrowright"]').css('top', 202);
   }
   ScaleSlider();
 

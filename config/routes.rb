@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   root 'pages#home'
 
+  get 'test', to: "pages#test"
+
   namespace :users do
 
     resources :registrations, except: :destroy do

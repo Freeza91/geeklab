@@ -6,24 +6,51 @@ module QiniuAbout
   included do
     before_action :require_login?, except: [:callback_from_qiniu,
                                             :callback_from_qiniu_transfer,
-                                            :callback_from_qiniu_video_images]
+                                            :callback_from_qiniu_video_images,
+                                            :upload_token, :upload]
 
     # skip_before_filter :verify_authenticity_token, :only => [:callback_from_qiniu,                                                       :callback_from_qiniu_transfer,
     #                                                          :callback_from_qiniu_video_images]
+
+    before_action :detect_browser, only: :upload
+    layout false, only: :upload
+  end
+
+  def qr_token
+    json = { status: 0, code: 1, msg: "生成token成功" }
+    if !current_user
+      json[:code], json[:msg] = 0, "你没有登录"
+    else
+      json[:auth_token] = generate_qr_auth_token
+    end
+
+    render json: json
+
   end
 
   def upload_token
     json = { status: 0, code: 1, msg: "生成token成功", token: '' }
     if params[:name].blank?
       json[:code], json[:msg] = 0, '文件名不能为空'
-    elsif current_user
+    elsif current_user || auth_user_token(params[:auth_token])
       token = generate_token(params[:assignment_id], params[:name])
       json[:token] = token
     else
-      json[:code], json[:msg] = 0, '你没有权限'
+      json[:code], json[:msg] = 0, '你没有权限!'
     end
 
     render json: json
+  end
+
+  def upload
+    respond_to do |format|
+      format.html { render 'assignments/mobiles/upload' }
+        format.html do |html|
+          html.android { render 'assignments/mobiles/upload' }
+          html.ios     { render 'assignments/mobiles/upload' }
+          html.windows { render 'assignments/mobiles/upload' }
+        end
+      end
   end
 
   def callback_from_qiniu
@@ -81,6 +108,36 @@ module QiniuAbout
   end
 
 private
+
+  def detect_browser
+    case request.user_agent
+      when /iPad/i
+        request.variant = :ios
+      when /iPhone/i
+        request.variant = :ios
+      when /Android/i && /mobile/i
+        request.variant = :android
+      when /Android/i
+        request.variant = :android
+      when /Windows Phone/i
+        request.variant = :windows
+    end
+  end
+
+  def generate_qr_auth_token
+    user_id = current_user.id
+    token = SecureRandom.uuid + Time.now.to_i.to_s
+    $redis.set(token, $hashids.encode(user_id))
+    $redis.expire(token, 1800) # set 30 mintues
+
+    token
+  end
+
+  def auth_user_token(token)
+    hash_user_id = $redis.get(token)
+    return true if hash_user_id && User.find_by(id: hash_user_id)
+    false
+  end
 
   def generate_token(id, file_name)
     auth_token = generate_qiniu_auth_token

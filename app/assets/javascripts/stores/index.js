@@ -83,10 +83,8 @@ $(function () {
       .done(function (data) {
         if(data.status === 0 && data.code === 1) {
           if(data.goods.length > 0) {
-            // 清楚当前页商品
-            indexVm.goods.forEach(function(index) {
-              indexVm.goods.$remove(index);
-            });
+            // 清除当前页商品
+            indexVm.goods = [];
             if(type === 'prev') {
               jssor_slider1.$Prev();
             }

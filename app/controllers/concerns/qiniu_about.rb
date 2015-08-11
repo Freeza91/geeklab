@@ -7,10 +7,13 @@ module QiniuAbout
     before_action :require_login?, except: [:callback_from_qiniu,
                                             :callback_from_qiniu_transfer,
                                             :callback_from_qiniu_video_images,
-                                            :upload_token]
+                                            :upload_token, :upload]
 
     # skip_before_filter :verify_authenticity_token, :only => [:callback_from_qiniu,                                                       :callback_from_qiniu_transfer,
     #                                                          :callback_from_qiniu_video_images]
+
+    before_action :detect_browser, only: :upload
+    layout false, only: :upload
   end
 
   def qr_token
@@ -37,6 +40,17 @@ module QiniuAbout
     end
 
     render json: json
+  end
+
+  def upload
+    respond_to do |format|
+      format.html { render 'assignments/mobiles/upload' }
+        format.html do |html|
+          html.android { render 'assignments/mobiles/upload' }
+          html.ios     { render 'assignments/mobiles/upload' }
+          html.windows { render 'assignments/mobiles/upload' }
+        end
+      end
   end
 
   def callback_from_qiniu
@@ -94,6 +108,21 @@ module QiniuAbout
   end
 
 private
+
+  def detect_browser
+    case request.user_agent
+      when /iPad/i
+        request.variant = :ios
+      when /iPhone/i
+        request.variant = :ios
+      when /Android/i && /mobile/i
+        request.variant = :android
+      when /Android/i
+        request.variant = :android
+      when /Windows Phone/i
+        request.variant = :windows
+    end
+  end
 
   def generate_qr_auth_token
     user_id = current_user.id

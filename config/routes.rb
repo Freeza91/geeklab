@@ -3,9 +3,6 @@ Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   root 'pages#home'
 
-  get 'test', to: "pages#test"
-  post 'upload', to: "pages#upload"
-
   namespace :users do
 
     resources :registrations, except: :destroy do
@@ -57,18 +54,20 @@ Rails.application.routes.draw do
 
   resources :testers
   resources :assignments do
-    post 'callback_from_qiniu'
-    post 'callback_from_qiniu_transfer'
-    post 'callback_from_qiniu_video_images'
-    get 'upload_token'
-    get 'get_video'
-    delete 'delete_video'
     collection do
       get 'miss'
       get 'join'
       get 'not_interest'
       get 'ing'
       get 'done'
+      get 'upload'
+      get 'qr_token'
+      get 'upload_token'
+      get 'get_video'
+      delete 'delete_video'
+      post 'callback_from_qiniu'
+      post 'callback_from_qiniu_transfer'
+      post 'callback_from_qiniu_video_images'
     end
   end
 

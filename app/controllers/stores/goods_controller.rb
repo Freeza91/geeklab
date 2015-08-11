@@ -70,7 +70,7 @@ class Stores::GoodsController < Stores::BaseController
         json['code'], json['msg'] = 2, '积分不足'
       elsif good.stock > 0
         unless good.virtual?
-          json['address'] = current_user.addresses.first
+          json['address'] = current_user.addresses.last
         end
       else
         json['code'], json['msg'] = 3, '库存不足'

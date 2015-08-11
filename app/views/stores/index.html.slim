@@ -41,7 +41,7 @@ main.bg-green.with-top-bg role='main'
                 .good-name
                   span
                     | {{good.name}}
-        .prev.pagination v-on="click: prevPage" v-class="page === 1 ? 'disable' : ''"
+        .prev.pagination v-on="click: prevPage" v-class="page === 1 ? 'disable' : ''" v-show="page !== 1"
           i.fa.fa-arrow-left
-        .next.pagination v-on="click: nextPage" v-class="lastPage ? 'disable' : ''"
+        .next.pagination v-on="click: nextPage" v-class="lastPage ? 'disable' : ''" v-show="!lastPage"
           i.fa.fa-arrow-right

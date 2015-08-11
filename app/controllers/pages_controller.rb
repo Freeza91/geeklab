@@ -18,6 +18,10 @@ class PagesController < ApplicationController
     end
   end
 
+  def upload
+    render json: { msg: '上传成功' }
+  end
+
 private
 
   def detect_browser

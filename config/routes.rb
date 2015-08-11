@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   root 'pages#home'
 
   get 'test', to: "pages#test"
+  post 'upload', to: "pages#upload"
 
   namespace :users do
 

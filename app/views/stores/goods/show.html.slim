@@ -21,7 +21,7 @@ main role="main"
                     = @good.name
                 .good-meta.clearfix
                   .cost
-                    span.color-gray 所需积分
+                    span 所需积分
                     span.icon-img.icon-outer-18 style="margin: 0 10px -4px 20px"
                       i.icon-inner.icon-score
                     span.color-orange
@@ -38,7 +38,7 @@ main role="main"
                         - else
                             span
                               | 仅剩
-                            span.color-gray style="padding: 0 3px"
+                            span.color-orange style="padding: 0 3px"
                               = @good.stock
                             span
                               | 个

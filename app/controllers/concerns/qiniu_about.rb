@@ -9,9 +9,6 @@ module QiniuAbout
                                             :callback_from_qiniu_video_images,
                                             :upload_token, :upload]
 
-    # skip_before_filter :verify_authenticity_token, :only => [:callback_from_qiniu,                                                       :callback_from_qiniu_transfer,
-    #                                                          :callback_from_qiniu_video_images]
-
     before_action :detect_browser, only: :upload
     layout false, only: :upload
   end
@@ -21,7 +18,12 @@ module QiniuAbout
     if !current_user
       json[:code], json[:msg] = 0, "你没有登录"
     else
-      json[:auth_token] = generate_qr_auth_token
+      assignment_id = params[:assignment_id]
+      if assignment_id && Assignment.find_by(id: assignment_id)
+        json[:auth_token] = generate_qr_auth_token(assignment_id)
+      else
+        json[:code], json[:msg] = 0, '没有找到这个上传任务'
+      end
     end
 
     render json: json
@@ -43,14 +45,14 @@ module QiniuAbout
   end
 
   def upload
+    @auth = auth_user_token(params[:auth_token])
     respond_to do |format|
-      format.html { render 'assignments/mobiles/upload' }
-        format.html do |html|
-          html.android { render 'assignments/mobiles/upload' }
-          html.ios     { render 'assignments/mobiles/upload' }
-          html.windows { render 'assignments/mobiles/upload' }
-        end
+      format.html do |html|
+        html.android { render 'assignments/mobiles/upload' }
+        html.ios     { render 'assignments/mobiles/upload' }
+        html.windows { render 'assignments/mobiles/upload' }
       end
+    end
   end
 
   def callback_from_qiniu
@@ -124,9 +126,9 @@ private
     end
   end
 
-  def generate_qr_auth_token
+  def generate_qr_auth_token(key)
     user_id = current_user.id
-    token = SecureRandom.uuid + Time.now.to_i.to_s
+    token = SecureRandom.uuid + key + (0...2).map { (65 + rand(26)).chr }.join
     $redis.set(token, $hashids.encode(user_id))
     $redis.expire(token, 1800) # set 30 mintues
 

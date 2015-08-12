@@ -47,6 +47,7 @@ module QiniuAbout
   def upload
     @auth = auth_user_token(params[:auth_token])
     respond_to do |format|
+      format.html { render 'assignments/mobiles/upload' }
       format.html do |html|
         html.android { render 'assignments/mobiles/upload' }
         html.ios     { render 'assignments/mobiles/upload' }

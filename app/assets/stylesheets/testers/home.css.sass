@@ -7,7 +7,44 @@
   .static
     color: #1c3e4c
   .dynamic
+    position: relative
+    display: inline-block
+    width: 100%
     color: #5bbcc9
+    -webkit-perspective: 300px
+    -moz-perspective: 300px
+    perspective: 300px
+  b
+    position: absolute
+    top: 0
+    left: 0
+    display: inline-block
+    width: 100%
+    text-align: center
+  i
+    font-style: normal
+    opacity: 0
+    -webkit-backface-visibility: hidden
+    backface-visibility: hidden
+    -webkit-transform-style : preserve-3d
+    -moz-transform-style    : preserve-3d
+    -ms-transform-style     : preserve-3d
+    -o-transform-style      : preserve-3d
+    -webkit-transform : translateZ(-20px) rotateX(90deg)
+    -moz-transform    : translateZ(-20px) rotateX(90deg)
+    -ms-transform     : translateZ(-20px) rotateX(90deg)
+    -o-transform      : translateZ(-20px) rotateX(90deg)
+    transform         : translateZ(-20px) rotateX(90deg)
+  i.in
+    -webkit-animation : rotateIn .4s linear 0s 1 normal forwards
+    -moz-animation    : rotateIn .4s linear 0s 1 normal forwards
+    -o-animation      : rotateIn .4s linear 0s 1 normal forwards
+    animation         : rotateIn .4s linear 0s 1 normal forwards
+  i.out
+    -webkit-animation : rotateOut .4s linear 0s 1 normal forwards
+    -moz-animation    : rotateOut .4s linear 0s 1 normal forwards
+    -o-animation      : rotateOut .4s linear 0s 1 normal forwards
+    animation         : rotateOut .4s linear 0s 1 normal forwards
 
 #section2
   background: image_url("testers/index_bg.png") center bottom no-repeat
@@ -16,7 +53,6 @@
   -o-background-size      : 100%
   background-size         : 100%
   filter                  : "progid : DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')"
-
 
 .active
   .step-item
@@ -31,10 +67,11 @@
     float: left
     width: 33.3%
     opacity: 0
-    text-align: center
     p
       color: #1c3e4c
       font-size: 16px
+      letter-spacing: .1em
+      text-align: center
   .step-item:nth-child(1)
     -webkit-animation-delay: .8s
   .step-item:nth-child(2)
@@ -45,6 +82,139 @@
     transform: translateX(15px)
     -webkit-transform: translateX(15px)
 
+.video-area
+  position: relative
+  text-align: center
+  .info
+    margin-bottom: 60px
+    p
+      font-size: 16px
+      color: #fbf9f3
+      letter-spacing: .1em
+      text-align: center
+  .play
+    cursor: pointer
+
+// video play icon
+.icon-play
+  display: inline-block
+  background: image_url("testers/play.png") 0 0 no-repeat
+  width: 100px
+  height: 100px
+.icon-play:hover
+  background-position: -100px 0
+
+// 第一屏字体翻转动画
+@keyframes rotateIn
+  0%
+    opacity: 0
+    -webkit-transform: translateZ(-20px) rotateX(90deg)
+    -moz-transform: translateZ(-20px) rotateX(90deg)
+    -ms-transform: translateZ(-20px) rotateX(90deg)
+    -o-transform: translateZ(-20px) rotateX(90deg)
+    transform: translateZ(-20px) rotateX(90deg)
+  60%
+    opacity: 1
+    -webkit-transform: translateZ(-20px) rotateX(-10deg)
+    -moz-transform: translateZ(-20px) rotateX(-10deg)
+    -ms-transform: translateZ(-20px) rotateX(-10deg)
+    -o-transform: translateZ(-20px) rotateX(-10deg)
+    transform: translateZ(-20px) rotateX(-10deg)
+  100%
+    opacity: 1
+    -webkit-transform: translateZ(-20px) rotateX(0deg)
+    -moz-transform: translateZ(-20px) rotateX(0deg)
+    -ms-transform: translateZ(-20px) rotateX(0deg)
+    -o-transform: translateZ(-20px) rotateX(0deg)
+    transform: translateZ(-20px) rotateX(0deg)
+@-webkit-keyframes rotateIn
+  0%
+    opacity: 0
+    -webkit-transform: translateZ(-20px) rotateX(90deg)
+  60%
+    opacity: 1
+    -webkit-transform: translateZ(-20px) rotateX(-10deg)
+  100%
+    opacity: 1
+    -webkit-transform: translateZ(-20px) rotateX(0deg)
+@-moz-keyframes rotateIn
+  0%
+    opacity: 0
+    -moz-transform: translateZ(-20px) rotateX(90deg)
+  60%
+    opacity: 1
+    -moz-transform: translateZ(-20px) rotateX(-10deg)
+  100%
+    opacity: 1
+    -moz-transform: translateZ(-20px) rotateX(0deg)
+@-o-keyframes rotateIn
+  0%
+    opacity: 0
+    -o-transform: translateZ(-20px) rotateX(90deg)
+  60%
+    opacity: 1
+    -o-transform: translateZ(-20px) rotateX(-10deg)
+  100%
+    opacity: 1
+    -o-transform: translateZ(-20px) rotateX(0deg)
+
+@keyframes rotateOut
+  0%
+    opacity: 1
+    -webkit-transform: translateZ(-20px) rotateX(0deg)
+    -moz-transform: translateZ(-20px) rotateX(0deg)
+    -ms-transform: translateZ(-20px) rotateX(0deg)
+    -o-transform: translateZ(-20px) rotateX(0deg)
+    transform: translateZ(-20px) rotateX(0deg)
+  60%
+    opacity: 0
+    -webkit-transform: translateZ(-20px) rotateX(-100deg)
+    -moz-transform: translateZ(-20px) rotateX(-100deg)
+    -ms-transform: translateZ(-20px) rotateX(-100deg)
+    -o-transform: translateZ(-20px) rotateX(-100deg)
+    transform: translateZ(-20px) rotateX(-100deg)
+  100%
+    opacity: 0
+    -webkit-transform: translateZ(-20px) rotateX(-90deg)
+    -moz-transform: translateZ(-20px) rotateX(-90deg)
+    -ms-transform: translateZ(-20px) rotateX(-90deg)
+    -o-transform: translateZ(-20px) rotateX(-90deg)
+    transform: translateZ(-20px) rotateX(-90deg)
+
+@-webkit-keyframes rotateOut
+  0%
+    opacity: 1
+    -webkit-transform: translateZ(-20px) rotateX(0deg)
+  60%
+    opacity: 0
+    -webkit-transform: translateZ(-20px) rotateX(-100deg)
+  100%
+    opacity: 0
+    -webkit-transform: translateZ(-20px) rotateX(-90deg)
+
+@-moz-keyframes rotateOut
+  0%
+    opacity: 1
+    -moz-transform: translateZ(-20px) rotateX(0deg)
+  60%
+    opacity: 0
+    -moz-transform: translateZ(-20px) rotateX(-100deg)
+  100%
+    opacity: 0
+    -moz-transform: translateZ(-20px) rotateX(-90deg)
+
+@-o-keyframes rotateOut
+  0%
+    opacity: 1
+    -o-transform: translateZ(-20px) rotateX(0deg)
+  60%
+    opacity: 0
+    -o-transform: translateZ(-20px) rotateX(-100deg)
+  100%
+    opacity: 0
+    -o-transform: translateZ(-20px) rotateX(-90deg)
+
+// 第二屏渐变进入动画
 @keyframes stepShow
   from
     opacity: 0
@@ -76,16 +246,6 @@
     transform: translateY(0)
 
 @-ms-keyframes stepShow
-  from
-    opacity: 0
-    -webkit-transform: translateY(-50px)
-    transform: translateY(-50px)
-  to
-    opacity: 1
-    -webkit-transform: translateY(0)
-    transform: translateY(0)
-
-@-o-keyframes stepShow
   from
     opacity: 0
     -webkit-transform: translateY(-50px)

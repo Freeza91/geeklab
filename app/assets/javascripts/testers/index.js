@@ -27,7 +27,7 @@ $(function () {
     controlArrows                     : true,
     verticalCentered                  : true,
     resize                            : true,
-    paddingTop                        : '0',
+    paddingTop                        : '50px',
     paddingBottom                     : '0',
     sectionsColor                     : ['#fff', '#fbf9f3', '#fff'],
     //fixedElements                     : '#header, .footer',

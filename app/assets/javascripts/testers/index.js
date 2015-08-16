@@ -2,28 +2,55 @@ $(function () {
   if(!$('body').hasClass('testers_index')) {
     return false;
   }
-  $('.temp').on('click', function() {
-    var $this = $(this);
-    var approved = $this.data('approved');
-    var $modal = $('#info-modal');
-    if(approved) {
-      $modal.find('.title').text('怎么体验产品');
-      $modal.find('.content').text('任务会以邮件的方式发送到你的邮箱里，请注意查收');
-      $modal.modal();
-    } else {
-      $.ajax({
-        url: '/users/mailers/send_novice_task'
-      })
-      .done(function (data, status) {
-        if(data.status === 0 && data.code === 1) {
-          $modal.find('.title').text('怎么成为体验师');
-          $modal.find('.content').text('完成新手任务即可成为体验师，新手任务已经在你的邮箱里了，赶快去完成吧!');
-          $modal.modal();
-        }
-      })
-      .error(function (errors, status) {
-        console.log(errors);
-      });
-    }
+  $('#fullpage').fullpage({
+    //Scrolling
+    css3                              : true,
+    scrollingSpeed                    : 1000,
+    autoScrolling                     : true,
+    fitToSection                      : true,
+    fitToSectionDelay                 : 500,
+    scrollBar                         : false,
+    easing                            : 'easeInOutCubic',
+    easingcss3                        : 'ease',
+    continuousVertical                : false,
+    normalScrollElements              : '#element1, .element2',
+    scrollOverflow                    : false,
+    touchSensitivity                  : 15,
+    normalScrollElementTouchThreshold : 5,
+
+    //Accessibility
+    keyboardScrolling                 : true,
+    animateAnchor                     : true,
+    recordHistory                     : false,
+
+    //Design
+    controlArrows                     : true,
+    verticalCentered                  : true,
+    resize                            : true,
+    paddingTop                        : '0',
+    paddingBottom                     : '0',
+    sectionsColor                     : ['#fff', '#fbf9f3', '#fff'],
+    //fixedElements                     : '#header, .footer',
+    responsiveWidth                   : 0,
+    responsiveHeight                  : 0,
+
+    //Custom selectors
+    sectionSelector                   : '.section',
+    slideSelector                     : '.slide',
+
+    //events
+    onLeave        : function(index, nextIndex, direction){},
+    afterLoad      : function(anchorLink, index){
+      if(index === 1) {
+        $('#header').removeClass('zoom-out');
+      } else {
+        $('#header').addClass('zoom-out');
+      }
+    },
+    afterRender    : function(){},
+    afterResize    : function(){},
+    afterSlideLoad : function(anchorLink, index, slideAnchor, slideIndex){},
+    onSlideLeave   : function(anchorLink, index, slideIndex, direction, nextSlideIndex){}
   });
+
 });

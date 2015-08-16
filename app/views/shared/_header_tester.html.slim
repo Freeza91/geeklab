@@ -1,53 +1,45 @@
-header.header.navbar.navbar-static.clear-fix
-  .container
-    .navbar-header
-      a.top-logo href=testers_path
-        img src=image_path('logo/logo.png')
-    .navbar-collapse.collapse
-      ul.nav.navbar-nav
-        li
-          button.btn.btn-blue.role-switch data-curr-role='tester'
-            | 切换到产品经理
+header#header
+  .headers.clearfix
+    .logo
+      a.logo-text href="#{testers_path}"
+        | 极客实验室
+    ul.nav.navbar-nav.navbar-right.top-nav-right
+      li
+        button.btn.btn-line-base.btn-rounded.btn-s href="#{pms_path}" target="_blank"
+          | 提高产品体验
       - if current_user
-        ul.nav.navbar-nav.login
-          li
-            a
-              span.tester-mark class=(current_user.approved ? 'active' : '')
-                i.fa.fa-street-view
-                | 体验师
-          li.dropdown
-            a role='button'
-              =current_user.email
-              span.caret
-            ul.dropdown-menu role='menu'
-              li
-                - if current_user.to_tester.try(:tester_infor)
-                  a href='/testers/new'
-                    i.fa.fa-user
-                    | 个人信息
-                - else
-                  a href=edit_tester_path(current_user.to_params)
-                    i.fa.fa-user
-                    | 个人信息
-              // 完成个人信息后显示任务列表
+        li.dropdown
+          a role='button'
+            =current_user.email
+            span.caret
+          ul.dropdown-menu role='menu'
+            li
               - if current_user.to_tester.try(:tester_infor)
-                li
-                  a href=assignments_path
-                    i.fa.fa-th-large
-                    | 任务列表
+                a href='/testers/new'
+                  i.fa.fa-user
+                  | 个人信息
+              - else
+                a href=edit_tester_path(current_user.to_params)
+                  i.fa.fa-user
+                  | 个人信息
+            // 完成个人信息后显示任务列表
+            - if current_user.to_tester.try(:tester_infor)
               li
-                a href=stores_root_path target="_blank"
-                  /i.fa.fa-diamond
-                  span.icon-img.icon-outer-18 style="margin-right: 7px; margin-bottom: -4px"
-                    i.icon-inner.icon-score-old style="margin-bottom: 4px"
-                    i.icon-inner.icon-score-old.hover style="margin-bottom: 4px"
-                  | 积分商城
-              li
-                a rel="noflow" data-method="delete" href=users_session_path(current_user.to_params)
-                  i.fa.fa-power-off
-                  | 退出登录
+                a href=assignments_path
+                  i.fa.fa-th-large
+                  | 任务列表
+            li
+              a href=stores_root_path target="_blank"
+                /i.fa.fa-diamond
+                span.icon-img.icon-outer-18 style="margin-right: 7px; margin-bottom: -4px"
+                  i.icon-inner.icon-score-old style="margin-bottom: 4px"
+                  i.icon-inner.icon-score-old.hover style="margin-bottom: 4px"
+                | 积分商城
+            li
+              a rel="noflow" data-method="delete" href=users_session_path(current_user.to_params)
+                i.fa.fa-power-off
+                | 退出登录
       - else
-        button.btn.btn-blue.login data-toggle='modal' data-target='#signup'
-          | 登录/注册
-
-section.layout-fix.for-header
+        li
+          button.btn.btn-flat-base.btn-rounded.btn-s data-toggle='modal' data-target='#signup'
+            | 登录/注册

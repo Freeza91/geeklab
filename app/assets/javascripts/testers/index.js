@@ -40,7 +40,6 @@ $(function () {
     slideSelector                     : '.slide',
 
     //events
-    onLeave        : function(index, nextIndex, direction){},
     afterLoad      : function(anchorLink, index){
       if(index === 1) {
         $('#header').removeClass('zoom-out');
@@ -72,6 +71,11 @@ $(function () {
         clearInterval(rotateInterval);
       }
     }
+  });
+
+  $('#js-change-role').on('click', function () {
+    var href = $(this).data('href');
+    location.href = href;
   });
 
 });

@@ -5,7 +5,7 @@ header#header
         | 极客实验室
     ul.nav.navbar-nav.navbar-right.top-nav-right.login
       li
-        button.btn.btn-line-base.btn-rounded.btn-s href="#{pms_path}" target="_blank"
+        button.btn.btn-line-base.btn-rounded.btn-s#js-change-role data-href="#{pms_path}"
           | 提高产品体验
       - if current_user
         li.dropdown
@@ -30,7 +30,6 @@ header#header
                   | 任务列表
             li
               a href=stores_root_path target="_blank"
-                /i.fa.fa-diamond
                 span.icon-img.icon-outer-18 style="margin-right: 7px; margin-bottom: -4px"
                   i.icon-inner.icon-score-old style="margin-bottom: 4px"
                   i.icon-inner.icon-score-old.hover style="margin-bottom: 4px"

@@ -1,3 +1,8 @@
+#fullpage
+  .footer
+    position: absolute
+    bottom: 0
+    width: 100%
 #slogan
   text-align: center
   .item
@@ -53,7 +58,6 @@
   -o-background-size      : 100%
   background-size         : 100%
   filter                  : "progid : DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')"
-
 .active
   .step-item
     -webkit-animation : stepShow 1s linear 0s 1 normal forwards
@@ -82,9 +86,28 @@
     transform: translateX(15px)
     -webkit-transform: translateX(15px)
 
+.mask
+  position: absolute
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
+  //width: 100%
+  //height: 100%
+  background-color: rgba(0, 0, 0, .5)
+.with-mask
+  position: relative
+#section3
+  background: image_url("testers/index_bg.png") center bottom no-repeat
+  -webkit-background-size : 100%
+  -moz-background-size    : 100%
+  -o-background-size      : 100%
+  background-size         : 100%
+  filter                  : "progid : DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')"
 .video-area
   position: relative
   text-align: center
+  z-index: 10
   .info
     margin-bottom: 60px
     p

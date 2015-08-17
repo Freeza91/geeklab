@@ -30,7 +30,7 @@ $(function () {
     resize                            : true,
     paddingTop                        : '50px',
     paddingBottom                     : '0',
-    sectionsColor                     : ['#fff', '#fbf9f3', 'rgba(0, 0, 0, .5)'],
+    sectionsColor                     : ['#fff', '#fbf9f3'],
     //fixedElements                     : '#header, .footer',
     responsiveWidth                   : 0,
     responsiveHeight                  : 0,
@@ -71,11 +71,7 @@ $(function () {
         $('#header').addClass('zoom-out');
         clearInterval(rotateInterval);
       }
-    },
-    afterRender    : function(){},
-    afterResize    : function(){},
-    afterSlideLoad : function(anchorLink, index, slideAnchor, slideIndex){},
-    onSlideLeave   : function(anchorLink, index, slideIndex, direction, nextSlideIndex){}
+    }
   });
 
 });

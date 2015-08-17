@@ -70,6 +70,12 @@ $(function () {
         $('#header').addClass('zoom-out');
         clearInterval(rotateInterval);
       }
+    },
+    afterResize    : function() {
+      var height = document.documentElement.clientHeight - 50;
+      var $player = $('.player');
+      $player.find('object').height(height);
+      $player.find('embed').height(height);
     }
   });
 
@@ -77,5 +83,22 @@ $(function () {
     var href = $(this).data('href');
     location.href = href;
   });
+
+  $('#video-start').on('click', function () {
+    var height = document.documentElement.clientHeight - 50;
+    console.log(height);
+    var $player = $('.player');
+    $player.find('object').height(height);
+    $player.find('embed').height(height);
+    $(this).css('display', 'none');
+    $('.video-area .info').css('display', 'none');
+    $('#footer').css('display', 'none');
+    $('#section3 .mask').remove();
+    $player.css({
+      'display': 'block'
+    });
+    $.fn.fullpage.reBuild();
+  });
+
 
 });

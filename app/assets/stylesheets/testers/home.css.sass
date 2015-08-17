@@ -107,7 +107,8 @@
 .video-area
   position: relative
   text-align: center
-  z-index: 10
+  //z-index: 10
+  //height: 100%
   .info
     margin-bottom: 60px
     p
@@ -115,8 +116,19 @@
       color: #fbf9f3
       letter-spacing: .1em
       text-align: center
+  .info.hide
+    opacity: 0
   .play
     cursor: pointer
+  .play.clicked
+    opacity: 0
+  .player
+    width: 100%
+    display: none
+    object,
+    embed
+      width: 100%
+
 
 // video play icon
 .icon-play

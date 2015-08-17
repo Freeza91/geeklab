@@ -36,8 +36,17 @@ main role='main'
           p
             | 积分奖励
     .section.with-mask#section3
+      .mask
       .video-area
-        .video-player
+        <div class="player" id="cc_video_7871EF6AC93AE11C9C33DC5901307461_2658355">
+          <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0" width="522" height="400" id="cc_7871EF6AC93AE11C9C33DC5901307461">
+            <param name="movie" value="http://p.bokecc.com/flash/player.swf?vid=7871EF6AC93AE11C9C33DC5901307461&amp;siteid=99F117B348066991&amp;playerid=AB64ED27A1261F77&amp;playertype=1&amp;autoStart=true">
+            <param value="transparent" name="wmode">
+            <param name="allowFullScreen" value="true">
+            <param name="allowScriptAccess" value="always">
+            <embed src="http://p.bokecc.com/flash/player.swf?vid=7871EF6AC93AE11C9C33DC5901307461&amp;siteid=99F117B348066991&amp;playerid=AB64ED27A1261F77&amp;playertype=1&amp;autoStart=true" width="522" wmode="transparent" allowfullscreen="true" allowscriptaccess="always" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash">
+          </object>
+        </div>
         .info
           p
             | 想要获得积分奖励
@@ -45,6 +54,5 @@ main role='main'
             | 只需要你花十分钟左右的时间
           p
             | 像下面这样使用某个产品去完成几个指定的任务
-        .play.icon-play
-      .mask
+        .play.icon-play#video-start
       = render "shared/footer"

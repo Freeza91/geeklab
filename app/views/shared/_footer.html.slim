@@ -1,25 +1,34 @@
-footer.footer
+footer#footer
   .container
     .row
-      .col-xs-5.col-sm-5.col-md-3.col-lg-3.col-md-offset-4.col-sm-offset-2
-        h4.title 联系我们
-        ul
+      .col-md-2
+        .footer-title
+          | 联系我们
+        ul.list-unstyled.footer-content
           li
-            a href='mailto:geeklab@geekpark.net'
-              i.fa.fa-envelope-o
+            a href="mailto: geeklab@geekpark.net"
               | geeklab@geekpark.net
+      .col-md-2
+        .footer-title
+          | 友情链接
+        ul.list-unstyled.list-inline.footer-content
           li
-            a href='javascript:void(0)'
-              i.fa.fa-wechat
+            a href="http://geekpark.net" target="_blank"
+              | 极客公园
+          li
+            a href="http://geeklab.cc" target="_blank"
+              | 极客实验室
+      .col-md-2
+        .footer-title
+          | 关注我们
+        ul.list-unstyled.footer-content
+          li
+            span
+              i.fa.fa-weixin style="padding-right: 5px"
               | 微信公众号
             .qrcode
-              img src=image_url('qrcodes/geekpark-qrcode.png')
-      .col-xs-5.col-sm-5.col-md-3.col-lg-3
-        h4.title 友情链接
-        ul
-          li
-            a href=('http://www.geekpark.net') target='_blank'
-              | 极客公园
-    .row
-      p Copyright &copy 2015 北京中明万长管理咨询有限公司
-    
+              img src=image_path("qrcodes/geekpark-qrcode.png")
+      .col-md-5
+        .copyright
+          p
+            | Copyright &copy 2015 北京中明万长管理咨询有限公司

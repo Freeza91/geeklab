@@ -35,6 +35,14 @@ main role='main'
             | 获得价值大于10元的
           p
             | 积分奖励
+      - if current_user && current_user.to_tester.try(:tester_infor)
+        a.btn.btn-flat-base.btn-rounded.btn-s#start href="#{assignments_path}" target="_blank"
+          | 我要体验
+      - else
+        a.btn.btn-flat-base.btn-rounded.btn-s#start href="#{new_tester_path}" target="_blank"
+          | 我要体验
+      a.btn.btn-line-base.btn-rounded.btn-s#stores href="#{stores_root_path}" target="_blank"
+        | 兑换积分
     .section.with-mask#section3
       .mask
       <div class="player" id="cc_video_7871EF6AC93AE11C9C33DC5901307461_2658355">

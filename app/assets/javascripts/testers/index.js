@@ -51,6 +51,7 @@ $(function () {
       var windowWidth = document.documentElement.clientWidth;
       if(windowWidth <= 992) {
         $('.video-info').unwrap();
+        $('.step-list').unwrap();
       }
     },
 

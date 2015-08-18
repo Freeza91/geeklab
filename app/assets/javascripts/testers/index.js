@@ -47,6 +47,8 @@ $(function () {
     slideSelector                     : '.slide',
 
     //events
+    afterRender    : function () {
+    },
     afterLoad      : function(anchorLink, index){
       switch(index) {
         case 1:
@@ -55,20 +57,14 @@ $(function () {
           changeButtonPosition('bottom');
         break;
         case 2:
+          $('#header').addClass('zoom-out');
           changeButtonPosition('bottom');
         break;
         case 3:
-          $('#header').addClass('zoom-out');
           changeButtonPosition('top');
           clearInterval(rotateInterval);
         break;
       }
-      //if(index === 1) {
-        //$('#header').removeClass('zoom-out');
-      //} else {
-        //$('#header').addClass('zoom-out');
-        //clearInterval(rotateInterval);
-      //}
     },
     afterResize    : function() {
       var height = document.documentElement.clientHeight - 50;

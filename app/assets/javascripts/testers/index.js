@@ -48,7 +48,12 @@ $(function () {
 
     //events
     afterRender    : function () {
+      var windowWidth = document.documentElement.clientWidth;
+      if(windowWidth <= 992) {
+        $('.video-info').unwrap();
+      }
     },
+
     afterLoad      : function(anchorLink, index){
       switch(index) {
         case 1:
@@ -86,7 +91,7 @@ $(function () {
     $player.find('object').height(height);
     $player.find('embed').height(height);
     $(this).css('display', 'none');
-    $('.video-area .info').css('display', 'none');
+    $('.video-info').css('display', 'none');
     $('#footer').css('display', 'none');
     $('#section3 .mask').remove();
     $player.css({
@@ -131,6 +136,5 @@ $(function () {
       index = (index + 1) % 2;
     }, 2000);
   }
-
 
 });

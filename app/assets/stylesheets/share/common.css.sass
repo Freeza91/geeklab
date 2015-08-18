@@ -62,7 +62,6 @@ main
       font-size: 20px
   .top-nav-right
     margin-top: 8px
-
 #footer
   background-color: #1c3e4c
   padding-top: 10px
@@ -107,6 +106,12 @@ main
   bottom: 0
 
 @media(max-width: 992px)
+  #h class=(current_user ? '' : 'not-logged')eader.not-logged
+    .logo
+      float: none
+      text-align: center
+    .login
+      display: none
   #footer
     .footer-title
       font-size: 28px

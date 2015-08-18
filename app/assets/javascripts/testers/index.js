@@ -2,7 +2,14 @@ $(function () {
   if(!$('body').hasClass('testers_index')) {
     return false;
   }
-  var rotateInterval;
+  var verticalCentered,
+      rotateInterval;
+  var windowWidth = document.documentElement.clientWidth;
+  if(windowWidth <= 992) {
+    verticalCentered = false;
+  } else {
+    verticalCentered = true;
+  }
   $('#fullpage').fullpage({
     //Scrolling
     css3                              : true,
@@ -41,35 +48,27 @@ $(function () {
 
     //events
     afterLoad      : function(anchorLink, index){
-      if(index === 1) {
-        $('#header').removeClass('zoom-out');
-        var item = $('#slogan .dynamic b'),
-            index = 0;
-        rotateInterval = setInterval(function () {
-          var curInnerItem = $(item[index]).find('i'),
-              nextInnerItem = $(item[(index + 1) % 2]).find('i'),
-              curLen = curInnerItem.length,
-              nextLen = nextInnerItem.length,
-              lenMax = Math.max(curLen, nextLen),
-              innerIndex = 0;
-          var innerIntervalId = setInterval(function () {
-            if(innerIndex < curLen) {
-              curInnerItem[innerIndex].className = 'out';
-            }
-            if(innerIndex < nextLen) {
-              nextInnerItem[innerIndex].className = 'in';
-            }
-            innerIndex += 1;
-            if(innerIndex >= lenMax) {
-              clearInterval(innerIntervalId);
-            }
-          }, 100);
-          index = (index + 1) % 2;
-        }, 2000);
-      } else {
-        $('#header').addClass('zoom-out');
-        clearInterval(rotateInterval);
+      switch(index) {
+        case 1:
+          $('#header').removeClass('zoom-out');
+          sloganRotate();
+          changeButtonPosition('bottom');
+        break;
+        case 2:
+          changeButtonPosition('bottom');
+        break;
+        case 3:
+          $('#header').addClass('zoom-out');
+          changeButtonPosition('top');
+          clearInterval(rotateInterval);
+        break;
       }
+      //if(index === 1) {
+        //$('#header').removeClass('zoom-out');
+      //} else {
+        //$('#header').addClass('zoom-out');
+        //clearInterval(rotateInterval);
+      //}
     },
     afterResize    : function() {
       var height = document.documentElement.clientHeight - 50;
@@ -99,6 +98,43 @@ $(function () {
     });
     $.fn.fullpage.reBuild();
   });
+
+  function changeButtonPosition(type) {
+    if(type === 'top') {
+      $('#change-role').removeClass('bottom').addClass('top');
+      $('#login').removeClass('bottom').addClass('top');
+    }
+    if(type === 'bottom') {
+      $('#change-role').removeClass('top').addClass('bottom');
+      $('#login').removeClass('top').addClass('bottom');
+    }
+  }
+
+  function sloganRotate () {
+    var item = $('#slogan .dynamic b'),
+        index = 0;
+    rotateInterval = setInterval(function () {
+      var curInnerItem = $(item[index]).find('i'),
+          nextInnerItem = $(item[(index + 1) % 2]).find('i'),
+          curLen = curInnerItem.length,
+          nextLen = nextInnerItem.length,
+          lenMax = Math.max(curLen, nextLen),
+          innerIndex = 0;
+      var innerIntervalId = setInterval(function () {
+        if(innerIndex < curLen) {
+          curInnerItem[innerIndex].className = 'out';
+        }
+        if(innerIndex < nextLen) {
+          nextInnerItem[innerIndex].className = 'in';
+        }
+        innerIndex += 1;
+        if(innerIndex >= lenMax) {
+          clearInterval(innerIntervalId);
+        }
+      }, 100);
+      index = (index + 1) % 2;
+    }, 2000);
+  }
 
 
 });

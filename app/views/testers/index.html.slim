@@ -56,3 +56,8 @@ main role='main'
             | 像下面这样使用某个产品去完成几个指定的任务
         .play.icon-play#video-start
       = render "shared/footer"
+  - unless current_user
+    a.btn.btn-line-base.btn-rounded.btn-s#change-role.fixed.bottom href="#{pms_path}"
+      | 提高产品体验
+    button.btn.btn-flat-base.btn-rounded.btn-s#login.fixed.bottom data-toggle='modal' data-target='#signup'
+      | 登录/注册

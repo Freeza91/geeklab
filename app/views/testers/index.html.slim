@@ -9,8 +9,8 @@ main role='main'
             i.in 手
             i.in 机
             i.in A
-            i.in p
-            i.in p
+            i.in P
+            i.in P
           b
             i.out 网
             i.out 站
@@ -35,11 +35,15 @@ main role='main'
             | 获得价值大于10元的
           p
             | 积分奖励
-      - if current_user && current_user.to_tester.try(:tester_infor)
-        a.btn.btn-flat-base.btn-rounded.btn-s#start href="#{assignments_path}" target="_blank"
-          | 我要体验
+      - if current_user
+        - if current_user.to_tester.try(:tester_infor)
+          a.btn.btn-flat-base.btn-rounded.btn-s#start href="#{assignments_path}"
+            | 我要体验
+        - else
+          a.btn.btn-flat-base.btn-rounded.btn-s#start href="#{new_tester_path}" target="_blank"
+            | 我要体验
       - else
-        a.btn.btn-flat-base.btn-rounded.btn-s#start href="#{new_tester_path}" target="_blank"
+        button.btn.btn-flat-base.btn-rounded.btn-s#start data-toggle='modal' data-target='#signup'
           | 我要体验
       a.btn.btn-line-base.btn-rounded.btn-s#stores href="#{stores_root_path}" target="_blank"
         | 兑换积分

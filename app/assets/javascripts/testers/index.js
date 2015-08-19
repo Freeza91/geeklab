@@ -5,10 +5,12 @@ $(function () {
   var verticalCentered,
       rotateInterval;
   var windowWidth = document.documentElement.clientWidth;
-  if(windowWidth <= 992) {
+  if(windowWidth <= 1080) {
     verticalCentered = false;
+    paddingTop = '80px';
   } else {
     verticalCentered = true;
+    paddingTop = '50px';
   }
   $('#fullpage').fullpage({
     //Scrolling
@@ -35,7 +37,7 @@ $(function () {
     controlArrows                     : true,
     verticalCentered                  : true,
     resize                            : true,
-    paddingTop                        : '50px',
+    paddingTop                        : paddingTop,
     paddingBottom                     : '0',
     sectionsColor                     : ['#fff', '#fbf9f3'],
     //fixedElements                     : '#header, .footer',

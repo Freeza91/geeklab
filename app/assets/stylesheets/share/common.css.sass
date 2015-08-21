@@ -1,8 +1,8 @@
+@import ../base/typography
 html,
 body
-  font-family: "Helvetica Neue",Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif
-  font-size: 14px
-  //font-family: "Microsoft Yahei", sans-serif
+  font-family: $font-family-base
+  font-size: $font-size-base
 
 .clear-fix:after
   content: ''
@@ -39,7 +39,7 @@ main
     height: 80px
     .logo-text
       color: #1c3e4c
-      font-size: 36px
+      font-size: 2.2rem
       line-height: 80px
       transition: all .3s ease
   .top-nav-right
@@ -61,7 +61,7 @@ main
     height: 50px
     .logo-text
       line-height: 50px
-      font-size: 20px
+      font-size: 1.4rem
   .top-nav-right
     margin-top: 8px
 #footer
@@ -112,14 +112,10 @@ main
     .logo
       float: none
       text-align: center
+      .logo-text
+        font-size: 1.6rem
     .login
       display: none
-  #header.zoom-out
-    height: 80px
-    .logo
-      .logo-text
-        line-height: 80px
-        font-size: 30px
   .nav.login
     > li > a
       font-size: 18px
@@ -129,13 +125,6 @@ main
     padding-top: 12px
     padding-bottom: 12px
   #footer
-    .footer-title
-      font-size: 28px
-    .footer-content
-      li
-        a
-          font-size: 24px
     .copyright
       p
-        font-size: 28px
         text-align: center

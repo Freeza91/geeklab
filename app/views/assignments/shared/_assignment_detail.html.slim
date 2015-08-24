@@ -2,60 +2,39 @@
   .modal-dialog
     .modal-content
       .modal-header
-        h1.title
-          i.fa.fa-mobile
-          span.name zaker
-          button.close type="button" data-dismiss="modal" aria-label="Close"
-            span aria-hidden="true"
-              | &times
+        button.close type="button" v-on="click: close(this)"
+          span aria-hidden="true"
+            | &times
+        .progress
+          .progress-bar.progress-bar-success role="progressbar" aria-valuemin="0" aria-valuemax="100" v-style="width: (curStepIndex / stepLen) * 100 + '%'"
+            | {{curStepIndex}} / {{stepLen}}
       .modal-body
-        .qrcode
-          img
+        .help v-show="progress === 'help'"
           p
-            | 扫一扫
-        table.table
-          tbody
-            tr
-              td
-                | 产品简介
-              td name="profile"
-                | 不超过15字的产品介绍
-            tr.website
-              td
-                | 网站地址
-              td name="website"
-                | iphone
-            tr.device
-              td
-                | 测试设备
-              td name="device"
-                | iphone
-            tr.requirement
-              td
-                | 系统要求
-              td name="requirement"
-                | IOS 7.0及以上
-            tr
-              td
-                | 测试场景
-              td name="situation"
-                | zaker是一款面向多平台的互动分享和个性化订阅的社会化阅读软件。你现在处于无聊闲适的时候，想看一看社交软件上的信息
-            tr
-              td
-                | 任务详情
-              td
-                p
-                  | 温馨提示: 测试过程中请尽可能的大声而自信的说出你的真实感受
-                ul
-                  li
-                    i.fa.fa-check-circle
-                    span
-                      | zaker是一款面向多平台的互动分享和个性化订阅的社会化阅读软件。你现在处于无聊闲适的时候，想看一看社交软件上的信息
-                  li
-                    i.fa.fa-check-circle
-                    span
-                      | dsfsdf
-                  li
-                    i.fa.fa-check-circle
-                    span
-                      | dkhfak
+            | 先准备好录制视频所需的环境。
+            | 不知道怎么录，打开下面这个链接看看吧。
+          p
+            a href="#" target="_blank"
+              | 怎么录制视频
+        .prepare v-show="progress === 'prepare'"
+          p v-show="project.device === 'web'"
+            | 打开下面的链接
+            a v-attr="href: project.platform" v-text="project.platform" target="_blank"
+          p v-show="project.device !== 'web'"
+            | 扫描下面的二维码，下载安装app
+          .qrcode
+            img v-attr="src: project.qr_code" v-show="project.device !== 'web'"
+        .situation v-show="progress === 'situation'" v-text="curStepContent"
+        .work-on v-show="progress === 'work-on'" v-text="curStepContent"
+        .work-done v-show="progress === 'work-done'"
+          .icon-wrp
+            i.fa.fa-file-video-o.fa-4x
+          .button-wrp.single
+            button.btn.btn-blue#js-video-upload
+              | 上传视频
+        .tools
+          button.btn.btn-blue v-on="click: prev(this)" v-show="progress !== 'help'"
+            | 返回
+          button.btn.btn-gray v-on="click: next(this)" v-show="progress !== 'work-done'" v-text="nextStepText"
+          button.btn.btn-gray v-on="click: close(this)" v-show="progress === 'work-done'"
+            | 搞定

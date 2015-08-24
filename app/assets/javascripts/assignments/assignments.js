@@ -12,6 +12,7 @@ $(function () {
     //播放视频
     //任务倒计时
     // 瀑布流加载
+    // 任务引导的vue model
 
   // 保存testId
   var testerId = $('.assignments-list').data('testerId');
@@ -52,24 +53,22 @@ $(function () {
 
 
   // 点击任务标题显示任务说明
-  //$('[action="getAssignmentDetail"]').on('click', function () {
-  $('.assignments-wrp').on('click', '[action="getAssignmentDetail"]', function () {
+  //$('.assignments-wrp').on('click', '[action="getAssignmentDetail"]', function () {
+  $('.assignments-wrp').on('click', '.js-assignment-start', function () {
     var $this = $(this);
-    var assignmentId = $this.parents('.card').data('assignmentId');
+    $card = $this.parents('.card');
+    assignmentId = $card.data('assignmentId');
     getAssignmentDetail(testerId, assignmentId, function (data) {
       showAssignmentDetail(data.project);
     });
   });
 
   // 上传视频按钮的click事件处理函数
-  $('.assignments-wrp').on('click', '.video-upload',  function () {
-    var $this = $(this);
-    // 设置当前操作的卡片
-    $card = $this.parents('.card');
-    assignmentId = $card.data('assignmentId');
-
-    //$('#video-upload').modal();
+  $('#js-video-upload').on('click', function () {
+    // 选择文件
     $('#video').click();
+    // 关闭任务详情
+    $('#assignment-detail').modal('hide');
   });
 
   // 取消上传
@@ -144,9 +143,7 @@ $(function () {
       content: '任务删除后将无法查看和恢复，确认删除任务?',
       eventName: 'deleteAssignment'
     };
-
     showInfoModal(options);
-
   });
 
   // 删除视频 click event
@@ -249,11 +246,12 @@ $(function () {
 
   // 获取上传视屏的token
   function getUploadToken(userId, assignmentId, filename, callback) {
-    var url = '/assignments/' + assignmentId +'/upload_token/';
+    var url = '/assignments/upload_token/';
     $.ajax({
       url: url,
       data: {
-        name: filename
+        name: filename,
+        assignment_id: assignmentId
       }
     })
     .done(function (data, status) {
@@ -417,50 +415,53 @@ $(function () {
   }
 
   function showAssignmentDetail (assignmentDetail) {
-    var deviceMap = {
-      'phone': 'Phone',
-      'ios': 'Pad'
-    };
-    var $modal = $('#assignment-detail');
-    // 填信息
-    $modal.find('.title .name').text(assignmentDetail.name);
+    assignmentDetailVm.project = assignmentDetail;
+    assignmentDetailVm.taskLen = assignmentDetail.tasks.length;
+    assignmentDetailVm.stepLen = assignmentDetailVm.taskLen + 4;
+    //var deviceMap = {
+      //'phone': 'Phone',
+      //'ios': 'Pad'
+    //};
+    //var $modal = $('#assignment-detail');
+    //// 填信息
+    //$modal.find('.title .name').text(assignmentDetail.name);
 
-    var $detailTable = $modal.find('table');
-    //var device = assignmentDetail.device[0].toUpperCase() + assignmentDetail.device.substr(1);
-    var device = deviceMap[assignmentDetail.device];
-    if(assignmentDetail.device === '0') {
-      // 新手任务
-      $detailTable.removeClass('web').addClass('app');
-      $detailTable.find('[name="device"]').text('任意设备');
-      $detailTable.find('[name="requirement"]').text('无限制');
-    }
-    if (assignmentDetail.device === 'web') {
-      $detailTable.removeClass('app').addClass('web');
-      $detailTable.find('[name="website"]').text(assignmentDetail.platform);
-      $modal.find('.qrcode').hide();
-    } else {
-      $detailTable.removeClass('web').addClass('app');
-      switch(assignmentDetail.platform) {
-        case 'ios':
-          $detailTable.find('[name="device"]').text('i' + device);
-          $detailTable.find('[name="requirement"]').text('iOS ' + assignmentDetail.requirement + '及以上');
-        break;
-        case 'android':
-          $detailTable.find('[name="device"]').text('Android ' + device);
-          $detailTable.find('[name="requirement"]').text('Android ' + assignmentDetail.requirement + '及以上');
-        break;
-      }
-      assignmentDetail.qr_code && $modal.find('.qrcode').show().find('img').attr('src', assignmentDetail.qr_code);
-    }
+    //var $detailTable = $modal.find('table');
+    ////var device = assignmentDetail.device[0].toUpperCase() + assignmentDetail.device.substr(1);
+    //var device = deviceMap[assignmentDetail.device];
+    //if(assignmentDetail.device === '0') {
+      //// 新手任务
+      //$detailTable.removeClass('web').addClass('app');
+      //$detailTable.find('[name="device"]').text('任意设备');
+      //$detailTable.find('[name="requirement"]').text('无限制');
+    //}
+    //if (assignmentDetail.device === 'web') {
+      //$detailTable.removeClass('app').addClass('web');
+      //$detailTable.find('[name="website"]').text(assignmentDetail.platform);
+      //$modal.find('.qrcode').hide();
+    //} else {
+      //$detailTable.removeClass('web').addClass('app');
+      //switch(assignmentDetail.platform) {
+        //case 'ios':
+          //$detailTable.find('[name="device"]').text('i' + device);
+          //$detailTable.find('[name="requirement"]').text('iOS ' + assignmentDetail.requirement + '及以上');
+        //break;
+        //case 'android':
+          //$detailTable.find('[name="device"]').text('Android ' + device);
+          //$detailTable.find('[name="requirement"]').text('Android ' + assignmentDetail.requirement + '及以上');
+        //break;
+      //}
+      //assignmentDetail.qr_code && $modal.find('.qrcode').show().find('img').attr('src', assignmentDetail.qr_code);
+    //}
 
-    $detailTable.find('[name="profile"]').text(assignmentDetail.profile);
-    $detailTable.find('[name="situation"]').text(assignmentDetail.desc);
+    //$detailTable.find('[name="profile"]').text(assignmentDetail.profile);
+    //$detailTable.find('[name="situation"]').text(assignmentDetail.desc);
 
-    var taskHtml = '';
-    assignmentDetail.tasks.forEach(function (task, index) {
-      taskHtml += '<li><i class="fa fa-check-circle"></i><span>' + task.content + '</span></li>'
-    });
-    $detailTable.find('ul').html(taskHtml);
+    //var taskHtml = '';
+    //assignmentDetail.tasks.forEach(function (task, index) {
+      //taskHtml += '<li><i class="fa fa-check-circle"></i><span>' + task.content + '</span></li>'
+    //});
+    //$detailTable.find('ul').html(taskHtml);
     $('#assignment-detail').modal();
   }
 
@@ -735,6 +736,88 @@ $(function () {
     if(hash === 'done') {
       $('[data-hash="done"]').click();
     }
+  }
+
+  var assignmentDetailVm = new Vue({
+    el: '#assignment-detail',
+    data: {
+      progress: 'help',
+      curStepContent: '',
+      curStepIndex: 1,
+      stepLen: 0,
+      taskLen: 0,
+      project: {},
+      nextStepText: '准备好了',
+      uplodging: false
+    },
+    methods: {
+      prev: prevStep,
+      next: nextStep,
+      close: close
+    }
+  });
+
+  function prevStep (vm) {
+    vm.curStepIndex -= 1;
+    switch(vm.progress) {
+      case 'prepare':
+        vm.progress = 'help';
+        vm.nextStepText = '准备好了';
+      break;
+      case 'situation':
+        vm.progress = 'prepare';
+        vm.nextStepText = '下载好了';
+      break;
+      case 'work-on':
+      if(vm.curStepIndex === 2) {
+        vm.curStepContent = vm.project.desc;
+        vm.progress = 'situation';
+      } else {
+        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 3].content;
+      }
+      break;
+      case 'work-done':
+        curStepContent = vm.project.tasks[vm.taskLen - 1].content;
+        vm.progress = 'work-on';
+      break;
+    }
+  }
+
+  function nextStep (vm) {
+    vm.curStepIndex += 1;
+    switch(vm.progress) {
+      case 'help':
+        vm.progress = 'prepare';
+        vm.nextStepText = '下载好了';
+      break;
+      case 'prepare':
+        vm.progress = 'situation';
+        vm.curStepContent = vm.project.desc;
+        vm.nextStepText = '接下来';
+      break;
+      case 'situation':
+        vm.progress = 'work-on';
+        vm.curStepContent = vm.project.tasks[0].content;
+      break;
+      case 'work-on':
+      if(vm.curStepIndex - 4 === vm.taskLen) {
+        vm.progress = 'work-done';
+      } else {
+        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 4].content;
+      }
+      break;
+    }
+  }
+
+  function close(vm) {
+    $('#assignment-detail').modal('hide');
+    vm.progress = 'help';
+    vm.curStepContent = '';
+    vm.curStepIndex = 1;
+    vm.stepLen = 0;
+    vm.taskLen = 0;
+    vm.project = {};
+    vm.nextStepText = '准备好了';
   }
 
 });

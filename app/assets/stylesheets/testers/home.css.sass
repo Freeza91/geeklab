@@ -1,3 +1,4 @@
+@import ../helpers/mixin
 #fullpage
   #footer
     position: absolute
@@ -31,41 +32,21 @@
   i
     font-style: normal
     opacity: 0
-    -webkit-backface-visibility: hidden
-    backface-visibility: hidden
-    -webkit-transform-style : preserve-3d
-    -moz-transform-style    : preserve-3d
-    -ms-transform-style     : preserve-3d
-    -o-transform-style      : preserve-3d
-    -webkit-transform : translateZ(-20px) rotateX(90deg)
-    -moz-transform    : translateZ(-20px) rotateX(90deg)
-    -ms-transform     : translateZ(-20px) rotateX(90deg)
-    -o-transform      : translateZ(-20px) rotateX(90deg)
-    transform         : translateZ(-20px) rotateX(90deg)
+    +backface-visibility(hidden)
+    +transform-style(preserve-3d)
+    +transform(translateZ(-20px) rotateX(90deg))
   i.in
-    -webkit-animation : rotateIn .4s linear 0s 1 normal forwards
-    -moz-animation    : rotateIn .4s linear 0s 1 normal forwards
-    -o-animation      : rotateIn .4s linear 0s 1 normal forwards
-    animation         : rotateIn .4s linear 0s 1 normal forwards
+    +animation(rotateIn .4s linear 0s 1 normal forwards)
   i.out
-    -webkit-animation : rotateOut .4s linear 0s 1 normal forwards
-    -moz-animation    : rotateOut .4s linear 0s 1 normal forwards
-    -o-animation      : rotateOut .4s linear 0s 1 normal forwards
-    animation         : rotateOut .4s linear 0s 1 normal forwards
+    +animation(rotateOut .4s linear 0s 1 normal forwards)
 
 #section2
   background: image_url("testers/index_bg.png") center bottom no-repeat
-  -webkit-background-size : 100%
-  -moz-background-size    : 100%
-  -o-background-size      : 100%
-  background-size         : 100%
+  +background-size(100%)
   filter                  : "progid : DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')"
 .active
   .step-item
-    -webkit-animation : stepShow 1s linear 0s 1 normal forwards
-    -moz-animation    : stepShow 1s linear 0s 1 normal forwards
-    -o-animation      : stepShow 1s linear 0s 1 normal forwards
-    animation         : stepShow 1s linear 0s 1 normal forwards
+    +animation(stepShow 1s linear 0s 1 normal forwards)
 .step-list
   position: relative
   top: 140px
@@ -79,14 +60,13 @@
       letter-spacing: .1rem
       text-align: center
   .step-item:nth-child(1)
-    -webkit-animation-delay: .8s
+    +animation-delay(.8s)
   .step-item:nth-child(2)
-    -webkit-animation-delay: 1.1s
+    +animation-delay(1.1s)
   .step-item:nth-child(3)
     padding-left: 50px
-    -webkit-animation-delay: 1.4s
-    transform: translateX(15px)
-    -webkit-transform: translateX(15px)
+    +animation-delay(1.4s)
+    +transform(translateX(15px))
 .mask
   position: absolute
   top: 0
@@ -111,10 +91,7 @@
 
 #section3
   background: image_url("testers/index_bg.png") center bottom no-repeat
-  -webkit-background-size : 100%
-  -moz-background-size    : 100%
-  -o-background-size      : 100%
-  background-size         : 100%
+  +background-size(100%)
   filter                  : "progid : DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')"
 
 .video-info
@@ -152,25 +129,13 @@
 @keyframes rotateIn
   0%
     opacity: 0
-    -webkit-transform: translateZ(-20px) rotateX(90deg)
-    -moz-transform: translateZ(-20px) rotateX(90deg)
-    -ms-transform: translateZ(-20px) rotateX(90deg)
-    -o-transform: translateZ(-20px) rotateX(90deg)
-    transform: translateZ(-20px) rotateX(90deg)
+    +transform(translateZ(-20px) rotateX(90deg))
   60%
     opacity: 1
-    -webkit-transform: translateZ(-20px) rotateX(-10deg)
-    -moz-transform: translateZ(-20px) rotateX(-10deg)
-    -ms-transform: translateZ(-20px) rotateX(-10deg)
-    -o-transform: translateZ(-20px) rotateX(-10deg)
-    transform: translateZ(-20px) rotateX(-10deg)
+    +transform(translateZ(-20px) rotateX(-10deg))
   100%
     opacity: 1
-    -webkit-transform: translateZ(-20px) rotateX(0deg)
-    -moz-transform: translateZ(-20px) rotateX(0deg)
-    -ms-transform: translateZ(-20px) rotateX(0deg)
-    -o-transform: translateZ(-20px) rotateX(0deg)
-    transform: translateZ(-20px) rotateX(0deg)
+    +transform(translateZ(-20px) rotateX(0deg))
 @-webkit-keyframes rotateIn
   0%
     opacity: 0
@@ -205,25 +170,13 @@
 @keyframes rotateOut
   0%
     opacity: 1
-    -webkit-transform: translateZ(-20px) rotateX(0deg)
-    -moz-transform: translateZ(-20px) rotateX(0deg)
-    -ms-transform: translateZ(-20px) rotateX(0deg)
-    -o-transform: translateZ(-20px) rotateX(0deg)
-    transform: translateZ(-20px) rotateX(0deg)
+    +transform(translateZ(-20px) rotateX(0deg))
   60%
     opacity: 0
-    -webkit-transform: translateZ(-20px) rotateX(-100deg)
-    -moz-transform: translateZ(-20px) rotateX(-100deg)
-    -ms-transform: translateZ(-20px) rotateX(-100deg)
-    -o-transform: translateZ(-20px) rotateX(-100deg)
-    transform: translateZ(-20px) rotateX(-100deg)
+    +transform(translateZ(-20px) rotateX(-100deg))
   100%
     opacity: 0
-    -webkit-transform: translateZ(-20px) rotateX(-90deg)
-    -moz-transform: translateZ(-20px) rotateX(-90deg)
-    -ms-transform: translateZ(-20px) rotateX(-90deg)
-    -o-transform: translateZ(-20px) rotateX(-90deg)
-    transform: translateZ(-20px) rotateX(-90deg)
+    +transform(translateZ(-20px) rotateX(-90deg))
 
 @-webkit-keyframes rotateOut
   0%
@@ -262,39 +215,30 @@
 @keyframes stepShow
   from
     opacity: 0
-    -webkit-transform: translateY(-50px)
-    transform: translateY(-50px)
+    +transform(translateY(-50px))
   to
     opacity: 1
-    -webkit-transform: translateY(0)
-    transform: translateY(0)
+    +transform(translateY(0))
 
 @-webkit-keyframes stepShow
   from
     opacity: 0
     -webkit-transform: translateY(-50px)
-    transform: translateY(-50px)
   to
     opacity: 1
     -webkit-transform: translateY(0)
-    transform: translateY(0)
 
 @-moz-keyframes stepShow
   from
     opacity: 0
-    -webkit-transform: translateY(-50px)
-    transform: translateY(-50px)
+    -moz-transform: translateY(-50px)
   to
     opacity: 1
-    -webkit-transform: translateY(0)
-    transform: translateY(0)
-
-@-ms-keyframes stepShow
+    -moz-transform: translateY(0)
+@-o-keyframes stepShow
   from
     opacity: 0
-    -webkit-transform: translateY(-50px)
-    transform: translateY(-50px)
+    -o-transform: translateY(-50px)
   to
     opacity: 1
-    -webkit-transform: translateY(0)
-    transform: translateY(0)
+    -o-transform: translateY(0)

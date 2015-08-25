@@ -127,7 +127,24 @@
     transition: all .3s ease
     transform: rotate(180deg)
 
-// 适配移动端
+@media(max-width: 1080px)
+  #header.no-logged
+    .logo
+      float: none
+      text-align: center
+      .logo-text
+        font-size: 1.6rem
+    .login
+      display: none
+  .nav.login
+    > li > a
+      font-size: 18px
+  .top-nav-right
+    margin-top: 10px
+  .dropdown
+    padding-top: 12px
+    padding-bottom: 12px
+
 @media(max-width: 992px)
   .header
     text-align: center

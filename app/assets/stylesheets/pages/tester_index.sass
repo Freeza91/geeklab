@@ -243,3 +243,48 @@
   to
     opacity: 1
     -o-transform: translateY(0)
+
+
+@media(max-width: 992px)
+  #slogan
+    .item
+      font-size: 2.6rem
+  #section2
+    background-image: image_url("testers/index_bg_m.png")
+  .step-list
+    top: 100px
+    .step-item
+      float: none
+      width: 100%
+      margin-bottom: 20px
+    .step-item:nth-child(3)
+      padding-left: 0
+
+  #stores
+    right: 50%
+    bottom: 200px
+
+  .video-info
+    background: #fbf9f3,
+    padding-top: 70px
+    p
+      color: #1c3e4c
+  .play
+    top: 50%
+    margin-top: -50px
+
+  .fixed
+    position: fixed
+    -webkit-transition: all .5s ease
+    -moz-transition: all .5s ease
+    -o-transition: all .5s ease
+    transition: all .5s ease
+  .fixed.top
+    top: 70px
+  .fixed.bottom
+    bottom: 10px
+
+  #change-role.fixed
+    left: 20px
+  #login.fixed
+    right: 20px

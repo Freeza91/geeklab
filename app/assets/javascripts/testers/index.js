@@ -89,7 +89,6 @@ $(function () {
 
   $('#video-start').on('click', function () {
     var height = document.documentElement.clientHeight - 50;
-    console.log(height);
     var $player = $('.player');
     $player.find('object').height(height);
     $player.find('embed').height(height);

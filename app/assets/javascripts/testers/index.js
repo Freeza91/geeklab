@@ -55,7 +55,7 @@ $(function () {
       }
     },
 
-    afterLoad      : function(anchorLink, index){
+    afterLoad      : function (anchorLink, index){
       switch(index) {
         case 1:
           $('#header').removeClass('zoom-out');
@@ -72,7 +72,7 @@ $(function () {
         break;
       }
     },
-    afterResize    : function() {
+    afterResize    : function () {
       var height = document.documentElement.clientHeight - 50;
       var $player = $('.player');
       $player.find('object').height(height);

@@ -10,13 +10,13 @@ main role="main"
             | 我参与的
   section.assignments-list.content-box data-tester-id="#{@current_user.to_tester.to_params}"
     .container
-      .assignments-wrp.clear-fix
+      .assignments-wrp.clearfix
         - if @assignments
           - @assignments.each do |assignment|
             .card data-assignment-id="#{assignment.to_params}"
               .inner
                 header
-                  h1.title 
+                  h1.title
                     i.fa.fa-mobile
                     span action="getAssignmentDetail"
                       = assignment.project.name
@@ -34,14 +34,14 @@ main role="main"
                   .timer
                      - if Time.now + 50.years > assignment.project.expired_at
                       p
-                        | 距离任务结束 
+                        | 距离任务结束
                         span.time data-deadline="#{assignment.project.expired_at}"
                           | 00:00:00
                   .score
                     span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"
                       i.icon-inner.icon-score
                     span.number
-                      = assignment.project.credit  
+                      = assignment.project.credit
       .load-more
         - if @assignments.try(:size) < 10
           p
@@ -49,7 +49,7 @@ main role="main"
         - else
           button.btn.btn-blue
             | 加载更多
-      
+
 - if @num && @num != 0
   <!-- 过期任务提示开始 -->
   = render partial: 'assignments/shared/miss_assignments_reminder'

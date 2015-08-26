@@ -10,7 +10,7 @@ main role="main"
             | 我参与的
   section.assignments-list.content-box data-tester-id="#{@current_user.to_tester.to_params}"
     .container
-      .assignments-wrp.clear-fix
+      .assignments-wrp.clearfix
         - if @assignments
           - @assignments.each do |assignment|
             .card data-assignment-id="#{assignment.to_params}"

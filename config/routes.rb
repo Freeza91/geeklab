@@ -35,6 +35,8 @@ Rails.application.routes.draw do
     end
   end
 
+  get 'help', to: 'help#index'
+
   resources :pms
   resources :projects do
     collection do

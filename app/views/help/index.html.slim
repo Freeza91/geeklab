@@ -1,0 +1,53 @@
+main role="main"
+  section
+    ul.nav.nav-tabs role="tablist"
+      li.active role="presentation"
+        a href="#ios" aria-controls="ios" role="tab" data-toggle="tab"
+          | iPhone/iPad免越狱录制
+      li role="presentation"
+        a href="#android" aria-controls="android" role="tab" data-toggle="tab"
+          | Android免root录制
+      li role="presentation"
+        a href="#mac" aria-controls="mac" role="tab" data-toggle="tab"
+          | Mac录屏
+      li role="presentation"
+        a href="#windows" aria-controls="windows" role="tab" data-toggle="tab"
+          | Windows录屏
+    .tab-content
+      .tab-pane.active#ios role="tabpanel"
+        img src="#{image_path('help/ios.png')}"
+      .tab-pane#android role="tabpanel"
+        img src="#{image_path('help/android.png')}"
+      .tab-pane#mac role="tabpanel"
+        img src="#{image_path('help/mac.png')}"
+      .tab-pane#windows role="tabpanel"
+        img src="#{image_path('help/windows.png')}"
+sass:
+  .nav-tabs
+    border-bottom: none
+    > li
+      width: 25%
+      > a
+        margin-right: 0
+        background-color: #1c3e4c
+        border: none
+        border-radius: 0
+        -webkit-border-radius: 0
+        color: #5cbcc9
+        text-align: center
+        font-size: 1.2rem
+      > a:hover
+        background-color: #5cbcc9
+        color: #fbf9f3
+    > li.active
+      > a,
+      > a:hover,
+      > a:focus
+        color: #fbf9f3
+        background-color: #5cbcc9
+        border: none
+  .tab-content
+    .tab-pane
+      background-color: #5cbcc9
+    img
+      width: 100%

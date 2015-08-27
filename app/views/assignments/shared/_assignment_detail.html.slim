@@ -32,6 +32,9 @@
           .button-wrp.single
             button.btn.btn-blue#js-video-upload
               | 上传视频
+          #upload-qrcode v-show="project.device !== 'web'"
+            p
+              | 扫描二位码通过手机上传视频
         .tools
           button.btn.btn-blue v-on="click: prev(this)" v-show="progress !== 'help'"
             | 返回

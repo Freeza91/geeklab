@@ -34,6 +34,9 @@
 //  表单验证
 //= require form.valid
 
+// 生成二维码插件
+//= require qrcode
+
 // 引入bootstrap插件
 //= require bootstrap.min
 

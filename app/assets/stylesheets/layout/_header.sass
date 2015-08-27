@@ -1,3 +1,47 @@
+// 改版后的头部
+#header
+  //position: fixed
+  //top: 0
+  width: 100%
+  height: 80px
+  background-color: #fff
+  z-index: 10
+  transition: all .3s ease
+  .headers
+    margin-left: 60px
+    margin-right: 60px
+  .logo
+    float: left
+    height: 80px
+    .logo-text
+      color: #1c3e4c
+      font-size: 2.2rem
+      line-height: 80px
+      transition: all .3s ease
+  .top-nav-right
+    margin-top: 23px
+    margin-right: 0
+    transition: all .3s ease
+    > li + li
+      margin-left: 10px
+  // dropdown
+  .nav.login
+    > li
+      > a
+        padding-top: 7px
+        padding-bottom: 7px
+
+#header.zoom-out
+  height: 50px
+  .logo
+    height: 50px
+    .logo-text
+      line-height: 50px
+      font-size: 1.4rem
+  .top-nav-right
+    margin-top: 8px
+
+// 旧版头部样式
 .header
   height: 60px
   position: fixed
@@ -83,7 +127,24 @@
     transition: all .3s ease
     transform: rotate(180deg)
 
-// 适配移动端
+@media(max-width: 1080px)
+  #header.no-logged
+    .logo
+      float: none
+      text-align: center
+      .logo-text
+        font-size: 1.6rem
+    .login
+      display: none
+  .nav.login
+    > li > a
+      font-size: 18px
+  .top-nav-right
+    margin-top: 10px
+  .dropdown
+    padding-top: 12px
+    padding-bottom: 12px
+
 @media(max-width: 992px)
   .header
     text-align: center

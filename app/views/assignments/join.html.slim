@@ -18,7 +18,7 @@ main role="main"
           li
             a href="javascript: void(0)" data-target="#assignments-done" data-hash="done"
               | 已完成
-      .assignments-wrp.clear-fix.active#assignments-ing
+      .assignments-wrp.clearfix.active#assignments-ing
         - if @assignments_ing
           -  @assignments_ing.each do |assignment|
             .card data-assignment-id="#{assignment.to_params}" data-status="#{assignment.status}"
@@ -64,7 +64,7 @@ main role="main"
                       i.icon-inner.icon-score
                     span.number
                       = assignment.project.credit
-      .assignments-wrp.clear-fix#assignments-done
+      .assignments-wrp.clearfix#assignments-done
         - if @assignments_done
           - @assignments_done.each do |assignment|
             .card data-assignment-id="#{assignment.to_params}" data-status="#{assignment.status}"
@@ -108,7 +108,7 @@ main role="main"
                     span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"
                       i.icon-inner.icon-score
                     span.number
-                      = assignment.project.credit  
+                      = assignment.project.credit
       .load-more
         - if @assignments_ing.try(:size) < 10
           p

@@ -18,15 +18,15 @@ html lang=session[:locale]
     = javascript_include_tag 'store'
 
   body class=(controller_name + ' ' + controller_name + '_' + action_name + ' ' + 'store')
+    .wrapper
+      - if controller_name == "passwords"
+        = render "stores/shared/header_password"
+      - else
+        = render "/stores/shared/header"
+      = yield
 
-    - if controller_name == "passwords"
-      = render "stores/shared/header_password"
-    - else
-      = render "/stores/shared/header"
-    = yield
-
-    <!-- footer开始 -->
-    = render "/stores/shared/footer"
+      <!-- footer开始 -->
+      = render "/stores/shared/footer"
 
     - if !current_user
       <!-- 登录框 -->

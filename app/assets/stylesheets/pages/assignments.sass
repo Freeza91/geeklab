@@ -33,121 +33,6 @@
   .container
     padding-left: 100px
     padding-right: 100px
-.card
-  width: 50%
-  padding: 14px
-  float: left
-  .inner
-    box-shadow: 0 0 5px #ccc
-
-  .btn
-    width: 90px
-    height: 38px
-  .fa-file-video-o
-    color: #a0a0a0
-
-  p
-    margin: 0
-
-  header,
-  footer
-    background-color: #fff
-
-  header
-    padding: 10px 15px
-    .title
-      margin-top: 10px
-      font-size: 20px
-      font-weight: normal
-      cursor: pointer
-      text-decoration: underline
-      .fa
-        margin-right: 5px
-    .title:hover
-      //text-decoration: underline
-      color: #16a0c6
-
-  .content
-    height: 200px
-    background-color: #f9f9f9
-    position: relative
-
-    img[src]
-      width: 100%
-      height: 100%
-    .status
-      position: absolute
-      bottom: 0
-      width: 100%
-      padding: 7px 0
-      .fa
-        font-size: 18px
-        margin-left: 5px
-        vertical-align: middle
-      p
-        text-align: center
-        color: #fff
-    .inner-mask
-      display: none
-      position: absolute
-      top: 0
-      left: 0
-      width: 100%
-      height: 100%
-      background-color: rgba(0, 0, 0, .5)
-
-    .comment
-      display: none
-      position: absolute
-      width: 220px
-      background-color: #fff
-      z-index: 10
-      box-shadow: 0 0 5px #ccc
-      > li
-        padding: 7px
-    .comment::before
-      position: absolute
-      top: 50%
-      right: 100%
-      margin-top: -10px
-      content: ''
-      display: block
-      width: 0
-      height: 0
-      border-top: 10px solid transparent
-      border-right: 10px solid #fff
-      border-bottom: 10px solid transparent
-
-    // 不同状态的提示
-    .status.status_wait_check
-      background-color: rgba(23, 160, 198, .8)
-    .status.status_checking
-      background-color: rgba(255, 241, 0, .8)
-    .status_not_accept
-      background-color: rgba(235, 97, 0, .8)
-    .status.status_failed
-      background-color: rgba(160, 160, 160, .8)
-    .status.status_success
-      background-color: rgba(50, 177, 108, .8)
-
-  footer
-    position: relative
-    height: 42px
-    .timer p,
-    .score
-      font-size: 16px
-      color: #313131
-    .timer
-      padding: 10px 15px
-      .time
-        color: #16a0c6
-    .score
-      position: absolute
-      top: 10px
-      right: 20px
-      .fa
-        margin-right: 8px
-
 
 // 加载更多
 .load-more
@@ -191,46 +76,6 @@
       width: 120px
       height: 120px
 
-.table
-  background-color: #fff
-  border: 1px solid #eee
-  color: #313131
-  font-size: 14px
-  > tbody
-    > tr
-      border-bottom: 1px solid #eee
-      > td
-        height: 54px
-        border-right: 1px solid #eee
-        text-align: left
-        vertical-align: middle
-      td:first-child
-        width: 100px
-        background-color: #f9f9f9
-        text-align: center
-      td:last-child
-        border-right: none 
-      td:not(:first-child)
-        padding-left: 20px
-    tr:last-child
-      border-bottom: none
-  ul
-    list-style: none
-    margin: 0
-    padding: 0
-    .fa
-      margin-right: 8px
-
-// 不同设备显示不同的信息
-.table.web
-  .device,
-  .requirement,
-  .qrcode
-    display: none
-.table.app
-  .website
-    display: none
-
 // confirm modal
 #confirm-modal
   .modal-dialog
@@ -261,14 +106,6 @@
   visibility: hidden
   width: 0
   height: 0
-  //padding: 0 50px
-  //margin: 30px 0
-  //text-align: left
-  //color: #313131
-  //label,
-  //.help-block
-    //font-size: 16px
-    //font-weight: normal
 
 
 // 上传进度圆环
@@ -419,8 +256,8 @@
         text-decoration: none
     > li:first-child > a
       border-right: 1px solid #a0a0a0
-      
-  
+
+
 // 过期任务提示
 .assignments-reminder
   position: fixed

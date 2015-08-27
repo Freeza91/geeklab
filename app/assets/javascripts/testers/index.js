@@ -7,10 +7,8 @@ $(function () {
   var windowWidth = document.documentElement.clientWidth;
   if(windowWidth <= 1080) {
     verticalCentered = false;
-    paddingTop = '80px';
   } else {
     verticalCentered = true;
-    paddingTop = '50px';
   }
   $('#fullpage').fullpage({
     //Scrolling
@@ -37,7 +35,7 @@ $(function () {
     controlArrows                     : true,
     verticalCentered                  : true,
     resize                            : true,
-    paddingTop                        : paddingTop,
+    paddingTop                        : '50px',
     paddingBottom                     : '0',
     sectionsColor                     : ['#fff', '#fbf9f3'],
     //fixedElements                     : '#header, .footer',
@@ -57,7 +55,7 @@ $(function () {
       }
     },
 
-    afterLoad      : function(anchorLink, index){
+    afterLoad      : function (anchorLink, index){
       switch(index) {
         case 1:
           $('#header').removeClass('zoom-out');
@@ -74,7 +72,7 @@ $(function () {
         break;
       }
     },
-    afterResize    : function() {
+    afterResize    : function () {
       var height = document.documentElement.clientHeight - 50;
       var $player = $('.player');
       $player.find('object').height(height);

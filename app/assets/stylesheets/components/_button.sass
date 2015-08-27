@@ -1,12 +1,8 @@
-/********************
- *      Text
- *******************/
+@import ../helpers/mixin
+@import ../helpers/variables
 
-/********************
- *      Button
- *******************/
 .btn
-  border-radius: 0
+  +border-radius(0)
   border: none
   color: #fff
   letter-spacing: .1em
@@ -14,17 +10,15 @@
   color: #fff
   opacity: .8
 a.btn:active
-  //border: none
   outline: none
 a.btn:focus
-  //border: none
   outline: none
 
 .btn
   height: 34px
   transition: all .5s ease
 .btn-flat-base,
-  background-color: #5bbcc9
+  background-color: $blue
   color: #fff
 .btn-flat-base:hover
   background-color: #000
@@ -32,15 +26,15 @@ a.btn:focus
 .btn-line-base:focus
   color: #fff
 .btn-line-base
-  border: 1px solid #5bbcc9
+  border: 1px solid $blue
   background-color: #fff
-  color: #5bbcc9
+  color: $blue
 .btn-line-base:hover
-  color: #5bbcc9
-  background-color: #fbf9f3
+  background-color: $light-yellow
+  color: $blue
 .btn-line-base:active,
 .btn-line-base:focus
-  color: #5bbcc9
+  color: $blue
 
 .btn:hover,
 .btn:active,
@@ -56,12 +50,3 @@ a.btn:focus
   width: 300px
 .btn-rounded
   border-radius: 30px
-
-@media(max-width: 1080px)
-  .btn
-    height: 60px
-    padding: 0
-    line-height: 60px
-  .btn-s
-    width: 180px
-    font-size: 20px

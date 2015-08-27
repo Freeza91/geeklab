@@ -42,7 +42,8 @@ class AssignmentsController < ApplicationController
   def get_video
     json = { status: 0, code: 1, msg: 'successful', video: '' }
     assignment =  Assignment.find_by(id: params[:assignment_id])
-    if assignment && assignment.tester_id == current_user.id
+    if assignment &&
+        (assignment.tester_id == current_user.id || auth_user_token(params[:auth_token])
       if assignment.is_transfer && !assignment.is_sexy
         json[:video] = assignment.video
       elsif assignment.is_sexy

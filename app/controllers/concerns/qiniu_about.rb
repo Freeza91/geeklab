@@ -51,8 +51,11 @@ module QiniuAbout
   def upload
     respond_to do |format|
       format.html { render 'assignments/mobiles/upload' }
+
       @token = params[:auth_token]
-      @auth = auth_user_token(@token) && @assignment = Assignment.find_by(id: params[:id]).includes(:project)
+      @auth = auth_user_token(@token) &&
+              @assignment = Assignment.find_by(id: params[:id]).includes(:project)
+
       format.html do |html|
         html.android { render 'assignments/mobiles/upload' }
         html.ios     { render 'assignments/mobiles/upload' }

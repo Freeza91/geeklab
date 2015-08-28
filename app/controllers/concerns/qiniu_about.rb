@@ -35,8 +35,12 @@ module QiniuAbout
     if params[:name].blank?
       json[:code], json[:msg] = 0, '文件名不能为空'
     elsif current_user || auth_user_token(params[:auth_token])
-      token = generate_token(params[:assignment_id], params[:name])
-      json[:token] = token
+      assignment_id = params[:assignment_id]
+      if assignment_id && Assignment.find_by(id: assignment_id)
+        json[:token] = generate_token(params[:assignment_id], params[:name])
+      else
+        json[:code], json[:msg] = 0, '当前账户没有此任务信息'
+      end
     else
       json[:code], json[:msg] = 0, '你没有权限!'
     end
@@ -45,9 +49,13 @@ module QiniuAbout
   end
 
   def upload
-    @auth = auth_user_token(params[:auth_token])
     respond_to do |format|
       format.html { render 'assignments/mobiles/upload' }
+
+      @token = params[:auth_token]
+      @auth = auth_user_token(@token) &&
+              @assignment = Assignment.find_by(id: params[:id]).includes(:project)
+
       format.html do |html|
         html.android { render 'assignments/mobiles/upload' }
         html.ios     { render 'assignments/mobiles/upload' }
@@ -110,6 +118,12 @@ module QiniuAbout
     render text: 'Thanks SoraAoi'
   end
 
+  def auth_user_token(token)
+    hash_user_id = $redis.get(token)
+    return true if hash_user_id && @current_user ||= User.find_by(id: hash_user_id)
+    false
+  end
+
 private
 
   def detect_browser
@@ -131,15 +145,9 @@ private
     user_id = current_user.id
     token = SecureRandom.uuid + key + (0...2).map { (65 + rand(26)).chr }.join
     $redis.set(token, $hashids.encode(user_id))
-    $redis.expire(token, 1800) # set 30 mintues
+    $redis.expire(token, 2.hour) # set 2 hour
 
     token
-  end
-
-  def auth_user_token(token)
-    hash_user_id = $redis.get(token)
-    return true if hash_user_id && User.find_by(id: hash_user_id)
-    false
   end
 
   def generate_token(id, file_name)

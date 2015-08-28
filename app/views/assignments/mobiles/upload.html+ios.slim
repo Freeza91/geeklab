@@ -19,7 +19,8 @@ html lang=session[:locale]
   body class=(controller_name + ' ' + controller_name + '_' + action_name + ' ' + locale.to_s)
     main role="main"
       p
-        | ios上传页面
+        | android上传页面
+        = @auth
       .panel
         .panel-header
           h3
@@ -27,8 +28,199 @@ html lang=session[:locale]
           p
             | 任务简介
         .panel-body
-          button.btn.btn-base.btn-s.btn-blue
+          button#picker.btn.btn-base.btn-s.btn-blue
             | 上传视频
+          .progressCircle#progress
+            .left
+              .inner
+            .right
+              .inner
+            .mask
+              span.progressCount
+                | 0%
+          button#cancel.btn.btn-base.btn-s.btn-blue
+            | 取消上传
         .panel-footer
           span 倒计时
           span 积分
+
+      input#auth type="hidden" value="#{@token}"
+      input#id type="hidden" value="#{@assignment_id}"
+
+    sass:
+      // 上传进度圆环
+      .progressCircle
+        position: relative
+        width: 70px
+        height: 70px
+        background-color: #17a0c6
+        border-radius: 50%
+        .mask
+          position: absolute
+          top: 6px
+          left: 6px
+          width: 58px
+          height: 58px
+          border-radius: 50%
+          background-color: #f9f9f9
+          text-align: center
+          line-height: 58px
+        .left
+          clip: rect(0 35px auto 0)
+          .inner
+            clip: rect(0 35px auto 0)
+        .right
+          clip: rect(0 auto auto 35px)
+          .inner
+            clip: rect(0 auto auto 35px)
+        .left,
+        .right
+          position: absolute
+          top: 0
+          left: 0
+          width: 70px
+          height: 70px
+          .inner
+            position: absolute
+            top: 0
+            left: 0
+            width: 70px
+            height: 70px
+            border-radius: 50%
+            background-color: #fff
+    = javascript_include_tag 'upload/mobile_upload'
+    javascript:
+      $(function() {
+        //var authToken = $('#auth').val(),
+            //assignmentId = $('id').val();
+        var assignmentId = 1,
+            authToken = '';
+
+        var uploader = WebUploader.create({
+          server: 'http://upload.qiniu.com',
+          pick: '#picker',
+          resize: false,
+          formData: {
+            token: '',
+            assignment_id: assignmentId,
+            accept: 'appliaction/json'
+          }
+        });
+        // 当有文件添加进队列
+        uploader.on('fileQueued', function (file) {
+          console.log(file);
+          getUploadToken(authToken, assignmentId, file.name, function (token) {
+            uploader.options.formData.token = token;
+            uploader.upload();
+          });
+        });
+
+        // 上传进度
+        uploader.on('uploadProgress', function (file, percentage) {
+          console.log(percentage);
+          var $progress = $('#progress');
+          showUploadProgress (percentage, $progress);
+        });
+
+        // 取消上传
+        $('#cancel').on('click', function () {
+          var file = uploader.getFiles()[0];
+          uploader.cancelFile(file);
+          uploader.removeFile(file, true);
+          clearProgressCircle($('#progress'));
+        });
+
+        // 处理服务端回调
+        uploader.on('uploadAccept', function (obj, ret) {
+          console.log(obj, ret);
+          if(ret.status === 0 && ret.code === 1) {
+            var imageUrl = ret.video + '?vframe/png/offset/0/w/480/h/200'
+            return true;
+          }
+          return false;
+        });
+
+        // 上传成功
+        uploader.on('uploadSuccess', function (file) {
+
+        });
+
+        // 上传失败
+        uploader.on('uploadError', function (file) {
+
+        });
+
+        // 上传完成
+        uploader.on('uploadComplete', function (file) {
+          // 重置上传进度圆环
+          clearProgressCircle($('#progress'));
+        });
+
+
+        // 获取上传视屏的token
+        function getUploadToken(authToken, assignmentId, filename, callback) {
+          var url = '/assignments/upload_token/';
+          $.ajax({
+            url: url,
+            data: {
+              auth_token: authToken,
+              name: filename,
+              assignment_id: assignmentId
+            }
+          })
+          .done(function (data, status) {
+            if(data.status === 0 && data.code === 1) {
+              // 成功获取token, 执行回调上传图片
+              var token = data.token;
+              callback(token);
+            } else {
+              alert('获取token失败');
+            }
+          })
+          .error(function(errors, status) {
+            console.log(errors);
+          })
+        }
+
+        function showUploadProgress (percent, $progress) {
+          var percent = Math.floor(percent * 100),
+              deg = percent * 3.6,
+              transform = '';
+          if(deg <= 180) {
+            transform = 'rotate(' + deg + 'deg)';
+            $progress.find('.right .inner').css({
+              'transform': transform,
+              '-o-transform': transform,
+              '-moz-transform': transform,
+              '-webkit-transform': transform
+            });
+          } else {
+            transform = 'rotate(' + (deg-180) + 'deg)';
+            $progress.find('.right .inner').css({
+              'transform': 'rotate(180deg)',
+              '-o-transform': 'rotate(180deg)',
+              '-moz-transform': 'rotate(180deg)',
+              '-webkit-transform': 'rotate(180deg)'
+            });
+            $progress.find('.left .inner').css({
+              'transform': transform,
+              '-o-transform': transform,
+              '-moz-transform': transform,
+              '-webkit-transform': transform
+            });
+          }
+          $progress.find('.progressCount').text(percent + '%');
+        }
+
+        function clearProgressCircle ($progress) {
+          var $progress = $('#progress');
+          $progress.find('.inner').css({
+            'transform': 'rotate(0)',
+            '-o-transform': 'rotate(0)',
+            '-moz-transform': 'rotate(0)',
+            '-webkit-transform': 'rotate(0)'
+          });
+          $progress.find('.progressCount').text('0%');
+        }
+
+      });

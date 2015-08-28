@@ -1,96 +1,34 @@
-main role="main"
-  p
-    | ios上传页面
-  .panel
-    .panel-header
-      h3
-        | 任务名称
-      p
-        | 任务简介
-    .panel-body
-      button.btn.btn-base.btn-s.btn-blue
-        | 上传视频
-    .panel-footer
-      span 倒计时
-      span 积分
+doctype html
+html lang=session[:locale]
+  head
+    title 极客实验室
+    meta charset="utf-8"
+    meta name="render" content="webkit"
+    /meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+    meta name="application-name" content="极客实验室"
+    meta name="description" content="可用性测试平台"
+    meta name="keywords" content="极客实验室, 极客,测试,可用性"
+    meta name="generator" content="vuejs, rails"
+    meta http-equiv="Content-Type" content="text/html; charset=utf-8"
+    meta http-equiv="Content-Style-Type" content="text/css"
+    meta http-equiv="Content-Script-Type" content="text/javascript"
+    link rel="shortcut icon" href="#{image_path('icon/favicon.png')}"
+    = csrf_meta_tags
+    / <!-- 最后加载js文件 -->
 
-javascript:
-  // 获取上传视屏的token
-  function getUploadToken(userId, assignmentId, filename, callback) {
-    var url = '/assignments/upload_token/';
-    $.ajax({
-      url: url,
-      data: {
-        name: filename,
-        assignment_id: assignmentId
-      }
-    })
-    .done(function (data, status) {
-      if(data.status === 0 && data.code === 1) {
-        // 成功获取token, 执行回调上传图片
-        var token = data.token;
-        callback(token);
-      } else {
-        alert('获取token失败');
-      }
-    })
-    .error(function(errors, status) {
-      console.log(errors);
-    })
-  }
-  function uploadVideo(file, token, callback) {
-    // 构造formData
-    var formData = new FormData();
-    formData.append('token', token);
-    formData.append('file', file);
-    formData.append('accept', 'application/json');
-    // ajax上传
-    uploadAjax = $.ajax({
-      url: 'http://upload.qiniu.com',
-      method: 'post',
-      data: formData,
-      cache: false,
-      processData: false, //Dont't process the file
-      contentType: false,
-      // Set content type to false as jQuery will tell the server its a query string request.
-      // 不太懂是什么意思，先写着
-      xhr: customeXhr
-    })
-    .done(function(data, status) {
-      if(data.status === 0) {
-        switch(data.code) {
-          case 0:
-            $card.find('.operator.uploading').hide();
-            $card.find('.operator.upload-failed').fadeIn();
-            // 恢复上传进度圆环
-            $card.find('.progressCircle .inner').css({
-              'transform': 'rotate(0)',
-              '-o-transform': 'rotate(0)',
-              '-moz-transform': 'rotate(0)',
-              '-webkit-transform': 'rotate(0)'
-            });
-          break;
-          case 1:
-            callback(data);
-          break;
-        }
-      }
-    })
-    .error(function(errors, status) {
-      // 上传取消时，不显示上传失败
-      if(status === 'abort') {
-        return false;
-      } else {
-        // 上传出错
-        $card.find('.operator.uploading').hide();
-        $card.find('.operator.upload-failed').fadeIn();
-        // 恢复上传进度圆环
-        $card.find('.progressCircle .inner').css({
-          'transform': 'rotate(0)',
-          '-o-transform': 'rotate(0)',
-          '-moz-transform': 'rotate(0)',
-          '-webkit-transform': 'rotate(0)'
-        });
-      }
-    });
-  }
+  body class=(controller_name + ' ' + controller_name + '_' + action_name + ' ' + locale.to_s)
+    main role="main"
+      p
+        | ios上传页面
+      .panel
+        .panel-header
+          h3
+            | 任务名称
+          p
+            | 任务简介
+        .panel-body
+          button.btn.btn-base.btn-s.btn-blue
+            | 上传视频
+        .panel-footer
+          span 倒计时
+          span 积分

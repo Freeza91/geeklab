@@ -68,7 +68,7 @@ $(function () {
                         + "/assignments/upload?"
                         + "auth_token="
                         + token
-                        + "&assignment_id="
+                        + "&id="
                         + assignmentId;
           new QRCode($('#upload-qrcode')[0], {
             text: uploadUrl,

@@ -1,5 +1,5 @@
 module AssignmentsHelper
-  
+
   def get_status_info(status)
     info = {
       'wait_check': '等待审核',
@@ -9,6 +9,22 @@ module AssignmentsHelper
       'failed': '任务过期'
     }
     info[status.to_sym]
+  end
+
+  def mobile_upload_valid(auth, assignment)
+    if auth && assignment.project.expired_at > Time.now
+      'valid'
+    else
+      'invalid'
+    end
+  end
+
+  def assignment_type(assignment)
+    if assignment.project.device == 'web'
+      'web'
+    else
+      'mobile'
+    end
   end
 
 end

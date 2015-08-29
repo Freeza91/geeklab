@@ -70,6 +70,7 @@ $(function () {
                         + token
                         + "&id="
                         + assignmentId;
+          console.log(uploadUrl);
           new QRCode($('#upload-qrcode')[0], {
             text: uploadUrl,
             width: 128,
@@ -497,7 +498,7 @@ $(function () {
       timeArr.push(~~ ((count / (60 * 1000)) % 60) + '分');
     }
     if(count > 1000) {
-      var seconds = ~~ ((count / (60 * 1000)) % 60);
+      var seconds = ~~ ((count / 1000) % 60);
       seconds = seconds < 10 ? '0' + seconds : seconds
       timeArr.push(seconds + '秒');
     }

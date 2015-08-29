@@ -55,7 +55,6 @@ module QiniuAbout
       @token = params[:auth_token]
       #@auth = auth_user_token(@token) &&
               #@assignment = Assignment.includes(:project).find_by(id: params[:id])
-      @id = params[:id]
       if auth_user_token(@token)
         if @assignment = Assignment.includes(:project).find_by(id: params[:id])
           @auth = true

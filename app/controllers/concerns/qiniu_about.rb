@@ -54,7 +54,8 @@ module QiniuAbout
 
       @token = params[:auth_token]
       @auth = auth_user_token(@token) &&
-              @assignment = Assignment.find_by(id: params[:id]).includes(:project)
+              @assignment = Assignment.includes(:project).find_by(id: params[:id])
+      @id = params[:id]
 
       format.html do |html|
         html.android { render 'assignments/mobiles/upload' }

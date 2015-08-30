@@ -764,11 +764,11 @@ $(function () {
         vm.nextStepText = '下载好了';
       break;
       case 'work-on':
-      if(vm.curStepIndex === 2) {
+      if(vm.curStepIndex === 3) {
         vm.curStepContent = vm.project.desc;
         vm.progress = 'situation';
       } else {
-        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 3].content;
+        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 4].content;
       }
       break;
       case 'work-done':

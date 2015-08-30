@@ -119,8 +119,30 @@
   .qr-upload
     img
       margin: 0 auto
+    .fa-refresh
+      margin-top: 50px
+      font-size: 1.6rem
+      color: #fff
     p
-      maring-bottom: 1rem
+      margin-bottom: 1rem
+  #upload-qrcode
+    position: relative
+    width: 120px
+    height: 120px
+    margin: 0 auto
+    cursor: pointer
+    .img-mask
+      display: none
+      position: absolute
+      top: 0
+      left: 50%
+      margin-left: -60px
+      width: 120px
+      height: 120px
+      background-color: rgba(0, 0, 0, .5)
+  #upload-qrcode:hover
+    .img-mask
+      display: block
 
 // confirm modal
 #confirm-modal
@@ -215,7 +237,6 @@
     color: #313131
     font-size: 16px
 
-.operator.wait-upload
 
 .operator.uploading
   .progressCircle

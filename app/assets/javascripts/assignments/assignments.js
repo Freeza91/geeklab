@@ -70,7 +70,6 @@ $(function () {
                         + token
                         + "&id="
                         + assignmentId;
-          console.log(uploadUrl);
           new QRCode($('#upload-qrcode')[0], {
             text: uploadUrl,
             width: 120,
@@ -701,7 +700,6 @@ $(function () {
       }
     })
     .done(function (data, status) {
-      console.log(data);
       if(data.status === 0 && data.code === 1) {
         callback(data.auth_token)
       }
@@ -749,6 +747,7 @@ $(function () {
       prev: prevStep,
       next: nextStep,
       lastStep: lastStep,
+      refreshQrImage: refreshQrImage,
       close: close
     }
   });
@@ -815,7 +814,8 @@ $(function () {
     $('#assignment-detail').modal('hide');
     // 清理二维码
     if(vm.project.device !== 'web') {
-      $('#upload-qrcode').empty();
+      $('#upload-qrcode img').remove();
+      $('#upload-qrcode canvas').remove();
     }
     vm.progress = 'help';
     vm.curStepContent = '';
@@ -824,6 +824,29 @@ $(function () {
     vm.taskLen = 0;
     vm.project = {};
     vm.nextStepText = '准备好了';
+  }
+
+  function refreshQrImage () {
+    getQrcodeToken(assignmentId, function (token) {
+      var uploadUrl = location.origin
+                    + "/assignments/upload?"
+                    + "auth_token="
+                    + token
+                    + "&id="
+                    + assignmentId;
+      var $qrcode = $('#upload-qrcode');
+      $qrcode.find('img').remove();
+      $qrcode.find('canvas').remove();
+      $qrcode.find('.fa-refresh').addClass('fa-spin');
+      setTimeout(function () {
+        new QRCode($('#upload-qrcode')[0], {
+          text: uploadUrl,
+          width: 120,
+          height: 120,
+        });
+        $qrcode.find('.fa-refresh').removeClass('fa-spin');
+      }, 1000)
+    });
   }
 
 });

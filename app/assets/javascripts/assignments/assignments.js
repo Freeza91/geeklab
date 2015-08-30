@@ -82,11 +82,11 @@ $(function () {
   });
 
   // 上传视频按钮的click事件处理函数
-  $('#js-video-upload').on('click', function () {
+  $('.js-video-upload').on('click', function () {
     // 选择文件
     $('#video').click();
-    // 关闭任务详情
-    $('#assignment-detail').modal('hide');
+    // 清理task-guide
+    $('#close').click();
   });
 
   // 取消上传

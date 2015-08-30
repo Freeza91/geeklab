@@ -1,13 +1,6 @@
 .modal.fade#assignment-detail role="dialog" data-backdrop="stick"
   .modal-dialog
     .modal-content
-      /.modal-header
-        /button.close type="button" v-on="click: close(this)"
-          /span aria-hidden="true"
-            /| &times
-        /.progress
-          /.progress-bar.progress-bar-success role="progressbar" aria-valuemin="0" aria-valuemax="100" v-style="width: (curStepIndex / stepLen) * 100 + '%'"
-            /| {{curStepIndex}} / {{stepLen}}
       .modal-body
         .task-guide
           .fa.fa-reply#prev v-on="click: prev(this)" v-show="curStepIndex !== 1"

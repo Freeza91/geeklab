@@ -68,6 +68,9 @@ class TestersController < ApplicationController
     render json: json
   end
 
+  def help
+  end
+
 private
 
   def model_block

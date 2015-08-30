@@ -1,4 +1,8 @@
 main role="main"
+  section.banner
+    div
+      p
+        | 挑几个道具选个方式直接录制吧!
   section
     ul.nav.nav-tabs role="tablist"
       li.active role="presentation"
@@ -22,32 +26,3 @@ main role="main"
         img src="#{image_path('help/mac.png')}"
       .tab-pane#windows role="tabpanel"
         img src="#{image_path('help/windows.png')}"
-sass:
-  .nav-tabs
-    border-bottom: none
-    > li
-      width: 25%
-      > a
-        margin-right: 0
-        background-color: #1c3e4c
-        border: none
-        border-radius: 0
-        -webkit-border-radius: 0
-        color: #5cbcc9
-        text-align: center
-        font-size: 1.2rem
-      > a:hover
-        background-color: #5cbcc9
-        color: #fbf9f3
-    > li.active
-      > a,
-      > a:hover,
-      > a:focus
-        color: #fbf9f3
-        background-color: #5cbcc9
-        border: none
-  .tab-content
-    .tab-pane
-      background-color: #5cbcc9
-    img
-      width: 100%

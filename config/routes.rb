@@ -35,7 +35,6 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'help', to: 'help#index'
 
   resources :pms
   resources :projects do
@@ -54,7 +53,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :testers
+  resources :testers do
+    collection do
+      get 'help'
+    end
+  end
   resources :assignments do
     collection do
       get 'miss'

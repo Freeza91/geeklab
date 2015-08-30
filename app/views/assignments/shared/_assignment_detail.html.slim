@@ -12,7 +12,7 @@
         .task-guide
           .fa.fa-reply#prev v-on="click: prev(this)" v-show="curStepIndex !== 1"
           .fa.fa-close#close v-on="click: close(this)"
-          .task-pagination
+          .task-pagination v-on="click: lastStep(this)"
             span.curr-page v-text="curStepIndex"
             | /
             span.total-page v-text="stepLen"

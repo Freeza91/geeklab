@@ -748,6 +748,7 @@ $(function () {
     methods: {
       prev: prevStep,
       next: nextStep,
+      lastStep: lastStep,
       close: close
     }
   });
@@ -772,8 +773,9 @@ $(function () {
       }
       break;
       case 'work-done':
-        curStepContent = vm.project.tasks[vm.taskLen - 1].content;
+        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 4].content;
         vm.progress = 'work-on';
+        vm.nextStepText = '接下来 →';
       break;
     }
   }
@@ -802,6 +804,11 @@ $(function () {
       }
       break;
     }
+  }
+
+  function lastStep (vm) {
+    vm.progress = 'work-done';
+    vm.curStepIndex = vm.stepLen;
   }
 
   function close(vm) {

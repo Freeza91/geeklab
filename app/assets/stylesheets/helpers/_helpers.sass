@@ -28,3 +28,16 @@ a:hover
 main
   min-height: 550px
   padding-bottom: 70px
+
+// 垂直居中
+// 利用inline元素的vertical-align:middle属性
+.vertical-center
+  text-align: center
+  .vertical-item
+    display: inline-block
+    vertical-align: middle
+.vertical-center::after
+  content: ''
+  height: 100%
+  vertical-align: middle
+  display: inline-block

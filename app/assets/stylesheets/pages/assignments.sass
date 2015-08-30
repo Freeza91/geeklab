@@ -1,3 +1,4 @@
+@import ../helpers/variables
 .assignments
   background-color: #eee
 
@@ -56,39 +57,70 @@
   width: 640px
   height: 460px
   background: image_url('testers/task_guide_bg.png')
-#prev
+.task-left,
+.task-right
+  float: left
+  width: 50%
+  height: 100%
+  padding: 1rem
+.task-content
+  width: 63%
+  p
+    font-size: 1rem
+    color: $dark-blue
+    letter-spacing: .1rem
+    text-align: left
+.task-link
+  color: $blue
+  font-size: 1rem
+.task-link:hover
+  color: $dark-blue
+#prev,
+#close
   position: absolute
-  top: 10px
-  left: 10px
+  color: #fff
+  font-size: 1.4rem
+  cursor: pointer
+#prev:hover,
+#close:hover
+  color: $dark-blue
+#prev
+  top: 1rem
+  left: 1rem
+#close
+  top: 1rem
+  right: 1rem
+.task-pagination
+  position: absolute
+  top: 3.2rem
+  right: 3rem
+  cursor: pointer
+  .curr-page
+    font-size: 1.4rem
+    color: $blue
+  .total-page
+    font-size: 1rem
+    color: $dark-blue
+.task-pagination:hover
+  .total-page
+    text-decoration: underline
 #assignment-detail
   .modal-content
     border-radius: 10px
   .modal-body
     padding: 0
-  .progress
-    margin-bottom: 0
-    width: 90%
-  .modal-header
-    background-color: #f9f9f9
-    border-bottom: none
-    .title
-      margin: 0
-      font-size: 16px
-      font-weight: normal
-      color: #313131
-      text-align: left
-      text-transform: uppercase
-      .fa
-        margin-right: 10px
   .qrcode
-    position: absolute
-    top: 16px
-    right: 16px
-    padding: 5px
-    background-color: #fff
     img
       width: 120px
       height: 120px
+      margin-bottom: 1rem
+    p
+      text-align: center
+  .qr-upload
+    img
+      margin: 0 auto
+    p
+      maring-bottom: 1rem
 
 // confirm modal
 #confirm-modal

@@ -73,8 +73,8 @@ $(function () {
           console.log(uploadUrl);
           new QRCode($('#upload-qrcode')[0], {
             text: uploadUrl,
-            width: 128,
-            height: 128,
+            width: 120,
+            height: 120,
           });
         });
       }
@@ -783,12 +783,12 @@ $(function () {
     switch(vm.progress) {
       case 'help':
         vm.progress = 'prepare';
-        vm.nextStepText = '下载好了';
+        vm.nextStepText = '开始任务';
       break;
       case 'prepare':
         vm.progress = 'situation';
         vm.curStepContent = vm.project.desc;
-        vm.nextStepText = '接下来';
+        vm.nextStepText = '接下来 →';
       break;
       case 'situation':
         vm.progress = 'work-on';

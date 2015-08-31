@@ -9,6 +9,8 @@
             span.curr-page v-text="curStepIndex"
             | /
             span.total-page v-text="stepLen"
+          .task-point-hint v-show="curStepIndex > 2"
+            | 温馨提示：在录制过程中请大声的说出你的感受
           .task-left.vertical-center
             .task-content.vertical-item
               .help v-show="progress === 'help'"

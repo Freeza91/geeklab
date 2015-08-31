@@ -84,8 +84,6 @@ $(function () {
   $('.js-video-upload').on('click', function () {
     // 选择文件
     $('#video').click();
-    // 清理task-guide
-    $('#close').click();
   });
 
   // 取消上传
@@ -96,6 +94,8 @@ $(function () {
   });
   // 开始上传视频
   $('#video').on('change', function () {
+    // 清理task-guide
+    $('#close').click();
     var file = $(this)[0].files[0];
     if(file) {
       // 判断所选文件的类型是否为video
@@ -863,7 +863,6 @@ $(function () {
       'allweb': '电脑'
     }
     return map[device];
-
   }
 
 });

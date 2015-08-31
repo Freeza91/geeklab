@@ -1,4 +1,5 @@
 @import ../helpers/variables
+@import ../helpers/mixin
 .testers_help
   .banner
     height: 650px
@@ -17,6 +18,14 @@
   left: 39%
   font-weight: bold
   letter-spacing: .1rem
+  overflow: hidden
+  span
+    display: block
+    margin-bottom: 7px
+    +transition(transform .5s ease)
+#kk-download:hover
+  span
+    +transform(translateY(-27px))
 .nav-tabs
   border-bottom: none
   > li

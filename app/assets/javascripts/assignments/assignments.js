@@ -748,6 +748,7 @@ $(function () {
       next: nextStep,
       lastStep: lastStep,
       refreshQrImage: refreshQrImage,
+      mapDevice: mapDevice,
       close: close
     }
   });
@@ -849,4 +850,17 @@ $(function () {
     });
   }
 
+  function mapDevice (device) {
+    var map = {
+      'iosphone': 'iPhone',
+      'iostablet': 'iPad',
+      'androidphone': 'Android Phone',
+      'androidtablet': 'Android Pad',
+      'allweb': '电脑'
+    }
+    return map[device];
+
+  }
+
 });
+

@@ -24,8 +24,7 @@
                   | 打开下面的链接
                   a v-attr="href: project.platform" v-text="project.platform" target="_blank"
                 .qrcode v-show="project.device !== 'web'"
-                  /img v-attr="src: project.qr_code"
-                  img src="#{image_path('qrcodes/geekpark-qrcode.png')}"
+                  img v-attr="src: project.qr_code"
                   p
                     | 扫码下载安装app
               .situation v-show="progress === 'situation'" v-text="curStepContent"

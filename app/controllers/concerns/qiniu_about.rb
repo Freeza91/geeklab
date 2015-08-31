@@ -76,7 +76,7 @@ module QiniuAbout
     id = $redis.get(params[:auth_token])
 
     if id && tester = Tester.find_by(id: id)
-      assignment = Assignment.find_by(id: params[:assignment_id])
+      assignment = Assignment.find_by(id: params[:id])
       if assignment.try(:tester_id) == tester.id
         video = "http://" + Settings.qiniu_bucket_domain + "/" + params[:key_name].to_s
         assignment.update_attributes(video: video, status: "wait_check", is_transfer: false)
@@ -183,7 +183,7 @@ private
       scope: "#{Settings.qiniu_bucket}",
       saveKey: "#{key_name}",
       callbackUrl: callbackUrl,
-      callbackBody: "auth_token=#{auth_token}&key_name=#{key_name}&assignment_id=#{id}",
+      callbackBody: "auth_token=#{auth_token}&key_name=#{key_name}",
       deadline: 1.days.from_now.to_i,
       persistentOps: "avthumb/mp4/stripmeta/1/rotate/auto/vb/512k/s/800x480/autoscale/1/wmImage/" + qiniu_encode("#{Settings.water_picture}") + "/wmGravity/SouthWest" + "|saveas/" + qiniu_encode("#{Settings.qiniu_bucket}:copy-#{key_name}") ,
       persistentNotifyUrl: persistentNotifyUrl

@@ -62,7 +62,7 @@ $(function () {
     getAssignmentDetail(testerId, assignmentId, function (project) {
       showAssignmentDetail(project);
       // 任务为手机应用时生成二维码
-      if(project.device !== 'web') {
+      //if(project.device !== 'web') {
         getQrcodeToken(assignmentId, function (token) {
           var uploadUrl = location.origin
                         + "/assignments/upload?"
@@ -76,7 +76,7 @@ $(function () {
             height: 120,
           });
         });
-      }
+      //}
     });
   });
 
@@ -839,6 +839,9 @@ $(function () {
       $qrcode.find('img').remove();
       $qrcode.find('canvas').remove();
       $qrcode.find('.fa-refresh').addClass('fa-spin');
+      $qrcode.find('.img-mask').css({
+        display: 'block'
+      });
       setTimeout(function () {
         new QRCode($('#upload-qrcode')[0], {
           text: uploadUrl,
@@ -846,6 +849,7 @@ $(function () {
           height: 120,
         });
         $qrcode.find('.fa-refresh').removeClass('fa-spin');
+        $qrcode.find('.img-mask').removeAttr('style');
       }, 1000)
     });
   }

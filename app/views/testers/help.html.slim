@@ -28,3 +28,13 @@ main role="main"
         img src="#{image_path('help/windows.png')}"
         a#kk-download.btn.btn-line-darkblue.btn-rounded.btn-m href="http://www.kkcapture.com/update.html" target="_blank"
           | kk录像
+  input#target type="hidden" value="#{@target}"
+
+  javascript:
+    var target = $('#target').val();
+    if(target) {
+      $('.active').removeClass('active');
+      $('#' + target).addClass('active');
+      $('[aria-controls="' + target + '"]').parent().addClass('active');
+      location.hash=target;
+    }

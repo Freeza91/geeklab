@@ -69,6 +69,15 @@ class TestersController < ApplicationController
   end
 
   def help
+    if params[:q] == 'web'
+      @target
+      case request.user_agent
+        when /Mac OS/i
+          @target = 'mac'
+        when /Windows NT/i
+          @target = 'window'
+      end
+    end
   end
 
 private

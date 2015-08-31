@@ -21,7 +21,7 @@
                 p
                   | 不知道怎么录? 打开下面这个链接看看吧。
                 p
-                  a href="#{help_testers_path}" target="_blank"
+                  a v-attr="href: '#{help_testers_path}' + '?q=' + project.device" target="_blank"
                     | 怎么录制视频
               .prepare v-show="progress === 'prepare'"
                 p v-show="project.device === 'web'"

@@ -45,10 +45,10 @@
             .task-content.vertical-item
               .next v-show="progress !== 'work-done'"
                 button.btn.btn-flat-base.btn-rounded.btn-s v-on="click: next(this)" v-text="nextStepText"
-              .upload v-show="project.device === 'web' && progress == 'work-done'"
+              .upload v-show="project.device === 'web' && progress === 'work-done'"
                 button.btn.btn-flat-base.btn-rounded.btn-s.js-video-upload
                   | 上传视频
-              .qr-upload v-show="project.device !== 'web'"
+              .qr-upload v-show="project.device !== 'web' && progress === 'work-done'"
                 p
                   | 或者扫描下面的二维码在手机中上传视频
                 #upload-qrcode v-on="click: refreshQrImage"

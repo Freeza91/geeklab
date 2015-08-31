@@ -21,7 +21,7 @@ html lang=session[:locale]
       - if @auth
         .user
           = @current_user.email
-    main role="main" class=("#{mobile_upload_valid(@auth, @assignment)}")
+    div role="main" class=("#{mobile_upload_valid(@auth, @assignment)}")
       - if !@auth
         section.hint
           h3.invalid-title
@@ -100,7 +100,7 @@ html lang=session[:locale]
         height: 100%
         font-size: 15px
         margin: 0
-      main
+      [role="main"]
         min-height: calc(100% - 48px)
         background-color: #5cbcc9
       p

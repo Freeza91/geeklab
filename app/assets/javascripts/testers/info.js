@@ -244,7 +244,7 @@ $(function () {
           $selectSet = $item.find('select');
           for(var i = 0; i < $selectSet.length; i++) {
             var $select = $($selectSet[i]);
-            if($select.val() === '') {
+            if($select.val() === null) {
               valided = false;
               errorPosition = updateErrorPosition($item.offset(), errorPosition);
               $item.addClass('has-error').find('.form-control-feedback').removeClass('sr-only');

@@ -75,8 +75,8 @@ module QiniuAbout
     json = { status: 0, code: 0, msg: '上传文件不成功' }
     id = $redis.get(params[:auth_token])
 
-    if id && tester = Tester.find_by(id: $hashids.encode(id.to_i))
-      assignment = Assignment.find_by(id: params[:assignment_id])
+    if id && tester = Tester.find_by(id: id)
+      assignment = Assignment.find_by(id: params[:id])
       if assignment.try(:tester_id) == tester.id
         video = "http://" + Settings.qiniu_bucket_domain + "/" + params[:key_name].to_s
         assignment.update_attributes(video: video, status: "wait_check", is_transfer: false)
@@ -90,9 +90,9 @@ module QiniuAbout
   end
 
   def callback_from_qiniu_transfer
-    tester = Tester.find_by(id: params[:tester_id])
+    id = $redis.get(params[:auth_token])
     video = "http://" + Settings.qiniu_bucket_domain + "/" + params[:inputKey]
-    if tester
+    if id && tester = Tester.find_by(id: id)
       assignment = tester.assignments.find_by(id: params[:assignment_id])
       if assignment && assignment.video == video
         video_url = "http://" + Settings.qiniu_bucket_domain + "/" + params[:items].first[:key].to_s
@@ -159,13 +159,14 @@ private
 
   def generate_token(id, file_name)
     auth_token = generate_qiniu_auth_token
-    $redis.set(auth_token, current_user.id)
-    $redis.expire(auth_token, 1.days)
     hash_id = $hashids.encode(current_user.id)
+    $redis.set(auth_token, hash_id)
+    $redis.expire(auth_token, 1.days)
+
 
     key_name = generate_key_name(file_name)
     callback_path = "/assignments/#{id}/callback_from_qiniu"
-    persistentNotify_path = "/assignments/#{id}/callback_from_qiniu_transfer?tester_id=#{hash_id}"
+    persistentNotify_path = "/assignments/#{id}/callback_from_qiniu_transfer?auth_token=#{auth_token}"
 
     callbackUrl = if Rails.env.development?
       "#{Settings.ngork_domain}#{callback_path}"
@@ -182,7 +183,7 @@ private
       scope: "#{Settings.qiniu_bucket}",
       saveKey: "#{key_name}",
       callbackUrl: callbackUrl,
-      callbackBody: "auth_token=#{auth_token}&key_name=#{key_name}&assignment_id=#{id}",
+      callbackBody: "auth_token=#{auth_token}&key_name=#{key_name}",
       deadline: 1.days.from_now.to_i,
       persistentOps: "avthumb/mp4/stripmeta/1/rotate/auto/vb/512k/s/800x480/autoscale/1/wmImage/" + qiniu_encode("#{Settings.water_picture}") + "/wmGravity/SouthWest" + "|saveas/" + qiniu_encode("#{Settings.qiniu_bucket}:copy-#{key_name}") ,
       persistentNotifyUrl: persistentNotifyUrl

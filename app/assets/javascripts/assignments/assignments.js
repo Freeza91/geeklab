@@ -867,7 +867,6 @@ $(function () {
     }
     var map = {
       'iosphone': 'iPhone',
-      'iospad': 'iPad',
       'androidphone': 'Android Phone',
       'androidpad': 'Android Pad',
     }

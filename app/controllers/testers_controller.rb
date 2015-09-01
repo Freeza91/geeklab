@@ -23,12 +23,16 @@ class TestersController < ApplicationController
         current_user.update_attribute(:role, 'both')
       end
       # default: project.first is new tester task
-      project_id = Project.collect_beigning.first.try(:id)
-      a = Assignment.create(project_id: project_id, tester_id: current_user.id,  status: 'test')
+      project_id = select_project(Project.collect_beigning, @tester_infor.device)
+      if project_id
+        a = Assignment.create(project_id: project_id, tester_id: current_user.id,  status: 'test')
 
-      task_url = "#{Settings.domain}/assignments"
-      UserMailer.new_task_notice(@tester_infor.email_contract || current_user.email,
-                                 a.project.name, task_url).deliver_later
+        task_url = "#{Settings.domain}/assignments"
+        UserMailer.new_task_notice(@tester_infor.email_contract || current_user.email,
+                                   a.project.name, task_url).deliver_later
+      else
+        NotificationAdmin.project_error.deliver_later
+      end
     else
       json['code'] = 0
       json['msg'] = @tester_infor.errors.full_messages
@@ -102,6 +106,34 @@ private
       infor.mobile_phone = params['mobile_phone']
       infor.wechat = params['wechat']
       infor.ali_pay = params['ali_pay']
+    end
+  end
+
+  def select_project(projects, devices)
+    avaliable_devices = ["iPhone,", "Android Phone,", "iPad,", "Android Pad"] & devices
+    return projects.first.try(:id) if avaliable_devices.blank?
+    avaliable_devices.each do |device|
+      projects.each do |project|
+        return project.id if device == get_device(project.platform, project.device)
+      end
+    end
+
+    return projects.first.try(:id)
+  end
+
+  def get_device(platform, device)
+    # web 测试的设备要求是什么? 暂定无设备要求
+    platform = platform.downcase
+    device = device.downcase
+
+    if platform == "ios"
+      return "iPhone" if device.include?"phone"
+      return "iPad" if device.include?"pad"
+    elsif platform == 'android'
+      return "Android Phone" if device.include?"phone"
+      return "Android Pad" if  device.include?"pad"
+    else
+      "web"
     end
   end
 

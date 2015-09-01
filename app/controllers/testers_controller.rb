@@ -122,19 +122,18 @@ private
   end
 
   def get_device(platform, device)
-      # web 测试的设备要求是什么? 暂定无设备要求
-      platform = platform.downcase
-      device = device.downcase
+    # web 测试的设备要求是什么? 暂定无设备要求
+    platform = platform.downcase
+    device = device.downcase
 
-      if platform == "ios"
-        return "iPhone" if device.include?"phone"
-        return "iPad" if device.include?"pad"
-      elsif platform == 'android'
-        return "Android Phone" if device.include?"phone"
-        return "Android Pad" if  device.include?"pad"
-      else
-        "web"
-      end
+    if platform == "ios"
+      return "iPhone" if device.include?"phone"
+      return "iPad" if device.include?"pad"
+    elsif platform == 'android'
+      return "Android Phone" if device.include?"phone"
+      return "Android Pad" if  device.include?"pad"
+    else
+      "web"
     end
   end
 

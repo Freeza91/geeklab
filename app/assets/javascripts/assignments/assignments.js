@@ -828,7 +828,12 @@ $(function () {
     vm.nextStepText = '准备好了';
   }
 
-  function refreshQrImage () {
+  function refreshQrImage (event) {
+    var $target = $(event.target);
+    if($target.hasClass('disable')) {
+      return false;
+    }
+    $target.addClass('disable');
     getQrcodeToken(assignmentId, function (token) {
       var uploadUrl = location.origin
                     + "/assignments/upload?"
@@ -851,6 +856,7 @@ $(function () {
         });
         $qrcode.find('.fa-refresh').removeClass('fa-spin');
         $qrcode.find('.img-mask').removeAttr('style');
+        $target.removeClass('disable');
       }, 1000)
     });
   }

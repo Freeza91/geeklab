@@ -89,8 +89,7 @@ html lang=session[:locale]
                   span#countdown data-deadline="#{@assignment.project.expired_at}"
               .score
                 .icon.icon-score
-                //span = @assignment.project.credit
-                span.score-count 5
+                span = @assignment.project.credit
 
           input#auth type="hidden" value="#{@token}"
           input#id type="hidden" value="#{@assignment.to_params}"
@@ -181,7 +180,6 @@ html lang=session[:locale]
         background-position: top left
         background-repeat: no-repeat
         -webkit-background-size : 100%
-        background-size         : 100%
         input[type="file"]
           display: none
       .top
@@ -369,7 +367,10 @@ html lang=session[:locale]
         // 处理服务端回调
         uploader.on('uploadAccept', function (obj, ret) {
           if(ret.status === 0 && ret.code === 1) {
-            var imageUrl = ret.video + '?vframe/png/offset/0/w/480/h/200'
+            var $filePicker = $('.file-picker'),
+                width = $('.file-picker').width(),
+                height = $('.file-picker').height;
+            var imageUrl = ret.video + '?vframe/png/offset/0/w/' + width + '/h/' + height;
             $('.file-picker').css({
               'background-image': 'url(' + imageUrl + ')'
             });

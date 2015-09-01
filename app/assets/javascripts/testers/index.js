@@ -137,4 +137,9 @@ $(function () {
     }, 2000);
   }
 
+  // 首屏箭头
+  $('.icon-arrow-down').on('click', function () {
+    $.fn.fullpage.moveSectionDown();
+  });
+
 });

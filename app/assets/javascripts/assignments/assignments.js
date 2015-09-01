@@ -861,15 +861,17 @@ $(function () {
     });
   }
 
-  function mapDevice (device) {
+  function mapDevice (platform, device) {
+    if(device === 'web') {
+      return '电脑'
+    }
     var map = {
       'iosphone': 'iPhone',
       'iospad': 'iPad',
       'androidphone': 'Android Phone',
       'androidpad': 'Android Pad',
-      'allweb': '电脑'
     }
-    return map[device];
+    return map[platform + device];
   }
 
 });

@@ -23,7 +23,7 @@ class TestersController < ApplicationController
         current_user.update_attribute(:role, 'both')
       end
       # default: project.first is new tester task
-      project_id = select_prject(Project.collect_beigning, tester_infor.device)
+      project_id = select_project(Project.collect_beigning, @tester_infor.device)
       if project_id
         a = Assignment.create(project_id: project_id, tester_id: current_user.id,  status: 'test')
 

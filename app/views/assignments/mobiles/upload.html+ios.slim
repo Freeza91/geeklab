@@ -89,8 +89,7 @@ html lang=session[:locale]
                   span#countdown data-deadline="#{@assignment.project.expired_at}"
               .score
                 .icon.icon-score
-                //span = @assignment.project.credit
-                span.score-count 5
+                span = @assignment.project.credit
 
           input#auth type="hidden" value="#{@token}"
           input#id type="hidden" value="#{@assignment.to_params}"
@@ -196,7 +195,7 @@ html lang=session[:locale]
       // icon
       .icon
         display: inline-block
-        background: url("/assets/upload/icon@2x.png")
+        background: url("http://7xjciz.com2.z0.glb.qiniucdn.com/upload_icon@2x.png")
         background-size: 265px 100px
         vertical-align: middle
       .icon-file

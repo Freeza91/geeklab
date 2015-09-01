@@ -70,6 +70,7 @@ $(function () {
                         + token
                         + "&id="
                         + assignmentId;
+          console.log(uploadUrl);
           new QRCode($('#upload-qrcode')[0], {
             text: uploadUrl,
             width: 120,
@@ -857,9 +858,8 @@ $(function () {
   function mapDevice (device) {
     var map = {
       'iosphone': 'iPhone',
-      'iostablet': 'iPad',
       'androidphone': 'Android Phone',
-      'androidtablet': 'Android Pad',
+      'androidpad': 'Android Pad',
       'allweb': '电脑'
     }
     return map[device];

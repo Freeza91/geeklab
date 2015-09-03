@@ -335,10 +335,13 @@ $(function () {
 
   // 获取视频url
   function getAssignmentVideoUrl (testerId, assignmentId, callback) {
-    var url = '/assignments/' + assignmentId + '/get_video';
+    var url = '/assignments/get_video';
 
     $.ajax({
-      url: url
+      url: url,
+      data: {
+        assignment_id: assignmentId
+      }
     })
     .done(function (data, status) {
       if(data.status === 0) {
@@ -402,10 +405,13 @@ $(function () {
 
   // 删除视频
   function deleteVideo (testerId, assignmentId, callback) {
-    var url = '/assignments/' + assignmentId + '/delete_video';
+    var url = '/assignments/delete_video';
     $.ajax({
       url: url,
-      method: 'delete'
+      method: 'delete',
+      data: {
+        assignment_id: assignmentId
+      }
     })
     .done(function (data, status) {
       if(data.status === 0 && data.code === 1) {

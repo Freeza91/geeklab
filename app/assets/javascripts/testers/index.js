@@ -1,4 +1,10 @@
 $(function () {
+  if($('body').hasClass('testers')) {
+    $('#js-change-role').on('click', function () {
+      var href = $(this).data('href');
+      location.href = href;
+    });
+  }
   if(!$('body').hasClass('testers_index')) {
     return false;
   }
@@ -80,10 +86,6 @@ $(function () {
     }
   });
 
-  $('#js-change-role').on('click', function () {
-    var href = $(this).data('href');
-    location.href = href;
-  });
 
   $('#video-start').on('click', function () {
     var height = document.documentElement.clientHeight - 50;

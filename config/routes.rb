@@ -59,6 +59,7 @@ Rails.application.routes.draw do
     end
   end
   resources :assignments do
+    delete 'delete_video'
     collection do
       get 'miss'
       get 'join'
@@ -69,7 +70,6 @@ Rails.application.routes.draw do
       get 'qr_token'
       get 'upload_token'
       get 'get_video'
-      delete 'delete_video'
     end
 
      member do

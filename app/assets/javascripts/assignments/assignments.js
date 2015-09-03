@@ -22,7 +22,6 @@ $(function () {
   var $curVideo; // 当前正在播放的video
   var uploadAjax; //正在进行上传视频的ajax对象
 
-  // 生成一个二维码实例
 
   // 瀑布流加载，监听window滚动事件
   $(window).on('scroll', function () {
@@ -81,6 +80,7 @@ $(function () {
     });
   });
 
+
   // 上传视频按钮的click事件处理函数
   $('.js-video-upload').on('click', function () {
     // 选择文件
@@ -88,7 +88,7 @@ $(function () {
   });
 
   // 取消上传
-  $('.assignments-wrp').on('click', '.upload-cancel', function () {
+  $('.assignments-wrp').on('click', '.js-upload-cancel', function () {
     uploadAjax.abort();
     $card.find('.operator.uploading').hide();
     $card.find('.operator.wait-upload').fadeIn();
@@ -179,13 +179,9 @@ $(function () {
     showInfoModal(options);
   });
 
-  // 重新上传 click event
-  $('.assignments-wrp').on('click', '.video-reload', function () {
-    var options = {
-      title: '确认覆盖上传?',
-      eventName: 'reloadVideo'
-    };
-    showInfoModal(options);
+  // 上传失败重新上传 click event
+  $('.assignments-wrp').on('click', '.js-video-reupload', function () {
+    console.log(uploadAjax);
   });
 
   // 播放视频 click event
@@ -335,10 +331,13 @@ $(function () {
 
   // 获取视频url
   function getAssignmentVideoUrl (testerId, assignmentId, callback) {
-    var url = '/assignments/' + assignmentId + '/get_video';
+    var url = '/assignments/get_video';
 
     $.ajax({
-      url: url
+      url: url,
+      data: {
+        assignment_id: assignmentId
+      }
     })
     .done(function (data, status) {
       if(data.status === 0) {
@@ -402,10 +401,13 @@ $(function () {
 
   // 删除视频
   function deleteVideo (testerId, assignmentId, callback) {
-    var url = '/assignments/' + assignmentId + '/delete_video';
+    var url = '/assignments/delete_video';
     $.ajax({
       url: url,
-      method: 'delete'
+      method: 'delete',
+      data: {
+        assignment_id: assignmentId
+      }
     })
     .done(function (data, status) {
       if(data.status === 0 && data.code === 1) {
@@ -828,7 +830,12 @@ $(function () {
     vm.nextStepText = '准备好了';
   }
 
-  function refreshQrImage () {
+  function refreshQrImage (event) {
+    var $target = $(event.target);
+    if($target.hasClass('disable')) {
+      return false;
+    }
+    $target.addClass('disable');
     getQrcodeToken(assignmentId, function (token) {
       var uploadUrl = location.origin
                     + "/assignments/upload?"
@@ -851,18 +858,21 @@ $(function () {
         });
         $qrcode.find('.fa-refresh').removeClass('fa-spin');
         $qrcode.find('.img-mask').removeAttr('style');
+        $target.removeClass('disable');
       }, 1000)
     });
   }
 
-  function mapDevice (device) {
+  function mapDevice (platform, device) {
+    if(device === 'web') {
+      return '电脑'
+    }
     var map = {
       'iosphone': 'iPhone',
       'androidphone': 'Android Phone',
       'androidpad': 'Android Pad',
-      'allweb': '电脑'
     }
-    return map[device];
+    return map[platform + device];
   }
 
 });

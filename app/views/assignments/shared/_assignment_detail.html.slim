@@ -16,7 +16,7 @@
               .help v-show="progress === 'help'"
                 p
                   | 请使用
-                  span.highlight v-text="mapDevice(project.requirement + project.device)"
+                  span.highlight v-text="mapDevice(project.platform, project.device)"
                   | 来体验这个产品，并记得准备好录制视频所需的环境。
                 p
                   | 不知道怎么录? 打开下面这个链接看看吧。
@@ -51,6 +51,6 @@
               .qr-upload v-show="project.device !== 'web' && progress === 'work-done'"
                 p
                   | 或者扫描下面的二维码在手机中上传视频
-                #upload-qrcode v-on="click: refreshQrImage"
+                #upload-qrcode v-on="click: refreshQrImage($event)"
                   .img-mask
                     i.fa.fa-refresh

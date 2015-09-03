@@ -43,7 +43,7 @@ module ProjectsHelper
     def get_device(device)
       devices = {
         'phone': '智能手机',
-        'tablet': '平板电脑'
+        'pad': '平板电脑'
       }
       devices[device.to_sym]
     end

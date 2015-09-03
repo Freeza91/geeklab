@@ -328,7 +328,6 @@ html lang=session[:locale]
         });
         // 当有文件添加进队列
         uploader.on('fileQueued', function (file) {
-          console.log(file)
           getUploadToken(authToken, assignmentId, file.name, function (token) {
             uploader.options.formData.token = token;
             uploader.upload();
@@ -369,7 +368,7 @@ html lang=session[:locale]
           if(ret.status === 0 && ret.code === 1) {
             var $filePicker = $('.file-picker'),
                 width = $('.file-picker').width(),
-                height = $('.file-picker').height;
+                height = $('.file-picker').height();
             var imageUrl = ret.video + '?vframe/png/offset/0/w/' + width + '/h/' + height;
             $('.file-picker').css({
               'background-image': 'url(' + imageUrl + ')'

@@ -93,7 +93,7 @@ module QiniuAbout
     id = $redis.get(params[:auth_token])
     video = "http://" + Settings.qiniu_bucket_domain + "/" + params[:inputKey]
     if id && tester = Tester.find_by(id: id)
-      assignment = tester.assignments.find_by(id: params[:assignment_id])
+      assignment = tester.assignments.find_by(id: params[:id])
       if assignment && assignment.video == video
         video_url = "http://" + Settings.qiniu_bucket_domain + "/" + params[:items].first[:key].to_s
         assignment.video, assignment.is_transfer = video_url, true

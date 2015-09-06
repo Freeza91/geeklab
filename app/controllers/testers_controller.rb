@@ -110,7 +110,7 @@ private
   end
 
   def select_project(projects, devices)
-    avaliable_devices = ["iPhone,", "Android Phone,", "iPad,", "Android Pad"] & devices
+    avaliable_devices = ["iPhone", "Android Phone", "iPad", "Android Pad"] & devices
     return projects.first.try(:id) if avaliable_devices.blank?
     avaliable_devices.each do |device|
       projects.each do |project|

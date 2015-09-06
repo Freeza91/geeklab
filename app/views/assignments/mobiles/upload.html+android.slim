@@ -80,8 +80,8 @@ html lang=session[:locale]
                       | 重新上传
                     .btn.cancel style="margin-left: 2rem"
                       | 取消上传
-                #play.vertical-item
-                  .icon.icon-play
+                /#play.vertical-item
+                  /.icon.icon-play
             .card-footer
               .countdown
                 - if Time.now + 50.years > @assignment.project.expired_at
@@ -188,9 +188,9 @@ html lang=session[:locale]
       .progressCircle
         display: inline-block
 
+      //#play
       #uploading,
-      #upload-fail,
-      #play
+      #upload-fail
         display: none
       // icon
       .icon
@@ -381,9 +381,9 @@ html lang=session[:locale]
         // 上传成功
         uploader.on('uploadSuccess', function (file) {
           $('#uploading').hide();
-          $('#play').css({
-            display: 'inline-block'
-          })
+          //$('#play').css({
+            //display: 'inline-block'
+          //})
         });
 
         // 上传失败

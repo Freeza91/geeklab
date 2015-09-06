@@ -9,20 +9,15 @@
             span.curr-page v-text="curStepIndex"
             | /
             span.total-page v-text="stepLen"
-          .task-point-hint v-show="curStepIndex > 2"
+          .task-point-hint v-show="curStepIndex > 3"
             | 温馨提示：在录制过程中请大声的说出你的感受
           .task-left.vertical-center
             .task-content.vertical-item
-              .help v-show="progress === 'help'"
+              .requirement v-show="progress === 'requirement'"
                 p
                   | 请使用
                   span.highlight v-text="mapDevice(project.platform, project.device)"
-                  | 来体验这个产品，并记得准备好录制视频所需的环境。
-                p
-                  | 不知道怎么录? 打开下面这个链接看看吧。
-                p
-                  a v-attr="href: '#{help_testers_path}' + '?q=' + project.device" target="_blank"
-                    | 怎么录制视频
+                  | 来体验这个产品
               .prepare v-show="progress === 'prepare'"
                 p v-show="project.device === 'web'"
                   | 打开下面的链接
@@ -31,6 +26,16 @@
                   img v-attr="src: project.qr_code"
                   p
                     | 扫码下载安装app
+              .help v-show="progress === 'help'"
+                p
+                  | 确保你现在已经开始录制
+                  span.highlight v-text="mapDevice(project.platform, project.device)"
+                  | 的屏幕
+                p
+                  | 不知道怎么录? 打开下面这个链接看看吧。
+                p
+                  a v-attr="href: '#{help_testers_path}' + '?q=' + project.device" target="_blank"
+                    | 怎么录制视频
               .situation v-show="progress === 'situation'" v-text="curStepContent"
               .work-on v-show="progress === 'work-on'" v-text="curStepContent"
               .work-done v-show="progress === 'work-done'"

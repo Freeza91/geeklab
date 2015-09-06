@@ -8,15 +8,15 @@ main role="main"
               | 重置密码
           .reset-hint
             p
-              | 输入你的新密码完成重置密码，请尽快完成! 
+              | 输入你的新密码完成重置密码，请尽快完成!
           form.form
-            .form-field
-              input.form-input type="password" name="password" placeholder="新密码" v-model="password"
+            .form-field.with-hint-text v-class="error ? 'error' : ''"
+              input.form-input type="password" name="password" placeholder="新密码" v-model="password" v-on="focus: error = false"
+              span.hint-text v-show="error" v-text="hint"
               p.form-hint
                 | 6-16个字符，可包括数字、字母、下划线
             .form-field.submit
-              p.form-hint.error v-show="error" v-text="hint"
-              input.btn.btn-base-reverse.btn-rounded.btn-m type="submit" value="确认重置" v-on="click: submit(this, $event)"
+              input.btn.btn-base.btn-rounded.btn-m type="submit" value="确认重置" v-on="click: submit(this, $event)"
     section.reset-success v-show="success"
       .container
         .reset-wrp
@@ -27,5 +27,5 @@ main role="main"
             p
               span.color-yellow v-text="countDown"
               | 秒后返回首页
-            a.btn.btn-base-reverse.btn-rounded.btn-m href=stores_root_path
+            a.btn.btn-base.btn-rounded.btn-m href=stores_root_path
               | 立即返回

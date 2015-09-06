@@ -4,27 +4,37 @@ html lang=session[:locale]
     title 极客实验室
     meta charset="utf-8"
     meta name="render" content="webkit"
+    /meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+    meta name="application-name" content="极客实验室"
+    meta name="description" content="可用性测试平台"
+    meta name="keywords" content="极客实验室, 极客,测试,可用性"
+    meta name="generator" content="vuejs, rails"
+    meta http-equiv="Content-Type" content="text/html; charset=utf-8"
+    meta http-equiv="Content-Style-Type" content="text/css"
+    meta http-equiv="Content-Script-Type" content="text/javascript"
+    link rel="shortcut icon" href="#{image_path('icon/favicon.png')}"
     = stylesheet_link_tag 'application', media: 'all'
     = csrf_meta_tags
     / <!-- 最后加载js文件 -->
     = javascript_include_tag 'application'
 
   body class=(controller_name + ' ' + controller_name + '_' + action_name + ' ' + locale.to_s)
-    - if controller_name == 'testers' || controller_name == "assignments"
-      = render '/shared/header_tester'
-    - if controller_name == "pms" || controller_name == 'projects'
-      = render 'shared/header_pm'
-    - if controller_name == "stores"
-      = render 'shared/header_store'
-    - if controller_name == "pages"
-      = render 'shared/header'
-      <!--= render '/shared/flash'-->
+    .wrapper
+      - if controller_name == 'testers' || controller_name == "assignments"
+        = render '/shared/header_tester'
+      - if controller_name == "pms" || controller_name == 'projects'
+        = render 'shared/header_pm'
+      - if controller_name == "stores"
+        = render 'shared/header_store'
+      - if controller_name == "pages"
+        = render 'shared/header'
+        <!--= render '/shared/flash'-->
 
-    = yield
+      = yield
 
-    <!-- 重置密码时不加载footer -->
-    - if controller_name != "passwords" && controller_name != "errors"
-      = render '/shared/footer'
+      <!-- 重置密码时不加载footer -->
+      - if render_footer(controller_name, action_name)
+        = render '/shared/footer'
 
     - if !current_user
       <!-- 未登录时才加载登陆框 -->

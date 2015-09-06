@@ -1,0 +1,29 @@
+.table
+  background-color: #fff
+  border: 1px solid #eee
+  color: #313131
+  font-size: 14px
+  > tbody
+    > tr
+      border-bottom: 1px solid #eee
+      > td
+        height: 54px
+        border-right: 1px solid #eee
+        text-align: left
+        vertical-align: middle
+      td:first-child
+        width: 100px
+        background-color: #f9f9f9
+        text-align: center
+      td:last-child
+        border-right: none
+      td:not(:first-child)
+        padding-left: 20px
+    tr:last-child
+      border-bottom: none
+    ul
+      list-style: none
+      margin: 0
+      padding: 0
+      .fa
+        margin-right: 8px

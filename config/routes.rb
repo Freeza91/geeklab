@@ -35,6 +35,7 @@ Rails.application.routes.draw do
     end
   end
 
+
   resources :pms
   resources :projects do
     collection do
@@ -52,21 +53,31 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :testers
+  resources :testers do
+    collection do
+      get 'help'
+    end
+  end
   resources :assignments do
-    post 'callback_from_qiniu'
-    post 'callback_from_qiniu_transfer'
-    post 'callback_from_qiniu_video_images'
-    get 'upload_token'
-    get 'get_video'
-    delete 'delete_video'
     collection do
       get 'miss'
       get 'join'
       get 'not_interest'
       get 'ing'
       get 'done'
+      get 'upload'
+      get 'qr_token'
+      get 'upload_token'
+      get 'get_video'
+      delete 'delete_video'
     end
+
+     member do
+      post 'callback_from_qiniu'
+      post 'callback_from_qiniu_transfer'
+      post 'callback_from_qiniu_video_images'
+    end
+
   end
 
   namespace :stores do
@@ -102,5 +113,6 @@ Rails.application.routes.draw do
   match '/404', to: 'errors#file_not_found', via: :all
   match '/422', to: 'errors#unprocessable', via: :all
   match '/500', to: 'errors#internal_server_error', via: :all
+  match "*path", to: "errors#file_not_found", via: :all
 
 end

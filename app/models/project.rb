@@ -11,8 +11,8 @@ class Project < ActiveRecord::Base
   scope :show, -> { where.not(status: 'delete') }
 
   has_many :assignments,   inverse_of: :project
-  has_many :tasks,         inverse_of: :project
-  has_one  :user_feature,  inverse_of: :project
+  has_many :tasks,         inverse_of: :project, dependent: :destroy
+  has_one  :user_feature,  inverse_of: :project, dependent: :destroy
   belongs_to :pm
 
   accepts_nested_attributes_for :tasks, allow_destroy: true
@@ -21,10 +21,12 @@ class Project < ActiveRecord::Base
   before_save { self.email = email.to_s.downcase }
   after_update :prepare_assign
   after_save :auto_update_status
+  after_save :set_expired_at
 
   mount_uploader :qr_code, QrCodeUploader
 
-  scope :success, -> { where(status: 'success') }
+  scope :success,           -> { where(status: 'success') }
+  scope :collect_beigning,  -> { order("updated_at desc").where(beginner: true) }
 
   def to_json_with_tasks
     {
@@ -88,7 +90,19 @@ class Project < ActiveRecord::Base
 
   def prepare_assign
     StartAssignJob.perform_later(id) if status == 'success' &&
-                                        expired? && id != Project.first.id
+                                        expired? && is_beigner?
+  end
+
+  def is_beigner?
+    !beginner
+  end
+
+  def set_expired_at
+    if beginner
+      update_column(:expired_at, Time.now + 100.years)
+    elsif beginner_was && !beginner
+      update_column(:expired_at, DateTime.new(2015,3,2))
+    end
   end
 
   def auto_update_status

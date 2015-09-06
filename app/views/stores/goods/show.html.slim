@@ -6,7 +6,7 @@ main role="main"
           .good-summary.clearfix
             .col-md-6.col-sm-6.col-xs-6
               .good-gallery
-                .main-pic
+                .main-pic.vertical-center
                   input.hidden type="text" value="#{@good.pictures.first.url.url}" v-model="galleryMain"
                   img v-attr="src: galleryMain"
                 .gallery-thumb
@@ -21,10 +21,10 @@ main role="main"
                     = @good.name
                 .good-meta.clearfix
                   .cost
-                    span.color-gray 所需积分
+                    span 所需积分
                     span.icon-img.icon-outer-18 style="margin: 0 10px -4px 20px"
                       i.icon-inner.icon-score
-                    span
+                    span.color-orange
                       = @good.cost.to_i
                   - if @good.status == 'on_sell'
                     .sell-counter
@@ -38,7 +38,7 @@ main role="main"
                         - else
                             span
                               | 仅剩
-                            span.color-gray style="padding: 0 3px"
+                            span.color-orange style="padding: 0 3px"
                               = @good.stock
                             span
                               | 个
@@ -48,19 +48,17 @@ main role="main"
                 .good-intro
                   p
                     = @good.describle
-                  p.color-gray
-                    | (最终解释权归 北京中明万长咨询管理有限公司 所有)
               #user-addr style="padding-top: 40px" v-show="showAddr"
                 form.form
-                  .form-field v-class="error.name ? 'error': ''" style="width: 48%; display: inline-block; margin-right: 3%"
+                  .form-field.with-hint-text v-class="error.name ? 'error': ''" style="width: 48%; display: inline-block; margin-right: 3%"
                     input.form-input type="text" placeholder="姓名" v-model="name" v-on="focus: error.name = false, blur: checkValue(this, 'name', 'length', name, 20)"
                     span.hint-text v-show="error.name"
                       | 1-20个字符
-                  .form-field v-class="error.phone ? 'error': ''" style="width: 48%; display: inline-block"
+                  .form-field.with-hint-text v-class="error.phone ? 'error': ''" style="width: 48%; display: inline-block"
                     input.form-input type="text" placeholder="手机号" v-model="phone" v-on="focus: error.phone = false, blur: checkValue(this, 'phone', 'phone', phone )"
                     span.hint-text v-show="error.phone"
                       | 手机号格式错误
-                  .form-field v-class="error.addr ? 'error': ''"
+                  .form-field.with-hint-text v-class="error.addr ? 'error': ''"
                     input.form-input type="text" placeholder="收货地址" v-model="addr" v-on="focus: error.addr = false, blur: checkValue(this, 'addr', 'length', addr, 50 )"
                     span.hint-text v-show="error.addr"
                       | 1-50个字符
@@ -68,13 +66,13 @@ main role="main"
                     label.checkbox-inline
                       input type="checkbox" v-model="setAddr"
                       | 设为我的常用地址
-            .good-action
-              - if !current_user
-                button.btn.btn-base-reverse.btn-rounded.btn-m data-toggle="modal" data-target="#login-hint"
-                  | 立即兑换
-              - else
-                button.btn.btn-base-reverse.btn-rounded.btn-m class=can_exchange(@good.available, @good.status) v-on="click: exchange(this, $event)"
-                  = get_good_status(@good.available, @good.status)
+              .good-action v-class="showAddr ? '' : 'fixed'"
+                - if !current_user
+                  button.btn.btn-base.btn-rounded.btn-m data-toggle="modal" data-target="#login-hint"
+                    | 立即兑换
+                - else
+                  button.btn.btn-base.btn-rounded.btn-m class=can_exchange(@good.available, @good.status) v-on="click: exchange(this, $event)"
+                    = get_good_status(@good.available, @good.status)
             - if current_user
               input.hidden type="text" value="#{@good.to_params}" v-model="id"
               input.hidden type="text" value="#{@good.virtual?}" v-model="virtual"

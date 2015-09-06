@@ -1,60 +1,68 @@
 main role='main'
-  section.banner.banner_tester.content-box
-    .container
-      .topic
-        p.title
-          span 帮助产品变得更好
-          span 顺便挣点外快
-        - if current_user
-          - if current_user.to_tester.try(:tester_infor).blank?
-            a.btn.btn-blue href=new_tester_path
-              | 成为体验师
-          - else
-            a.btn.btn-blue href=assignments_path
-              - if current_user.approved
-                | 体验产品
-              - else
-                | 成为体验师
-            /button.btn.btn-blue.temp data-approved="#{current_user.approved}"
-              /- if current_user.approved
-                /| 体验产品
-              /- else
-                /| 成为体验师
+  #fullpage
+    .section#section1
+      #slogan
+        p.item.static
+          | 10分钟兼职体验
+        span.item.dynamic
+          b
+            i.in 手
+            i.in 机
+            i.in A
+            i.in P
+            i.in P
+          b
+            i.out 网
+            i.out 站
+      .icon-arrow-down
+    .section#section2
+      .step-list.clearfix
+        .step-item
+          p
+            | 首先
+          p
+            | 成为我们的测试用户
+        .step-item
+          p
+            | 然后
+          p
+            | 跟随引导来体验
+          p
+            | 有趣的产品
+        .step-item
+          p
+            | 最后
+          p
+            | 获得价值大于10元的
+          p
+            | 积分奖励
+      - if current_user
+        - if current_user.to_tester.try(:tester_infor)
+          a.btn.btn-flat-base.btn-rounded.btn-s#start href="#{assignments_path}"
+            | 我要体验
         - else
-          button.btn.btn-blue data-target='#signup' data-toggle='modal'
-            | 成为体验师
-      .desc
-        .item
-          p.title 接受任务
-          p.detail 成为体验师后，新任务会将会发到你的任务列表中
-        .item
-          p.title 录制视频
-          p.detail 录制产品使用的过程并将视频上传
-        .item
-          p.title 得到报酬
-          p.detail 完成任务后会获得相应的积分，积分用来兑换宝贝噢
-  section.steps.content-box
-    .container
-      h2.title 怎么做
-      .row
-        .step.col-xs-12.col-sm-12.col-md-4.col-lg-4
-          .icon
-            i.fa.fa-mobile.fa-5x
-          .content
-            p.title  移动设备
-            p 你至少需要拥有一台
-            p 移动智能设备
-        .step.col-xs-12.col-sm-12.col-md-4.col-lg-4
-          .icon
-            i.fa.fa-list-alt.fa-5x
-          .content
-            p.title 完善信息
-            p 完善你自己的昵称、性别、生日、兴趣
-            p 等相关信息
-        .step.col-xs-12.col-sm-12.col-md-4.col-lg-4
-          .icon
-            i.fa.fa-file-video-o.fa-5x
-          .content
-            p.title 新手任务
-            p 完成一个简单的案例测试
-            p 并上传视频
+          a.btn.btn-flat-base.btn-rounded.btn-s#start href="#{new_tester_path}"
+            | 我要体验
+      - else
+        button.btn.btn-flat-base.btn-rounded.btn-s#start data-toggle='modal' data-target='#signup'
+          | 我要体验
+      a.btn.btn-line-base.btn-rounded.btn-s#stores href="#{stores_root_path}" target="_blank"
+        | 兑换积分
+    .section.with-mask#section3
+      .mask
+      .player
+        script src="http://p.bokecc.com/player?vid=81A2A2304CAB81799C33DC5901307461&siteid=99F117B348066991&autoStart=true&width=970&height=520&playerid=AB64ED27A1261F77&playertype=1" type="text/javascript"
+      .video-info
+        p
+          | 想要获得积分奖励
+        p
+          | 只需要你花十分钟左右的时间
+        p
+          | 像下面这样使用某个产品去完成几个指定的任务
+      .play.icon-play#video-start
+      = render "shared/footer"
+  - unless current_user
+    a.btn.btn-line-base.btn-rounded.btn-s#change-role.fixed.bottom href="#{pms_path}"
+      | 提高产品体验
+    button.btn.btn-flat-base.btn-rounded.btn-s#login.fixed.bottom data-toggle='modal' data-target='#signup'
+      | 登录/注册

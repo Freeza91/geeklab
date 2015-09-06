@@ -12,6 +12,7 @@ $(function () {
     //播放视频
     //任务倒计时
     // 瀑布流加载
+    // 任务引导的vue model
 
   // 保存testId
   var testerId = $('.assignments-list').data('testerId');
@@ -20,6 +21,7 @@ $(function () {
   var page = 1 //分页获取任务列表
   var $curVideo; // 当前正在播放的video
   var uploadAjax; //正在进行上传视频的ajax对象
+
 
   // 瀑布流加载，监听window滚动事件
   $(window).on('scroll', function () {
@@ -52,34 +54,49 @@ $(function () {
 
 
   // 点击任务标题显示任务说明
-  //$('[action="getAssignmentDetail"]').on('click', function () {
-  $('.assignments-wrp').on('click', '[action="getAssignmentDetail"]', function () {
+  $('.assignments-wrp').on('click', '.js-assignment-start', function () {
     var $this = $(this);
-    var assignmentId = $this.parents('.card').data('assignmentId');
-    getAssignmentDetail(testerId, assignmentId, function (data) {
-      showAssignmentDetail(data.project);
+    $card = $this.parents('.card');
+    assignmentId = $card.data('assignmentId');
+    getAssignmentDetail(testerId, assignmentId, function (project) {
+      showAssignmentDetail(project);
+      // 任务为手机应用时生成二维码
+      //if(project.device !== 'web') {
+        getQrcodeToken(assignmentId, function (token) {
+          var uploadUrl = location.origin
+                        + "/assignments/upload?"
+                        + "auth_token="
+                        + token
+                        + "&id="
+                        + assignmentId;
+          console.log(uploadUrl);
+          new QRCode($('#upload-qrcode')[0], {
+            text: uploadUrl,
+            width: 120,
+            height: 120,
+          });
+        });
+      //}
     });
   });
 
-  // 上传视频按钮的click事件处理函数
-  $('.assignments-wrp').on('click', '.video-upload',  function () {
-    var $this = $(this);
-    // 设置当前操作的卡片
-    $card = $this.parents('.card');
-    assignmentId = $card.data('assignmentId');
 
-    //$('#video-upload').modal();
+  // 上传视频按钮的click事件处理函数
+  $('.js-video-upload').on('click', function () {
+    // 选择文件
     $('#video').click();
   });
 
   // 取消上传
-  $('.assignments-wrp').on('click', '.upload-cancel', function () {
+  $('.assignments-wrp').on('click', '.js-upload-cancel', function () {
     uploadAjax.abort();
     $card.find('.operator.uploading').hide();
     $card.find('.operator.wait-upload').fadeIn();
   });
   // 开始上传视频
   $('#video').on('change', function () {
+    // 清理task-guide
+    $('#close').click();
     var file = $(this)[0].files[0];
     if(file) {
       // 判断所选文件的类型是否为video
@@ -144,9 +161,7 @@ $(function () {
       content: '任务删除后将无法查看和恢复，确认删除任务?',
       eventName: 'deleteAssignment'
     };
-
     showInfoModal(options);
-
   });
 
   // 删除视频 click event
@@ -164,13 +179,9 @@ $(function () {
     showInfoModal(options);
   });
 
-  // 重新上传 click event
-  $('.assignments-wrp').on('click', '.video-reload', function () {
-    var options = {
-      title: '确认覆盖上传?',
-      eventName: 'reloadVideo'
-    };
-    showInfoModal(options);
+  // 上传失败重新上传 click event
+  $('.assignments-wrp').on('click', '.js-video-reupload', function () {
+    console.log(uploadAjax);
   });
 
   // 播放视频 click event
@@ -249,11 +260,12 @@ $(function () {
 
   // 获取上传视屏的token
   function getUploadToken(userId, assignmentId, filename, callback) {
-    var url = '/assignments/' + assignmentId +'/upload_token/';
+    var url = '/assignments/upload_token/';
     $.ajax({
       url: url,
       data: {
-        name: filename
+        name: filename,
+        assignment_id: assignmentId
       }
     })
     .done(function (data, status) {
@@ -319,10 +331,13 @@ $(function () {
 
   // 获取视频url
   function getAssignmentVideoUrl (testerId, assignmentId, callback) {
-    var url = '/assignments/' + assignmentId + '/get_video';
+    var url = '/assignments/get_video';
 
     $.ajax({
-      url: url
+      url: url,
+      data: {
+        assignment_id: assignmentId
+      }
     })
     .done(function (data, status) {
       if(data.status === 0) {
@@ -386,10 +401,13 @@ $(function () {
 
   // 删除视频
   function deleteVideo (testerId, assignmentId, callback) {
-    var url = '/assignments/' + assignmentId + '/delete_video';
+    var url = '/assignments/delete_video';
     $.ajax({
       url: url,
-      method: 'delete'
+      method: 'delete',
+      data: {
+        assignment_id: assignmentId
+      }
     })
     .done(function (data, status) {
       if(data.status === 0 && data.code === 1) {
@@ -408,7 +426,7 @@ $(function () {
     })
     .done(function (data, status) {
       if(data.status === 0 && data.code === 1) {
-        callback(data);
+        callback(data.project);
       }
     })
     .error(function (errors, status) {
@@ -417,50 +435,9 @@ $(function () {
   }
 
   function showAssignmentDetail (assignmentDetail) {
-    var deviceMap = {
-      'phone': 'Phone',
-      'ios': 'Pad'
-    };
-    var $modal = $('#assignment-detail');
-    // 填信息
-    $modal.find('.title .name').text(assignmentDetail.name);
-
-    var $detailTable = $modal.find('table');
-    //var device = assignmentDetail.device[0].toUpperCase() + assignmentDetail.device.substr(1);
-    var device = deviceMap[assignmentDetail.device];
-    if(assignmentDetail.device === '0') {
-      // 新手任务
-      $detailTable.removeClass('web').addClass('app');
-      $detailTable.find('[name="device"]').text('任意设备');
-      $detailTable.find('[name="requirement"]').text('无限制');
-    }
-    if (assignmentDetail.device === 'web') {
-      $detailTable.removeClass('app').addClass('web');
-      $detailTable.find('[name="website"]').text(assignmentDetail.platform);
-      $modal.find('.qrcode').hide();
-    } else {
-      $detailTable.removeClass('web').addClass('app');
-      switch(assignmentDetail.platform) {
-        case 'ios':
-          $detailTable.find('[name="device"]').text('i' + device);
-          $detailTable.find('[name="requirement"]').text('iOS ' + assignmentDetail.requirement + '及以上');
-        break;
-        case 'android':
-          $detailTable.find('[name="device"]').text('Android ' + device);
-          $detailTable.find('[name="requirement"]').text('Android ' + assignmentDetail.requirement + '及以上');
-        break;
-      }
-      assignmentDetail.qr_code && $modal.find('.qrcode').show().find('img').attr('src', assignmentDetail.qr_code);
-    }
-
-    $detailTable.find('[name="profile"]').text(assignmentDetail.profile);
-    $detailTable.find('[name="situation"]').text(assignmentDetail.desc);
-
-    var taskHtml = '';
-    assignmentDetail.tasks.forEach(function (task, index) {
-      taskHtml += '<li><i class="fa fa-check-circle"></i><span>' + task.content + '</span></li>'
-    });
-    $detailTable.find('ul').html(taskHtml);
+    assignmentDetailVm.project = assignmentDetail;
+    assignmentDetailVm.taskLen = assignmentDetail.tasks.length;
+    assignmentDetailVm.stepLen = assignmentDetailVm.taskLen + 4;
     $('#assignment-detail').modal();
   }
 
@@ -523,7 +500,7 @@ $(function () {
       timeArr.push(~~ ((count / (60 * 1000)) % 60) + '分');
     }
     if(count > 1000) {
-      var seconds = ~~ ((count / (60 * 1000)) % 60);
+      var seconds = ~~ ((count / 1000) % 60);
       seconds = seconds < 10 ? '0' + seconds : seconds
       timeArr.push(seconds + '秒');
     }
@@ -716,6 +693,26 @@ $(function () {
     });
   }
 
+  // 获取生成二维码所需token
+  function getQrcodeToken (assignmentId, callback) {
+    var url = "/assignments/qr_token";
+    $.ajax({
+      url: url,
+      data: {
+        assignment_id: assignmentId
+      }
+    })
+    .done(function (data, status) {
+      if(data.status === 0 && data.code === 1) {
+        callback(data.auth_token)
+      }
+    })
+    .error(function (errors) {
+      console.log('获取qrtoken失败');
+    });
+
+  }
+
   if($('body').hasClass('assignments_join')) {
     initOperators();
 
@@ -737,4 +734,146 @@ $(function () {
     }
   }
 
+  var assignmentDetailVm = new Vue({
+    el: '#assignment-detail',
+    data: {
+      progress: 'help',
+      curStepContent: '',
+      curStepIndex: 1,
+      stepLen: 0,
+      taskLen: 0,
+      project: {},
+      nextStepText: '准备好了',
+      uplodging: false
+    },
+    methods: {
+      prev: prevStep,
+      next: nextStep,
+      lastStep: lastStep,
+      refreshQrImage: refreshQrImage,
+      mapDevice: mapDevice,
+      close: close
+    }
+  });
+
+  function prevStep (vm) {
+    vm.curStepIndex -= 1;
+    switch(vm.progress) {
+      case 'prepare':
+        vm.progress = 'help';
+        vm.nextStepText = '准备好了';
+      break;
+      case 'situation':
+        vm.progress = 'prepare';
+        vm.nextStepText = '下载好了';
+      break;
+      case 'work-on':
+      if(vm.curStepIndex === 3) {
+        vm.curStepContent = vm.project.desc;
+        vm.progress = 'situation';
+      } else {
+        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 4].content;
+      }
+      break;
+      case 'work-done':
+        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 4].content;
+        vm.progress = 'work-on';
+        vm.nextStepText = '接下来 →';
+      break;
+    }
+  }
+
+  function nextStep (vm) {
+    vm.curStepIndex += 1;
+    switch(vm.progress) {
+      case 'help':
+        vm.progress = 'prepare';
+        vm.nextStepText = '开始任务';
+      break;
+      case 'prepare':
+        vm.progress = 'situation';
+        vm.curStepContent = vm.project.desc;
+        vm.nextStepText = '接下来 →';
+      break;
+      case 'situation':
+        vm.progress = 'work-on';
+        vm.curStepContent = vm.project.tasks[0].content;
+      break;
+      case 'work-on':
+      if(vm.curStepIndex - 4 === vm.taskLen) {
+        vm.progress = 'work-done';
+      } else {
+        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 4].content;
+      }
+      break;
+    }
+  }
+
+  function lastStep (vm) {
+    vm.progress = 'work-done';
+    vm.curStepIndex = vm.stepLen;
+  }
+
+  function close(vm) {
+    $('#assignment-detail').modal('hide');
+    // 清理二维码
+    if(vm.project.device !== 'web') {
+      $('#upload-qrcode img').remove();
+      $('#upload-qrcode canvas').remove();
+    }
+    vm.progress = 'help';
+    vm.curStepContent = '';
+    vm.curStepIndex = 1;
+    vm.stepLen = 0;
+    vm.taskLen = 0;
+    vm.project = {};
+    vm.nextStepText = '准备好了';
+  }
+
+  function refreshQrImage (event) {
+    var $target = $(event.target);
+    if($target.hasClass('disable')) {
+      return false;
+    }
+    $target.addClass('disable');
+    getQrcodeToken(assignmentId, function (token) {
+      var uploadUrl = location.origin
+                    + "/assignments/upload?"
+                    + "auth_token="
+                    + token
+                    + "&id="
+                    + assignmentId;
+      var $qrcode = $('#upload-qrcode');
+      $qrcode.find('img').remove();
+      $qrcode.find('canvas').remove();
+      $qrcode.find('.fa-refresh').addClass('fa-spin');
+      $qrcode.find('.img-mask').css({
+        display: 'block'
+      });
+      setTimeout(function () {
+        new QRCode($('#upload-qrcode')[0], {
+          text: uploadUrl,
+          width: 120,
+          height: 120,
+        });
+        $qrcode.find('.fa-refresh').removeClass('fa-spin');
+        $qrcode.find('.img-mask').removeAttr('style');
+        $target.removeClass('disable');
+      }, 1000)
+    });
+  }
+
+  function mapDevice (platform, device) {
+    if(device === 'web') {
+      return '电脑'
+    }
+    var map = {
+      'iosphone': 'iPhone',
+      'androidphone': 'Android Phone',
+      'androidpad': 'Android Pad',
+    }
+    return map[platform + device];
+  }
+
 });
+

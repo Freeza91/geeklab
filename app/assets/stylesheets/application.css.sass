@@ -11,7 +11,7 @@
  * file per style scope.
  *
  * 引入bootstrap
- *=require "share/src_bootstrap"
+ *=require "vendors/src_bootstrap"
  *
  * 引入font awesome
  *= require font-awesome
@@ -20,12 +20,13 @@
  *= require jquery.nouislider
  *= require jquery.nouislider.pips
  *
- *= require_tree ./assignments
+ * fullPage
+ *= require jquery.fullPage
+ *
+ * 公共样式
+ *= require dist/common
+ *
  *= require_tree ./pages
- *= require_tree ./projects
- *= require_tree ./share
- *= require_tree ./users
- *= require_tree ./errors
  * icon
  *= require stores/icon
  *= require_self

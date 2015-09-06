@@ -1,0 +1,367 @@
+@import ../helpers/variables
+.assignments
+  background-color: #eee
+
+// 任务列表导航
+.assignments-nav
+  background-color: #f9f9f9
+  .nav-pills
+    > li
+      width: 50%
+      text-align: center
+      > a
+        font-size: 16px
+        color: #313131
+      > a:hover
+        color: #727071
+        background-color: #f9f9f9
+    > li + li
+      margin-left: 0
+    > li.current::after
+      position: absolute
+      bottom: 0
+      left: 50%
+      margin-left: -8px
+      content: ''
+      display: block
+      width: 0
+      height: 0
+      border-right: 8px solid transparent
+      border-bottom: 8px solid #eee
+      border-left: 8px solid transparent
+
+.assignments-list
+  .container
+    padding-left: 100px
+    padding-right: 100px
+
+// 加载更多
+.load-more
+  cursor: pointer
+  padding: 0 14px
+  p
+    text-align: center
+  .btn
+    background-color: #fff
+    width: 100%
+    height: 38px
+    line-height: 26px
+    color: #313131
+    box-shadow: 0 0 5px #ccc
+  .btn:hover
+    color: #313131
+
+// assignment detail modal
+.task-guide
+  position: relative
+  width: 640px
+  height: 460px
+  background: image_url('testers/task_guide_bg.png')
+.task-left,
+.task-right
+  float: left
+  width: 50%
+  height: 100%
+  padding: 1rem
+.task-content
+  width: 63%
+  p
+    font-size: 1rem
+    color: $dark-blue
+    letter-spacing: .1rem
+    text-align: left
+.task-link
+  color: $blue
+  font-size: 1rem
+.task-link:hover
+  color: $dark-blue
+#prev,
+#close
+  position: absolute
+  color: #fff
+  font-size: 1.4rem
+  cursor: pointer
+#prev:hover,
+#close:hover
+  color: $dark-blue
+#prev
+  top: 1rem
+  left: 1rem
+#close
+  top: 1rem
+  right: 1rem
+.task-pagination
+  position: absolute
+  top: 3.2rem
+  right: 3rem
+  cursor: pointer
+  .curr-page
+    font-size: 1.4rem
+    color: $blue
+  .total-page
+    font-size: 1rem
+    color: $dark-blue
+.task-pagination:hover
+  .total-page
+    text-decoration: underline
+.task-point-hint
+  position: relative
+  top: 1.3rem
+  display: inline-block
+  background-color: $light-yellow
+  font-size: 1.2rem
+  color: $blue
+#assignment-detail
+  .modal-content
+    border-radius: 10px
+  .modal-body
+    padding: 0
+  .qrcode
+    img
+      width: 120px
+      height: 120px
+      margin-bottom: 1rem
+    p
+      text-align: center
+  .qr-upload
+    img
+      margin: 0 auto
+    .fa-refresh
+      margin-top: 50px
+      font-size: 1.6rem
+      color: #fff
+    p
+      margin-bottom: 1rem
+  #upload-qrcode
+    position: relative
+    width: 120px
+    height: 120px
+    margin: 0 auto
+    cursor: pointer
+    .img-mask
+      display: none
+      position: absolute
+      top: 0
+      left: 50%
+      margin-left: -60px
+      width: 120px
+      height: 120px
+      background-color: rgba(0, 0, 0, .5)
+  #upload-qrcode:hover
+    .img-mask
+      display: block
+
+// confirm modal
+#confirm-modal
+  .modal-dialog
+    width: 520px
+  .modal-body
+    margin-top: 20px
+    .content
+      font-size: 16px
+      color: #313131
+      margin-bottom: 60px
+
+// modal中的操作按钮
+.modal
+  .modal-body
+    .tools
+      margin-bottom: 30px
+      text-align: center
+    .btn
+      min-width: 90px
+    .btn + .btn
+      margin-left: 90px
+
+// 上传视频表单
+#upload-form
+  display: block
+  visibility: hidden
+  width: 0
+  height: 0
+
+
+// 上传进度圆环
+.progressCircle
+  position: relative
+  width: 70px
+  height: 70px
+  background-color: #17a0c6
+  border-radius: 50%
+  .mask
+    position: absolute
+    top: 6px
+    left: 6px
+    width: 58px
+    height: 58px
+    border-radius: 50%
+    background-color: #f9f9f9
+    text-align: center
+    line-height: 58px
+  .left
+    clip: rect(0 35px auto 0)
+    .inner
+      clip: rect(0 35px auto 0)
+  .right
+    clip: rect(0 auto auto 35px)
+    .inner
+      clip: rect(0 auto auto 35px)
+  .left,
+  .right
+    position: absolute
+    top: 0
+    left: 0
+    width: 70px
+    height: 70px
+    .inner
+      position: absolute
+      top: 0
+      left: 0
+      width: 70px
+      height: 70px
+      border-radius: 50%
+      background-color: #fff
+
+// 任务操作
+.operator
+  position: absolute
+  width: 100%
+  height: 200px
+  top: 0
+  .button-wrp
+    text-align: center
+    position: absolute
+    width: 100%
+  .btn
+    cursor: pointer
+  .icon-wrp
+    text-align: center
+    margin-top: 25px
+  .button-wrp.single
+    bottom: 55px
+  .status-info
+    text-align: center
+    color: #313131
+    font-size: 16px
+
+
+.operator.uploading
+  .progressCircle
+    left: 50%
+    margin-left: -35px
+
+.operator.upload-failed
+  .button-wrp
+    top: 50px
+    .btn + .btn
+      margin-left: 30px
+  .status-info
+    width: 100%
+    position: absolute
+    top: 110px
+
+.operator.wait-check
+  .button-wrp
+    padding: 20px 20px 0
+    .btn:first-child
+      float: left
+    .btn:last-child
+      float: right
+  .icon-wrp
+    margin-top: 60px
+    .fa-play-circle-o
+      opacity: .5
+      color: #fff
+      cursor: pointer
+    .fa-play-circle-o:hover
+      opacity: 1
+
+.operator.play
+  .icon-wrp
+    margin-top: 60px
+    .fa-play-circle-o
+      opacity: .5
+      color: #fff
+      cursor: pointer
+    .fa-play-circle-o:hover
+      opacity: 1
+
+// 不同状态洗的operator 切换
+.assignments_index
+  .operator.uploading,
+  .operator.upload-failed
+    display: none
+
+// 我参与的任务--operator
+#assignments-ing
+  .operator
+    display: none
+#assignments-done
+  display: none
+
+// 我参与的任务页面的tab切换
+.assignments-subnav
+  text-align: center
+  ul
+    display: inline-block
+    list-style: none
+    padding: 0
+    border: 1px solid #a0a0a0
+    border-radius: 3px
+    > li
+      float: left
+      > a
+        display: inline-block
+        background-color: #eee
+        color: #313131
+        padding: 5px 20px
+        box-shadow: 0 0 2px #ccc
+        font-size: 14px
+      > a:hover
+        background-color: rgba(255, 255, 255, .5)
+        text-decoration: none
+      > a.active
+        background-color: #fff
+      > a:focus
+        text-decoration: none
+    > li:first-child > a
+      border-right: 1px solid #a0a0a0
+
+
+// 过期任务提示
+.assignments-reminder
+  position: fixed
+  top: 70px
+  left: 50px
+  box-shadow: 0 0 7px #ccc
+  border-radius: 50%
+  z-index: 10
+  .reminder-close
+    position: absolute
+    left: 100%
+    top: 0
+    font-size: 20px
+    line-height: 20px
+    cursor: pointer
+  .reminder-close:hover
+    color: #16a0c6
+  .inner
+    width: 80px
+    height: 80px
+    border-radius: 50%
+    background-color: #fff
+    padding-top: 15px
+    p,
+    a
+      color: #313131
+      font-size: 14px
+      text-align: center
+    .miss-count
+      margin-bottom: 5px
+    .miss-count > a:hover
+      color: #16a0c6
+      text-decoration: underline
+.highlight
+  color: $blue
+  font-size: 1.2rem
+  font-weight: bold

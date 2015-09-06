@@ -10,10 +10,19 @@ class ApplicationController < ActionController::Base
   end
 
   def require_login?
+
     unless current_user
       flash[:info] = 'you should login first'
-      redirect_to root_path
+
+      respond_to do |format|
+        format.html { redirect_to root_path }
+        format.any do
+          json = {status: 0, code: 1, msg: '哥们，登陆后再试！' }
+          render json: json
+        end
+      end
     end
+
   end
 
   def logined?

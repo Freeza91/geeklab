@@ -10,6 +10,10 @@
 // vue
 //= require vue
 
+// slider
+//= require jssor
+//= require jssor.slider
+
 // base.js 登录，注册
 //= require stores/base
 
@@ -25,10 +29,7 @@
 // store 重置密码
 //= require stores/password
 
-// slider
-//= require jssor
-//= require jssor.slider
-//= require stores/slider
+// require stores/slider
 
 // nested_form
 //= require jquery_nested_form

@@ -4,9 +4,12 @@
       .modal-body
         .hint-text
           p
+            span.icon-img.icon-outer-24
+              i.icon-inner.icon-sad
+          p
             | 你确定要退出登录吗?
         .btn-wrp
-          a.btn.btn-base-reverse.btn-rounded.btn-s rel="noflow" data-method="delete" href=users_session_path(current_user.id)
+          a.btn.btn-base.btn-rounded.btn-s rel="noflow" data-method="delete" href=users_session_path(current_user.id)
             | 确定
-          button.btn.btn-base-reverse.btn-rounded.btn-s data-dismiss="modal" aria-label="Close"
+          button.btn.btn-base.btn-rounded.btn-s data-dismiss="modal" aria-label="Close"
             | 取消

@@ -71,7 +71,7 @@ $(function () {
       appendProjects(data);
     });
   });
-  
+
   function getProjectPaging (page, callback) {
     $.ajax({
       url: '/projects',
@@ -111,7 +111,7 @@ $(function () {
       // 完成进度
       $projectCard.find('.progress-num .done').text(assignments[i].length);
       $projectCard.find('.progress-num .total').text('/' + projects[i].demand);
-     
+
       // 视频截图
       var $video = $projectCard.find('.videos ul');
       var videoTemplate = $video.children().last();
@@ -137,7 +137,7 @@ $(function () {
       cards.push('<div class="card">' + $projectCard.html() + '</div>');
     }
     $projectsWrp.append(cards.join(''));
- 
+
     // 重新初始化倒计时
     countDownInterval.forEach(function (id, index) {
       clearInterval(id);

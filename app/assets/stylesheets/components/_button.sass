@@ -1,0 +1,60 @@
+@import ../helpers/mixin
+@import ../helpers/variables
+
+.btn
+  +border-radius(0)
+  border: none
+  color: #fff
+.btn:hover
+  color: #fff
+  opacity: .8
+a.btn:active
+  outline: none
+a.btn:focus
+  outline: none
+
+.btn
+  height: 34px
+  transition: all .5s ease
+.btn-flat-base,
+  background-color: $blue
+  color: #fff
+.btn-flat-base:hover
+  background-color: #000
+.btn-flat-base:active,
+.btn-flat-base:focus
+  color: #fff
+.btn-line-base
+  border: 1px solid $blue
+  background-color: transparent
+  color: $blue
+.btn-line-base:hover
+  background-color: $light-yellow
+  color: $blue
+.btn-line-base:active,
+.btn-line-base:focus
+  color: $blue
+.btn-line-darkblue
+  border: 1px solid $dark-blue
+  background-color: transparent
+  color: #fff
+.btn-line-darkblue:hover
+  background-color: $dark-blue
+.btn-line-darkblue:active,
+.btn-line-darkblue:focus
+  color: #fff
+
+.btn:hover,
+.btn:active,
+.btn:focus,
+.btn:visited
+  outline: none
+
+.btn-s
+  width: 120px
+.btn-m
+  width: 150px
+.btn-g
+  width: 300px
+.btn-rounded
+  border-radius: 30px

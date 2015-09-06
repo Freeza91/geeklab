@@ -1,0 +1,489 @@
+doctype html
+html lang=session[:locale]
+  head
+    title 极客实验室
+    meta charset="utf-8"
+    meta name="render" content="webkit"
+    meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+    meta name="application-name" content="极客实验室"
+    meta name="description" content="可用性测试平台"
+    meta name="keywords" content="极客实验室, 极客,测试,可用性"
+    meta name="generator" content="vuejs, rails"
+    meta http-equiv="Content-Type" content="text/html; charset=utf-8"
+    meta http-equiv="Content-Style-Type" content="text/css"
+    meta http-equiv="Content-Script-Type" content="text/javascript"
+    link rel="shortcut icon" href="#{image_path('icon/favicon.png')}"
+    = csrf_meta_tags
+  body class=(controller_name + ' ' + controller_name + '_' + action_name + ' ' + locale.to_s)
+    header#header
+      .logo
+        | 极客实验室
+      - if @auth
+        .user
+          = @current_user.email
+    div role="main" class=("#{mobile_upload_valid(@auth, @assignment)}")
+      - if !@auth
+        section.hint
+          h3.invalid-title
+            | sorry，页面已过期
+          .invalid-img
+            img src="#{image_path('upload/token_invalid.png')}"
+          p.invalid-hint
+            | 温馨提示：请到二维码页面重新扫描二维码进行上传
+            | 视频噢！(点击引导指南右上角的“页数”可以直接跳
+            | 转到二维码页面)
+      - elsif @assignment.project.expired_at <= Time.now
+        section.hint
+          h3.invalid-title
+            | sorry，任务已过期
+          .invalid-img
+            img src="#{image_path('upload/assignment_invalid.png')}"
+          p.invalid-hint
+            | 温馨提示：快到任务列表页面看看还有什么其他的任务
+            | 可以做吧！
+      - else
+        section.assignment
+          .card
+            .card-header
+              h3.card-title
+                .icon class=("icon-" + "#{assignment_type(@assignment)}")
+                = @assignment.project.name
+              p.card-desc
+                = @assignment.project.profile
+            .card-body
+              .file-picker.card-content.vertical-center
+                #upload.vertical-item
+                  .top
+                    .icon.icon-file
+                  .buttons
+                    #picker.btn
+                      | 上传视频
+                #uploading.vertical-item
+                  .top
+                    .progressCircle#progress
+                      .left
+                        .inner
+                      .right
+                        .inner
+                      .mask
+                        span.progressCount
+                          | 0%
+                  .buttons
+                    .cancel.btn
+                      | 取消上传
+                #upload-fail.vertical-item
+                  .top
+                    p
+                      | sorry, 上传失败了噢!
+                  .buttons
+                    #reupload.btn
+                      | 重新上传
+                    .btn.cancel style="margin-left: 2rem"
+                      | 取消上传
+                //#play.vertical-item
+                  //.icon.icon-play
+            .card-footer
+              .countdown
+                - if Time.now + 50.years > @assignment.project.expired_at
+                  span 距离任务结束
+                  span#countdown data-deadline="#{@assignment.project.expired_at}"
+              .score
+                .icon.icon-score
+                span = @assignment.project.credit
+
+          input#auth type="hidden" value="#{@token}"
+          input#id type="hidden" value="#{@assignment.to_params}"
+    sass:
+      html,
+      body
+        height: 100%
+        font-size: 15px
+        margin: 0
+      [role="main"]
+        min-height: calc(100% - 48px)
+      p
+        margin: 0
+      img
+        width: 100%
+      .invalid
+        background-color: #1c3e4c
+      .invalid-img
+        padding: 1.5rem 2.5rem
+      .invalid-title
+        margin: 0
+        font-size: 1.6rem
+        color: #fff
+        text-align: center
+      .invalid-hint
+        font-size: 1rem
+        color: #fff
+        line-height: 1.5rem
+        letter-space: .1rem
+      .valid
+        background-color: #5cbcc9
+      .hint,
+      .assignment
+        padding: 4.5rem 1rem
+      #header
+        overflow: hidden
+        padding: 1rem
+        background-color: #fff
+      .logo
+        font-size: 1.2rem
+        float: left
+      .user
+        float: right
+        color: #5cbcc9
+      .card
+        margin-left: auto
+        margin-right: auto
+        background-color: #fff
+      .card-header,
+      .card-footer
+        padding: .6rem
+      .card-title,
+      .card-desc
+        color: #1c3e4c
+        margin: 0
+        padding: 0
+        font-weight: normal
+        line-height: 1.6rem
+      .card-title
+        font-size: 1.2rem
+      .card-desc
+        font-size: 1rem
+      .card-body
+        height: 24rem
+        background-color: #fbf9f3
+      .card-content
+        height: 100%
+        text-align: center
+        font-size: 1rem
+      .card-footer
+        overflow: hidden
+      .countdown
+        float: left
+        line-height: 1.8rem
+      #countdown
+        padding-left: .6rem
+        color: #5cbcc9
+      .score
+        float: right
+      .score-count
+        margin-left: .2rem
+        font-size: 1.4rem
+        color: #1c3e4c
+        vertical-align: middle
+
+      .file-picker
+        background-position: top left
+        background-repeat: no-repeat
+        -webkit-background-size : 100%
+        background-size: 100%
+        input[type="file"]
+          display: none
+      .top
+        font-size: 1.2rem
+        margin-bottom: 2rem
+      .progressCircle
+        display: inline-block
+
+      //#play
+      #uploading,
+      #upload-fail
+        display: none
+      // icon
+      .icon
+        display: inline-block
+        background: url("http://7xjciz.com2.z0.glb.qiniucdn.com/upload_icon@2x.png")
+        background-size: 265px 100px
+        vertical-align: middle
+      .icon-file
+        background-position: 0 0
+        width: 100px
+        height: 100px
+      .icon-play
+        background-position: -100px 0
+        width: 100px
+        height: 100px
+      .icon-mobile
+        background-position: -200px 0
+        width: 17px
+        height: 28px
+      .icon-score
+        background-position: -217px 0
+        width: 28px
+        height: 28px
+      .icon-web
+        background-position: -245px 0
+        width: 20px
+        height: 14.5px
+      .btn
+        display: inline-block
+        width: 9rem
+        height: 3rem
+        border-radius: 3rem
+        -webkit-border-radius: 3rem
+        background-color: #5cbcc9
+        color: #fff
+        font-size: 1.2rem
+        text-align: center
+        line-height: 3rem
+      @media(max-width: 768px)
+        .btn
+          width: 7rem
+          height: 2.2rem
+          border-radius: 2.2rem
+          -webkit-border-radius: 2.2rem
+          font-size: 1rem
+          line-height: 2.2rem
+        .assignment
+          padding-top: 3.5rem
+          padding-bottom: 3.5rem
+        .card-body
+          height: 20rem
+      // 上传进度圆环
+      .progressCircle
+        position: relative
+        width: 70px
+        height: 70px
+        background-color: #1c3e4c
+        border-radius: 50%
+        .mask
+          position: absolute
+          top: 6px
+          left: 6px
+          width: 58px
+          height: 58px
+          border-radius: 50%
+          background-color: #f9f9f9
+          text-align: center
+          line-height: 58px
+        .left
+          clip: rect(0 35px auto 0)
+          .inner
+            clip: rect(0 35px auto 0)
+        .right
+          clip: rect(0 auto auto 35px)
+          .inner
+            clip: rect(0 auto auto 35px)
+        .left,
+        .right
+          position: absolute
+          top: 0
+          left: 0
+          width: 70px
+          height: 70px
+          .inner
+            position: absolute
+            top: 0
+            left: 0
+            width: 70px
+            height: 70px
+            border-radius: 50%
+            background-color: #fff
+
+      .vertical-center
+        text-align: center
+        .vertical-item
+          display: inline-block
+          margin-top: -2rem
+          vertical-align: middle
+      .vertical-center::after
+        content: ''
+        height: 100%
+        vertical-align: middle
+        display: inline-block
+
+    = javascript_include_tag 'upload/mobile_upload'
+    javascript:
+      $(function() {
+        var authToken = $('#auth').val(),
+            assignmentId = $('#id').val();
+
+        var $countdown = $('#countdown'),
+            deadline = new Date($countdown.data('deadline'));
+        if($countdown) {
+          countDown(deadline - new Date(), $countdown);
+          var interval = setInterval(function () {
+            countDown(deadline - new Date(), $countdown);
+          }, 1000);
+        }
+
+        var uploader = WebUploader.create({
+          server: 'http://upload.qiniu.com',
+          pick: {
+            id: '#picker',
+            multiple: false
+          },
+          resize: false,
+          formData: {
+            token: '',
+            assignment_id: assignmentId,
+            accept: 'appliaction/json'
+          }
+        });
+        // 当有文件添加进队列
+        uploader.on('fileQueued', function (file) {
+          getUploadToken(authToken, assignmentId, file.name, function (token) {
+            uploader.options.formData.token = token;
+            uploader.upload();
+            $('#upload').hide();
+            $('#uploading').css({
+              display: 'inline-block'
+            })
+          });
+        });
+
+        // 上传进度
+        uploader.on('uploadProgress', function (file, percentage) {
+          var $progress = $('#progress');
+          showUploadProgress (percentage, $progress);
+        });
+
+        // 取消上传
+        $('.cancel').on('click', function () {
+          $(this).parents('.vertical-item').hide();
+          $('#upload').css({
+            display: 'inline-block'
+          })
+          var file = uploader.getFiles()[0];
+          uploader.cancelFile(file);
+          uploader.removeFile(file, true);
+          clearProgressCircle($('#progress'));
+        });
+        // 重新上传
+        $('#reupload').on('click', function () {
+          uploader.retry();
+          $('#upload-fail').hide();
+          $('#uploading').css({
+            display: 'inline-block'
+          })
+        });
+        // 处理服务端回调
+        uploader.on('uploadAccept', function (obj, ret) {
+          if(ret.status === 0 && ret.code === 1) {
+            var $filePicker = $('.file-picker'),
+                width = $('.file-picker').width(),
+                height = $('.file-picker').height();
+            var imageUrl = ret.video + '?vframe/png/offset/0/w/' + width + '/h/' + height;
+            $('.file-picker').css({
+              'background-image': 'url(' + imageUrl + ')'
+            });
+            return true;
+          }
+          return false;
+        });
+
+        // 上传成功
+        uploader.on('uploadSuccess', function (file) {
+          $('#uploading').hide();
+          //$('#play').css({
+            //display: 'inline-block'
+          //})
+        });
+
+        // 上传失败
+        uploader.on('uploadError', function (file) {
+          $('#uploading').hide();
+          $('#upload-fail').css({
+            display: 'inline-block'
+          })
+        });
+
+        // 上传完成
+        uploader.on('uploadComplete', function (file) {
+          // 重置上传进度圆环
+          clearProgressCircle($('#progress'));
+        });
+
+        // 获取上传视屏的token
+        function getUploadToken(authToken, assignmentId, filename, callback) {
+          var url = '/assignments/upload_token/';
+          $.ajax({
+            url: url,
+            data: {
+              auth_token: authToken,
+              name: filename,
+              assignment_id: assignmentId
+            }
+          })
+          .done(function (data, status) {
+            if(data.status === 0 && data.code === 1) {
+              // 成功获取token, 执行回调上传图片
+              var token = data.token;
+              callback(token);
+            } else {
+              alert('获取token失败');
+            }
+          })
+          .error(function(errors, status) {
+            console.log(errors);
+          })
+        }
+
+        function showUploadProgress (percent, $progress) {
+          var percent = Math.floor(percent * 100),
+              deg = percent * 3.6,
+              transform = '';
+          if(deg <= 180) {
+            transform = 'rotate(' + deg + 'deg)';
+            $progress.find('.right .inner').css({
+              'transform': transform,
+              '-o-transform': transform,
+              '-moz-transform': transform,
+              '-webkit-transform': transform
+            });
+          } else {
+            transform = 'rotate(' + (deg-180) + 'deg)';
+            $progress.find('.right .inner').css({
+              'transform': 'rotate(180deg)',
+              '-o-transform': 'rotate(180deg)',
+              '-moz-transform': 'rotate(180deg)',
+              '-webkit-transform': 'rotate(180deg)'
+            });
+            $progress.find('.left .inner').css({
+              'transform': transform,
+              '-o-transform': transform,
+              '-moz-transform': transform,
+              '-webkit-transform': transform
+            });
+          }
+          $progress.find('.progressCount').text(percent + '%');
+        }
+
+        function clearProgressCircle ($progress) {
+          var $progress = $('#progress');
+          $progress.find('.inner').css({
+            'transform': 'rotate(0)',
+            '-o-transform': 'rotate(0)',
+            '-moz-transform': 'rotate(0)',
+            '-webkit-transform': 'rotate(0)'
+          });
+          $progress.find('.progressCount').text('0%');
+        }
+      });
+      function countDown(count, $ele) {
+        var timeArr = [];
+        if(count > 24 * 60 * 60 * 1000) {
+          var days = ~~ (count / (24 * 60 * 60 * 1000));
+          days = days < 10 ? '0' + days : days;
+          timeArr.push(days + '天');
+        }
+        if(count > 60 * 60 * 1000) {
+          var hours = ~~ ((count / (60 * 60 * 1000)) % 24);
+          hours = hours < 10 ? '0' + hours : hours;
+          timeArr.push(hours + '小时');
+        }
+        if(count > 60 * 1000) {
+          var minutes = ~~ ((count / (60 * 1000)) % 60);
+          minutes = minutes < 10 ? '0' + minutes : minutes;
+          timeArr.push(~~ ((count / (60 * 1000)) % 60) + '分');
+        }
+        if(count > 1000) {
+          var seconds = ~~ ((count / 1000) % 60);
+          seconds = seconds < 10 ? '0' + seconds : seconds
+          timeArr.push(seconds + '秒');
+        }
+        $ele.text(timeArr.join(''));
+      }

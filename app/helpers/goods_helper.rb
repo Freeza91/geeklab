@@ -19,7 +19,7 @@ module GoodsHelper
     else
       class_name = {
         'on_sell': 'exchange',
-        'coming_soon': 'highlight no-border',
+        'coming_soon': 'highlight',
         'off_shelves': 'disable'
       }
       class_name[status.to_sym]

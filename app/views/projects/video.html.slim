@@ -49,8 +49,8 @@ main role="main"
                         input type="radio" name="user" value="no" v-model="user"
                         span NO
                     p v-text="user" v-show="submited"
-                  input type="text" v-model="assignmentId" value=@assignment.id style="display:none"
-                  input type="text" v-model="projectId" value=@project.id style="display: none"
+                  input type="text" v-model="assignmentId" value="#{@assignment.to_params}" style="display:none"
+                  input type="text" v-model="projectId" value="#{@project.to_params}" style="display: none"
                   .button.btn.btn-blue v-show="!submited" v-on="click: submit($event)"
                     | 提交
           p

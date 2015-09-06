@@ -13,13 +13,14 @@ main role="main"
             a href="{{mailbox}}"
               | 进入邮箱
         form.form
-          .form-field
-            input.form-input type="text" name="email" placeholder="邮箱" v-model="email"
+          .form-field.with-hint-text v-class="error ? 'error' : ''"
+            input.form-input type="text" name="email" placeholder="邮箱" v-model="email" v-on="focus: error = false, blur: checkEmail(this)"
+            span.hint-text v-show="error" v-text="hint"
           .form-field.submit
             p.form-hint v-show="success"
               | 如果没有收到邮件，请检查垃圾邮件；或者点击下方的按钮重新发送
-            p.form-hint.error v-show="error" v-text="hint"
-            button.btn.btn-base-reverse.btn-rounded.btn-m type="submit" v-on="click: submit(this, $event)" v-class="canSendEmail ? '' :'disable'"
+            /p.form-hint.error v-show="error" v-text="hint"
+            button.btn.btn-base.btn-rounded.btn-m type="submit" v-on="click: submit(this, $event)" v-class="canSendEmail ? '' :'disable'"
               span v-show="countDown === 60"
                 | 发送验证邮件
               span.color-yellow v-text="countDown" v-show="countDown !== 60"

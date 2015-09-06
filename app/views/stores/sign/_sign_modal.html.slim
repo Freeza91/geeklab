@@ -19,9 +19,11 @@
         .tab-content
           .tab-pane.active#login role="tabpanel"
             form.form
-              .form-field v-class="error ? 'error': ''"
-                input.form-input type="text" name="email" placeholder="邮箱" v-model="email"
-              .form-field v-class="error ? 'error': ''"
+              .form-field.with-hint-text v-class="error.email ? 'error': ''"
+                input.form-input type="text" name="email" placeholder="邮箱" v-model="email" v-on="focus: error.email = false, blur: checkEmailFormat(this)"
+                span.hint-text v-show="error.email"
+                  | {{hint.email}}
+              .form-field.with-hint-text v-class="error.all ? 'error': ''"
                 input.form-input type="password" name="password" placeholder="密码" v-model="password"
               .form-field
                 label.checkbox-inline
@@ -30,14 +32,16 @@
                 a.pull-right href="/users/passwords/reset" targe="_blank"
                   | 忘记密码?
               .form-field.submit
-                p.form-hint.error v-show="error"
+                p.form-hint.error v-show="error.all"
                   | 邮箱或密码输入错误, 请重新输入
-                input.btn.btn-base-reverse.btn-m.btn-rounded type="submit" value="登录" v-on="click: submit(this, $event)"
+                input.btn.btn-base.btn-m.btn-rounded type="submit" value="登录" v-on="click: submit(this, $event)"
           .tab-pane#regist role="tabpanel"
             form.form
-              .form-field v-class="error.email ? 'error': ''"
-                input.form-input type="text" name="email" placeholder="邮箱" v-model="email"
-              .form-field v-class="error.code ? 'error': ''"
+              .form-field.with-hint-text v-class="error.email ? 'error': ''"
+                input.form-input type="text" name="email" placeholder="邮箱" v-model="email" v-on="focus: error.email = false, blur: checkEmail(this)"
+                span.hint-text v-show="error.email"
+                  | {{hint.email}}
+              .form-field.clearfix v-class="error.code ? 'error': ''"
                 input.form-input.with-addon type="text" name="code" placeholder="验证码" v-model="code"
                 p.form-input-addon v-on="click: sendCode(this)" v-class="canSendCode ? '': 'disable'"
                   span.color-yellow v-text="countDown" v-show="countDown !== 60"
@@ -47,10 +51,12 @@
                     | 发送验证码
                 a.color-yellow href="{{mailbox}}" target="_blank" v-show="!!mailbox"
                   | 进入邮箱
-              .form-field v-class="error.password ? 'warn': ''"
-                input.form-input type="password" name="password" placeholder="密码" v-model="password"
+              .form-field.with-hint-text v-class="error.password ? 'error': ''"
+                input.form-input type="password" name="password" placeholder="密码" v-model="password" v-on="focus: error.password = false, blur: checkPasswordFormat(this)"
+                span.hint-text v-show="error.password"
+                  | {{hint.password}}
                 p.form-hint
                   | 6-16个字符，可包括数字、字母、下划线
               .form-field.submit
-                p.form-hint.error v-show="error.regist" v-text="hint"
-                input.btn.btn-base-reverse.btn-m.btn-rounded type="submit" value="注册" v-on="click: submit(this, $event)"
+                p.form-hint.error v-show="error.regist" v-text="hint.regist"
+                input.btn.btn-base.btn-m.btn-rounded type="submit" value="注册" v-on="click: submit(this, $event)"

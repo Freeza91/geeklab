@@ -1,0 +1,41 @@
+main role="main"
+  section.banner
+    div
+      p
+        | 挑几个道具选个方式直接录制吧!
+  section
+    ul.nav.nav-tabs role="tablist"
+      li.active role="presentation"
+        a href="#ios" aria-controls="ios" role="tab" data-toggle="tab"
+          | iPhone/iPad免越狱录制
+      li role="presentation"
+        a href="#android" aria-controls="android" role="tab" data-toggle="tab"
+          | Android免root录制
+      li role="presentation"
+        a href="#mac" aria-controls="mac" role="tab" data-toggle="tab"
+          | Mac录屏
+      li role="presentation"
+        a href="#windows" aria-controls="windows" role="tab" data-toggle="tab"
+          | Windows录屏
+    .tab-content
+      .tab-pane.active#ios role="tabpanel"
+        img src="#{image_path('help/ios.png')}"
+      .tab-pane#android role="tabpanel"
+        img src="#{image_path('help/android.png')}"
+      .tab-pane#mac role="tabpanel"
+        img src="#{image_path('help/mac.png')}"
+      .tab-pane#windows role="tabpanel" style="position: relative"
+        img src="#{image_path('help/windows.png')}"
+        a#kk-download.btn.btn-line-darkblue.btn-rounded.btn-m href="http://www.kkcapture.com/update.html" target="_blank"
+          span kk录像
+          span 立即下载
+  input#target type="hidden" value="#{@target}"
+
+  javascript:
+    var target = $('#target').val();
+    if(target) {
+      $('.active').removeClass('active');
+      $('#' + target).addClass('active');
+      $('[aria-controls="' + target + '"]').parent().addClass('active');
+      location.hash=target;
+    }

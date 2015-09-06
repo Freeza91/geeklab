@@ -4,9 +4,12 @@
       .modal-body
         .hint-text
           p
-            | 你确定要删除这条记录吗?
+            span.icon-img.icon-outer-24
+              i.icon-inner.icon-sad
+          p
+            | 你真的要扔掉它吗?
         .btn-wrp
-          button.btn.btn-base-reverse.btn-rounded.btn-s.confirm
-            | 确定
-          button.btn.btn-base-reverse.btn-rounded.btn-s data-dismiss="modal" aria-label="Close"
-            | 取消
+          button.btn.btn-base.btn-rounded.btn-s.confirm
+            | 很确定
+          button.btn.btn-base.btn-rounded.btn-s data-dismiss="modal" aria-label="Close"
+            | 再想想

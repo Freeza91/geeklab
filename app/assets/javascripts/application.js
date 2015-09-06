@@ -10,26 +10,32 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-// 引入 jquery
+//  jquery
 //= require jquery
 //= require jquery_ujs
 
-// 引入 cityselect
+//  cityselect
 //= require jquery.cityselect
-// 引入 dateselect
+//  dateselect
 //= require jquery.dateselect
 
-// import vue
+// vue
 //= require vue
 
-// 引入noUiSlider, a range slider plugin
+// fullPage
+//= require jquery.fullPage.min
+
+// noUiSlider, a range slider plugin
 //= require jquery.nouislider
 
 // html5sortable
 //= require jquery.sortable
 
-// 引入 表单验证
+//  表单验证
 //= require form.valid
+
+// 生成二维码插件
+//= require qrcode
 
 // 引入bootstrap插件
 //= require bootstrap.min

@@ -11,3 +11,4 @@ Rails.application.config.assets.version = '1.0'
 # Rails.application.config.assets.precompile += %w( search.js )
 Rails.application.config.assets.precompile += %w( store.js )
 Rails.application.config.assets.precompile += %w( store.css )
+Rails.application.config.assets.precompile += %w( upload/mobile_upload.js )

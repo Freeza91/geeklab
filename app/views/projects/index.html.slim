@@ -1,11 +1,11 @@
 main role="main"
-  section.projects-list.content-box data-pm-id="#{@current_user.id}"
+  section.projects-list data-pm-id="#{@current_user.to_params}"
     .container
       = render partial: 'projects/shared/add'
       .projects-wrp.clear-fix
         - if @projects
           - @projects.each_with_index do |project, index|
-            .card data-project-id="#{project.id}"
+            .card data-project-id="#{project.to_params}"
               .inner
                 header
                   h1.title

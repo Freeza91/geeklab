@@ -4,23 +4,29 @@ html lang=session[:locale]
     title 极客实验室
     meta name="viewport" content="width=device-width, initial-scale=1"
     meta charset="utf-8"
+    meta name="application-name" content="极客积分"
+    meta name="description" content="极客实验室积分商城"
+    meta name="keywords" content="极客实验室, 极客，积分"
+    meta name="generator" content="vuejs, rails"
+    meta http-equiv="Content-Type" content="text/html; charset=utf-8"
+    meta http-equiv="Content-Style-Type" content="text/css"
+    meta http-equiv="Content-Script-Type" content="text/javascript"
+    link rel="shortcut icon" href="#{image_path('icon/favicon.png')}"
     = stylesheet_link_tag 'store', media: 'all'
     = csrf_meta_tags
     <!-- 在最后加载js -->
     = javascript_include_tag 'store'
 
   body class=(controller_name + ' ' + controller_name + '_' + action_name + ' ' + 'store')
+    .wrapper
+      - if controller_name == "passwords"
+        = render "stores/shared/header_password"
+      - else
+        = render "/stores/shared/header"
+      = yield
 
-    - if controller_name == "passwords"
-      = render "stores/shared/header_password"
-    - else
-      = render "/stores/shared/header"
-    = yield
-
-    <!-- 返回顶部 -->
-    = render "/stores/shared/go_to_top"
-    <!-- footer开始 -->
-    = render "/stores/shared/footer"
+      <!-- footer开始 -->
+      = render "/stores/shared/footer"
 
     - if !current_user
       <!-- 登录框 -->

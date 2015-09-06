@@ -8,22 +8,35 @@ $(function () {
     data: {
       page: 1,
       orders: [],
+      lastPage: false,
+      // 当前页订单是否被全部删除的标志位
+      emptyCurPage: false
     },
     methods: {
       prevPage: prevPage,
       nextPage: nextPage,
       showDetail: showDetail,
-      deleteOrder: deleteOrder
+      deleteOrder: deleteOrder,
+      selectOrder: selectOrder
     }
   });
   function prevPage (vm) {
-    vm.page--;
-    getGoodPagin(vm.page);
+    if(vm.page === 1) {
+      return false;
+    }
+    vm.page -= 1;
+    vm.lastPage = false;
+    getOrderPaging(vm.page);
   }
 
   function nextPage (vm) {
-    vm.page++;
-    getGoodPagin(vm.page);
+    if(vm.lastPage) {
+      return false;
+    }
+    if(!vm.emptyCurPage) {
+      vm.page += 1;
+    }
+    getOrderPaging(vm.page);
   }
 
   function getOrderPaging (page, callback) {
@@ -39,7 +52,24 @@ $(function () {
     })
     .done(function (data) {
       if(data.status === 0 && data.code === 1) {
-        ordersVm.orders = data.orders;
+        if(data.orders.length > 0) {
+          ordersVm.orders = data.orders;
+        } else {
+          if(ordersVm.emptyCurPage) {
+            if(ordersVm.page === 1) {
+              location.reload();
+            }
+            ordersVm.page -= 1;
+            ordersVm.lastPage = true;
+            getOrderPaging(ordersVm.page);
+          }
+          ordersVm.page -= 1;
+          ordersVm.lastPage = true;
+        }
+        if(data.orders.length < 4) {
+          ordersVm.lastPage = true;
+        }
+        ordersVm.emptyCurPage = false;
       }
     })
     .error(function (errors) {
@@ -50,13 +80,16 @@ $(function () {
   getOrderPaging(1);
 
   var $curOrder,
-      orderId;
-
+      orderId,
+      orderIndex;
   $('#order-delete .confirm').on('click', function () {
    //删除订单
     $('#order-delete').modal('hide');
     sendDeleteOrderRequest (orderId, function () {
-      $curOrder.remove();
+      ordersVm.orders.$remove(orderIndex)
+      if(ordersVm.orders.length === 0) {
+        ordersVm.emptyCurPage = true;
+      }
     });
   });
 
@@ -67,8 +100,9 @@ $(function () {
     });
   }
 
-  function deleteOrder (order, event) {
+  function deleteOrder (order, index, event) {
     orderId = order.id;
+    orderIndex = index;
     $curOrder  = $(event.target).parents('.order-item');
     $('#order-delete').modal();
   }
@@ -122,6 +156,16 @@ $(function () {
     .error(function (errors) {
       console.log(errors);
     });
+  }
+
+  function selectOrder(event) {
+    var $order = $(event.target).parents('.order-item');
+    if($order.hasClass('active')) {
+      $order.removeClass('active');
+    } else {
+      $('.order-item.active').removeClass('active');
+      $order.addClass('active');
+    }
   }
 
 });

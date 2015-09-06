@@ -4,11 +4,13 @@ class Stores::OrdersController < Stores::BaseController
 
   def index
     respond_to do |format|
-      format.html { render '/stores/orders/index' }
+      format.html do
+        @num = current_user.orders.includes(:good).page(params[:page]).per(4).try(:size);
+      end
       format.json do
         json = { status: 0, code: 1, orders:[] }
 
-        @orders = current_user.orders.includes(:good).page(params[:page]).per(10)
+        @orders = current_user.orders.includes(:good).page(params[:page]).per(4)
         @orders.each do |order|
           json[:orders] << order.to_json
         end
@@ -40,7 +42,7 @@ class Stores::OrdersController < Stores::BaseController
 
         ActiveRecord::Base.transaction do
           @order.save
-          address.save  if flag
+          address.save if flag
           current_user.update_column(:credits, current_user.credits - good.cost)
           sku.update_column(:num, sku.num - 1) # skip inc_good_stock validate
           good.update_attributes(stock: good.stock - 1, used_num: good.used_num + 1 )

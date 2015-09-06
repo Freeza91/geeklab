@@ -79,7 +79,7 @@ class TestersController < ApplicationController
         when /Mac OS/i
           @target = 'mac'
         when /Windows NT/i
-          @target = 'window'
+          @target = 'windows'
       end
     end
   end

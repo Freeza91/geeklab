@@ -876,6 +876,7 @@ $(function () {
       return '电脑'
     }
     var map = {
+      'iospad': 'iPad',
       'iosphone': 'iPhone',
       'androidphone': 'Android Phone',
       'androidpad': 'Android Pad',

@@ -186,7 +186,8 @@ $(function () {
   $('#education').citySelect({
     url: educationData,
     nodata: 'none',
-    required: true
+    required: true,
+    prov: '本科'
   });
   $('.info-form .submit').on('click', function (event) {
     event.preventDefault();

@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
-  root 'pages#home'
+  #root 'pages#home'
+  root 'testers#index'
 
   namespace :users do
 

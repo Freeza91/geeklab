@@ -61,7 +61,7 @@ $(function () {
     getAssignmentDetail(testerId, assignmentId, function (project) {
       showAssignmentDetail(project);
       // 任务为手机应用时生成二维码
-      //if(project.device !== 'web') {
+      if(project.device !== 'web') {
         getQrcodeToken(assignmentId, function (token) {
           var uploadUrl = location.origin
                         + "/assignments/upload?"
@@ -76,7 +76,7 @@ $(function () {
             height: 120,
           });
         });
-      //}
+      }
     });
   });
 
@@ -437,7 +437,7 @@ $(function () {
   function showAssignmentDetail (assignmentDetail) {
     assignmentDetailVm.project = assignmentDetail;
     assignmentDetailVm.taskLen = assignmentDetail.tasks.length;
-    assignmentDetailVm.stepLen = assignmentDetailVm.taskLen + 4;
+    assignmentDetailVm.stepLen = assignmentDetailVm.taskLen + 5;
     $('#assignment-detail').modal();
   }
 
@@ -737,7 +737,7 @@ $(function () {
   var assignmentDetailVm = new Vue({
     el: '#assignment-detail',
     data: {
-      progress: 'help',
+      progress: 'requirement',
       curStepContent: '',
       curStepIndex: 1,
       stepLen: 0,
@@ -760,23 +760,27 @@ $(function () {
     vm.curStepIndex -= 1;
     switch(vm.progress) {
       case 'prepare':
-        vm.progress = 'help';
+        vm.progress = 'requirement';
         vm.nextStepText = '准备好了';
       break;
-      case 'situation':
+      case 'help':
         vm.progress = 'prepare';
-        vm.nextStepText = '下载好了';
+        vm.nextStepText = '好了';
+      break;
+      case 'situation':
+        vm.progress = 'help';
+        vm.nextStepText = '开始任务';
       break;
       case 'work-on':
-      if(vm.curStepIndex === 3) {
+      if(vm.curStepIndex === 4) {
         vm.curStepContent = vm.project.desc;
         vm.progress = 'situation';
       } else {
-        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 4].content;
+        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 5].content;
       }
       break;
       case 'work-done':
-        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 4].content;
+        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 5].content;
         vm.progress = 'work-on';
         vm.nextStepText = '接下来 →';
       break;
@@ -786,11 +790,15 @@ $(function () {
   function nextStep (vm) {
     vm.curStepIndex += 1;
     switch(vm.progress) {
-      case 'help':
+      case 'requirement':
         vm.progress = 'prepare';
-        vm.nextStepText = '开始任务';
+        vm.nextStepText = '好了';
       break;
       case 'prepare':
+        vm.progress = 'help';
+        vm.nextStepText = '开始任务';
+      break;
+      case 'help':
         vm.progress = 'situation';
         vm.curStepContent = vm.project.desc;
         vm.nextStepText = '接下来 →';
@@ -800,10 +808,10 @@ $(function () {
         vm.curStepContent = vm.project.tasks[0].content;
       break;
       case 'work-on':
-      if(vm.curStepIndex - 4 === vm.taskLen) {
+      if(vm.curStepIndex - 5 === vm.taskLen) {
         vm.progress = 'work-done';
       } else {
-        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 4].content;
+        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 5].content;
       }
       break;
     }
@@ -821,7 +829,7 @@ $(function () {
       $('#upload-qrcode img').remove();
       $('#upload-qrcode canvas').remove();
     }
-    vm.progress = 'help';
+    vm.progress = 'requirement';
     vm.curStepContent = '';
     vm.curStepIndex = 1;
     vm.stepLen = 0;

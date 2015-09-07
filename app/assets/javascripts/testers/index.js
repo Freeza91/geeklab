@@ -1,5 +1,5 @@
 $(function () {
-  if($('body').hasClass('testers')) {
+  if($('body').hasClass('testers') || $('body').hasClass('assignments')) {
     $('#js-change-role').on('click', function () {
       var href = $(this).data('href');
       location.href = href;

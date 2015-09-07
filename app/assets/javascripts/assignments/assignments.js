@@ -743,7 +743,7 @@ $(function () {
       stepLen: 0,
       taskLen: 0,
       project: {},
-      nextStepText: '准备好了',
+      nextStepText: '好的',
       uplodging: false
     },
     methods: {
@@ -761,7 +761,7 @@ $(function () {
     switch(vm.progress) {
       case 'prepare':
         vm.progress = 'requirement';
-        vm.nextStepText = '准备好了';
+        vm.nextStepText = '好的';
       break;
       case 'help':
         vm.progress = 'prepare';
@@ -835,7 +835,7 @@ $(function () {
     vm.stepLen = 0;
     vm.taskLen = 0;
     vm.project = {};
-    vm.nextStepText = '准备好了';
+    vm.nextStepText = '好的';
   }
 
   function refreshQrImage (event) {
@@ -876,6 +876,7 @@ $(function () {
       return '电脑'
     }
     var map = {
+      'iospad': 'iPad',
       'iosphone': 'iPhone',
       'androidphone': 'Android Phone',
       'androidpad': 'Android Pad',

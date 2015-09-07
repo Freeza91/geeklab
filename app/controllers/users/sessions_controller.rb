@@ -54,9 +54,11 @@ private
       rescue
         '/'
       end
-    if refer_url.include? "testers"
-      testers_url
-    elsif refer_url.include? "pms"
+    #if refer_url.include? "testers"
+      #testers_url
+    if refer_url.include? "pms"
+      pms_url
+    elsif refer_url.include? "projects"
       pms_url
     elsif refer_url.include? 'stores'
       stores_root_path

@@ -1,4 +1,4 @@
-//  custome bootstrap
+// custome bootstrap
 // dialog垂直居中
 // 利用inline元素的vertical-align:middle属性
 .modal
@@ -12,39 +12,15 @@
   vertical-align: middle
   display: inline-block
 
-// button
-$btn_bg_gray: #a0a0a0
-$btn_bg_blue: #16a0c6
-.btn-gray
-  background-color: $btn_bg_gray
-.btn-blue
-  background-color: $btn_bg_blue
-
 // container
 @media (max-width: 992px)
   .container
     padding: 0
 
-// Form
-.form-control
-  border-radius: 0
-label
-  color: #717071
-  font-size: 12px
-
-.has-error
-  .form-control
-    box-shadow: 0 0 10px rgba(169, 68, 66, .8)
-// 用户信息表单
-
-input[type='checkbox']
-  margin-top: 2px
-
 // dropdown menu
 .dropdown:hover
   .dropdown-menu
     display: block
-
 
 // modal
 .modal
@@ -52,25 +28,6 @@ input[type='checkbox']
     border-radius: 0
     .modal-header
       border-bottom: none
-
-// checkbox-inline
-.checkbox-default
-  [type="checkbox"]
-    display: none
-  [type="checkbox"] + span
-    display: inline-block
-    width: 100px
-    height: 30px
-    padding-left: 0
-    background-color: #dadada
-    line-height: 30px
-    font-size: 14px
-    color: #313131
-    text-align: center
-    transition: all .3s ease
-  [type="checkbox"]:checked + span
-    background-color: #16a0c6
-    color: #fff
 
 @media(max-width: 1242px)
   .col-sm-hidden

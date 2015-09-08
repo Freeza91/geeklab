@@ -1,14 +1,12 @@
 main role="main" style="padding-top: 80px"
-  nav.assignments-nav
-    .container
-      ul.nav.nav-pills
-        li.current
-          a href=assignments_path
-            | 新任务
-        li
-          a href=join_assignments_path
-            | 我参与的
-  section.assignments-list.content-box data-tester-id="#{@current_user.to_tester.to_params}"
+  section.assignments-list data-tester-id="#{@current_user.to_tester.to_params}"
+    ul.nav.nav-tabs role="tablist"
+      li.active
+        a href="#{assignments_path}"
+          | 新任务
+      li
+        a href="#{join_assignments_path}"
+          | 我参与的
     .container
       .assignments-wrp.clearfix
         - if @assignments

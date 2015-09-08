@@ -12,6 +12,9 @@
       color: $dark-blue
       text-align: center
       letter-spacing: .1rem
+  .nav-tabs > li
+    width: 25%
+
 #kk-download
   position: absolute
   top: 14%
@@ -26,29 +29,6 @@
 #kk-download:hover
   span
     +transform(translateY(-27px))
-.nav-tabs
-  border-bottom: none
-  > li
-    width: 25%
-    > a
-      margin-right: 0
-      background-color: #1c3e4c
-      border: none
-      border-radius: 0
-      -webkit-border-radius: 0
-      color: #5cbcc9
-      text-align: center
-      font-size: 1.2rem
-    > a:hover
-      background-color: #5cbcc9
-      color: #fbf9f3
-  > li.active
-    > a,
-    > a:hover,
-    > a:focus
-      color: #fbf9f3
-      background-color: #5cbcc9
-      border: none
 .tab-content
   .tab-pane
     background-color: #5cbcc9

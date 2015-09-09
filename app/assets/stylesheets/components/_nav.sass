@@ -20,3 +20,29 @@
       color: #fbf9f3
       background-color: #5cbcc9
       border: none
+
+.nav-subtabs
+  ul
+    display: inline-block
+    list-style: none
+    padding: 0
+    border: 2px solid #fff
+    border-radius: 20px
+    overflow: hidden
+    > li
+      float: left
+      > a
+        display: inline-block
+        background-color: $blue
+        color: #fff
+        padding: 5px 20px
+        font-size: 14px
+      > a.active
+        background-color: #fff
+        color: $blue
+      > a:hover
+        background-color: $dark-blue
+        color: #fff
+        text-decoration: none
+      > a:focus
+        text-decoration: none

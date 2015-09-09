@@ -1,36 +1,10 @@
 @import ../helpers/variables
 .assignments
-  background-color: #eee
+  background-color: $blue
   .nav-tabs > li
     width: 50%
-
-// 任务列表导航
-.assignments-nav
-  background-color: #f9f9f9
-  .nav-pills
-    > li
-      width: 50%
-      text-align: center
-      > a
-        font-size: 16px
-        color: #313131
-      > a:hover
-        color: #727071
-        background-color: #f9f9f9
-    > li + li
-      margin-left: 0
-    > li.current::after
-      position: absolute
-      bottom: 0
-      left: 50%
-      margin-left: -8px
-      content: ''
-      display: block
-      width: 0
-      height: 0
-      border-right: 8px solid transparent
-      border-bottom: 8px solid #eee
-      border-left: 8px solid transparent
+  .nav-subtabs
+    text-align: center
 
 .assignments-list
   .container
@@ -300,35 +274,6 @@
     display: none
 #assignments-done
   display: none
-
-// 我参与的任务页面的tab切换
-.assignments-subnav
-  text-align: center
-  ul
-    display: inline-block
-    list-style: none
-    padding: 0
-    border: 1px solid #a0a0a0
-    border-radius: 3px
-    > li
-      float: left
-      > a
-        display: inline-block
-        background-color: #eee
-        color: #313131
-        padding: 5px 20px
-        box-shadow: 0 0 2px #ccc
-        font-size: 14px
-      > a:hover
-        background-color: rgba(255, 255, 255, .5)
-        text-decoration: none
-      > a.active
-        background-color: #fff
-      > a:focus
-        text-decoration: none
-    > li:first-child > a
-      border-right: 1px solid #a0a0a0
-
 
 // 过期任务提示
 .assignments-reminder

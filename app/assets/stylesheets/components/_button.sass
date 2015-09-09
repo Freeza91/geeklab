@@ -24,6 +24,7 @@ a.btn:focus
 .btn
   height: 34px
   transition: all .5s ease
+
 .btn-flat-base,
   background-color: $blue
   color: #fff
@@ -32,6 +33,16 @@ a.btn:focus
 .btn-flat-base:active,
 .btn-flat-base:focus
   color: #fff
+
+.btn-flat.yellow
+  background-color: $light-yellow
+  color: $dark-blue
+.btn-flat.yellow:hover
+  background-color: #fff
+.btn-flat.yellow:active,
+.btn-flat.yellow:focus
+  color: $dark-blue
+
 .btn-line-base
   border: 1px solid $blue
   background-color: transparent
@@ -64,5 +75,7 @@ a.btn:focus
   width: 150px
 .btn-g
   width: 300px
+.btn-full
+  width: 100%
 .btn-rounded
   border-radius: 30px

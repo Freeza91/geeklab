@@ -165,7 +165,7 @@ $(function () {
   });
 
   // 删除视频 click event
-  $('.assignments-wrp').on('click', '.video-del', function () {
+  $('.assignments-wrp').on('click', '.js-video-del', function () {
 
     var $this = $(this);
     $card = $this.parents('.card');
@@ -185,7 +185,7 @@ $(function () {
   });
 
   // 播放视频 click event
-  $('.assignments-wrp').on('click', '.video-play', function () {
+  $('.assignments-wrp').on('click', '.js-video-play', function () {
     var $this = $(this);
 
     $card = $this.parents('.card');
@@ -717,7 +717,7 @@ $(function () {
     initOperators();
 
     // 二级导航
-    $('.assignments-subnav a').on('click', function () {
+    $('.nav-subtabs a').on('click', function () {
       var $this = $(this);
       var target = $this.data('target'),
           hash = $this.data('hash');

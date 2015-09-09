@@ -48,11 +48,14 @@ main role="main" style="padding-top: 80px"
           button.btn.btn-blue
             | 加载更多
 
+  <!-- 上传视频文件选择-->
+  input type="file" id="video" accept="video/*" style="display:none"
+  <!-- 上传视频文件选择-->
+
 - if @num && @num != 0
   <!-- 过期任务提示开始 -->
   = render partial: 'assignments/shared/miss_assignments_reminder'
   <!-- 过期任务提示结束 -->
 
 = render partial: 'shared/confirm_modal'
-= render partial: 'assignments/shared/upload_modal'
 = render partial: 'assignments/shared/assignment_detail'

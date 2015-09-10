@@ -1,6 +1,5 @@
-Rails.application.routes.draw do
+ Rails.application.routes.draw do
 
-  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   #root 'pages#home'
   root 'testers#index'
 
@@ -97,6 +96,13 @@ Rails.application.routes.draw do
     end
     resources :orders
     resources :pictures, only: :create
+  end
+
+  # admin
+  mount RailsAdmin::Engine => '/manage', as: 'rails_admin'
+  namespace :dashboard, path: '/admin' do
+    root 'base#index'
+    resources :assignments
   end
 
   require 'sidekiq/web'

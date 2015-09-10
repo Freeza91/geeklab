@@ -14,6 +14,8 @@ gem 'therubyracer'
 gem "nested_form"
 gem 'simditor-rails'
 
+gem 'cancancan'
+
 gem 'settingslogic'
 gem 'slim-rails'
 gem 'bcrypt'

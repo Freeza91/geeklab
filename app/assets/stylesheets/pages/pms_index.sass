@@ -1,0 +1,103 @@
+@import ../helpers/variables
+.banner_pm
+  height: 640px
+
+.banner_pm
+  background: #fff image-url('banner/banner_pm.jpg') center no-repeat
+
+.section-title
+  font-size: 30px
+  color: #727071
+  padding-bottom: 30px
+  text-align: center
+.step
+  text-align: center
+.step-icon
+  margin-bottom: 10px
+.step-title
+  font-size: 24px
+.step-content
+  font-size: 18px
+
+.banner
+  .btn
+    width: 230px
+    height: 60px
+    font-size: 24px
+    line-height: 46px
+    color: #fff
+
+  .wtf
+    font-size: 24px
+    margin-bottom: 100px
+.desc
+  float: right
+  .item
+    width: 400px
+    margin-bottom: 50px
+    padding: 20px 30px 10px
+    background-color: rgba(255, 255, 255, .4)
+    text-align: center
+  p
+    font-size: 18px
+    text-align: left
+  .title
+    font-size: 24px
+    text-align: center
+.topic
+  p
+    font-size: 18px
+    i
+      margin-right: 10px
+  .title
+    font-size: 30px
+    span
+      margin-right: 10px
+  .btn
+    margin-top: 20px
+    margin-bottom: 12px
+
+// 适配移动端
+@media (max-width: 992px)
+  .step
+    margin-bottom: 30px
+  .fa
+    line-height: 104px
+
+  .desc
+    float: none
+    .item
+      margin-bottom: 0
+
+  .banner
+    .btn
+      width: 300px
+      height: 80px
+      line-height: 68px
+
+    .wtf
+      margin-left: 30px
+      margin-top: 20px
+
+  .topic
+    float: none
+    position: absolute
+    left: 50%
+    bottom: -40px
+    text-align: center
+
+  .banner_pm
+    background-image: image-url('banner/banner_pm_mobile.jpg')
+    position: relative
+    .topic
+      margin-left: -150px
+
+  .banner_index
+    background-image: image-url('banner/banner_index_mobile.png')
+    height: 1180px
+
+    .role
+      margin-top: 260px
+@media (min-width: 992px)
+  .step-icon
+    margin-bottom: 15px

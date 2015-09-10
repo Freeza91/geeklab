@@ -1,0 +1,21 @@
+doctype html
+html lang=session[:locale]
+  head
+    title 极客实验室
+    meta name="viewport" content="width=device-width, initial-scale=1"
+    meta charset="utf-8"
+    meta name="application-name" content="极客积分"
+    meta name="description" content="极客实验室积分商城"
+    meta name="keywords" content="极客实验室, 极客，积分"
+    meta name="generator" content="vuejs, rails"
+    meta http-equiv="Content-Type" content="text/html; charset=utf-8"
+    meta http-equiv="Content-Style-Type" content="text/css"
+    meta http-equiv="Content-Script-Type" content="text/javascript"
+    link rel="shortcut icon" href="#{image_path('icon/favicon.png')}"
+    = csrf_meta_tags
+
+  body class=(controller_name + ' ' + controller_name + '_' + action_name + ' ' + 'store')
+    .wrapper
+      = yield
+
+    hehell shshds

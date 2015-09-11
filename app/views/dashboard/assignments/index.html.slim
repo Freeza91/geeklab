@@ -1,3 +1,36 @@
 div
-  - @assignments.each do |assignment|
-    a.ui.red.tag.label hell
+  table.ui.celled.table
+    thead
+      tr
+        th ID
+        th 任务名
+        th 体验师邮箱
+        th 产品经理邮箱
+        th 任务状态
+        th 过期时间
+        th 操作
+    tbody
+      - @assignments.each do |assignment|
+        - if assignment.project
+          tr
+            td
+              | #{assignment.id}
+            td
+              a(href=dashboard_project_path(assignment.project) target='_blank')
+                = assignment.project.name
+            td
+              | #{assignment.tester.try(:email)}
+            td
+              | #{assignment.project.pm.try(:email)}
+            td
+              = get_status_info(assignment.status)
+            td
+              | #{assignment.project.expired_at.strftime("%F %T")}
+            td
+              = link_to("审核", check_dashboard_video_path(assignment))
+              span |
+              = link_to("删除", dashboard_video_path(assignment), method: 'delete', data: {confirm: "你确定要删除？#{assignment.project.name}"})
+
+div.ui.container
+  p
+    = paginate @assignments

@@ -1,24 +1,17 @@
-form.modal-form.valid#form-login
-  p.hint
-    | 用户名或密码错误, 请重试!
-  .form-group.has-feedback
-    label.sr-only for='email' 邮箱
-    input.form-control type='email' name='email' placeholder='邮箱' autocomplete='off' 
-    /*span.glyphicon.glyphicon-ok.form-control-feedback.sr-only aria-hidden="true"*/
-    /*span.glyphicon.glyphicon-remove.form-control-feedback.sr-only aria-hidden="true"*/
-    span.form-control-feedback.text for='email' aria-hidden="true"
-  .form-group.has-feedback
-    label.sr-only for='password' 密码
-    input.form-control type='password' name='encrypted_password' placeholder='密码' 
-    /*span.glyphicon.glyphicon-ok.form-control-feedback.sr-only aria-hidden="true"*/
-    /*span.glyphicon.glyphicon-remove.form-control-feedback.sr-only aria-hidden="true"*/
-    span.form-control-feedback.text for='password' aria-hidden="true"
-  .checkbox
-    label
-      input type='checkbox' name='remember_me' checked='checked'
-        | 30天内免登陆
-    a.place-right.pwd-forget href='/users/passwords/reset' target='_blank'
-      | 忘记密码？
-  .form-button
-    button.btn.btn-blue type='submit' name='login' data-form='#form-login'
-      | 登录
+form.form
+  .form-field.with-hint-text v-class="error.email ? 'error': ''"
+    input.form-input type="text" name="email" placeholder="邮箱" v-model="email" v-on="focus: error.email = false, blur: checkEmailFormat(this)"
+    span.hint-text v-show="error.email"
+      | {{hint.email}}
+  .form-field.with-hint-text v-class="error.all ? 'error': ''"
+    input.form-input type="password" name="password" placeholder="密码" v-model="password"
+  .form-field
+    label.checkbox-inline
+      input type="checkbox" v-model="rememberMe"
+      | 30天免登陆
+    a.pull-right href="/users/passwords/reset" targe="_blank"
+      | 忘记密码?
+  .form-field.submit
+    p.form-hint.error v-show="error.all"
+      | 邮箱或密码输入错误, 请重新输入
+    input.btn.btn-base.btn-m.btn-rounded type="submit" value="登录" v-on="click: submit(this, $event)"

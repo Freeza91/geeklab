@@ -1,28 +1,24 @@
-form.modal-form.valid#form-regist
-  p.hint
-  .form-group.has-feedback
-    label.sr-only for='email'
-    input.form-control type='email' name='email' placeholder='邮箱' 
-    span.glyphicon.glyphicon-ok.form-control-feedback.sr-only aria-hidden="true"
-    /*span.glyphicon.glyphicon-remove.form-control-feedback.sr-only aria-hidden="true"*/
-    span.form-control-feedback.text
-  .form-group
-    label.sr-only 验证码
-    p.hint.success
-      span 验证码已发送
-      a.link.hidden href='javascript:void(0)' target='_blank'
-        i.fa.fa-hand-o-right
-        | 进入邮箱
-    .input-group
-      input.form-control type='text' name='code' placeholder='验证码'
-      .input-group-addon.get-code 获取验证码
-      span.form-control-feedback.text style='left: 30px'
-  .form-group.has-feedback
-    input.form-control#password type='password' name='encrypted_password' placeholder='密码' 
-    span.glyphicon.glyphicon-ok.form-control-feedback.sr-only aria-hidden="true"
-    /*span.glyphicon.glyphicon-remove.form-control-feedback.sr-only aria-hidden="true"*/
-    span.form-control-feedback.text
-    label for='password' 6-16个字符，可包括数字、字母、下划线
-  .form-button
-    button.btn.btn-blue type='submit' name='regist' data-form='#form-regist'
-      | 注册
+form.form
+  .form-field.with-hint-text v-class="error.email ? 'error': ''"
+    input.form-input type="text" name="email" placeholder="邮箱" v-model="email" v-on="focus: error.email = false, blur: checkEmail(this)"
+    span.hint-text v-show="error.email"
+      | {{hint.email}}
+  .form-field.clearfix v-class="error.code ? 'error': ''"
+    input.form-input.with-addon type="text" name="code" placeholder="验证码" v-model="code"
+    p.form-input-addon v-on="click: sendCode(this)" v-class="canSendCode ? '': 'disable'"
+      span.color-yellow v-text="countDown" v-show="countDown !== 60"
+      span v-show="countDown !== 60"
+        | 秒后重新发送
+      span v-show="countDown === 60"
+        | 发送验证码
+    a.color-yellow href="{{mailbox}}" target="_blank" v-show="!!mailbox"
+      | 进入邮箱
+  .form-field.with-hint-text v-class="error.password ? 'error': ''"
+    input.form-input type="password" name="password" placeholder="密码" v-model="password" v-on="focus: error.password = false, blur: checkPasswordFormat(this)"
+    span.hint-text v-show="error.password"
+      | {{hint.password}}
+    p.form-hint
+      | 6-16个字符，可包括数字、字母、下划线
+  .form-field.submit
+    p.form-hint.error v-show="error.regist" v-text="hint.regist"
+    input.btn.btn-base.btn-m.btn-rounded type="submit" value="注册" v-on="click: submit(this, $event)"

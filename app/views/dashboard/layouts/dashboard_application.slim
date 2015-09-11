@@ -21,4 +21,5 @@ html lang=session[:locale]
 
   body class=(controller_name + ' ' + controller_name + '_' + action_name)
     .wrapper
+      = render partial: 'dashboard/shared/nav'
       = yield

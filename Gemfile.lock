@@ -254,6 +254,8 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (~> 1.1)
+    semantic-ui-sass (1.11.5.0)
+      sass (~> 3.2)
     sendgrid (1.2.0)
       json
     settingslogic (2.0.9)
@@ -354,6 +356,7 @@ DEPENDENCIES
   redis
   rest-client
   sass-rails (~> 5.0)
+  semantic-ui-sass
   sendgrid
   settingslogic
   sidekiq

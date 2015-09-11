@@ -102,7 +102,11 @@
   mount RailsAdmin::Engine => '/manage', as: 'rails_admin'
   namespace :dashboard, path: '/admin' do
     root 'base#index'
-    resources :assignments
+    resources :videos, controller: :assignments
+    resources :users
+    resources :projects
+    resources :goods
+    resources :orders
   end
 
   require 'sidekiq/web'

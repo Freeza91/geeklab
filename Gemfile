@@ -13,6 +13,7 @@ gem 'therubyracer'
 
 gem "nested_form"
 gem 'simditor-rails'
+gem 'semantic-ui-sass'
 
 gem 'cancancan'
 

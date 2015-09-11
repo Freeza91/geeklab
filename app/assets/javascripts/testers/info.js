@@ -337,9 +337,8 @@ $(function () {
 
   function showHint () {
       var $modal = $('#info-modal');
-      $modal.find('.title').text('想体验更合你口味的产品?先填下个人信息吧');
-      $modal.find('.title').html('<p>想体验更合你口味的产品?</p><p>先填下个人信息吧</p>');
-      $modal.find('.btn').text('好嘞');
+      $modal.find('.content').html('想体验更合你口味的产品?先填下个人信息吧');
+      $modal.find('.btn').text('好的');
       $modal.modal();
   }
   showHint();

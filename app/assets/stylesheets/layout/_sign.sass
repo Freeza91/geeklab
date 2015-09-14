@@ -1,3 +1,4 @@
+@import ../helpers/variables
 $color_blue: #16a0c6
 $color_gray: #717071
 .sign
@@ -79,16 +80,6 @@ $color_gray: #717071
 
 
 
-// info-modal
-#info-modal
-  .modal-body
-    padding-left: 20%
-    padding-right: 20%
-    margin-bottom: 30px
-    button
-      width: 100%
-      height: 38px
-#info-modal,
 #form-finish
   .title
     font-size: 20px
@@ -98,3 +89,66 @@ $color_gray: #717071
   .content
     margin-bottom: 40px
 
+// 登录框
+.sign-nav
+  position: relative
+  height: 20px
+  margin: 20px 0
+  > li
+    position: absolute
+    > a
+      color: $dark-blue
+    > a:hover
+      color: #000
+  > li:first-child
+    left: 25%
+    margin-left: -19px
+  > li:last-child
+    right: 25%
+    margin-right: -19px
+  > li.active > a
+    color: $blue
+  a:focus
+    text-decoration: none
+
+#sign
+  .modal-dialog
+    width: 462px
+  .modal-content
+    padding: 0 20px 20px
+    background-color: $dark-blue
+    border-radius: 10px
+  .modal-header
+    position: relative
+    padding: 0
+    margin-top: -50px
+  .modal-body
+    background-color: #fff
+  .tab-content
+    width: 85%
+    margin: 0 auto
+  .triangle.left
+    left: 25%
+    bottom: 0
+    margin-left: -21px
+  .triangle.right
+    left: 75%
+    bottom: 0
+    margin-left: -19px
+  .modal-close
+    position: absolute
+    top: 63px
+    right: -7px
+    color: $blue
+    font-size: 1.6rem
+    cursor: pointer
+
+.triangle
+  position: absolute
+  width: 30px
+  height: 30px
+  background-color: $blue
+  transform-origin: left bottom
+  transform: rotate(45deg)
+  z-index: 5
+  transition: all 1s ease

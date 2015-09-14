@@ -39,13 +39,13 @@ main role="main"
                     i.icon-inner.icon-score-old
                   span.number
                     = assignment.project.credit
-      .load-more
-        - if @assignments.try(:size) < 10
-          p
-            | 没有更多了
-        - else
-          button.btn.btn-base.yellow.btn-full
-            | 加载更多
+    .load-more
+      - if @assignments.try(:size) < 10
+        p
+          | 没有更多了
+      - else
+        button.btn.btn-base.yellow.btn-full
+          | 加载更多
 
   <!-- 上传视频文件选择-->
   input type="file" id="video" accept="video/*" style="display:none"

@@ -1,12 +1,10 @@
-.modal.fade.operate#confirm-modal data-backdrop='static'
-  .modal-dialog
-    .modal-content
-      .modal-body
-        h1.title
-        p.content
-        .tools
-          button.btn.btn-flat-base.btn-rounded.btn-s#confirm
-            | 确认
-          button.btn.btn-flat-base.btn-rounded.btn-s data-dismiss='modal'
-            | 取消
-
+.operate#confirm-modal data-backdrop='static'
+  .handle
+  .operate-content
+    h1.title
+    p.content
+    .tools
+      button.btn.btn-flat-base.btn-rounded.btn-s#confirm
+        | 确认
+      button.btn.btn-flat-base.btn-rounded.btn-s.js-operate-cancel
+        | 取消

@@ -279,10 +279,8 @@ $(function () {
     .done(function (data, status, xhr) {
       if(data.status === 0 && data.code === 1) {
         var $modal = $('#form-finish');
-        $modal.on('hide.bs.modal', function () {
-          location.href = '/testers';
-        });
-        $modal.modal();
+        $('body').append('<div class="main-mask"></div>')
+        $modal.addClass('show');
       }
     })
     .error(function (errors, status) {
@@ -339,8 +337,13 @@ $(function () {
       var $modal = $('#info-modal');
       $modal.find('.content').html('想体验更合你口味的产品?先填下个人信息吧');
       $modal.find('.btn').text('好的');
-      $modal.modal();
+      $('body').append('<div class="main-mask"></div>');
+      $modal.addClass('show');
   }
+  $('#info-modal .js-operate-cancel').on('click', function () {
+    $('#info-modal').removeClass('show');
+    $('body .main-mask').remove();
+  });
   showHint();
 
   function updateErrorPosition (newErrorPosition, errorPosition) {

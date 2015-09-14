@@ -167,14 +167,13 @@ main role="mian"
               button.btn.btn-blue.submit
                 | 提交
 
-.modal.fade.operate#form-finish data-backdrop='static'
-  .modal-dialog
-    .modal-content
-      .modal-body
-        p.content
-          | OK, 接下来就去体验产品吧
-        .tools
-          a.btn.btn-flat-base.btn-rounded.btn-s href="#{assignments_path}"
-            | 即刻出发
-          button.btn.btn-flat-base.btn-rounded.btn-rounded.btn-s data-dismiss='modal'
-            | 稍后再去
+.operate#form-finish data-backdrop='static'
+  .handle
+  .operate-content
+    p.content
+      | OK, 接下来就去体验产品吧
+    .tools
+      a.btn.btn-flat-base.btn-rounded.btn-s href="#{assignments_path}"
+        | 即刻出发
+      a.btn.btn-flat-base.btn-rounded.btn-s href="#{testers_path}"
+        | 稍后再去

@@ -292,15 +292,19 @@ $(function () {
   function showInfoModal (options) {
     var $modal = $('#confirm-modal');
     $modal.data('eventName', options.eventName);
-    //$modal.find('.modal-body .title').text(options.title);
-    $modal.find('.modal-body .content').text(options.content);
-    $modal.modal();
+    $modal.find('.content').text(options.content);
+    $('body').append('<div class="main-mask"></div>');
+    $modal.addClass('show');
   }
 
   // 点击modal确认按钮的处理函数
   $('#confirm-modal #confirm').on('click', function () {
     var eventName = $(this).parents('.modal').data('eventName');
     eventConfirm(eventName);
+  });
+  $('#confirm-modal .js-operate-cancel').on('click', function () {
+    $('#confirm-modal').removeClass('show');
+    $('body .main-mask').remove();
   });
   // 点击modal确认按钮时触发的事件
   function eventConfirm(eventName) {
@@ -415,7 +419,7 @@ $(function () {
       }
     })
     .error(function (errors, status) {
-
+      console.log(errors);
     });
   }
 

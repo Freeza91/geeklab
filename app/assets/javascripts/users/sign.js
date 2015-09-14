@@ -59,7 +59,7 @@ $(function () {
     });
 
     $('#sign [data-toggle="tab"]').on('click', function () {
-      if($(this).attr('href') === '#login') {
+      if($(this).attr('href') === '#signin') {
         $('#sign .triangle').removeClass('right').addClass('left');
       } else {
         $('#sign .triangle').removeClass('left').addClass('right');

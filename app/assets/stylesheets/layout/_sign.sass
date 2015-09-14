@@ -1,3 +1,4 @@
+@import ../helpers/variables
 $color_blue: #16a0c6
 $color_gray: #717071
 .sign
@@ -96,7 +97,7 @@ $color_gray: #717071
   > li
     position: absolute
     > a
-      color: #a0a0a0
+      color: $dark-blue
     > a:hover
       color: #000
   > li:first-child
@@ -106,11 +107,41 @@ $color_gray: #717071
     right: 25%
     margin-right: -19px
   > li.active > a
-    color: #ffcc00
+    color: $blue
+  a:focus
+    text-decoration: none
+
 #sign
+  .modal-dialog
+    width: 462px
+  .modal-content
+    padding: 0 20px 20px
+    background-color: $dark-blue
+    border-radius: 10px
+  .modal-header
+    position: relative
+    padding: 0
+    margin-top: -50px
   .modal-body
-    padding-left: 0
-    padding-right: 0
+    background-color: #fff
   .tab-content
-    width: 60%
+    width: 85%
     margin: 0 auto
+  .triangle.left
+    left: 25%
+    bottom: 0
+    margin-left: -21px
+  .triangle.right
+    left: 75%
+    bottom: 0
+    margin-left: -19px
+
+.triangle
+  position: absolute
+  width: 30px
+  height: 30px
+  background-color: $blue
+  transform-origin: left bottom
+  transform: rotate(45deg)
+  z-index: 5
+  transition: all 1s ease

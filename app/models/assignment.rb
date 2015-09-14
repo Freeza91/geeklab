@@ -63,11 +63,14 @@ class Assignment < ActiveRecord::Base
   end
 
   def video_notice_to_tester
-    if status == 'not_accept' || status == "success"
+    if (status == 'not_accept' && status_was != 'not_accept') ||
+       (status_was != 'success' && status == "success")
       hash_tester_id = self.to_params(tester_id)
       task_url = "#{Settings.domain}/assignments/join"
       name = self.project.name
-      email_to = self.tester.tester_infor.email_contract || email
+      tester_infor = self.tester.try(:tester_infor)
+      return unless tester_infor # user deleted by admin
+      email_to = tester_infor.email_contract || email
       UserMailer.video_check_failed(email_to, name, task_url + "#ing").deliver_later if status == "not_accept"
       UserMailer.video_check_success(email_to, name, task_url + "#done").deliver_later if status == "success"
     end
@@ -80,11 +83,15 @@ class Assignment < ActiveRecord::Base
   end
 
   def add_credit_to_user
-    if status == "success"
+    if status == "success" && status_was != "success"
       hash_tester_id = self.to_params(tester_id)
-      user = User.find_by(id: hash_tester_id)
-      credits = user.try(:credits) + self.project.credit.to_i
-      user && user.update_column(:credits, credits)
+      tester = Tester.find_by(id: hash_tester_id)
+      if tester
+        credits = tester.try(:credits) + self.project.credit.to_i
+        tester.update_column(:credits, credits)
+      else
+        "已经添加过积分了！"
+      end
     end
   end
 end

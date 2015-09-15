@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150914032911) do
+ActiveRecord::Schema.define(version: 20150915054208) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,15 @@ ActiveRecord::Schema.define(version: 20150914032911) do
     t.boolean "target_user"
     t.integer "assignment_id"
     t.boolean "qualified"
+  end
+
+  create_table "feedbacks", force: :cascade do |t|
+    t.string   "timeline"
+    t.string   "desc"
+    t.string   "suggestion"
+    t.integer  "assignment_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "goods", force: :cascade do |t|

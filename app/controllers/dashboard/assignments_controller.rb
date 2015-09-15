@@ -11,7 +11,12 @@ class Dashboard::AssignmentsController < Dashboard::BaseController
   end
 
   def update
-    p "this is will be update"
+    @assignment = Assignment.find params[:id]
+    if @assignment && @assignment.update_attributes(assignment_params)
+      redirect_to dashboard_videos_path
+    else
+      render :check
+    end
   end
 
   def destroy
@@ -19,6 +24,14 @@ class Dashboard::AssignmentsController < Dashboard::BaseController
     @assignment && @assignment.destroy
 
     redirect_to dashboard_videos_path
+  end
+
+private
+
+  def assignment_params
+    params.require(:assignments).pemit(:public, :reasons, :rank, :status,
+                                       feedbacks_attributes:
+                                         [:timeline, :desc, :suggestion])
   end
 
 end

@@ -1,3 +1,4 @@
+@import ../helpers/variables
 // 改版后的头部
 #header
   height: 50px
@@ -27,6 +28,12 @@
       > a
         padding-top: 7px
         padding-bottom: 7px
+    .dropdown-menu
+      > li > a
+        background-color: $blue
+        color: $light-yellow
+      > li > a:hover
+        background-color: $dark-blue
 
 #header.zoom-in
   height: 80px
@@ -93,15 +100,9 @@
       font-size: 14px
       > .fa
         margin-right: 8px
-      .icon-inner.hover
-        display: none
     > li > a:hover
       background-color: #16a0c6
       color: #fff
-      .icon-inner
-        display: none
-      .icon-inner.hover
-        display: inherit
   .score
     > .fa
       margin: 0 8px
@@ -114,11 +115,6 @@
   .tester-mark.active
     border-color: #16a0c6
     color: #16a0c6
-
-.nav.login:hover
-  .caret
-    transition: all .3s ease
-    transform: rotate(180deg)
 
 @media(max-width: 1080px)
   #header.no-logged

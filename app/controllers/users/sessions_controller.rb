@@ -16,8 +16,15 @@ class Users::SessionsController < ApplicationController
     email = params[:email].to_s.downcase
     @user = User.find_by(email: email)
     if @user && @user.valid_password?(params[:encrypted_password])
+
+      if @user.limit_user?
+        json[:code], json[:msg] = 2, "账号异常，暂时无法登陆"
+        return render json: json
+      end
+
       session[:id] = @user.to_params
       @user.remember_me(cookies) if params[:remember_me] == 'true'
+      @user.update_column(:last_login, Time.now)
       json[:msg] = '登陆成功'
       json[:url] =
         if @user.role == 'tester'

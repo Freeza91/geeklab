@@ -1,24 +1,22 @@
-main role="main" style="padding-top: 80px"
-  nav.assignments-nav
-    .container
-      ul.nav.nav-pills
+main role="main"
+  section.assignments-list data-tester-id="#{@current_user.to_tester.to_params}"
+    ul.nav.nav-tabs role="tablist"
+      li
+        a href="#{assignments_path}"
+          | 新任务
+      li.active
+        a href="#{join_assignments_path}"
+          | 我参与的
+    nav.nav-subtabs
+      ul
         li
-          a href=assignments_path
-            | 新任务
-        li.current
-          a href=join_assignments_path
-            | 我参与的
-  section.assignments-list.content-box data-tester-id="#{@current_user.to_tester.to_params}"
-    .container
-      nav.assignments-subnav
-        ul
-          li
-            a.active href="javascript: void(0)" data-target="#assignments-ing" data-hash="ing"
-              | 进行中
-          li
-            a href="javascript: void(0)" data-target="#assignments-done" data-hash="done"
-              | 已完成
-      .assignments-wrp.clearfix.active#assignments-ing
+          a.active href="javascript: void(0)" data-target="#assignments-ing" data-hash="ing"
+            | 进行中
+        li
+          a href="javascript: void(0)" data-target="#assignments-done" data-hash="done"
+            | 已完成
+    .assignments-wrp.active#assignments-ing
+      .clearfix
         - if @assignments_ing
           -  @assignments_ing.each do |assignment|
             .card data-assignment-id="#{assignment.to_params}" data-status="#{assignment.status}"
@@ -46,7 +44,7 @@ main role="main" style="padding-top: 80px"
                     p
                       = get_status_info(assignment.status)
                       - if assignment.status == "not_accept"
-                        i.fa.fa-exclamation-circle
+                        i.fa.fa-question-circle
                     - if assignment.status == "not_accept" && assignment.reasons.size > 0
                       ol.comment
                         - assignment.reasons.each do |reason|
@@ -61,10 +59,18 @@ main role="main" style="padding-top: 80px"
                           | 00:00:00
                   .score
                     span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"
-                      i.icon-inner.icon-score
+                      i.icon-inner.icon-score-old
                     span.number
                       = assignment.project.credit
-      .assignments-wrp.clearfix#assignments-done
+      .load-more
+        - if @assignments_ing.try(:size) < 10
+          p
+            | 没有更多了
+        - else
+          button.btn.btn-base.yellow.btn-full
+            | 加载更多
+    .assignments-wrp#assignments-done
+      .clearfix
         - if @assignments_done
           - @assignments_done.each do |assignment|
             .card data-assignment-id="#{assignment.to_params}" data-status="#{assignment.status}"
@@ -91,7 +97,7 @@ main role="main" style="padding-top: 80px"
                         | 任务成功
                       - else
                         | 任务已过期
-                        i.fa.fa-exclamation-circle
+                        i.fa.fa-question-circle
                     - if assignment.status != "success" && assignment.reasons.size > 0
                       ol.comment
                         - assignment.reasons.each do |reason|
@@ -106,7 +112,7 @@ main role="main" style="padding-top: 80px"
                           | 00:00:00
                   .score
                     span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"
-                      i.icon-inner.icon-score
+                      i.icon-inner.icon-score-old
                     span.number
                       = assignment.project.credit
       .load-more
@@ -114,10 +120,13 @@ main role="main" style="padding-top: 80px"
           p
             | 没有更多了
         - else
-          button.btn.btn-blue
+          button.btn.btn-base.yellow.btn-full
             | 加载更多
 
+  <!-- 上传视频文件选择-->
+  input type="file" id="video" accept="video/*" style="display:none"
+  <!-- 上传视频文件选择-->
+
 = render partial: 'shared/confirm_modal'
-= render partial: 'assignments/shared/upload_modal'
 = render partial: 'assignments/shared/assignment_detail'
 = render partial: 'assignments/shared/video_player'

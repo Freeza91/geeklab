@@ -1,55 +1,25 @@
 @import ../helpers/variables
 .assignments
-  background-color: #eee
+  background-color: $blue
+  .nav-tabs > li
+    width: 50%
+  .nav-subtabs
+    text-align: center
+    padding-top: 15px
+    padding-bottom: 15px
 
-// 任务列表导航
-.assignments-nav
-  background-color: #f9f9f9
-  .nav-pills
-    > li
-      width: 50%
-      text-align: center
-      > a
-        font-size: 16px
-        color: #313131
-      > a:hover
-        color: #727071
-        background-color: #f9f9f9
-    > li + li
-      margin-left: 0
-    > li.current::after
-      position: absolute
-      bottom: 0
-      left: 50%
-      margin-left: -8px
-      content: ''
-      display: block
-      width: 0
-      height: 0
-      border-right: 8px solid transparent
-      border-bottom: 8px solid #eee
-      border-left: 8px solid transparent
-
-.assignments-list
-  .container
-    padding-left: 100px
-    padding-right: 100px
+.assignments-wrp
+  padding-left: 60px
+  padding-right: 60px
 
 // 加载更多
 .load-more
   cursor: pointer
-  padding: 0 14px
+  padding-top: 20px
+  padding-bottom: 20px
   p
     text-align: center
-  .btn
-    background-color: #fff
-    width: 100%
-    height: 38px
-    line-height: 26px
-    color: #313131
-    box-shadow: 0 0 5px #ccc
-  .btn:hover
-    color: #313131
+    color: $dark-blue
 
 // assignment detail modal
 .task-guide
@@ -92,8 +62,8 @@
   right: 1rem
 .task-pagination
   position: absolute
-  top: 3.2rem
-  right: 3rem
+  top: 3.4rem
+  right: 2.2rem
   cursor: pointer
   .curr-page
     font-size: 1.4rem
@@ -107,10 +77,12 @@
 .task-point-hint
   position: relative
   top: 1.3rem
-  display: inline-block
-  background-color: $light-yellow
-  font-size: 1.2rem
+  left: 5rem
+  width: 200px
+  font-size: .8rem
   color: $blue
+  text-align: left
+
 #assignment-detail
   .modal-content
     border-radius: 10px
@@ -151,82 +123,11 @@
     .img-mask
       display: block
 
-// confirm modal
-#confirm-modal
-  .modal-dialog
-    width: 520px
-  .modal-body
-    margin-top: 20px
-    .content
-      font-size: 16px
-      color: #313131
-      margin-bottom: 60px
-
-// modal中的操作按钮
-.modal
-  .modal-body
-    .tools
-      margin-bottom: 30px
-      text-align: center
-    .btn
-      min-width: 90px
-    .btn + .btn
-      margin-left: 90px
-
-// 上传视频表单
-#upload-form
-  display: block
-  visibility: hidden
-  width: 0
-  height: 0
-
-
-// 上传进度圆环
-.progressCircle
-  position: relative
-  width: 70px
-  height: 70px
-  background-color: #17a0c6
-  border-radius: 50%
-  .mask
-    position: absolute
-    top: 6px
-    left: 6px
-    width: 58px
-    height: 58px
-    border-radius: 50%
-    background-color: #f9f9f9
-    text-align: center
-    line-height: 58px
-  .left
-    clip: rect(0 35px auto 0)
-    .inner
-      clip: rect(0 35px auto 0)
-  .right
-    clip: rect(0 auto auto 35px)
-    .inner
-      clip: rect(0 auto auto 35px)
-  .left,
-  .right
-    position: absolute
-    top: 0
-    left: 0
-    width: 70px
-    height: 70px
-    .inner
-      position: absolute
-      top: 0
-      left: 0
-      width: 70px
-      height: 70px
-      border-radius: 50%
-      background-color: #fff
-
 // 任务操作
 .operator
   position: absolute
   width: 100%
-  height: 200px
+  height: 230px
   top: 0
   .button-wrp
     text-align: center
@@ -298,35 +199,6 @@
     display: none
 #assignments-done
   display: none
-
-// 我参与的任务页面的tab切换
-.assignments-subnav
-  text-align: center
-  ul
-    display: inline-block
-    list-style: none
-    padding: 0
-    border: 1px solid #a0a0a0
-    border-radius: 3px
-    > li
-      float: left
-      > a
-        display: inline-block
-        background-color: #eee
-        color: #313131
-        padding: 5px 20px
-        box-shadow: 0 0 2px #ccc
-        font-size: 14px
-      > a:hover
-        background-color: rgba(255, 255, 255, .5)
-        text-decoration: none
-      > a.active
-        background-color: #fff
-      > a:focus
-        text-decoration: none
-    > li:first-child > a
-      border-right: 1px solid #a0a0a0
-
 
 // 过期任务提示
 .assignments-reminder

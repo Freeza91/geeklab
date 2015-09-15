@@ -1,0 +1,20 @@
+.modal.fade.sign-modal#sign role='dialog' data-backdrop='static'
+  .modal-dialog
+    .modal-content
+      .modal-header
+        .fa.fa-close.modal-close data-dismiss='modal' aria-label='Close'
+        img src="#{image_path('testers/sign_bg.png')}"
+        .triangle.left
+      .modal-body
+        ul.list-unstyled.sign-nav role="tablist"
+          li.active role="presentation"
+            a href="#signin" aria-controls="signin" role="tab" data-toggle="tab"
+              | 登录
+          li
+            a href="#regist" aria-controls="regist" role="tab" data-toggle="tab"
+              | 注册
+        .tab-content
+          .tab-pane.active#signin role="tabpanel"
+            = render partial: 'users/shared/login_form'
+          .tab-pane#regist role="tabpanel"
+            = render partial: 'users/shared/signup_form'

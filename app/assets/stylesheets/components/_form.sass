@@ -1,0 +1,189 @@
+@import ../helpers/variables
+
+.form-control
+  border-radius: 0
+label
+  color: #717071
+  font-size: 12px
+
+.has-error
+  .form-control
+    box-shadow: 0 0 10px rgba(169, 68, 66, .8)
+input[type='checkbox']
+  margin-top: 2px
+
+// checkbox-inline
+.checkbox-default
+  [type="checkbox"]
+    display: none
+  [type="checkbox"] + span
+    display: inline-block
+    width: 100px
+    height: 30px
+    padding-left: 0
+    background-color: #dadada
+    line-height: 30px
+    font-size: 14px
+    color: #313131
+    text-align: center
+    transition: all .3s ease
+  [type="checkbox"]:checked + span
+    background-color: #16a0c6
+    color: #fff
+
+.form
+  margin-bottom: 50px
+  .form-field
+    margin-bottom: 15px
+    //position: relative
+    text-align: left
+  .form-field.submit
+    margin-top: 40px
+    text-align: center
+  .form-input
+    width: 100%
+    height: 38px
+    padding: 5px 16px
+    background-color: #fff
+    border: 2px solid $blue
+    border-radius: 38px
+    color: $dark-blue
+    font-size: 14px
+    text-align: center
+  .form-input:focus
+    outline: none
+    background-color: $light-yellow
+  .form-input.with-addon
+    float: left
+    width: 50%
+    border-top-right-radius: 0
+    border-bottom-right-radius: 0
+  .form-input-addon
+    float: left
+    //display: inline-block
+    width: 50%
+    height: 38px
+    background-color: $blue
+    border-top-right-radius: 38px
+    border-bottom-right-radius: 38px
+    cursor: pointer
+    line-height: 38px
+    color: #fff
+    text-align: center
+  .form-input-addon.disable
+    color: $blue
+    background-color: $dark-blue
+  .form-field.warn
+    .form-input
+      border: 2px solid #ffcc00
+  .form-field.error
+    .form-input
+      border: 2px solid #e40909
+  .form-hint
+    color: #a0a0a0
+    margin-bottom: 7px
+  .form-hint.error
+    color: #e40909
+  .with-hint-text
+    position: relative
+  .hint-text
+    position: absolute
+    right: 8px
+    top: 8px
+    background-color: #f00
+    color: #fff
+    padding: 0 2px
+    border-radius: 6px
+
+// placeholder样式
+input::-ms-input-placeholder
+  text-align: center
+  color: $blue
+input::-moz-placeholder
+  text-align: center
+  color: $blue
+input::-webkit-input-placeholder
+  text-align: center
+  color:  $blue
+
+
+.valid
+  .hint
+    text-align: center
+    color: #a94442
+    display: none
+  .hint.success
+    color: #3c763d
+
+  .link
+    margin-left: 7px
+.form-control-feedback.text
+  width: auto
+  right: 5px
+
+// 填写信息的表单
+.info-form
+  box-shadow: 0 0 7px #ddd
+  .form-group,
+  .checkbox
+    margin: 0 0 10px
+    padding: 0
+    label
+      min-height: initial
+  select
+    margin-right: 5px
+    box-shadow: 0 0 0 #fff
+    font-size: 12px
+    + span
+      margin-right: 20px
+      font-size: 12px
+  select.margin-right
+    margin-right: 20px
+  [type='text'],
+  [type='email']
+    padding-left: 5px
+    width: 100%
+  [type='checkbox']
+    margin-top: 2px
+  [type='radio']
+    margin-top: 2px
+  .checkbox-inline
+    margin-right: 20px
+    + .checkbox-inline
+      margin-left: 0
+  fieldset
+    background-color: #eee
+    border-bottom: 1px solid #dadada
+  .row
+    margin: 0
+  .col-md-2
+    ::after
+      content: ''
+      display: inline-block
+      height: 100%
+  .title
+    margin-bottom: 0
+    border-bottom: 0
+    text-align: center
+    font-size: 15px
+  .info-box
+    background-color: #fff
+    padding: 15px 0
+    font-size: 16px
+  .info-title
+    width: 25%
+    text-align: right
+    padding: 6px 0 0
+    margin-bottom: 0
+  .form-group.required
+    .info-title::before
+      content: '*'
+      margin-right: 3px
+  .form-control-feedback.text
+    font-size: 13px
+    top: 0
+    right: 20px
+    margin-right: 0
+    letter-spacing: .02em
+  .submit
+    width: 100%

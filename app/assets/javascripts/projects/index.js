@@ -22,11 +22,12 @@ $(function () {
     var $modal = $('#confirm-modal');
     $modal.data('eventName', 'deleteProject');
     $modal.find('.modal-body .content').text('确认删除任务?');
-    $modal.modal();
+    $('body').append('<div class="main-mask"></div>')
+    $modal.addClass('show');
   });
 
   $('#confirm-modal #confirm').on('click', function () {
-    $('#confirm-modal').modal('hide');
+    confirmClose();
     var url = '/projects/' + id;
     $.ajax({
       url: url,
@@ -41,6 +42,11 @@ $(function () {
       console.log(errors);
     });
   });
+  $('#confirm-modal .js-operate-cancel').on('click', confirmClose);
+  function confirmClose() {
+    $('#confirm-modal').removeClass('show');
+    $('body .main-mask').remove();
+  }
 
   // 瀑布流加载，监听window滚动事件
   $(window).on('scroll', function () {

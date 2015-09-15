@@ -38,8 +38,7 @@ html lang=session[:locale]
 
     - if !current_user
       <!-- 未登录时才加载登陆框 -->
-      = render '/users/sessions/new'
-      = render '/users/registrations/new'
+      = render 'users/sign'
       <!-- 登陆框结束 -->
 
     = render '/shared/info_modal'

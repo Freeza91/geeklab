@@ -1,5 +1,5 @@
 main role="mian"
-  section style="padding: 100px 0"
+  section style="padding: 50px 0"
     .container
       form.form-horizontal.info-form
         fieldset.row
@@ -167,21 +167,13 @@ main role="mian"
               button.btn.btn-blue.submit
                 | 提交
 
-.modal.fade.sign#form-finish data-backdrop='static'
-  .modal-dialog
-    .modal-content
-      .modal-header
-        button.close type='button' data-dismiss='modal' aria-label='Close'
-          span aria-hidden='true'
-            | &times
-        .logo
-          img src=image_path('logo/logo.png')
-      .modal-body
-        h1.title
-          | Well Done
-        p.content
-          | 接下来就去体验产品吧
-        a.btn.btn-blue href=assignments_path
-          | 即刻出发
-        button.btn.btn-gray data-dismiss='modal'
-          | 稍后再去
+.operate#form-finish data-backdrop='static'
+  .handle
+  .operate-content
+    p.content
+      | OK, 接下来就去体验产品吧
+    .tools
+      a.btn.btn-flat-base.btn-rounded.btn-s href="#{assignments_path}"
+        | 即刻出发
+      a.btn.btn-flat-base.btn-rounded.btn-s href="#{testers_path}"
+        | 稍后再去

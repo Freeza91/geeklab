@@ -13,7 +13,6 @@ header.header.navbar.navbar-static.clear-fix
             li.dropdown
               a role='button'
                 =current_user.email
-                span.caret
               ul.dropdown-menu role='menu'
                 li
                   a href=projects_path
@@ -24,5 +23,5 @@ header.header.navbar.navbar-static.clear-fix
                     i.fa.fa-power-off
                     | 退出登录
         - else
-          button.btn.btn-blue.login data-toggle='modal' data-target='#signup'
+          button.btn.btn-blue.login data-toggle='modal' data-target='#sign'
             | 登录/注册

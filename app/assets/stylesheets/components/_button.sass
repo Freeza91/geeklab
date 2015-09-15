@@ -1,6 +1,14 @@
 @import ../helpers/mixin
 @import ../helpers/variables
 
+// button
+$btn_bg_gray: #a0a0a0
+$btn_bg_blue: #16a0c6
+.btn-gray
+  background-color: $btn_bg_gray
+.btn-blue
+  background-color: $btn_bg_blue
+
 .btn
   +border-radius(0)
   border: none
@@ -16,6 +24,7 @@ a.btn:focus
 .btn
   height: 34px
   transition: all .5s ease
+
 .btn-flat-base,
   background-color: $blue
   color: #fff
@@ -24,6 +33,18 @@ a.btn:focus
 .btn-flat-base:active,
 .btn-flat-base:focus
   color: #fff
+.btn-flat-base.disable
+  background-color: $dark-blue
+
+.btn-flat.yellow
+  background-color: $light-yellow
+  color: $dark-blue
+.btn-flat.yellow:hover
+  background-color: #fff
+.btn-flat.yellow:active,
+.btn-flat.yellow:focus
+  color: $dark-blue
+
 .btn-line-base
   border: 1px solid $blue
   background-color: transparent
@@ -53,8 +74,10 @@ a.btn:focus
 .btn-s
   width: 120px
 .btn-m
-  width: 150px
+  width: 160px
 .btn-g
   width: 300px
+.btn-full
+  width: 100%
 .btn-rounded
   border-radius: 30px

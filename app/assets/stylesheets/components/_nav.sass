@@ -1,0 +1,51 @@
+@import ../helpers/variables
+
+.nav-tabs
+  border-bottom: none
+  > li
+    > a
+      margin-right: 0
+      background-color: $dark-blue
+      border: none
+      border-radius: 0
+      -webkit-border-radius: 0
+      color: $blue
+      text-align: center
+      font-size: 1.2rem
+    > a:hover
+      background-color: $dark-blue
+      color: $light-yellow
+  > li.active
+    > a,
+    > a:hover,
+    > a:focus
+      color: $light-yellow
+      background-color: $blue
+      border: none
+
+.nav-subtabs
+  ul
+    display: inline-block
+    list-style: none
+    margin: 0
+    padding: 0
+    border: 2px solid #fff
+    border-radius: 20px
+    overflow: hidden
+    > li
+      float: left
+      > a
+        display: inline-block
+        background-color: $blue
+        color: #fff
+        padding: 5px 20px
+        font-size: 14px
+      > a.active
+        background-color: #fff
+        color: $blue
+      > a:hover
+        background-color: $dark-blue
+        color: #fff
+        text-decoration: none
+      > a:focus
+        text-decoration: none

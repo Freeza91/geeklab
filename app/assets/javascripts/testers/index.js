@@ -59,17 +59,18 @@ $(function () {
         $('.video-info').unwrap();
         $('.step-list').unwrap();
       }
+      $('#header').addClass('zoom-in');
     },
 
     afterLoad      : function (anchorLink, index){
       switch(index) {
         case 1:
-          $('#header').removeClass('zoom-out');
+          $('#header').addClass('zoom-in');
           sloganRotate();
           changeButtonPosition('bottom');
         break;
         case 2:
-          $('#header').addClass('zoom-out');
+          $('#header').removeClass('zoom-in');
           changeButtonPosition('bottom');
         break;
         case 3:

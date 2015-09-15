@@ -11,7 +11,6 @@ header#header class=(current_user ? '' : 'no-logged')
         li.dropdown
           a role='button'
             =current_user.email
-            span.caret
           ul.dropdown-menu role='menu'
             li
               - if current_user.to_tester.try(:tester_infor)
@@ -35,7 +34,6 @@ header#header class=(current_user ? '' : 'no-logged')
             li
               a href=stores_root_path target="_blank"
                 span.icon-img.icon-outer-18 style="margin-right: 7px; margin-bottom: -4px"
-                  i.icon-inner.icon-score-old style="margin-bottom: 4px"
                   i.icon-inner.icon-score-old.hover style="margin-bottom: 4px"
                 | 积分商城
             li
@@ -44,5 +42,5 @@ header#header class=(current_user ? '' : 'no-logged')
                 | 退出登录
       - else
         li
-          button.btn.btn-flat-base.btn-rounded.btn-s data-toggle='modal' data-target='#signup'
+          button.btn.btn-flat-base.btn-rounded.btn-s data-toggle='modal' data-target='#sign'
             | 登录/注册

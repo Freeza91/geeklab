@@ -1,3 +1,4 @@
+@import ../helpers/variables
 // 任务列表卡片
 .card
   width: 50%
@@ -6,9 +7,6 @@
   .inner
     box-shadow: 0 0 5px #ccc
 
-  .btn
-    width: 90px
-    height: 38px
   .fa-file-video-o
     color: #a0a0a0
 
@@ -30,7 +28,7 @@
         margin-right: 5px
 
   .content
-    height: 200px
+    height: 230px
     background-color: #f9f9f9
     position: relative
 
@@ -46,6 +44,7 @@
         font-size: 18px
         margin-left: 5px
         vertical-align: middle
+        color: $light-yellow
       p
         text-align: center
         color: #fff
@@ -62,11 +61,12 @@
       display: none
       position: absolute
       width: 220px
-      background-color: #fff
+      background-color: $light-yellow
       z-index: 10
       box-shadow: 0 0 5px #ccc
       > li
         padding: 7px
+        color: #f00
     .comment::before
       position: absolute
       top: 50%
@@ -77,7 +77,7 @@
       width: 0
       height: 0
       border-top: 10px solid transparent
-      border-right: 10px solid #fff
+      border-right: 10px solid $light-yellow
       border-bottom: 10px solid transparent
 
     // 不同状态的提示
@@ -86,7 +86,7 @@
     .status.status_checking
       background-color: rgba(255, 241, 0, .8)
     .status_not_accept
-      background-color: rgba(235, 97, 0, .8)
+      background-color: rgba(255, 0, 0, .8)
     .status.status_failed
       background-color: rgba(160, 160, 160, .8)
     .status.status_success

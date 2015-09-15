@@ -1,1 +1,82 @@
-check.html.slim check
+div.ui.four.column.doubling.container
+  div.column
+    span 新手任务：
+    = link_to @assignment.project.name, dashboard_project_path(@assignment.project)
+    div
+      span 任务发布时间： "#{@assignment.project.created_at.strftime("%F: %T")}"
+    div
+      span 任务过期时间： "#{@assignment.project.expired_at.strftime("%F: %T")}"
+  div.column
+    span 体验师邮箱：
+    = link_to @assignment.tester.email, dashboard_user_path(@assignment.tester)
+
+  div.column
+    span 视频内容：
+    video controls="controls" style="width: 30%; height: 20%; align: center"
+      source src="#{@assignment.try(:video)}"
+div
+  span &nbsp;
+  div
+    = form_for '', url: dashboard_video_path(@assignment), method: 'put', class: 'ui form' do |f|
+      div.field
+        = f.label "任务状态"
+        = select "assignment", "status", dashboard_select_status
+
+      div.field.no_show#select_public
+        = f.label "是否展示"
+          div
+            = f.label '展示'
+            = radio_button_tag "assignment[public]", true
+            = f.label '不展示'
+            = radio_button_tag "assignment[public]", false, checked: true
+
+      div.field.no_show#add_explain
+        = f.label "未通过说明"
+        - @assignment.reasons.each_with_index do |i, value|
+          = text_field_tag "assignment", value
+          = link_to "删除", "", id: "delete_reason_#{i}"
+        div
+          = text_field_tag "assignment", "reasons", placeholder: 'hello'
+          = link_to '删除', '#', id: "delete_reason"
+        div
+          = link_to '增加一个', id: 'add_reason'
+
+      div.field.no_show#video_rank
+        = f.label "视频质量"
+        = select "assignment", "rank", dashboard_select_rank
+
+      div.field
+        = f.submit '更新'
+
+div.footer style="margin: 100px"
+  | 京ICP备13016923号-3 | Copyright © 2015 北京中明万长管理咨询有限公司
+
+javascript:
+  $(function(){
+    dealView();
+
+    $('#assignment_status').on('change', function(){
+      dealView();
+    });
+
+    $('#delete_reason').on('click', function(){
+
+    });
+  });
+
+  function dealView(){
+      var status = $('#assignment_status').val();
+      $('.no_show').hide();
+
+      if(status == 'not_accept'){
+        $('#add_explain').show();
+      }else if(status == 'success'){
+        $('#select_public').show();
+        $('#video_rank').show();
+      }
+  }
+
+css:
+  .no_show{
+     display: none;
+  }

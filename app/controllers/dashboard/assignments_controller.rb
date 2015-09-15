@@ -7,10 +7,11 @@ class Dashboard::AssignmentsController < Dashboard::BaseController
   end
 
   def check
-    @assignment = Assignment.find(params[:id])
+    @assignment = Assignment.includes(:project).find(params[:id])
   end
 
-  def pass
+  def update
+    p "this is will be update"
   end
 
   def destroy

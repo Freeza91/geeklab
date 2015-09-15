@@ -105,7 +105,6 @@
     resources :videos, controller: :assignments do
       member do
         get 'check'
-        post 'pass'
       end
     end
     resources :users

@@ -7,7 +7,24 @@ class Dashboard::AssignmentsController < Dashboard::BaseController
   end
 
   def check
+    json = { code: 0, msg: '', assignment: {} }
     @assignment = Assignment.includes(:project).find(params[:id])
+    if @assignment
+      json[:assignment] = {
+        id: @assignment.id,
+        video: @assignment.video,
+        project_name: @assignment.project.name,
+        tester_email: @assignment.tester.tester_infor.email_contract || @assignment.tester.email,
+        expired_at: @assignment.project.expired_at.strftime("%F %T"),
+        public: @assignment.public,
+        status: @assignment.status,
+        reasons: @assignment.reasons,
+        rank: @assignment.rank,
+        feedbacks: @assignment.feedbacks
+      }
+    end
+
+    render json: json
   end
 
   def update

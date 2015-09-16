@@ -55,7 +55,7 @@ main role="main"
               .col-xs-7.col-sm-7.col-md-7.col-lg-7
                 - for device in @devices
                   label.checkbox-inline
-                    input type='checkbox' value=device checked=@tester_infor.device.include?device
+                    input type='checkbox' value=device checked=(@tester_infor.device && @tester_infor.device.include?(device) )
                       = device
                 span.form-control-feedback.text.sr-only 至少选择一个设备
         fieldset.row
@@ -140,7 +140,7 @@ main role="main"
               .col-xs-7.col-sm-7.col-md-7.col-lg-7
                 - for personal in @personality
                   label.checkbox-inline
-                    input type='checkbox' value=personal checked=@tester_infor.personality.include?personal
+                    input type='checkbox' value=personal checked=(@tester_infor.personality && @tester_infor.personality.include?(personal))
                       = personal
             .form-group data-type='checkbox'
               label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='interest'
@@ -148,7 +148,7 @@ main role="main"
               .col-xs-7.col-sm-7.col-md-7.col-lg-7
                 - for interest in @interests
                   label.checkbox-inline
-                    input type='checkbox' value=interest checked=@tester_infor.interest.include?interest
+                    input type='checkbox' value=interest checked=(@tester_infor.interest && @tester_infor.interest.include?(interest))
                       = interest
         fieldset.row
           .col-xs-2.col-sm-2.col-md-2.col-lg-2

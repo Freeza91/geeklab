@@ -25,7 +25,7 @@ class UserMailer < ApplicationMailer
     @task_url = task_url
 
     sendgrid_category "new task novice"
-    mail to: email, subject: "新手任务到达通知"
+    mail to: email, subject: "新任务到达通知"
     render 'user_mailer/new_task_notice', layout: false
   end
 

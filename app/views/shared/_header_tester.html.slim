@@ -25,7 +25,7 @@ header#header class=(current_user ? '' : 'no-logged')
             - if current_user.to_tester.try(:tester_infor)
               li
                 a href=assignments_path
-                  i.fa.fa-th-large
+                  i.fa.fa-home
                   | 任务列表
             li
               a href="#{help_testers_path}" target="_blank"

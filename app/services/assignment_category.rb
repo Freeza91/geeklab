@@ -33,6 +33,9 @@ module AssignmentCategory
         # 成为正式的测试用户
         return false unless infor.tester.approved
 
+        # 填写信息不全
+        return false if infor.already_finish
+
         # 硬性条件
         return false if device != "web" && !infor.device.include?(device)        #设备限制
         return false unless infor.age.between?(@user_feature.age_low, @user_feature.age_high) #年龄限制

@@ -1,7 +1,7 @@
 class TestersController < ApplicationController
 
   before_action :require_login?, except: :index
-  before_action :already_create?, only: [:create, :new]
+  before_action :require_create, only: [:edit, :update]
 
   def index
     current_user.update_attribute(:role, 'both') if current_user.try(:role) == 'pm'
@@ -15,30 +15,30 @@ class TestersController < ApplicationController
   end
 
   def create
-    json = { status: 0, code: 1, msg: '创建成功', url: testers_path }
-    @tester_infor = TesterInfor.new.tap &model_block
+    @tester_infor = TesterInfor.new
+    if params[:device] && params[:device].kind_of?(Array)
+      @tester_infor.device = params[:device]
 
-    if @tester_infor.save
-      if current_user.role == 'pm'
-        current_user.update_attribute(:role, 'both')
-      end
-      # default: project.first is new tester task
-      project_id = select_project(Project.collect_beigning, @tester_infor.device)
-      if project_id
-        a = Assignment.create(project_id: project_id, tester_id: current_user.id,  status: 'test')
+      if @tester_infor.save(validate: false)
+        current_user.update_attribute(:role, 'both') if current_user.role == 'pm'
 
-        task_url = "#{Settings.domain}/assignments"
-        UserMailer.new_task_notice(@tester_infor.email_contract || current_user.email,
-                                   a.project.name, task_url).deliver_later
-      else
-        NotificationAdmin.project_error.deliver_later
+        project_id = select_project(Project.collect_beigning, @tester_infor.device)
+        if project_id
+          a = Assignment.create(project_id: project_id, tester_id: current_user.id,  status: 'test')
+
+          task_url = "#{Settings.domain}/assignments"
+          UserMailer.new_task_notice(@tester_infor.email_contract || current_user.email,
+                                     a.project.name, task_url).deliver_later
+
+          return redirect_to assignments_path
+        else
+          NotificationAdmin.project_error.deliver_later
+        end
       end
-    else
-      json['code'] = 0
-      json['msg'] = @tester_infor.errors.full_messages
     end
 
-    render json: json
+    render :choose
+
   end
 
   def edit
@@ -48,9 +48,13 @@ class TestersController < ApplicationController
     @tester_infor = current_user.to_tester.tester_infor
 
     if @tester_infor
-      render 'testers/edit'
+      if @tester_infor.already_finish
+        render 'testers/edit'
+      else
+        render 'testers/new'
+      end
     else
-      redirect_to new_tester_path
+      redirect_to infor_testers_path
     end
 
   end
@@ -82,6 +86,11 @@ class TestersController < ApplicationController
           @target = 'windows'
       end
     end
+  end
+
+  def choose
+    infor = current_user.to_tester.try(:tester_infor)
+    redirect_to infor_testers_path if infor && infor.device
   end
 
 private
@@ -147,7 +156,8 @@ private
 
 private
 
-  def already_create?
-    redirect_to edit_tester_path(current_user.to_params) if current_user.to_tester.tester_infor
+  def require_create
+    redirect_to choose_device_testers_path unless current_user.to_tester.tester_infor
   end
+
 end

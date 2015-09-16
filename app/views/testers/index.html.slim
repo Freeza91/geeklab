@@ -38,15 +38,15 @@ main role='main'
             | 积分奖励
       - if current_user
         - if current_user.to_tester.try(:tester_infor)
-          a.btn.btn-flat-base.btn-rounded.btn-s#start href="#{assignments_path}"
+          a.btn.btn-flat.blue.btn-rounded.btn-s#start href="#{assignments_path}"
             | 我要体验
         - else
-          a.btn.btn-flat-base.btn-rounded.btn-s#start href="#{new_tester_path}"
+          a.btn.btn-flat.blue.btn-rounded.btn-s#start href="#{new_tester_path}"
             | 我要体验
       - else
-        button.btn.btn-flat-base.btn-rounded.btn-s#start data-toggle='modal' data-target='#signup'
+        button.btn.btn-flat.blue.btn-rounded.btn-s#start data-toggle='modal' data-target='#signup'
           | 我要体验
-      a.btn.btn-line-base.btn-rounded.btn-s#stores href="#{stores_root_path}" target="_blank"
+      a.btn.btn-line.blue.btn-rounded.btn-s#stores href="#{stores_root_path}" target="_blank"
         | 兑换积分
     .section.with-mask#section3
       .mask
@@ -64,5 +64,5 @@ main role='main'
   - unless current_user
     a.btn.btn-line-base.btn-rounded.btn-s#change-role.fixed.bottom href="#{pms_path}"
       | 提高产品体验
-    button.btn.btn-flat-base.btn-rounded.btn-s#login.fixed.bottom data-toggle='modal' data-target='#sign'
+    button.btn.btn-flat.blue.btn-rounded.btn-s#login.fixed.bottom data-toggle='modal' data-target='#sign'
       | 登录/注册

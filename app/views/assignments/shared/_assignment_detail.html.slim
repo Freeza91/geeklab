@@ -45,14 +45,14 @@
                   | 你可以点击"上传视频"
                   | 按钮直接上传视频
                 p v-show="project.device !== 'web'"
-                  button.btn.btn-flat-base.btn-rounded.btn-s.js-video-upload
+                  button.btn.btn-flat.blue.btn-rounded.btn-s.js-video-upload
                     | 上传视频
           .task-right.vertical-center
             .task-content.vertical-item
               .next v-show="progress !== 'work-done'"
-                button.btn.btn-flat-base.btn-rounded.btn-s v-on="click: next(this)" v-text="nextStepText"
+                button.btn.btn-flat.blue.btn-rounded.btn-s v-on="click: next(this)" v-text="nextStepText"
               .upload v-show="project.device === 'web' && progress === 'work-done'"
-                button.btn.btn-flat-base.btn-rounded.btn-s.js-video-upload
+                button.btn.btn-flat.blue.btn-rounded.btn-s.js-video-upload
                   | 上传视频
               .qr-upload v-show="project.device !== 'web' && progress === 'work-done'"
                 p

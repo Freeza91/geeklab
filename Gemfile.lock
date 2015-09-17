@@ -163,6 +163,7 @@ GEM
       rake
     mina-sidekiq (0.3.1)
       mina
+    mina-unicorn (0.3.0)
     mini_magick (4.2.1)
     mini_portile (0.6.2)
     minitest (5.6.1)
@@ -338,6 +339,7 @@ DEPENDENCIES
   meta_request
   mina
   mina-sidekiq
+  mina-unicorn
   mini_magick
   nested_form
   newrelic_rpm

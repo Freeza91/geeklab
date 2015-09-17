@@ -3,7 +3,7 @@ class Dashboard::AssignmentsController < Dashboard::BaseController
   load_and_authorize_resource # 此处无法使用hash id
 
   def index
-    @assignments = Assignment.all.includes(:project).order("updated_at desc").page(params[:page]).per(10)
+    @assignments = Assignment.all.includes(:project).page(params[:page]).per(10)
   end
 
   def edit
@@ -17,7 +17,7 @@ class Dashboard::AssignmentsController < Dashboard::BaseController
             id: @assignment.id,
             public: @assignment.public,
             status: @assignment.status,
-            reasons: @assignment.reasons,
+            reasons: @assignment.reasons || [],
             rank: @assignment.rank,
             feedbacks: @assignment.feedbacks
           }
@@ -29,10 +29,10 @@ class Dashboard::AssignmentsController < Dashboard::BaseController
   end
 
   def update
-    json = { status: 0, code: 0, msg: "success" }
+    json = { status: 0, code: 1, msg: "success" }
     @assignment = Assignment.find params[:id]
     unless @assignment && @assignment.update_attributes(assignment_params)
-      json[:code], json[:msg] = 1, 'failed'
+      json[:code], json[:msg] = 0, 'failed'
     end
 
     render json: json

@@ -70,7 +70,7 @@
             td
               input type="text" v-model="feedback.suggestion"
             td
-              span v-on="click: deleteFeedback(this, $index)"
+              span v-on="click: deleteFeedback(this, feedback, $index)"
                 | 删除
       input type="button" value="添加视频反馈" v-on="click: addFeedback(this)"
     input type="submit" value="提交" v-on="click: submit(this, $event)"
@@ -129,8 +129,9 @@ javascript:
       });
     }
 
-    function deleteFeedback (vm, feedback) {
-      vm.assignment.feedbacks.$remove(feedback.$index);
+    function deleteFeedback (vm, feedback, index) {
+      console.log(vm, feedback);
+      vm.assignment.feedbacks.$remove(index);
       if(feedback.id) {
         deleteFeedbacks.push(feedback.id);
       }
@@ -156,11 +157,12 @@ javascript:
       data.feedbacks_attributes = [];
       assignment.feedbacks.forEach(function (feedback) {
         if(feedback.suggestion) {
-          data.feedbacks_attributes.push({
-            timeline: feedback.timeline,
-            desc: feedback.desc,
-            suggestion: feedback.suggestion
-          });
+          //data.feedbacks_attributes.push({
+            //timeline: feedback.timeline,
+            //desc: feedback.desc,
+            //suggestion: feedback.suggestion
+          //});
+          data.feedbacks_attributes.push(feedback);
         }
       });
       deleteFeedbacks.forEach(function(item) {
@@ -178,7 +180,11 @@ javascript:
         data: {assignment: data}
       })
       .done(function (data) {
-        console.log(data);
+        if(data.status === 0 && data.code === 1) {
+          location.href = '/admin/videos';
+        } else {
+          alert('保存失败');
+        }
       })
       .error(function (errors) {
         console.log(errors);

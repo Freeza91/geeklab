@@ -16,6 +16,7 @@ gem 'simditor-rails'
 gem 'semantic-ui-sass'
 
 gem 'cancancan'
+gem 'chart-js-rails'
 
 gem 'settingslogic'
 gem 'slim-rails'

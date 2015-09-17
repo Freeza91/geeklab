@@ -5,5 +5,8 @@
 //vue
 //= require vue
 //
+// Chart
+//= require Chart
+//
 // semantic-ui
 //= require semantic-ui

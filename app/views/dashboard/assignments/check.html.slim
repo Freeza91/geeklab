@@ -41,8 +41,8 @@
         option value="success"
           | 审核通过
     .assignment-comment
-      .comment v-repeat="reason: assignment.reasons"
-        input type="text" v-model="reason"
+      .comment v-repeat="assignment.reasons"
+        input type="text" v-attr="value: $value" v-on="change: updateComment(this, $index, $event)"
         input type="button" value="删除" v-on="click: deleteComment(this, $index)"
       input type="button" value="添加未通过说明" v-on="click: addComment(this)"
     .assignment-quality
@@ -77,6 +77,8 @@
 
 javascript:
   $(function(){
+    var deleteFeedbacks = [],
+        deleteComments = [];
     $.ajax({
       url: location.href,
       dataType: 'json'
@@ -90,6 +92,7 @@ javascript:
           assignment: data.assignment
         },
         methods: {
+          updateComment: updateComment,
           addComment     : addComment,
           deleteComment  : deleteComment,
           addFeedback    : addFeedback,
@@ -102,12 +105,20 @@ javascript:
       console.log(errors);
     });
 
+    function updateComment (vm, index, event) {
+      var value = event.target.value;
+      vm.assignment.reasons.$set(index, value);
+    }
     function addComment (vm) {
       vm.assignment.reasons.push('');
+      console.log(vm.assignment.reasons)
     }
 
-    function deleteComment (vm, index) {
-      vm.assignment.reasons.$remove(index);
+    function deleteComment (vm, comment) {
+      vm.assignment.reasons.$remove(comment.$index);
+      //if(comment.id) {
+        //deleteComments.push(comment.id);
+      //}
     }
 
     function addFeedback (vm) {
@@ -118,8 +129,11 @@ javascript:
       });
     }
 
-    function deleteFeedback (vm, index) {
-      vm.assignment.feedbacks.$remove(index);
+    function deleteFeedback (vm, feedback) {
+      vm.assignment.feedbacks.$remove(feedback.$index);
+      if(feedback.id) {
+        deleteFeedbacks.push(feedback.id);
+      }
     }
 
     function submit (vm, event) {
@@ -133,16 +147,35 @@ javascript:
       }
       data.rank = assignment.rank;
       data.status = assignment.status;
-      data.reasons = assignment.reasons;
-      data.feedbacks = assignment.feedbacks
+      data.reasons = [];
+      assignment.reasons.forEach(function (reason) {
+        if(reason) {
+          data.reasons.push(reason);
+        }
+      });
+      data.feedbacks_attributes = [];
+      assignment.feedbacks.forEach(function (feedback) {
+        if(feedback.suggestion) {
+          data.feedbacks_attributes.push({
+            timeline: feedback.timeline,
+            desc: feedback.desc,
+            suggestion: feedback.suggestion
+          });
+        }
+      });
+      deleteFeedbacks.forEach(function(item) {
+        data.feedbacks_attributes.push({
+          id: item,
+          _destroy: 1
+        });
+      });
       console.log(data);
-      vm.$log(assignment);
 
       var url = '/admin/videos/' + vm.assignment.id;
       $.ajax({
         url: url,
         method: 'put',
-        data: data
+        data: {assignment: data}
       })
       .done(function (data) {
         console.log(data);

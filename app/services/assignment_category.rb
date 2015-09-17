@@ -34,7 +34,7 @@ module AssignmentCategory
         return false unless infor.tester.approved
 
         # 填写信息不全
-        return false if infor.already_finish
+        return false unless infor.already_finish
 
         # 硬性条件
         return false if device != "web" && !infor.device.include?(device)        #设备限制

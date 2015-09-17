@@ -102,11 +102,7 @@
   mount RailsAdmin::Engine => '/manage', as: 'rails_admin'
   namespace :dashboard, path: '/admin' do
     root 'base#index'
-    resources :videos, controller: :assignments do
-      member do
-        get 'check'
-      end
-    end
+    resources :videos, controller: :assignments
     resources :users
     resources :projects
     resources :goods

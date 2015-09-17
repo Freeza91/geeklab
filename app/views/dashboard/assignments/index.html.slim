@@ -27,7 +27,7 @@ div
             td
               | #{assignment.project.expired_at.strftime("%F %T")}
             td
-              = link_to("审核", check_dashboard_video_path(assignment))
+              = link_to("审核", edit_dashboard_video_path(assignment))
               span |
               = link_to("删除", dashboard_video_path(assignment), method: 'delete', data: {confirm: "你确定要删除？#{assignment.project.name}"})
 

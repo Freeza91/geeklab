@@ -6,9 +6,9 @@ class Dashboard::AssignmentsController < Dashboard::BaseController
     @assignments = Assignment.all.includes(:project).order("updated_at desc").page(params[:page]).per(10)
   end
 
-  def check
+  def edit
     respond_to do |format|
-      format.html { render '/dashboard/assignments/check' }
+      format.html { render '/dashboard/assignments/edit' }
       format.json do
         json = { code: 0, msg: '', assignment: {} }
         @assignment = Assignment.includes(:project).find(params[:id])
@@ -29,12 +29,13 @@ class Dashboard::AssignmentsController < Dashboard::BaseController
   end
 
   def update
+    json = { status: 0, code: 0, msg: "success" }
     @assignment = Assignment.find params[:id]
-    if @assignment && @assignment.update_attributes(assignment_params)
-      redirect_to dashboard_videos_path
-    else
-      render :check
+    unless @assignment && @assignment.update_attributes(assignment_params)
+      json[:code], json[:msg] = 1, 'failed'
     end
+
+    render json: json
   end
 
   def destroy
@@ -47,9 +48,10 @@ class Dashboard::AssignmentsController < Dashboard::BaseController
 private
 
   def assignment_params
-    params.require(:assignments).pemit(:public, :reasons, :rank, :status,
+    params.require(:assignment).permit(:public, :rank, :status,
+                                       reasons: [],
                                        feedbacks_attributes:
-                                         [:timeline, :desc, :suggestion])
+                                         [:id, :timeline, :desc, :suggestion, :_destroy])
   end
 
 end

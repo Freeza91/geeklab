@@ -7,7 +7,7 @@
   .teseter-email
     span
       | 体验师邮箱:
-    a href="#{dashboard_user_path(@assignment.tester)}" target="_blank"
+    a href="#{edit_dashboard_user_path(@assignment.tester)}" target="_blank"
       = @assignment.tester.email
   .assignment-deadline
     span

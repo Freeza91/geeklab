@@ -20,6 +20,10 @@ html lang=session[:locale]
     = csrf_meta_tags
 
   body class=(controller_name + ' ' + controller_name + '_' + action_name)
-    .wrapper
-      = render partial: 'dashboard/shared/nav'
-      = yield
+    .ui.grid
+      .sixteen.wide.column
+        = render 'dashboard/shared/header'
+      .two.wide.column
+        = render partial: 'dashboard/shared/nav'
+      .thirteen.wide.column
+        = yield

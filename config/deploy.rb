@@ -1,3 +1,4 @@
+require 'mina/unicorn'
 require 'mina/bundler'
 require 'mina/rails'
 require 'mina/git'
@@ -5,22 +6,6 @@ require 'mina/rvm' #rbenv
 require 'mina/whenever'
 require 'mina_sidekiq/tasks'
 
-case ENV['on']
-when 'release'
-  set :branch, 'release'
-  set :domain, '119.254.100.115'
-when 'master'
-  set :domain, '119.254.101.120'
-  set :branch, 'master'
-when 'stg'
-  set :domain, '119.254.101.120'
-  set :branch, 'master'
-else
-  set :domain, '119.254.101.120'
-  set :branch, 'develop'
-end
-
-p "将要部署到：#{branch}"
 
 set :user, 'deploy'
 set :forward_agent, true
@@ -44,6 +29,27 @@ set :shared_paths, [
   'tmp',
   'log'
 ]
+
+case ENV['on']
+when 'release'
+  set :branch, 'release'
+  set :domain, '119.254.100.115'
+  set :unicorn_config, lambda { "#{app_path}/config/unicorn_#{branch}.rb" }
+when 'master'
+  set :domain, '119.254.101.120'
+  set :branch, 'master'
+  set :unicorn_config, lambda { "#{app_path}/config/unicorn_#{branch}.rb" }
+when 'stg'
+  set :domain, '119.254.101.120'
+  set :branch, 'master'
+  set :unicorn_config, lambda { "#{app_path}/config/unicorn_#{branch}.rb" }
+else
+  set :domain, '119.254.101.120'
+  set :branch, 'develop'
+  set :unicorn_config, lambda { "#{app_path}/config/unicorn_master.rb" }
+end
+
+p "将要部署到：#{branch}"
 
 task :environment do
   queue! 'source ~/.bashrc'
@@ -87,38 +93,4 @@ task deploy: :environment do
       invoke :'sidekiq:restart'
     end
   end
-end
-
-namespace :unicorn do
-  desc "Start Unicorn"
-  task start: :environment do
-    queue 'echo "-----> Start Unicorn"'
-    if branch == 'master' || branch == 'develop'
-      queue! %{
-        cd #{app_path}
-        bundle exec unicorn_rails -E production -c config/unicorn_master.rb -D
-      }
-    elsif branch == 'release'
-      queue! %{
-        cd #{app_path}
-        bundle exec unicorn_rails -E production -c config/unicorn_release.rb -D
-      }
-    end
-  end
-
-  desc "Stop Unicorn"
-  task stop: :environment do
-    queue 'echo "-----> Stop Unicorn"'
-    queue! %{
-      test -s "#{unicorn_pid}" && kill -QUIT `cat "#{unicorn_pid}"` && echo "Stop Ok" && exit 0
-      echo >&2 "Not running"
-    }
-  end
-
-  desc "Restart Unicorn"
-  task restart: :environment do
-    invoke :'unicorn:stop'
-    invoke :'unicorn:start'
-  end
-
 end

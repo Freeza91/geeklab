@@ -1,16 +1,16 @@
 .assignment-info
   .assignment-name
-    span
+    span.name
       | 任务名称:
     a href="#{dashboard_project_path(@assignment.project)}" target="_blank"
       = @assignment.project.name
   .teseter-email
-    span
+    span.name
       | 体验师邮箱:
     a href="#{edit_dashboard_user_path(@assignment.tester)}" target="_blank"
       = @assignment.tester.email
   .assignment-deadline
-    span
+    span.name
       | 过期时间:
     span
       = @assignment.project.expired_at.strftime("%F: %T")
@@ -24,7 +24,7 @@
 .assignment-edit#assignment
   form
     .assignment-visibility
-      span
+      span.name
         | 是否展示:
       input type="radio" name="show" value="true" v-model="assignment.public"
       span
@@ -33,7 +33,7 @@
       span
         | 不展示
     .assignment-status
-      span
+      span.name
         | 任务状态
       select v-model="assignment.status"
         option value="wait_check"
@@ -50,7 +50,7 @@
         input type="button" value="删除" v-on="click: deleteComment(this, $index)"
       input type="button" value="添加未通过说明" v-on="click: addComment(this)"
     .assignment-quality
-      span
+      span.name
         | 视频质量:
       select v-model="assignment.rank"
         option value="1"

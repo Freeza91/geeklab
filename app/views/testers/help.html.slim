@@ -1,8 +1,6 @@
 main role="main"
   section.banner
-    div
-      p
-        | 挑几个道具选个方式直接录制吧!
+    .icon-arrow-down
   section
     ul.nav.nav-tabs role="tablist"
       li.active role="presentation"
@@ -39,3 +37,6 @@ main role="main"
       $('[aria-controls="' + target + '"]').parent().addClass('active');
       location.hash=target;
     }
+    $('.icon-arrow-down').on('click', function () {
+     $(window).scrollTop(800);
+    });

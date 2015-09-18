@@ -8,10 +8,6 @@ module ApplicationHelper
     if controller_name == 'passwords' || controller_name == 'errors'
       return false
     end
-    if controller_name == 'testers' && action_name == 'index'
-      return false
-    end
-
     true
 
   end

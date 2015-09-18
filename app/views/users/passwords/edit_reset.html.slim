@@ -16,7 +16,7 @@ main role="main"
               p.form-hint
                 | 6-16个字符，可包括数字、字母、下划线
             .form-field.submit
-              input.btn.btn-flat-base.btn-rounded.btn-m type="submit" value="确认重置" v-on="click: submit(this, $event)"
+              input.btn.btn-flat.blue.btn-rounded.btn-m type="submit" value="确认重置" v-on="click: submit(this, $event)"
     section.reset-success v-show="success"
       .password-wrp
         .inner style="text-align: center"
@@ -28,5 +28,5 @@ main role="main"
               | 密码重置成功,&nbsp
               span.color-blue v-text="countDown"
               | 秒后返回首页
-          a.btn.btn-flat-base.btn-rounded.btn-m v-attr="href: redirect" style="margin-top: 30px"
+          a.btn.btn-flat.blue.btn-rounded.btn-m v-attr="href: redirect" style="margin-top: 30px"
             | 立即返回

@@ -51,6 +51,7 @@ group :development, :test do
 
   gem 'mina'
   gem 'mina-sidekiq'
+  gem 'mina-unicorn', :require => false
 
   gem 'better_errors'
   gem 'binding_of_caller'

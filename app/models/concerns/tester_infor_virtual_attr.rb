@@ -3,7 +3,12 @@ require 'active_support/concern'
 module TesterInforVirtualAttr
   extend ActiveSupport::Concern
 
+  attr_reader :already_finish
   attr_reader :age, :income_arr, :city_level
+
+  def already_finish
+    !sex.nil?
+  end
 
   def age
     Time.now.year - Date.parse(birthday).year

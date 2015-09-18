@@ -54,11 +54,14 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :testers do
+  resources :testers, except: :new do
     collection do
       get 'help'
+      get 'choose-device', to: "testers#choose"
+      get 'infor', to: "testers#edit"
     end
   end
+
   resources :assignments do
     collection do
       get 'miss'

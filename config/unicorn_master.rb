@@ -34,7 +34,3 @@ after_fork do |server, worker|
   defined?(ActiveRecord::Base) and
     ActiveRecord::Base.establish_connection
 end
-
-before_exec do |server| # fix hot restart Gemfile
-  ENV["BUNDLE_GEMFILE"] = "#{app_path}/Gemfile"
-end

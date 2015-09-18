@@ -61,6 +61,17 @@
           | 5
     .assignment-feedback
       table.ui.celled.table
+        thead
+          tr
+            th
+              | 时间点
+            th
+              | 问题描述
+            th
+              | 建议
+            th
+              | 操作
+
         tbody
           tr v-repeat="feedback: assignment.feedbacks"
             td

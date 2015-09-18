@@ -15,11 +15,11 @@ header#header class=(current_user ? '' : 'no-logged')
             li
               - if current_user.to_tester.try(:tester_infor)
                 a href='/testers/new'
-                  i.fa.fa-user
+                  .icon-card
                   | 个人信息
               - else
                 a href=edit_tester_path(current_user.to_params)
-                  i.fa.fa-user
+                  .icon-card
                   | 个人信息
             // 完成个人信息后显示任务列表
             - if current_user.to_tester.try(:tester_infor)

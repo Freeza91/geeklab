@@ -15,8 +15,12 @@
     span
       = @assignment.project.expired_at.strftime("%F: %T")
 .assignment-video
-  video controls="controls" style="width: 30%; height: 20%; align: center"
-    source src="#{@assignment.try(:video)}"
+  - if @assignment.video && @assignment.video != ''
+    video controls="controls" style="width: 30%; height: 20%; align: center"
+      source src="#{@assignment.try(:video)}"
+  - else
+    p
+      | 用户还未上传视频
 .assignment-edit#assignment
   form
     .assignment-visibility
@@ -40,7 +44,7 @@
           | 审核未通过
         option value="success"
           | 审核通过
-    .assignment-comment
+    .assignment-comment v-show="assignment.status === 'not_accept'"
       .comment v-repeat="assignment.reasons"
         input type="text" v-attr="value: $value" v-on="change: updateComment(this, $index, $event)"
         input type="button" value="删除" v-on="click: deleteComment(this, $index)"
@@ -88,8 +92,7 @@
 
 javascript:
   $(function(){
-    var deleteFeedbacks = [],
-        deleteComments = [];
+    var deleteFeedbacks = [];
     $.ajax({
       url: location.href,
       dataType: 'json'
@@ -125,11 +128,8 @@ javascript:
       console.log(vm.assignment.reasons)
     }
 
-    function deleteComment (vm, comment) {
-      vm.assignment.reasons.$remove(comment.$index);
-      //if(comment.id) {
-        //deleteComments.push(comment.id);
-      //}
+    function deleteComment (vm, index) {
+      vm.assignment.reasons.$remove(index);
     }
 
     function addFeedback (vm) {

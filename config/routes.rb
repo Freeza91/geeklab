@@ -105,7 +105,12 @@
     resources :charts
     resources :videos, controller: :assignments
     resources :users
-    resources :projects
+    resources :projects do
+      member do
+        get 'select'
+        post 'deliver'
+      end
+    end
     resources :goods
     resources :orders
   end

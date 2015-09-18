@@ -3,7 +3,7 @@ class Dashboard::AssignmentsController < Dashboard::BaseController
   load_and_authorize_resource # 此处无法使用hash id
 
   def index
-    @assignments = Assignment.all.includes(:project).page(params[:page]).per(10)
+    @assignments = Assignment.order(:id).page(params[:page]).per(10)
   end
 
   def edit

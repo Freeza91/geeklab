@@ -5,6 +5,9 @@ class AssignmentsController < ApplicationController
 
   def index
     tester = current_user.to_tester
+    unless tester.tester_infor
+      return redirect_to choose_device_testers_path
+    end
     assignments = tester.assignments
     if tester.approved
       @assignments = assignments.new_tasks.order("id desc").page(params[:page]).per(10)

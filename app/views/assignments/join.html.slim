@@ -1,4 +1,4 @@
-main role="main"
+main role="main" class="#{isAssignmentEmpty(@assignments_ing)}"
   section.assignments-list data-tester-id="#{@current_user.to_tester.to_params}"
     ul.nav.nav-tabs role="tablist"
       li
@@ -63,12 +63,16 @@ main role="main"
                     span.number
                       = assignment.project.credit
       .load-more
-        - if @assignments_ing.try(:size) < 10
-          p
-            | 没有更多了
-        - else
-          button.btn.btn-base.yellow.btn-full
-            | 加载更多
+        - if @assignments_ing.try(:size) > 0
+          - if @assignments_ing.try(:size) < 10
+            p
+              | 没有更多了
+          - else
+            button.btn.btn-base.yellow.btn-full
+              | 加载更多
+      - if @assignments_ing.try(:size) == 0
+          p.no-assignment-hint
+            | 没有正在进行中的任务，快去做任务吧
     .assignments-wrp#assignments-done
       .clearfix
         - if @assignments_done
@@ -116,12 +120,16 @@ main role="main"
                     span.number
                       = assignment.project.credit
       .load-more
-        - if @assignments_ing.try(:size) < 10
-          p
-            | 没有更多了
-        - else
-          button.btn.btn-base.yellow.btn-full
-            | 加载更多
+        - if @assignments_done.try(:size) > 0
+          - if @assignments_done.try(:size) < 10
+            p
+              | 没有更多了
+          - else
+            button.btn.btn-base.yellow.btn-full
+              | 加载更多
+      - if @assignments_done.try(:size) == 0
+          p.no-assignment-hint
+            | 还没有完成的任务噢
 
   <!-- 上传视频文件选择-->
   input type="file" id="video" accept="video/*" style="display:none"

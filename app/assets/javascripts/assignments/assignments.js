@@ -300,7 +300,7 @@ $(function () {
 
   // 点击modal确认按钮的处理函数
   $('#confirm-modal #confirm').on('click', function () {
-    var eventName = $(this).parents('.modal').data('eventName');
+    var eventName = $('#confirm-modal').data('event-name');
     eventConfirm(eventName);
   });
   $('#confirm-modal .js-operate-cancel').on('click', function () {
@@ -325,13 +325,15 @@ $(function () {
       break;
       case 'deleteAssignment':
         // 删除任务
+        console.log('xxx');
         deleteAssigment (testerId, assignmentId, function () {
           // 删除任务后的回调， 将当前卡片重页面上移除
           $card.remove();
         });
       break;
     }
-    $('#confirm-modal').modal('hide');
+    $('#confirm-modal').removeClass('show');
+    $('body .main-mask').remove();
   }
 
   // 获取视频url
@@ -637,15 +639,6 @@ $(function () {
     }
   }
 
-  // 播放视频按钮的hover事件
-  //$('.assignments').on('mouseenter', '.video-play', function () {
-    //$card = $(this).parents('.card');
-    ////$(this).css('z-index', 5);
-    //$card.find('.inner-mask').show();
-  //});
-  //$('.assignments').on('mouseout', '.video-play', function () {
-    //$card.find('.inner-mask').hide();
-  //});
 
   // 计算comment的位置
   function caculateCommentPosition () {
@@ -729,6 +722,8 @@ $(function () {
       $this.parents('ul').find('.active').removeClass('active');
       $this.addClass('active');
       $('.assignments-wrp.active').removeClass('active').hide();
+      var isEmpty = $(target).find('.card').length === 0;
+      toggleEmpty(isEmpty);
       $(target).fadeIn().addClass('active');
       location.hash = hash;
     });
@@ -736,9 +731,18 @@ $(function () {
     var hash = location.hash.substr(1);
     if(hash === 'done') {
       $('[data-hash="done"]').click();
+      var isEmpty = $('assignments-done .card').length === 0;
+      toggleEmpty(isEmpty);
     }
   }
 
+  function toggleEmpty(isEmpty) {
+    if(isEmpty) {
+      $('main').addClass('empty');
+    } else {
+      $('main').removeClass('empty');
+    }
+  }
   var assignmentDetailVm = new Vue({
     el: '#assignment-detail',
     data: {

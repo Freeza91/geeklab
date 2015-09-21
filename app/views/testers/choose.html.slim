@@ -1,4 +1,85 @@
-choose_device.html.slim choose device
+main
+  form.form#device-choose
+    p.device-choose-title
+      | 你拥有下面哪些移动设备？至少选择一个设备
+    .device-choose-box
+      .device-choose-item
+        input#iphone type="checkbox" v-model="device[0].checked"
+        label.btn.btn-ghost.darkblue.btn-rounded.btn-s for="iphone"
+          | iPhone
+      .device-choose-item
+        input#aphone type="checkbox" v-model="device[1].checked"
+        label.btn.btn-ghost.darkblue.btn-rounded.btn-s for="aphone"
+          | Android Phone
+    .device-choose-box
+      .device-choose-item
+        input#ipad type="checkbox" v-model="device[2].checked"
+        label.btn.btn-ghost.darkblue.btn-rounded.btn-s for="ipad"
+          | iPad
+      .device-choose-item
+        input#apad type="checkbox" v-model="device[3].checked"
+        label.btn.btn-ghost.darkblue.btn-rounded.btn-s for="apad"
+          | Android Pad
+    p.form-hint.error v-show="error"
+      | 请至少选择一个设备
+    .btn.btn-ghost.white.btn-rounded.btn-s v-on="click: submit(this)"
+      | 选好了
+  img src=image_url("testers/device_choose_bg.png")
 
+javascript:
+  $(function() {
+    var chooseDeviceVm = new Vue({
+      el: '#device-choose',
+      data: {
+        device: [
+          {
+            value: 'iphone',
+            checked: false
+          },
+          {
+            value: 'android phone',
+            checked: false
+          },
+          {
+            value: 'ipad',
+            checked: false
+          },
+          {
+            value: 'android pad',
+            checked: false
+          },
+        ],
+        error: false
+      },
+      methods: {
+        submit: submit
+      }
+    });
 
-p # 这里提交device的选择情况
+    function submit(vm) {
+      var device = [];
+      for(var i = 0; i < 4; i++){
+        if(vm.device[i].checked) {
+          device.push(vm.device[i].value);
+        }
+      }
+      console.log(device);
+      if(device.length === 0) {
+        //未选择device， 给出提示
+        vm.error = true;
+      }
+      $.ajax({
+        url: '/testers',
+        method: 'post',
+        data: {device: device}
+      })
+      .done(function (data) {
+        if(data.status === 0 && data.code === 1) {
+          location.href = '/assignments';
+        }
+      })
+      .error(function (errors) {
+        console.log(errors);
+      });
+    }
+  });

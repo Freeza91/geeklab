@@ -37,3 +37,34 @@
 #kk-download:hover
   span
     +transform(translateY(-27px))
+
+/* tester device choose */
+.testers_choose
+  main
+    background: $blue
+  img
+    width: 100%
+#device-choose
+  width: 400px
+  text-align: center
+  margin-left: auto
+  margin-right: auto
+  padding-top: 50px
+.device-choose-box
+  margin-bottom: 20px
+
+.device-choose-title
+  margin-bottom: 30px
+  color: #fff
+  font-size: 1rem
+  letter-spacing: .1rem
+.device-choose-item
+  display: inline-block
+  [type="checkbox"]
+    display: none
+  [type="checkbox"]:checked + .btn-ghost.darkblue
+    border-color: $dark-blue
+    background-color: $dark-blue
+    color: $blue
+  + .device-choose-item
+    margin-left: 30px

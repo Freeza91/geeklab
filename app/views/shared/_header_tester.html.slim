@@ -3,7 +3,6 @@ header#header class=(current_user ? '' : 'no-logged')
     .logo
       a.logo-text href="#{testers_path}"
         | 极客实验室
-    = current_user.to_tester.tester_infor.try(:already_finish)
     ul.nav.navbar-nav.navbar-right.top-nav-right.login
       li
         button.btn.btn-line.blue.btn-rounded.btn-s#js-change-role data-href="#{pms_path}"

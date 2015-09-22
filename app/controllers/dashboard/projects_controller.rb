@@ -45,7 +45,7 @@ class Dashboard::ProjectsController < Dashboard::BaseController
         @projects << json
       end
     else
-      return redirect_to dashboard_project_path
+      return redirect_to dashboard_projects_path
     end
 
     @projects = Kaminari.paginate_array(@projects).page(params[:page]).per(10)
@@ -69,7 +69,7 @@ class Dashboard::ProjectsController < Dashboard::BaseController
       $redis.expire "assignment-tester_#{id}", 1.day / 2
     end
 
-    redirect_to dashboard_project_path
+    redirect_to dashboard_projects_path
 
   end
 
@@ -77,7 +77,7 @@ class Dashboard::ProjectsController < Dashboard::BaseController
     @project = Project.find params[:id]
     @project && @project.destroy
 
-    redirect_to dashboard_project_path
+    redirect_to dashboard_projects_path
   end
 
 private

@@ -1,0 +1,41 @@
+div
+  table.ui.celled.table
+    thead
+      tr
+        th 选择
+        th 邮箱
+        th 最近登录时间
+        th 完成任务
+        th 平均分
+    tbody
+      - @projects.each do |project|
+        tr
+          td
+            | #{project.id}
+          td
+            a(href=edit_dashboard_project_path(project.id) target='_blank')
+              = project.name
+          td
+            | #{project.pm.try(:email)}
+          td
+            | #{project.demand}
+          td
+            = get_status_info(project.status)
+          td
+            - if project.expired_at
+              | #{project.expired_at.strftime("%F %T")}
+            - else
+              | 暂无
+          td
+            = link_to("审核", edit_dashboard_project_path(project))
+            span |
+            = link_to("分发", select_dashboard_project_path(project))
+            span |
+            = link_to("删除", dashboard_project_path(project), method: 'delete', data: {confirm: "你确定要删除？#{project.name}"})
+
+div.ui.container
+  p
+    = paginate @projects
+
+
+

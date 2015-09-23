@@ -15,9 +15,40 @@
 // modal
 .modal
   .modal-content
+    border: none
     border-radius: 0
+    -webkit-box-shadow: none
+    box-shadow: none
     .modal-header
       border-bottom: none
+
+.operate
+  position: absolute
+  top: 0
+  left: 50%
+  width: 430px
+  margin-left: -215px
+  z-index: 100
+  +transform(translateY(-600px))
+  +transition(all 1s ease)
+  .handle
+    height: 300px
+    background: image_url('testers/modal_handle.png') bottom center no-repeat
+  .operate-content
+    width: 400px
+    margin: -15px auto 0
+    padding: 20px
+    background: #fff
+    text-align: center
+  .content
+    font-size: 1rem
+    color: $dark-blue
+    margin-bottom: 40px
+  .tools
+    .btn + .btn
+      margin-left: 50px
+.operate.show
+  +transform(translateY(0))
 
 @media(max-width: 1242px)
   .col-sm-hidden

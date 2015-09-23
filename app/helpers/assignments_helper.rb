@@ -38,4 +38,10 @@ module AssignmentsHelper
     (1..5).to_a.collect{|k| [k, k] }
   end
 
+  def isAssignmentEmpty(assignments)
+    if assignments.size == 0
+      return 'empty'
+    end
+  end
+
 end

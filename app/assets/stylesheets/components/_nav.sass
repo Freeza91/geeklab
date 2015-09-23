@@ -1,24 +1,26 @@
+@import ../helpers/variables
+
 .nav-tabs
   border-bottom: none
   > li
     > a
       margin-right: 0
-      background-color: #1c3e4c
+      background-color: $dark-blue
       border: none
       border-radius: 0
       -webkit-border-radius: 0
-      color: #5cbcc9
+      color: $blue
       text-align: center
       font-size: 1.2rem
     > a:hover
-      background-color: #5cbcc9
-      color: #fbf9f3
+      background-color: $dark-blue
+      color: $light-yellow
   > li.active
     > a,
     > a:hover,
     > a:focus
-      color: #fbf9f3
-      background-color: #5cbcc9
+      color: $light-yellow
+      background-color: $blue
       border: none
 
 .nav-subtabs
@@ -27,7 +29,7 @@
     list-style: none
     margin: 0
     padding: 0
-    border: 2px solid #fff
+    border: 1px solid $light-yellow
     border-radius: 20px
     overflow: hidden
     > li
@@ -39,11 +41,10 @@
         padding: 5px 20px
         font-size: 14px
       > a.active
-        background-color: #fff
+        background-color: $light-yellow
         color: $blue
       > a:hover
-        background-color: $dark-blue
-        color: #fff
+        color: $dark-blue
         text-decoration: none
       > a:focus
         text-decoration: none

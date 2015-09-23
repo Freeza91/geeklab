@@ -5,6 +5,9 @@ class AssignmentsController < ApplicationController
 
   def index
     tester = current_user.to_tester
+    unless tester.tester_infor
+      return redirect_to choose_device_testers_path
+    end
     assignments = tester.assignments
     if tester.approved
       @assignments = assignments.new_tasks.order("id desc").page(params[:page]).per(10)
@@ -106,7 +109,7 @@ class AssignmentsController < ApplicationController
   def done
     tester = current_user.to_tester
     assignments = tester.assignments
-    assignments_done = Kaminari.paginate_array(assignments.take_part_done.order("id desc")).page(params[:page]).per(10)
+    assignments_done = Kaminari.paginate_array(assignments.order("id desc").take_part_done).page(params[:page]).per(10)
     json = {status: 0, code: 1, assignments_done: [] }
     assignments_done.each do |a|
       json[:assignments_done] << a.to_json_with_project

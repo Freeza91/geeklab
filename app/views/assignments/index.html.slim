@@ -1,4 +1,4 @@
-main role="main"
+main role="main" class="#{isAssignmentEmpty(@assignments)}"
   section.assignments-list data-tester-id="#{@current_user.to_tester.to_params}"
     ul.nav.nav-tabs role="tablist"
       li.active
@@ -39,13 +39,17 @@ main role="main"
                     i.icon-inner.icon-score-old
                   span.number
                     = assignment.project.credit
-      .load-more
+    .load-more
+      - if @assignments.try(:size) > 0
         - if @assignments.try(:size) < 10
           p
             | 没有更多了
         - else
           button.btn.btn-base.yellow.btn-full
             | 加载更多
+    - if @assignments.try(:size) == 0
+        p.no-assignment-hint
+          | 目前没有新任务，过段时间再来查看吧
 
   <!-- 上传视频文件选择-->
   input type="file" id="video" accept="video/*" style="display:none"
@@ -55,6 +59,19 @@ main role="main"
   <!-- 过期任务提示开始 -->
   = render partial: 'assignments/shared/miss_assignments_reminder'
   <!-- 过期任务提示结束 -->
+
+- if !current_user.to_tester.tester_infor.try(:already_finish) && current_user.approved
+  <!-- 完成个人信息的提示 -->
+  .operate.show#info-finish-hint data-backdrop='static'
+    .handle
+    .operate-content
+      p.content
+        | 想体验更多合你口味的产品?赶紧去完善个人信息吧!
+      .tools
+        a.btn.btn-flat.blue.btn-rounded.btn-s href="#{new_tester_path}"
+          | 现在就去
+  .main-mask
+  <!-- 完成个人信息的提示结束 -->
 
 = render partial: 'shared/confirm_modal'
 = render partial: 'assignments/shared/assignment_detail'

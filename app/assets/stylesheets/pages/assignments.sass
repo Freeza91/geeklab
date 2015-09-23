@@ -7,6 +7,7 @@
     text-align: center
     padding-top: 15px
     padding-bottom: 15px
+
 .assignments-wrp
   padding-left: 60px
   padding-right: 60px
@@ -61,7 +62,7 @@
   right: 1rem
 .task-pagination
   position: absolute
-  top: 3.2rem
+  top: 4.4rem
   right: 3rem
   cursor: pointer
   .curr-page
@@ -74,10 +75,10 @@
   .total-page
     text-decoration: underline
 .task-point-hint
-  position: relative
-  top: 1.3rem
-  left: 5rem
-  width: 200px
+  position: absolute
+  top: 2rem
+  left: 6rem
+  width: 14rem
   font-size: .8rem
   color: $blue
   text-align: left
@@ -121,60 +122,6 @@
   #upload-qrcode:hover
     .img-mask
       display: block
-
-// confirm modal
-#confirm-modal
-  .modal-dialog
-    width: 520px
-  .modal-body
-    margin-top: 20px
-    .content
-      font-size: 16px
-      color: #313131
-      margin-bottom: 60px
-
-// 上传进度圆环
-.progressCircle
-  position: relative
-  width: 70px
-  height: 70px
-  background-color: $dark-blue
-  border-radius: 50%
-  .mask
-    position: absolute
-    top: 6px
-    left: 6px
-    width: 58px
-    height: 58px
-    border-radius: 50%
-    background-color: $light-yellow
-    text-align: center
-    line-height: 58px
-  .progressCount
-    color: $dark-blue
-  .left
-    clip: rect(0 35px auto 0)
-    .inner
-      clip: rect(0 35px auto 0)
-  .right
-    clip: rect(0 auto auto 35px)
-    .inner
-      clip: rect(0 auto auto 35px)
-  .left,
-  .right
-    position: absolute
-    top: 0
-    left: 0
-    width: 70px
-    height: 70px
-    .inner
-      position: absolute
-      top: 0
-      left: 0
-      width: 70px
-      height: 70px
-      border-radius: 50%
-      background-color: #fff
 
 // 任务操作
 .operator
@@ -290,3 +237,18 @@
   color: $blue
   font-size: 1.2rem
   font-weight: bold
+
+// assignment为空时的提示
+.assignments
+  .empty
+    position: relative
+    background: image_url('testers/no-assignment.png') center bottom no-repeat
+.no-assignment-hint
+  position: absolute
+  top: 30%
+  left: 50%
+  width: 350px
+  margin-left: -175px
+  font-size: 1.2rem
+  color: #fff
+  text-align: center

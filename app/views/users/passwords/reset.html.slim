@@ -1,8 +1,27 @@
-section.content-box.reset-email
-  .container
-    .inner
-      header
-        img src=image_path('logo/logo.png')
-      = render 'users/shared/email_form' 
-    /*= form_tag send_reset_password_users_mailers_path do |f| = email_field_tag 'email', nil, placeholder: '邮箱'*/
-      /*= submit_tag '提交'*/
+main role="main"
+  section
+    #send-email.password-wrp
+      .inner
+        .reset-title
+          p
+            | 重置密码
+        .reset-hint
+          p v-show="!success"
+            | 请输入您的注册邮箱，我们会给你发送一封邮件，打开邮件里的链接就可以重置密码噢！
+          p v-show="!!mailbox" style="text-align: center"
+            | 邮件发送成功
+            a href="{{mailbox}}" target="_blank"
+              | 进入邮箱
+          p v-show="success"
+            | 如果没有收到邮件，请检查垃圾邮件；或者点击下方的按钮重新发送
+        form.form
+          .form-field.with-hint-text v-class="error ? 'error' : ''"
+            input.form-input type="text" name="email" placeholder="邮箱" v-model="email" v-on="focus: error = false, blur: checkEmail(this)"
+            span.hint-text v-show="error" v-text="hint"
+          .form-field.submit
+            button.btn.btn-flat.blue.btn-rounded.btn-m type="submit" v-on="click: submit(this, $event)" v-class="canSendEmail ? '' :'disable'"
+              span v-show="countDown === 60"
+                | 发送验证邮件
+              span.color-white v-text="countDown" v-show="countDown !== 60"
+              span v-show="countDown !== 60"
+                | 秒后重新发送

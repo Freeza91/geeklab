@@ -1,0 +1,41 @@
+.progressCircle
+  position: relative
+  width: 70px
+  height: 70px
+  background-color: $dark-blue
+  border-radius: 50%
+  .mask
+    position: absolute
+    top: 6px
+    left: 6px
+    width: 58px
+    height: 58px
+    border-radius: 50%
+    background-color: $light-yellow
+    text-align: center
+    line-height: 58px
+  .progressCount
+    color: $dark-blue
+  .left
+    clip: rect(0 35px auto 0)
+    .inner
+      clip: rect(0 35px auto 0)
+  .right
+    clip: rect(0 auto auto 35px)
+    .inner
+      clip: rect(0 auto auto 35px)
+  .left,
+  .right
+    position: absolute
+    top: 0
+    left: 0
+    width: 70px
+    height: 70px
+    .inner
+      position: absolute
+      top: 0
+      left: 0
+      width: 70px
+      height: 70px
+      border-radius: 50%
+      background-color: #fff

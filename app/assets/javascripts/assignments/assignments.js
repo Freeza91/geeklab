@@ -22,6 +22,12 @@ $(function () {
   var $curVideo; // 当前正在播放的video
   var uploadAjax; //正在进行上传视频的ajax对象
 
+  //生成一个qrcode实例
+  var qrcode = new QRCode($('#upload-qrcode')[0], {
+    text: 'http://www.geeklab.cc',
+    width: 120,
+    height: 120,
+  });
 
   // 瀑布流加载，监听window滚动事件
   $(window).on('scroll', function () {
@@ -69,12 +75,7 @@ $(function () {
                         + token
                         + "&id="
                         + assignmentId;
-          console.log(uploadUrl);
-          new QRCode($('#upload-qrcode')[0], {
-            text: uploadUrl,
-            width: 120,
-            height: 120,
-          });
+          qrcode.makeCode(uploadUrl);
         });
       }
     });
@@ -292,15 +293,19 @@ $(function () {
   function showInfoModal (options) {
     var $modal = $('#confirm-modal');
     $modal.data('eventName', options.eventName);
-    //$modal.find('.modal-body .title').text(options.title);
-    $modal.find('.modal-body .content').text(options.content);
-    $modal.modal();
+    $modal.find('.content').text(options.content);
+    $('body').append('<div class="main-mask"></div>');
+    $modal.addClass('show');
   }
 
   // 点击modal确认按钮的处理函数
   $('#confirm-modal #confirm').on('click', function () {
-    var eventName = $(this).parents('.modal').data('eventName');
+    var eventName = $('#confirm-modal').data('event-name');
     eventConfirm(eventName);
+  });
+  $('#confirm-modal .js-operate-cancel').on('click', function () {
+    $('#confirm-modal').removeClass('show');
+    $('body .main-mask').remove();
   });
   // 点击modal确认按钮时触发的事件
   function eventConfirm(eventName) {
@@ -320,13 +325,15 @@ $(function () {
       break;
       case 'deleteAssignment':
         // 删除任务
+        console.log('xxx');
         deleteAssigment (testerId, assignmentId, function () {
           // 删除任务后的回调， 将当前卡片重页面上移除
           $card.remove();
         });
       break;
     }
-    $('#confirm-modal').modal('hide');
+    $('#confirm-modal').removeClass('show');
+    $('body .main-mask').remove();
   }
 
   // 获取视频url
@@ -415,7 +422,7 @@ $(function () {
       }
     })
     .error(function (errors, status) {
-
+      console.log(errors);
     });
   }
 
@@ -632,15 +639,6 @@ $(function () {
     }
   }
 
-  // 播放视频按钮的hover事件
-  //$('.assignments').on('mouseenter', '.video-play', function () {
-    //$card = $(this).parents('.card');
-    ////$(this).css('z-index', 5);
-    //$card.find('.inner-mask').show();
-  //});
-  //$('.assignments').on('mouseout', '.video-play', function () {
-    //$card.find('.inner-mask').hide();
-  //});
 
   // 计算comment的位置
   function caculateCommentPosition () {
@@ -724,6 +722,8 @@ $(function () {
       $this.parents('ul').find('.active').removeClass('active');
       $this.addClass('active');
       $('.assignments-wrp.active').removeClass('active').hide();
+      var isEmpty = $(target).find('.card').length === 0;
+      toggleEmpty(isEmpty);
       $(target).fadeIn().addClass('active');
       location.hash = hash;
     });
@@ -731,9 +731,18 @@ $(function () {
     var hash = location.hash.substr(1);
     if(hash === 'done') {
       $('[data-hash="done"]').click();
+      var isEmpty = $('assignments-done .card').length === 0;
+      toggleEmpty(isEmpty);
     }
   }
 
+  function toggleEmpty(isEmpty) {
+    if(isEmpty) {
+      $('main').addClass('empty');
+    } else {
+      $('main').removeClass('empty');
+    }
+  }
   var assignmentDetailVm = new Vue({
     el: '#assignment-detail',
     data: {
@@ -824,11 +833,6 @@ $(function () {
 
   function close(vm) {
     $('#assignment-detail').modal('hide');
-    // 清理二维码
-    if(vm.project.device !== 'web') {
-      $('#upload-qrcode img').remove();
-      $('#upload-qrcode canvas').remove();
-    }
     vm.progress = 'requirement';
     vm.curStepContent = '';
     vm.curStepIndex = 1;
@@ -844,6 +848,12 @@ $(function () {
       return false;
     }
     $target.addClass('disable');
+    var $qrcode = $('#upload-qrcode');
+    qrcode.clear();
+    $qrcode.find('.fa-refresh').addClass('fa-spin');
+    $qrcode.find('.img-mask').css({
+      display: 'block'
+    });
     getQrcodeToken(assignmentId, function (token) {
       var uploadUrl = location.origin
                     + "/assignments/upload?"
@@ -851,19 +861,8 @@ $(function () {
                     + token
                     + "&id="
                     + assignmentId;
-      var $qrcode = $('#upload-qrcode');
-      $qrcode.find('img').remove();
-      $qrcode.find('canvas').remove();
-      $qrcode.find('.fa-refresh').addClass('fa-spin');
-      $qrcode.find('.img-mask').css({
-        display: 'block'
-      });
       setTimeout(function () {
-        new QRCode($('#upload-qrcode')[0], {
-          text: uploadUrl,
-          width: 120,
-          height: 120,
-        });
+        qrcode.makeCode(uploadUrl);
         $qrcode.find('.fa-refresh').removeClass('fa-spin');
         $qrcode.find('.img-mask').removeAttr('style');
         $target.removeClass('disable');
@@ -883,6 +882,5 @@ $(function () {
     }
     return map[platform + device];
   }
-
 });
 

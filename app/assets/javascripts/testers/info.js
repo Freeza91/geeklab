@@ -271,18 +271,17 @@ $(function () {
       return false;
     }
 
+    var id = $('#id').attr('value');
     $.ajax({
-      url: '/testers',
-      method: 'post',
+      url: '/testers/' + id,
+      method: 'put',
       data: data
     })
     .done(function (data, status, xhr) {
       if(data.status === 0 && data.code === 1) {
         var $modal = $('#form-finish');
-        $modal.on('hide.bs.modal', function () {
-          location.href = '/testers';
-        });
-        $modal.modal();
+        $('body').append('<div class="main-mask"></div>')
+        $modal.addClass('show');
       }
     })
     .error(function (errors, status) {
@@ -334,15 +333,6 @@ $(function () {
     })
   }
   verticalMiddleTitle();
-
-  function showHint () {
-      var $modal = $('#info-modal');
-      $modal.find('.title').text('想体验更合你口味的产品?先填下个人信息吧');
-      $modal.find('.title').html('<p>想体验更合你口味的产品?</p><p>先填下个人信息吧</p>');
-      $modal.find('.btn').text('好嘞');
-      $modal.modal();
-  }
-  showHint();
 
   function updateErrorPosition (newErrorPosition, errorPosition) {
     if (errorPosition) {

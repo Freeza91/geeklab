@@ -55,7 +55,8 @@ main role="mian"
               .col-xs-7.col-sm-7.col-md-7.col-lg-7
                 - for device in @devices
                   label.checkbox-inline
-                    input type='checkbox' value=device
+                    //input type='checkbox' value=device
+                    input type='checkbox' value=device checked=(@tester_infor.device && @tester_infor.device.include?(device) )
                       = device
                 span.form-control-feedback.text.sr-only 至少选择一个设备
         fieldset.row
@@ -166,22 +167,14 @@ main role="mian"
             .col-xs-4.col-sm-4.col-md-4.col-lg-4
               button.btn.btn-blue.submit
                 | 提交
-
-.modal.fade.sign#form-finish data-backdrop='static'
-  .modal-dialog
-    .modal-content
-      .modal-header
-        button.close type='button' data-dismiss='modal' aria-label='Close'
-          span aria-hidden='true'
-            | &times
-        .logo
-          img src=image_path('logo/logo.png')
-      .modal-body
-        h1.title
-          | Well Done
-        p.content
-          | 接下来就去体验产品吧
-        a.btn.btn-blue href=assignments_path
-          | 即刻出发
-        button.btn.btn-gray data-dismiss='modal'
-          | 稍后再去
+input#id type="hidden" value="#{current_user.to_params}"
+.operate#form-finish data-backdrop='static'
+  .handle
+  .operate-content
+    p.content
+      | OK, 接下来就去体验产品吧
+    .tools
+      a.btn.btn-flat.blue.btn-rounded.btn-s href="#{assignments_path}"
+        | 即刻出发
+      a.btn.btn-flat.blue.btn-rounded.btn-s href="#{testers_path}"
+        | 稍后再去

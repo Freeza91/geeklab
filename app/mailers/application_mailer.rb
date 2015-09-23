@@ -1,6 +1,7 @@
 class ApplicationMailer < ActionMailer::Base
 
-  default from: "geeklabs@geekpark.net"
+  default from: '"极客实验室"<geeklabs@geekpark.net>'
+
   # layout 'user_mailer'
   layout false
 

@@ -1,0 +1,26 @@
+hello 实体订单
+.ui.internally.celled.grid
+  .row
+    .two.wide.column
+      | 订单信息
+    .fourteen.wide.column
+      = form_for [:dashboard, @order], method: 'put' do |f|
+        div 订单号：#{@order.order_id}
+        div 商品名：#{@order.good.name}
+        div 价格：#{@order.good.cost}
+        div 购买人邮箱：#{@order.user.email}
+
+        div
+          label 订单状态：
+          = select :status
+        div 收货人姓名：
+        div 收货人电话：
+        div 快递单号：
+        div 快递公司：
+        div
+          label 卡号:
+          = text_field_tag :account, value="#{@order.sku.account}"
+        div
+          label 卡密：
+          = text_field_tag :secret, value="#{@order.sku.secret}"
+        = f.submit '保存'

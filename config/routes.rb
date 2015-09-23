@@ -111,8 +111,18 @@
         post 'deliver'
       end
     end
-    resources :goods
-    resources :orders
+    resources :goods do
+      resources :skus
+    end
+    resources :orders, only: [:index, :edit, :destroy] do
+      member do
+        get 'virtual'
+        get 'real'
+      end
+
+      resources :skus, only: :update
+      resources :addresses, only: :update
+    end
   end
 
   require 'sidekiq/web'

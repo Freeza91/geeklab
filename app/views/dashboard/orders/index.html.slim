@@ -28,7 +28,7 @@ table.ui.celled.table
           td
             | 实体商品
           td
-            | #{order.address.tel}
+            | #{order.address.parse_status}
         td
           = link_to("编辑", edit_dashboard_order_path(order))
           span |

@@ -1,5 +1,7 @@
 class Address < ActiveRecord::Base
 
+  include AddressVirtualAttr
+
   belongs_to :user
   belongs_to :order
 

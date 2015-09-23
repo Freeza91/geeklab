@@ -12,6 +12,7 @@ class Dashboard::OrdersController  < Dashboard::BaseController
       @sku = @order.sku
       render :virtual
     else
+      @address = @order.address
       render :real
     end
   end

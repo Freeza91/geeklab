@@ -1,14 +1,14 @@
+@import ../helpers/variables
+.errors
+  main
+    background: $light-yellow
 .file-not-found
-  height: 735px
-  background-image: image_url('errors/404_l.png'), image_url('errors/404_r.png')
-  background-repeat: no-repeat, no-repeat
-  background-position: 0 0, 100% 0
+  height: 660px
+  background: $light-yellow image_url('errors/404.png') center 80% no-repeat
 
-  .content
-    text-align: center
-    margin-top: 200px 
-    .btn
-      width: 220px
-      height: 40px
-      line-height: 28px
-      margin-bottom: 15px
+#return-index
+  position: absolute
+  top: 20%
+  left: 50%
+  margin-left: -60px
+

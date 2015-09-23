@@ -137,6 +137,7 @@ $(function () {
 
   function setTrangleBorderWidth () {
     var width = parseInt(document.documentElement.clientWidth / 2);
+    width = window.innerWidth > 1440 ? 600: width;
     $('.triangle-down').css({
       'border-left-width': width,
       'border-right-width': width,

@@ -54,11 +54,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :testers, except: :new do
+  resources :testers do
     collection do
       get 'help'
       get 'choose-device', to: "testers#choose"
-      get 'infor', to: "testers#edit"
+      #get 'infor', to: "testers#edit"
     end
   end
 
@@ -117,6 +117,8 @@ Rails.application.routes.draw do
   match '/404', to: 'errors#file_not_found', via: :all
   match '/422', to: 'errors#unprocessable', via: :all
   match '/500', to: 'errors#internal_server_error', via: :all
-  match "*path", to: "errors#file_not_found", via: :all
+  if Rails.env.production?
+    match "*path", to: "errors#file_not_found", via: :all
+  end
 
 end

@@ -12,15 +12,16 @@ header#header class=(current_user ? '' : 'no-logged')
           a role='button'
             =current_user.email
           ul.dropdown-menu role='menu'
-            li
-              - if current_user.to_tester.try(:tester_infor)
-                a href='/testers/new'
-                  .icon-card
-                  | 个人信息
-              - else
-                a href=edit_tester_path(current_user.to_params)
-                  .icon-card
-                  | 个人信息
+            - if current_user.to_tester.try(:tester_infor)
+              li
+                - if current_user.to_tester.tester_infor.try(:already_finish)
+                  a href="#{edit_tester_path(current_user.to_params)}"
+                    .icon-card
+                    | 个人信息
+                - else
+                  a href="#{new_tester_path}"
+                    .icon-card
+                    | 个人信息
             // 完成个人信息后显示任务列表
             - if current_user.to_tester.try(:tester_infor)
               li

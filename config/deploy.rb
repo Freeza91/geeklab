@@ -19,6 +19,7 @@ set :repository, 'git@github.com:GeekPark/GeekLab.git'
 set :keep_releases, 5
 
 set :unicorn_pid, lambda { "#{deploy_to}/#{shared_path}/tmp/pids/unicorn.pid" }
+set :unicorn_env, 'production'
 set :sidekiq_pid, lambda { "#{deploy_to}/#{shared_path}/tmp/pids/sidekiq.pid" }
 
 set :shared_paths, [
@@ -78,19 +79,20 @@ end
 desc "Deploys the current version to the server."
 task deploy: :environment do
   deploy do
-    invoke :'sidekiq:quiet'
+
     invoke :'git:clone'
-    invoke :'deploy:cleanup'
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
     invoke :'rails:db_migrate'
     invoke :'rails:assets_precompile'
     invoke :'whenever:update'
+    invoke :'deploy:cleanup'
 
     to :launch do
+      invoke :'sidekiq:quiet'
+      invoke :'sidekiq:restart'
       invoke :'unicorn:restart'
       queue "touch #{deploy_to}/tmp/restart.txt"
-      invoke :'sidekiq:restart'
     end
   end
 end

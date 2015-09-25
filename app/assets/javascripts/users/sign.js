@@ -93,8 +93,8 @@ $(function () {
             vm.error.all = true;
           break;
           case 1:
-            // 登录成功
-            location.reload();
+            // 登录成功, 进行跳转
+            location.href = data.url;
           break;
         }
       }

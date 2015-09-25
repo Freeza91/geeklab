@@ -1,10 +1,4 @@
 $(function () {
-  if($('body').hasClass('testers') || $('body').hasClass('assignments')) {
-    $('#js-change-role').on('click', function () {
-      var href = $(this).data('href');
-      location.href = href;
-    });
-  }
   if(!$('body').hasClass('testers_index')) {
     return false;
   }

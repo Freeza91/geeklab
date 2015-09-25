@@ -303,8 +303,8 @@ $(function () {
     var eventName = $('#confirm-modal').data('event-name');
     eventConfirm(eventName);
   });
-  $('#confirm-modal .js-operate-cancel').on('click', function () {
-    $('#confirm-modal').removeClass('show');
+  $('.js-operate-cancel').on('click', function () {
+    $(this).parents('.operate').removeClass('show');
     $('body .main-mask').remove();
   });
   // 点击modal确认按钮时触发的事件
@@ -358,8 +358,9 @@ $(function () {
           case 2:
             // 视频正在转码
             var $modal = $('#info-modal');
-            $modal.find('.title').text('视频正在处理中，请稍候');
-            $modal.modal();
+            $modal.find('.content').text('视频正在处理中，请稍候');
+            $('body').append('<div class="main-mask"></div>');
+            $modal.addClass('show');
           break;
         }
       }
@@ -378,8 +379,6 @@ $(function () {
     var $video = document.createElement('video'),
         $source = document.createElement('source');
     $video.controls = 'control';
-    $video.style.width = '100%';
-    $video.style.height = '100%';
     $source.src = video;
     $video.appendChild($source);
     $curVideo = $video;
@@ -444,7 +443,7 @@ $(function () {
   function showAssignmentDetail (assignmentDetail) {
     assignmentDetailVm.project = assignmentDetail;
     assignmentDetailVm.taskLen = assignmentDetail.tasks.length;
-    assignmentDetailVm.stepLen = assignmentDetailVm.taskLen + 5;
+    assignmentDetailVm.stepLen = assignmentDetailVm.taskLen + 6;
     $('#assignment-detail').modal();
   }
 
@@ -776,20 +775,24 @@ $(function () {
         vm.progress = 'prepare';
         vm.nextStepText = '好了';
       break;
-      case 'situation':
+      case 'hint':
         vm.progress = 'help';
         vm.nextStepText = '开始任务';
       break;
+      case 'situation':
+        vm.progress = 'hint';
+        vm.nextStepText = '接下来 →';
+      break;
       case 'work-on':
-      if(vm.curStepIndex === 4) {
+      if(vm.curStepIndex === 5) {
         vm.curStepContent = vm.project.desc;
         vm.progress = 'situation';
       } else {
-        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 5].content;
+        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 6].content;
       }
       break;
       case 'work-done':
-        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 5].content;
+        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 6].content;
         vm.progress = 'work-on';
         vm.nextStepText = '接下来 →';
       break;
@@ -808,6 +811,10 @@ $(function () {
         vm.nextStepText = '开始任务';
       break;
       case 'help':
+        vm.progress = 'hint';
+        vm.nextStepText = '接下来 →';
+      break;
+      case 'hint':
         vm.progress = 'situation';
         vm.curStepContent = vm.project.desc;
         vm.nextStepText = '接下来 →';
@@ -817,10 +824,10 @@ $(function () {
         vm.curStepContent = vm.project.tasks[0].content;
       break;
       case 'work-on':
-      if(vm.curStepIndex - 5 === vm.taskLen) {
+      if(vm.curStepIndex - 6 === vm.taskLen) {
         vm.progress = 'work-done';
       } else {
-        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 5].content;
+        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 6].content;
       }
       break;
     }

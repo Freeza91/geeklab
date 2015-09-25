@@ -5,7 +5,7 @@ header#header class=(current_user ? '' : 'no-logged')
         | 极客实验室
     ul.nav.navbar-nav.navbar-right.top-nav-right.login
       li
-        button.btn.btn-line.blue.btn-rounded.btn-s#js-change-role data-href="#{pms_path}"
+        button.btn.btn-line.blue.btn-rounded.btn-s.js-change-role data-href="#{pms_path}"
           | 提高产品体验
       - if current_user
         li.dropdown
@@ -22,12 +22,10 @@ header#header class=(current_user ? '' : 'no-logged')
                   a href="#{new_tester_path}"
                     .icon-card
                     | 个人信息
-            // 完成个人信息后显示任务列表
-            - if current_user.to_tester.try(:tester_infor)
-              li
-                a href=assignments_path
-                  i.fa.fa-home
-                  | 任务列表
+            li
+              a href=assignments_path
+                i.fa.fa-home
+                | 任务列表
             li
               a href="#{help_testers_path}" target="_blank"
                 i.fa.fa-lightbulb-o style="font-size: 1.2rem"

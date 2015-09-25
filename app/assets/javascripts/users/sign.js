@@ -151,13 +151,13 @@ $(function () {
 
   function sendCode (vm) {
     if(!vm.email || vm.email === '') {
-      vm.hint = '请输入邮箱';
-      vm.error.regist = true;
+      vm.hint.email = '请输入邮箱';
+      vm.error.email = true;
       return false;
     }
     if(!formValid(vm.email, 'email')) {
-      vm.hint = '邮箱格式错误,请重新输入';
-      vm.error.regist = true;
+      vm.hint.email = '邮箱格式错误,请重新输入';
+      vm.error.email = true;
       return false;
     }
     if(!vm.canSendCode) {

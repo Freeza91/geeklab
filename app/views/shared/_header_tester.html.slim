@@ -5,7 +5,7 @@ header#header class=(current_user ? '' : 'no-logged')
         | 极客实验室
     ul.nav.navbar-nav.navbar-right.top-nav-right.login
       li
-        button.btn.btn-line.blue.btn-rounded.btn-s#js-change-role data-href="#{pms_path}"
+        button.btn.btn-line.blue.btn-rounded.btn-s.js-change-role data-href="#{pms_path}"
           | 提高产品体验
       - if current_user
         li.dropdown

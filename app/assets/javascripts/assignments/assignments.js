@@ -303,8 +303,8 @@ $(function () {
     var eventName = $('#confirm-modal').data('event-name');
     eventConfirm(eventName);
   });
-  $('#confirm-modal .js-operate-cancel').on('click', function () {
-    $('#confirm-modal').removeClass('show');
+  $('.js-operate-cancel').on('click', function () {
+    $(this).parents('.operate').removeClass('show');
     $('body .main-mask').remove();
   });
   // 点击modal确认按钮时触发的事件
@@ -358,8 +358,9 @@ $(function () {
           case 2:
             // 视频正在转码
             var $modal = $('#info-modal');
-            $modal.find('.title').text('视频正在处理中，请稍候');
-            $modal.modal();
+            $modal.find('.content').text('视频正在处理中，请稍候');
+            $('body').append('<div class="main-mask"></div>');
+            $modal.addClass('show');
           break;
         }
       }

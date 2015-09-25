@@ -379,8 +379,6 @@ $(function () {
     var $video = document.createElement('video'),
         $source = document.createElement('source');
     $video.controls = 'control';
-    $video.style.width = '100%';
-    $video.style.height = '100%';
     $source.src = video;
     $video.appendChild($source);
     $curVideo = $video;

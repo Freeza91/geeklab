@@ -443,7 +443,7 @@ $(function () {
   function showAssignmentDetail (assignmentDetail) {
     assignmentDetailVm.project = assignmentDetail;
     assignmentDetailVm.taskLen = assignmentDetail.tasks.length;
-    assignmentDetailVm.stepLen = assignmentDetailVm.taskLen + 5;
+    assignmentDetailVm.stepLen = assignmentDetailVm.taskLen + 6;
     $('#assignment-detail').modal();
   }
 
@@ -775,20 +775,24 @@ $(function () {
         vm.progress = 'prepare';
         vm.nextStepText = '好了';
       break;
-      case 'situation':
+      case 'hint':
         vm.progress = 'help';
         vm.nextStepText = '开始任务';
       break;
+      case 'situation':
+        vm.progress = 'hint';
+        vm.nextStepText = '接下来 →';
+      break;
       case 'work-on':
-      if(vm.curStepIndex === 4) {
+      if(vm.curStepIndex === 5) {
         vm.curStepContent = vm.project.desc;
         vm.progress = 'situation';
       } else {
-        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 5].content;
+        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 6].content;
       }
       break;
       case 'work-done':
-        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 5].content;
+        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 6].content;
         vm.progress = 'work-on';
         vm.nextStepText = '接下来 →';
       break;
@@ -807,6 +811,10 @@ $(function () {
         vm.nextStepText = '开始任务';
       break;
       case 'help':
+        vm.progress = 'hint';
+        vm.nextStepText = '接下来 →';
+      break;
+      case 'hint':
         vm.progress = 'situation';
         vm.curStepContent = vm.project.desc;
         vm.nextStepText = '接下来 →';
@@ -816,10 +824,10 @@ $(function () {
         vm.curStepContent = vm.project.tasks[0].content;
       break;
       case 'work-on':
-      if(vm.curStepIndex - 5 === vm.taskLen) {
+      if(vm.curStepIndex - 6 === vm.taskLen) {
         vm.progress = 'work-done';
       } else {
-        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 5].content;
+        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 6].content;
       }
       break;
     }

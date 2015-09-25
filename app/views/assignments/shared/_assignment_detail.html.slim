@@ -10,7 +10,7 @@
             | /
             span.total-page v-text="stepLen"
           .task-left.vertical-center
-            .task-point-hint v-show="curStepIndex > 3"
+            .task-point-hint v-show="curStepIndex > 4"
               | 温馨提示：在录制过程中请大声的说出你的感受
             .task-content.vertical-item
               .requirement v-show="progress === 'requirement'"
@@ -36,6 +36,8 @@
                 p
                   a v-attr="href: '#{help_testers_path}' + '?q=' + project.device" target="_blank"
                     | 怎么录制视频
+              .hint v-show="progress === 'hint'"
+                | 温馨提示：在录制过程中请大声的说出你的感受
               .situation v-show="progress === 'situation'" v-text="curStepContent"
               .work-on v-show="progress === 'work-on'" v-text="curStepContent"
               .work-done v-show="progress === 'work-done'"

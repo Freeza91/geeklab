@@ -7,10 +7,12 @@ $(function () {
       data: {
         rememberMe: true,
         hint: {
-          email: ''
+          email: '',
+          password: ''
         },
         error: {
           email: false,
+          password: false,
           login: false
         }
       },
@@ -90,7 +92,8 @@ $(function () {
           case 0:
             // 登录失败
             vm.error.email = true;
-            vm.error.all = true;
+            vm.error.password = true;
+            vm.error.login = true;
           break;
           case 1:
             // 登录成功, 进行跳转
@@ -201,6 +204,12 @@ $(function () {
     } else {
       vm.error.email = true;
       vm.hint.email = '请输入邮箱';
+      validated = false;
+    }
+
+    // check password
+    if(!password) {
+      vm.error.password = true;
       validated = false;
     }
     return validated;

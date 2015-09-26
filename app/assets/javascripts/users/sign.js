@@ -208,8 +208,11 @@ $(function () {
 
   function checkRegistInfo (vm) {
     var email = vm.email,
+        code = vm.code,
         password = vm.password,
         validated = true;
+
+    // check email
     if(email) {
       if(!checkEmailFormat(vm)) {
         validated = false;
@@ -219,6 +222,15 @@ $(function () {
       vm.error.email = true;
       validated = false;
     }
+
+    // check code
+    if(!code) {
+       vm.error.code = true;
+       vm.hint.code = '请输入验证码';
+       validated = false;
+    }
+
+    // check password
     if(password) {
       if(!checkPasswordFormat(vm)) {
         validated = false;

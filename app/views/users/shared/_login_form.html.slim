@@ -3,8 +3,10 @@ form.form
     input.form-input type="text" name="email" placeholder="邮箱" v-model="email" v-on="focus: error.email = false, blur: checkEmailFormat(this)"
     span.hint-text v-show="error.email"
       | {{hint.email}}
-  .form-field.with-hint-text v-class="error.all ? 'error': ''"
-    input.form-input type="password" name="password" placeholder="密码" v-model="password"
+  .form-field.with-hint-text v-class="error.password ? 'error': ''"
+    input.form-input type="password" name="password" placeholder="密码" v-model="password" v-on="focus: error.password = false"
+    span.hint-text v-show="error.password && !error.login"
+      | 请输入密码
   .form-field
     label.checkbox-inline
       input type="checkbox" v-model="rememberMe"
@@ -12,6 +14,6 @@ form.form
     a.pull-right href="/users/passwords/reset" target="_blank"
       | 忘记密码?
   .form-field.submit
-    p.form-hint.error v-show="error.all"
+    p.form-hint.error v-show="error.login"
       | 邮箱或密码输入错误, 请重新输入
     input.btn.btn-flat.blue.btn-m.btn-rounded type="submit" value="登录" v-on="click: submit(this, $event)"

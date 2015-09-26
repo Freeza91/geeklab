@@ -7,10 +7,12 @@ $(function () {
       data: {
         rememberMe: true,
         hint: {
-          email: ''
+          email: '',
+          password: ''
         },
         error: {
           email: false,
+          password: false,
           login: false
         }
       },
@@ -90,7 +92,8 @@ $(function () {
           case 0:
             // 登录失败
             vm.error.email = true;
-            vm.error.all = true;
+            vm.error.password = true;
+            vm.error.login = true;
           break;
           case 1:
             // 登录成功, 进行跳转
@@ -203,13 +206,22 @@ $(function () {
       vm.hint.email = '请输入邮箱';
       validated = false;
     }
+
+    // check password
+    if(!password) {
+      vm.error.password = true;
+      validated = false;
+    }
     return validated;
   }
 
   function checkRegistInfo (vm) {
     var email = vm.email,
+        code = vm.code,
         password = vm.password,
         validated = true;
+
+    // check email
     if(email) {
       if(!checkEmailFormat(vm)) {
         validated = false;
@@ -219,6 +231,15 @@ $(function () {
       vm.error.email = true;
       validated = false;
     }
+
+    // check code
+    if(!code) {
+       vm.error.code = true;
+       vm.hint.code = '请输入验证码';
+       validated = false;
+    }
+
+    // check password
     if(password) {
       if(!checkPasswordFormat(vm)) {
         validated = false;

@@ -38,35 +38,13 @@ $(function () {
   function checkEmail (vm) {
     var email = vm.email;
     if(email) {
-      if(!formValid(email, 'email')) {
+      if(!Geeklab.formValueValid(email, 'email')) {
         vm.hint = '邮箱格式错误';
         vm.error = true;
         return false;
       }
     }
     return true;
-  }
-
-  function formValid (value, type) {
-    var result;
-    switch(type){
-      case 'email':
-        var emailReg = /^(\w)+(\.\w+)*@(\w)+((\.\w{2,3}){1,3})$/;
-        result = emailReg.test(value);
-      break;
-      case 'password':
-        var passwordReg = /[0-9a-zA-Z_]{6,16}/;
-        result = passwordReg.test(value);
-      break;
-      case 'mobile_phone':
-        var mobileReg = /^1[3|5|7|8][0-9]{9}$/;
-        result = mobileReg.test(value);
-        break;
-      case 'required':
-        result = (value.length > 0);
-        break;
-    }
-    return result;
   }
 
   function sendEmail (vm, event) {
@@ -129,7 +107,7 @@ $(function () {
       vm.error = true;
       return false;
     }
-    if(!formValid(vm.password, 'password')) {
+    if(!Geeklab.formValueValid(vm.password, 'password')) {
       vm.hint = '密码格式错误';
       vm.error = true;
       return false;

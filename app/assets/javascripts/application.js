@@ -31,9 +31,6 @@
 // html5sortable
 //= require jquery.sortable
 
-//  表单验证
-//= require form.valid
-
 // 生成二维码插件
 //= require qrcode
 

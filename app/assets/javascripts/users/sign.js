@@ -158,7 +158,7 @@ $(function () {
       vm.error.email = true;
       return false;
     }
-    if(!formValid(vm.email, 'email')) {
+    if(!Geeklab.formValueValid(vm.email, 'email')) {
       vm.hint.email = '邮箱格式错误,请重新输入';
       vm.error.email = true;
       return false;
@@ -260,7 +260,7 @@ $(function () {
 
   function checkEmailFormat (vm) {
     var email = vm.email;
-    if(email && !formValid(email, 'email')) {
+    if(email && !Geeklab.formValueValid(email, 'email')) {
       vm.error.email = true;
       vm.hint.email = '邮箱格式错误';
       return false;
@@ -269,7 +269,7 @@ $(function () {
   }
   function checkPasswordFormat (vm) {
     var password = vm.password;
-    if(password && !formValid(password, 'password')) {
+    if(password && !Geeklab.formValueValid(password, 'password')) {
       vm.error.password = true;
       vm.hint.password = '密码格式错误';
       return false;
@@ -279,7 +279,7 @@ $(function () {
   function isEmailRegisted (vm) {
     var email = vm.email,
         validated = true;
-    emailRegisted(email, function () {
+    Geeklab.emailRegisted(email, function () {
       vm.hint.email = '邮箱已被注册';
       vm.error.email = true;
       validated = false;
@@ -293,52 +293,5 @@ $(function () {
         hint[key] = '';
       }
     }
-  }
-
-  function formValid (value, type) {
-    var result;
-    switch(type){
-      case 'email':
-        var emailReg = /^(\w)+(\.\w+)*@(\w)+((\.\w{2,3}){1,3})$/;
-        result = emailReg.test(value);
-      break;
-      case 'password':
-        var passwordReg = /[0-9a-zA-Z_]{6,16}/;
-        result = passwordReg.test(value);
-      break;
-      case 'mobile_phone':
-        var mobileReg = /^1[3|5|7|8][0-9]{9}$/;
-        result = mobileReg.test(value);
-        break;
-      case 'required':
-        result = (value.length > 0);
-        break;
-    }
-    return result;
-  }
-
-  function emailRegisted(email, callback) {
-    $.ajax({
-      url: '/users/registrations/is_emails_exist',
-      data: {email: email}
-    })
-    .done(function (data, status, xhr) {
-      if(data.status === 0) {
-        switch(data.code) {
-          case 0:
-            // 已被注册
-            if(callback !== undefined) {
-              callback();
-            }
-          break;
-          case 1:
-            // 未被注册
-          break;
-        }
-      }
-    })
-    .error(function (errors, status) {
-      console.log(errors);
-    });
   }
 });

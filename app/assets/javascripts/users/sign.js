@@ -159,7 +159,7 @@ $(function () {
       return false;
     }
     if(!Geeklab.formValueValid(vm.email, 'email')) {
-      vm.hint.email = '邮箱格式错误,请重新输入';
+      vm.hint.email = '邮箱格式错误';
       vm.error.email = true;
       return false;
     }

@@ -16,28 +16,27 @@ header#header class=(current_user ? '' : 'no-logged')
               li
                 - if current_user.to_tester.tester_infor.try(:already_finish)
                   a href="#{edit_tester_path(current_user.to_params)}"
-                    .icon-card
+                    .profile-icon.info-card
                     | 个人信息
                 - else
                   a href="#{new_tester_path}"
-                    .icon-card
+                    .profile-icon.info-card
                     | 个人信息
             li
               a href=assignments_path
-                i.fa.fa-home
+                .profile-icon.home
                 | 任务列表
             li
               a href="#{help_testers_path}" target="_blank"
-                i.fa.fa-lightbulb-o style="font-size: 1.2rem"
+                .profile-icon.bulb
                 | 如何录制
             li
               a href=stores_root_path target="_blank"
-                span.icon-img.icon-outer-18 style="margin-right: 7px; margin-bottom: -4px"
-                  i.icon-inner.icon-score-old.hover style="margin-bottom: 4px"
+                .profile-icon.geekcoin
                 | 极客商城
             li
               a rel="noflow" data-method="delete" href=users_session_path(current_user.to_params)
-                i.fa.fa-power-off
+                .profile-icon.poweroff
                 | 退出登录
       - else
         li

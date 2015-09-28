@@ -245,13 +245,13 @@ $(function () {
     var $root = $el.parents('.form-group');
     switch(type) {
       case 'email':
-        result = emailValid(value, $el);
+        result = Geeklab.emailValid(value, $el);
         if(!result) {
           $root.find('.form-control-feedback').removeClass('sr-only');
         }
       break;
       case 'nickname':
-        result = formValid(value, 'required');
+        result = Geeklab.formValueValid(value, 'required');
         if(!result) {
           $root.addClass('has-error').find('.form-control-feedback').removeClass('sr-only');
         }
@@ -261,7 +261,7 @@ $(function () {
         $root.addClass('has-error').find('.form-control-feedback').removeClass('sr-only').text('请输入手机号');
         result = false;
       } else {
-        result = formValid(value, 'mobile_phone');
+        result = Geeklab.formValueValid(value, 'mobile_phone');
         if(!result) {
           $root.addClass('has-error').find('.form-control-feedback').removeClass('sr-only').text('格式错误');
         }

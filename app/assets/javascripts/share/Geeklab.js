@@ -46,7 +46,23 @@ $(function () {
     .error(function (errors, status) {
       console.log(errors);
     });
-  }
+  };
+
+  Geeklab.emailValid = function (email, $el) {
+    var $root = $el.parents('.form-group');
+    // 清理目前显示的提示信息
+    $root.removeClass('has-success has-error').find('.glyphicon-ok').addClass('sr-only');
+    $root.find('.form-control-feedback.text').text('');
+    if(email === '') {
+      $root.addClass('has-error').find('.form-control-feedback.text').text('请输入邮箱');
+      return false;
+    }
+    if(!Geeklab.formValueValid(email, 'email')) {
+      $root.addClass('has-error').find('.form-control-feedback.text').text('邮箱格式错误');
+      return false;
+    }
+    return true;
+  };
 
   window.Geeklab = Geeklab;
 });

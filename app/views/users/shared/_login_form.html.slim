@@ -8,8 +8,9 @@ form.form
     span.hint-text v-show="error.password && !error.login"
       | 请输入密码
   .form-field
-    label.checkbox-inline
-      input type="checkbox" v-model="rememberMe"
+    #remember-me v-class="rememberMe ? 'checked' : ''"
+      input#checkbox-1 type="checkbox" v-model="rememberMe"
+    label for="checkbox-1" style="cursor: pointer"
       | 30天免登录
     a.pull-right href="/users/passwords/reset" target="_blank"
       | 忘记密码?

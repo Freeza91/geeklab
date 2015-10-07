@@ -64,5 +64,35 @@ $(function () {
     return true;
   };
 
+  Geeklab.addMask = function () {
+    $('body').append('<div class="main-mask"></div>');
+  }
+
+  Geeklab.removeMak = function () {
+    $('body .main-mask').remove();
+  }
+
+  Geeklab.showLoading = function () {
+    Geeklab.addMask();
+    $('body').append('<div class="jar">'
+                     + '<div class="mouth"></div>'
+                     + '<div class="neck"></div>'
+                     + '<div class="base">'
+                     + '<div class="liquid"></div>'
+                     + '<div class="wave"></div>'
+                     + '<div class="wave"></div>'
+                     + '<div class="bubble"></div>'
+                     + '<div class="bubble"></div>'
+                     + '</div>'
+                     + '<div class="bubble"></div>'
+                     + '<div class="bubble"></div>'
+                     + '</div>');
+  }
+
+  Geeklab.removeLoading = function () {
+    $('body .jar').remove();
+    Geeklab.removeMak();
+  }
+
   window.Geeklab = Geeklab;
 });

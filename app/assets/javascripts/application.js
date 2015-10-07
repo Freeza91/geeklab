@@ -39,7 +39,6 @@
 
 
 //= require_tree ./assignments
-//= require_tree ./pages
 //= require_tree ./projects
 //= require_tree ./share
 //= require_tree ./testers

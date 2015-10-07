@@ -61,11 +61,15 @@ $(function () {
 
   // 点击任务标题显示任务说明
   $('.assignments-wrp').on('click', '.js-assignment-start', function () {
+    Geeklab.showLoading();
     var $this = $(this);
     $card = $this.parents('.card');
     assignmentId = $card.data('assignmentId');
     getAssignmentDetail(testerId, assignmentId, function (project) {
-      showAssignmentDetail(project);
+      setTimeout(function () {
+        Geeklab.removeLoading();
+        showAssignmentDetail(project);
+      }, 1500);
       // 任务为手机应用时生成二维码
       if(project.device !== 'web') {
         getQrcodeToken(assignmentId, function (token) {
@@ -338,6 +342,8 @@ $(function () {
 
   // 获取视频url
   function getAssignmentVideoUrl (testerId, assignmentId, callback) {
+    Geeklab.showLoading();
+
     var url = '/assignments/get_video';
 
     $.ajax({
@@ -348,21 +354,24 @@ $(function () {
     })
     .done(function (data, status) {
       if(data.status === 0) {
-        switch(data.code) {
-          case 0:
-            console.log(data.msg);
-          break;
-          case 1:
-            callback(data.video);
-          break;
-          case 2:
-            // 视频正在转码
-            var $modal = $('#info-modal');
-            $modal.find('.content').text('视频正在处理中，请稍候');
-            $('body').append('<div class="main-mask"></div>');
-            $modal.addClass('show');
-          break;
-        }
+        setTimeout(function () {
+          Geeklab.removeLoading();
+          switch(data.code) {
+            case 0:
+              console.log(data.msg);
+            break;
+            case 1:
+              callback(data.video);
+            break;
+            case 2:
+              // 视频正在转码
+              var $modal = $('#info-modal');
+              $modal.find('.content').text('视频正在处理中，请稍候');
+              $('body').append('<div class="main-mask"></div>');
+              $modal.addClass('show');
+            break;
+          }
+        }, 1500);
       }
     })
     .error(function (errors, status) {

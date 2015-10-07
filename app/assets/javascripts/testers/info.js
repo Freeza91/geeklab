@@ -272,6 +272,10 @@ $(function () {
     }
 
     var id = $('#id').attr('value');
+
+    // loading
+    Geeklab.showLoading();
+
     $.ajax({
       url: '/testers/' + id,
       method: 'put',
@@ -279,9 +283,12 @@ $(function () {
     })
     .done(function (data, status, xhr) {
       if(data.status === 0 && data.code === 1) {
-        var $modal = $('#form-finish');
-        $('body').append('<div class="main-mask"></div>')
-        $modal.addClass('show');
+        setTimeout(function () {
+          Geeklab.removeLoading();
+          var $modal = $('#form-finish');
+          $('body').append('<div class="main-mask"></div>')
+          $modal.addClass('show');
+        }, 1500);
       }
     })
     .error(function (errors, status) {

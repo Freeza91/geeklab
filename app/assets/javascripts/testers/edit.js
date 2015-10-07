@@ -223,6 +223,10 @@ $(function () {
       return false;
     }
     var id = location.pathname.split('/')[2];
+
+    // loading
+    Geeklab.showLoading();
+
     $.ajax({
       url: '/testers/' + id,
       method: 'put',

@@ -1,0 +1,53 @@
+@import ./mixin
+// 翻转动画
+.flip
+  position: relative
+  transform-style: preserve-3d
+  -webkit-transform-style: preserve-3d
+  .front,
+  .back
+    position: absolute
+    top: 0
+    left: 0
+    backface-visibility: hidden
+    -webkit-backface-visibility: hidden
+    transition: all .7s cubic-bezier(0.22, 0.61, 0.36, 1)
+.flip.fliped
+  .front
+    transform: rotateY(180deg)
+    -webkit-transform: rotateY(180deg)
+    -moz-transform: rotateY(180deg)
+  .back
+    transform: rotateY(0)
+    -webkit-transform: rotateY(0)
+    -moz-transform: rotateY(180deg)
+
+
+@keyframes wave
+  from
+    +transform(translateX(100px))
+  to
+    +transform(translateX(-100px))
+
+@keyframes bounce
+  0%
+    +transform(translate(5px, 15px))
+  50%
+    +transform(translate(0, -15px))
+  100%
+    +transform(translate(-5px, -37px))
+    opacity: 1
+
+@keyframes buble
+  0%
+    +transform(translate(3px, 10px))
+  25%
+    +transform(translate(0, 0))
+  50%
+    +transform(translate(-3px, -25px))
+  75%
+    +transform(translate(0, -50px))
+    opacity: 1
+  100%
+    +transform(translate(3px, -100px))
+    opacity: 0

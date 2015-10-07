@@ -1,0 +1,77 @@
+@import ../helpers/variables
+@import ../helpers/mixin
+@import ../helpers/animation
+
+.jar
+  position: relative
+  width: 200px
+  margin: 100px auto 0
+  text-align: center
+  .mouth
+    width: 40px
+    height: 10px
+    margin: 0 auto -1px
+    border-right: 4px solid #fff
+    border-left: 4px solid #fff
+    +border-radius(20px)
+  .neck
+    width: 35px
+    height: 45px
+    margin: 0 auto -5px
+    z-index: 7
+    position: relative
+    border-right: 4px solid #fff
+    border-left: 4px solid #fff
+  .bubble
+    width: 10px
+    height: 10px
+    position: absolute
+    background-color: $light-blue
+    opacity: 0.4
+    left: 92px
+    z-index: 8
+    top: 110px
+    +border-radius(100%)
+    +animation(buble 2s linear 1s infinite)
+  .bubble + .bubble
+    left: 87px
+    top: 120px
+    width: 15px
+    height: 15px
+    animation-duration: 3s
+  .base
+    margin: auto
+    width: 120px
+    height: 100px
+    border: 4px solid #fff
+    +border-radius(50%)
+    overflow: hidden
+    position: relative
+    z-index: 5
+    .bubble
+      left: 15px
+      top: 50px
+      +animation(bounce 2.3s linear 0s infinite alternate)
+    .bubble + .bubble
+      left: 75px
+      top: 40px
+      animation-duration: 3s
+  .liquid
+    height: 40px
+    background-color: $light-blue
+    position: absolute
+    bottom: 0
+    left: 0
+    right: 0
+  .wave
+    width: 60px
+    height: 20px
+    position: absolute
+    background-color: $light-blue
+    left: 0
+    top: 50px
+    +animation(wave 1s linear 1s infinite alternate)
+    +border-radius(50%)
+  .wave + .wave
+    left: auto
+    right: 0

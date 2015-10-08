@@ -58,7 +58,7 @@
   .panel-body
     input type="file" accept="image/*" name="qrcode" style="display: none" v-on="change: localImageView"
     img.qrcode-preview
-    .icon
+    .upload
       .fa.fa-upload.fa-5x style="color: #eee"
     button.btn.btn-blue.upload-qrcode v-on="click: uploadQrcode($event)" style="width: 120px"
       | 上传二维码

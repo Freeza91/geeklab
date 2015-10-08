@@ -132,7 +132,7 @@ $(function () {
         switch(data.code) {
           case 1:
             // 注册成功
-            location.reload();
+            location.href = "/assignments";
           break;
           case 2:
             // 邮箱已被注册

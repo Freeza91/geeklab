@@ -10,10 +10,10 @@ form.form
   .form-field
     #remember-me v-class="rememberMe ? 'checked' : ''"
       input#checkbox-1 type="checkbox" v-model="rememberMe"
-    label for="checkbox-1" style="cursor: pointer"
+    label for="checkbox-1" style="cursor: pointer; vertical-align: middle"
       | 30天免登录
-    a.pull-right href="/users/passwords/reset" target="_blank"
-      | 忘记密码?
+    a.pull-right href="/users/passwords/reset" target="_blank" style="font-size: .8rem"
+      | 忘记密码
   .form-field.submit
     p.form-hint.error v-show="error.login"
       | 邮箱或密码输入错误, 请重新输入

@@ -507,12 +507,12 @@ $(function () {
     if(count > 60 * 60 * 1000) {
       var hours = ~~ ((count / (60 * 60 * 1000)) % 24);
       hours = hours < 10 ? '0' + hours : hours;
-      timeArr.push(hours + '小时');
+      timeArr.push(hours + '时');
     }
     if(count > 60 * 1000) {
       var minutes = ~~ ((count / (60 * 1000)) % 60);
       minutes = minutes < 10 ? '0' + minutes : minutes;
-      timeArr.push(~~ ((count / (60 * 1000)) % 60) + '分');
+      timeArr.push( minutes + '分');
     }
     if(count > 1000) {
       var seconds = ~~ ((count / 1000) % 60);

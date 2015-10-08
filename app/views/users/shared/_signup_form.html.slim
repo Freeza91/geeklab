@@ -16,10 +16,10 @@ form.form
     a.color-yellow href="{{mailbox}}" target="_blank" v-show="!!mailbox"
       | 进入邮箱
   .form-field.with-hint-text v-class="error.password ? 'error': ''"
-    input.form-input type="password" name="password" placeholder="密码" v-model="password" v-on="focus: error.password = false, blur: checkPasswordFormat(this)"
+    input.form-input type="password" name="password" placeholder="密码" v-model="password" v-on="focus: passwordFocus(this), blur: checkPasswordFormat(this)"
     span.hint-text v-show="error.password"
       | {{hint.password}}
-    p.form-hint
+    p.form-hint v-attr="style: isPasswordFocus ?  'opacity: 1' : 'opacity: 0'"
       | 6-16个字符，可包括数字、字母、下划线
   .form-field.submit
     p.form-hint.error v-show="error.regist" v-text="hint.regist"

@@ -28,6 +28,7 @@ $(function () {
         mailbox: '',
         countDown: 60,
         canSendCode: true,
+        isPasswordFocus: false,
         hint: {
           email: '',
           code: '',
@@ -45,6 +46,7 @@ $(function () {
         checkEmail: checkEmail,
         checkPasswordFormat: checkPasswordFormat,
         sendCode: sendCode,
+        passwordFocus: passwordFocus,
         submit: regist
       }
     });
@@ -268,6 +270,8 @@ $(function () {
     return true;
   }
   function checkPasswordFormat (vm) {
+    vm.isPasswordFocus = false;
+
     var password = vm.password;
     if(password && !Geeklab.formValueValid(password, 'password')) {
       vm.error.password = true;
@@ -285,6 +289,11 @@ $(function () {
       validated = false;
     });
     return validated
+  }
+
+  function passwordFocus (vm) {
+    vm.error.password = false;
+    vm.isPasswordFocus = true;
   }
 
   function clearHint (hint) {

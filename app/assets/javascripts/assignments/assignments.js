@@ -674,31 +674,6 @@ $(function () {
     $(this).parents('.status').find('.comment').fadeOut();
   });
 
-  // 点击关闭或者查看过期任务后，关闭提示
-  $('.reminder-close').on('click', function () {
-    var $reminder = $(this).parents('.assignments-reminder');
-    closeMissAssignmentsReminder($reminder);
-  });
-  $('.miss-count').click('click', function () {
-    var $reminder = $(this).parents('.assignments-reminder');
-    closeMissAssignmentsReminder($reminder);
-  });
-  // 关闭过期任务提示
-  function closeMissAssignmentsReminder ($reminder) {
-    var url = '/assignments/not_interest';
-    $.ajax({
-      url: url
-    })
-    .done(function (data, status) {
-      if(data.status === 0 && data.code === 1) {
-        $reminder.fadeOut();
-      }
-    })
-    .error(function (errors, status) {
-      console.log(errors);
-    });
-  }
-
   // 获取生成二维码所需token
   function getQrcodeToken (assignmentId, callback) {
     var url = "/assignments/qr_token";

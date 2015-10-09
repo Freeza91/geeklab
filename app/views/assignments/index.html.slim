@@ -55,10 +55,9 @@ main role="main" class="#{isAssignmentEmpty(@assignments)}"
   input type="file" id="video" accept="video/*" style="display:none"
   <!-- 上传视频文件选择-->
 
-- if @num && @num != 0
-  <!-- 过期任务提示开始 -->
-  = render partial: 'assignments/shared/miss_assignments_reminder'
-  <!-- 过期任务提示结束 -->
+  //= render partial: 'assignments/shared/miss_assignments_reminder'
+  <!-- 过期任务入口 -->
+  a.assignments-reminder href="#{miss_assignments_path}" target="_blank"
 
 - if !current_user.to_tester.tester_infor.try(:already_finish) && current_user.approved
   <!-- 完成个人信息的提示 -->

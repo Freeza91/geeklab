@@ -159,7 +159,7 @@ $(function () {
   function countDownInit () {
     $('.count-down').each(function (index, item) {
       var $ele = $(item),
-          deadline = $ele.data('deadline'),
+          deadline = $ele.data('deadline').replace(/-/g, '/'),
           now = new Date();
       projectDeadline[index] = new Date(deadline);
       var times = projectDeadline[index] - now;

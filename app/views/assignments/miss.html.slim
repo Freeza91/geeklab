@@ -1,4 +1,4 @@
-main role="main"
+main role="main" class="#{isAssignmentEmpty(@assignments)}"
   section.assignments-list data-tester-id="#{@current_user.to_tester.to_params}"
     .assignments-wrp.clearfix
       - if @assignments
@@ -32,13 +32,17 @@ main role="main"
                     i.icon-inner.icon-score-old
                   span.number
                     = assignment.project.credit
-      .load-more
+    .load-more
+      - if @assignments.try(:size) > 0
         - if @assignments.try(:size) < 10
           p
             | 没有更多了
         - else
           button.btn.btn-base.yellow.btn-full
             | 加载更多
+    - if @assignments.try(:size) == 0
+        p.no-assignment-hint
+          | 还没有过期的任务噢
 
 = render partial: 'shared/confirm_modal'
 = render partial: 'assignments/shared/assignment_detail'

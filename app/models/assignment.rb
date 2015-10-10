@@ -65,7 +65,7 @@ class Assignment < ActiveRecord::Base
       tester_infor = self.tester.try(:tester_infor)
 
       email_to =
-        if tester_infor
+        if tester_infor && tester_infor.email_contract.present?
           tester_infor.email_contract
         else
           tester.email

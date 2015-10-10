@@ -14,6 +14,7 @@ class Assignment < ActiveRecord::Base
   belongs_to :project, inverse_of: :assignments
   has_one    :comment, dependent: :destroy
   has_many   :feedbacks
+  has_one    :credit_records
 
   accepts_nested_attributes_for :feedbacks, allow_destroy: true
 

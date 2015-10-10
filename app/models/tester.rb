@@ -3,5 +3,6 @@ class Tester < User
 
   has_one  :tester_infor,   inverse_of: :tester, dependent: :destroy
   has_many :assignments,    inverse_of: :tester
+  has_many :credit_records, inverse_of: :tester
 
 end

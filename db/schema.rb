@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150915082019) do
+ActiveRecord::Schema.define(version: 20151010032626) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,14 +33,15 @@ ActiveRecord::Schema.define(version: 20150915082019) do
     t.integer  "tester_id"
     t.string   "status"
     t.string   "video"
-    t.boolean  "is_transfer", default: false
-    t.boolean  "is_sexy",     default: false
-    t.string   "reasons",                     array: true
+    t.boolean  "is_transfer",       default: false
+    t.boolean  "is_sexy",           default: false
+    t.string   "reasons",                           array: true
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_read",     default: false
-    t.integer  "rank",        default: 1
-    t.boolean  "public",      default: false
+    t.boolean  "is_read",           default: false
+    t.boolean  "public",            default: false
+    t.integer  "rating_from_pm"
+    t.integer  "rating_from_admin"
   end
 
   create_table "comments", force: :cascade do |t|
@@ -114,6 +115,7 @@ ActiveRecord::Schema.define(version: 20150915082019) do
     t.string   "reasons",                                                   array: true
     t.boolean  "beginner",     default: false
     t.datetime "assign_time",  default: '2015-03-02 00:00:00'
+    t.integer  "basic_bonus",  default: 0
   end
 
   create_table "skus", force: :cascade do |t|

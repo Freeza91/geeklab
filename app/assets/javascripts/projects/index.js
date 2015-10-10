@@ -21,7 +21,7 @@ $(function () {
 
     var $modal = $('#confirm-modal');
     $modal.data('eventName', 'deleteProject');
-    $modal.find('.modal-body .content').text('确认删除任务?');
+    $modal.find('.content').text('确认删除任务?');
     $('body').append('<div class="main-mask"></div>')
     $modal.addClass('show');
   });
@@ -42,7 +42,9 @@ $(function () {
       console.log(errors);
     });
   });
+
   $('#confirm-modal .js-operate-cancel').on('click', confirmClose);
+
   function confirmClose() {
     $('#confirm-modal').removeClass('show');
     $('body .main-mask').remove();
@@ -157,7 +159,7 @@ $(function () {
   function countDownInit () {
     $('.count-down').each(function (index, item) {
       var $ele = $(item),
-          deadline = $ele.data('deadline'),
+          deadline = $ele.data('deadline').replace(/-/g, '/'),
           now = new Date();
       projectDeadline[index] = new Date(deadline);
       var times = projectDeadline[index] - now;

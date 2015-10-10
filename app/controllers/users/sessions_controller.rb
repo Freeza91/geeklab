@@ -19,11 +19,12 @@ class Users::SessionsController < ApplicationController
       session[:id] = @user.to_params
       @user.remember_me(cookies) if params[:remember_me] == 'true'
       json[:msg] = '登陆成功'
+      p request.referer
       json[:url] =
-        if @user.role == 'tester'
-          new_tester_path
+        if /pms/i.match(request.referer)
+          pms_path
         else
-          new_pm_path
+          assignments_path
         end
 
       render json: json

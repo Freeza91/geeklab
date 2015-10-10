@@ -2,8 +2,6 @@ class Assignment < ActiveRecord::Base
 
   scope :expired,      -> { joins(:project).where("projects.expired_at < ?", Time.now - 1.minutes) }
   scope :not_expired,  -> { joins(:project).where("projects.expired_at > ?", Time.now + 1.minutes) }
-  scope :not_view,     -> (last_view){ joins(:project).where("projects.expired_at > ?", last_view) }
-
   scope :test,         -> { where("assignments.status = ?", 'test') }
   scope :not_take_part,-> { where("assignments.status = ?",  "new") }
   scope :ing,          -> { where('assignments.status in (?)', ['wait_check', 'checking', 'not_accept', 'delete']) }
@@ -33,10 +31,6 @@ class Assignment < ActiveRecord::Base
 
     def missing
       expired.not_take_part
-    end
-
-    def not_view_num(last_view_time)
-      expired.not_take_part.not_view(last_view_time).size
     end
 
     def test_task
@@ -69,8 +63,14 @@ class Assignment < ActiveRecord::Base
       task_url = "#{Settings.domain}/assignments/join"
       name = self.project.name
       tester_infor = self.tester.try(:tester_infor)
-      return unless tester_infor # user deleted by admin
-      email_to = tester_infor.email_contract || email
+
+      email_to =
+        if tester_infor && tester_infor.email_contract.present?
+          tester_infor.email_contract
+        else
+          tester.email
+        end
+
       UserMailer.video_check_failed(email_to, name, task_url + "#ing").deliver_later if status == "not_accept"
       UserMailer.video_check_success(email_to, name, task_url + "#done").deliver_later if status == "success"
     end

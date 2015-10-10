@@ -14,12 +14,6 @@ if Rails.env.development?
       UserMailer.new_task_notice('rudy@geekpark.net', name, task_url)
     end
 
-    def novice_task_approved
-      task_url = "#{Settings.domain}/testers/1/assignments"
-      title = "你已经通过审核，正是成为一个测试用户"
-      UserMailer.novice_task_approved('rudy@geekpark.net', title, task_url)
-    end
-
     def video_check_failed
       task_url = "#{Settings.domain}/testers/1/assignments/join"
       name = 'xxx新任务'

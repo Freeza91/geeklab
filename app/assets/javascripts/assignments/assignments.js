@@ -61,11 +61,15 @@ $(function () {
 
   // 点击任务标题显示任务说明
   $('.assignments-wrp').on('click', '.js-assignment-start', function () {
+    Geeklab.showLoading();
     var $this = $(this);
     $card = $this.parents('.card');
     assignmentId = $card.data('assignmentId');
     getAssignmentDetail(testerId, assignmentId, function (project) {
-      showAssignmentDetail(project);
+      setTimeout(function () {
+        Geeklab.removeLoading();
+        showAssignmentDetail(project);
+      }, 1500);
       // 任务为手机应用时生成二维码
       if(project.device !== 'web') {
         getQrcodeToken(assignmentId, function (token) {
@@ -300,11 +304,11 @@ $(function () {
 
   // 点击modal确认按钮的处理函数
   $('#confirm-modal #confirm').on('click', function () {
-    var eventName = $(this).parents('.modal').data('eventName');
+    var eventName = $('#confirm-modal').data('event-name');
     eventConfirm(eventName);
   });
-  $('#confirm-modal .js-operate-cancel').on('click', function () {
-    $('#confirm-modal').removeClass('show');
+  $('.js-operate-cancel').on('click', function () {
+    $(this).parents('.operate').removeClass('show');
     $('body .main-mask').remove();
   });
   // 点击modal确认按钮时触发的事件
@@ -325,17 +329,21 @@ $(function () {
       break;
       case 'deleteAssignment':
         // 删除任务
+        console.log('xxx');
         deleteAssigment (testerId, assignmentId, function () {
           // 删除任务后的回调， 将当前卡片重页面上移除
           $card.remove();
         });
       break;
     }
-    $('#confirm-modal').modal('hide');
+    $('#confirm-modal').removeClass('show');
+    $('body .main-mask').remove();
   }
 
   // 获取视频url
   function getAssignmentVideoUrl (testerId, assignmentId, callback) {
+    Geeklab.showLoading();
+
     var url = '/assignments/get_video';
 
     $.ajax({
@@ -346,20 +354,24 @@ $(function () {
     })
     .done(function (data, status) {
       if(data.status === 0) {
-        switch(data.code) {
-          case 0:
-            console.log(data.msg);
-          break;
-          case 1:
-            callback(data.video);
-          break;
-          case 2:
-            // 视频正在转码
-            var $modal = $('#info-modal');
-            $modal.find('.title').text('视频正在处理中，请稍候');
-            $modal.modal();
-          break;
-        }
+        setTimeout(function () {
+          Geeklab.removeLoading();
+          switch(data.code) {
+            case 0:
+              console.log(data.msg);
+            break;
+            case 1:
+              callback(data.video);
+            break;
+            case 2:
+              // 视频正在转码
+              var $modal = $('#info-modal');
+              $modal.find('.content').text('视频正在处理中，请稍候');
+              $('body').append('<div class="main-mask"></div>');
+              $modal.addClass('show');
+            break;
+          }
+        }, 1500);
       }
     })
     .error(function (errors, status) {
@@ -376,8 +388,6 @@ $(function () {
     var $video = document.createElement('video'),
         $source = document.createElement('source');
     $video.controls = 'control';
-    $video.style.width = '100%';
-    $video.style.height = '100%';
     $source.src = video;
     $video.appendChild($source);
     $curVideo = $video;
@@ -442,7 +452,7 @@ $(function () {
   function showAssignmentDetail (assignmentDetail) {
     assignmentDetailVm.project = assignmentDetail;
     assignmentDetailVm.taskLen = assignmentDetail.tasks.length;
-    assignmentDetailVm.stepLen = assignmentDetailVm.taskLen + 5;
+    assignmentDetailVm.stepLen = assignmentDetailVm.taskLen + 6;
     $('#assignment-detail').modal();
   }
 
@@ -461,12 +471,12 @@ $(function () {
     $('.time').each(function (index, item) {
       //countDownInterval[index] = setInterval(assignmentTimeCountDown(deadline, $ele));
       var $ele = $(item),
-          deadline = $ele.data('deadline');
+          // 兼容safari Date对象
+          deadline = $ele.data('deadline').replace(/-/g, '/');
           now = new Date();
 
       assignmentDeadline[index] = new Date(deadline);
       var times = assignmentDeadline[index] - now;
-
       if(times <= 0 || times > max_times) {
         return false;
       }
@@ -497,12 +507,12 @@ $(function () {
     if(count > 60 * 60 * 1000) {
       var hours = ~~ ((count / (60 * 60 * 1000)) % 24);
       hours = hours < 10 ? '0' + hours : hours;
-      timeArr.push(hours + '小时');
+      timeArr.push(hours + '时');
     }
     if(count > 60 * 1000) {
       var minutes = ~~ ((count / (60 * 1000)) % 60);
       minutes = minutes < 10 ? '0' + minutes : minutes;
-      timeArr.push(~~ ((count / (60 * 1000)) % 60) + '分');
+      timeArr.push( minutes + '分');
     }
     if(count > 1000) {
       var seconds = ~~ ((count / 1000) % 60);
@@ -637,15 +647,6 @@ $(function () {
     }
   }
 
-  // 播放视频按钮的hover事件
-  //$('.assignments').on('mouseenter', '.video-play', function () {
-    //$card = $(this).parents('.card');
-    ////$(this).css('z-index', 5);
-    //$card.find('.inner-mask').show();
-  //});
-  //$('.assignments').on('mouseout', '.video-play', function () {
-    //$card.find('.inner-mask').hide();
-  //});
 
   // 计算comment的位置
   function caculateCommentPosition () {
@@ -672,31 +673,6 @@ $(function () {
   $('.assignments-wrp').on('mouseout', '.status p', function (){
     $(this).parents('.status').find('.comment').fadeOut();
   });
-
-  // 点击关闭或者查看过期任务后，关闭提示
-  $('.reminder-close').on('click', function () {
-    var $reminder = $(this).parents('.assignments-reminder');
-    closeMissAssignmentsReminder($reminder);
-  });
-  $('.miss-count').click('click', function () {
-    var $reminder = $(this).parents('.assignments-reminder');
-    closeMissAssignmentsReminder($reminder);
-  });
-  // 关闭过期任务提示
-  function closeMissAssignmentsReminder ($reminder) {
-    var url = '/assignments/not_interest';
-    $.ajax({
-      url: url
-    })
-    .done(function (data, status) {
-      if(data.status === 0 && data.code === 1) {
-        $reminder.fadeOut();
-      }
-    })
-    .error(function (errors, status) {
-      console.log(errors);
-    });
-  }
 
   // 获取生成二维码所需token
   function getQrcodeToken (assignmentId, callback) {
@@ -729,6 +705,8 @@ $(function () {
       $this.parents('ul').find('.active').removeClass('active');
       $this.addClass('active');
       $('.assignments-wrp.active').removeClass('active').hide();
+      var isEmpty = $(target).find('.card').length === 0;
+      toggleEmpty(isEmpty);
       $(target).fadeIn().addClass('active');
       location.hash = hash;
     });
@@ -736,9 +714,18 @@ $(function () {
     var hash = location.hash.substr(1);
     if(hash === 'done') {
       $('[data-hash="done"]').click();
+      var isEmpty = ($('#assignments-done .card').length === 0);
+      toggleEmpty(isEmpty);
     }
   }
 
+  function toggleEmpty(isEmpty) {
+    if(isEmpty) {
+      $('main').addClass('empty');
+    } else {
+      $('main').removeClass('empty');
+    }
+  }
   var assignmentDetailVm = new Vue({
     el: '#assignment-detail',
     data: {
@@ -772,20 +759,24 @@ $(function () {
         vm.progress = 'prepare';
         vm.nextStepText = '好了';
       break;
-      case 'situation':
+      case 'hint':
         vm.progress = 'help';
         vm.nextStepText = '开始任务';
       break;
+      case 'situation':
+        vm.progress = 'hint';
+        vm.nextStepText = '接下来 →';
+      break;
       case 'work-on':
-      if(vm.curStepIndex === 4) {
+      if(vm.curStepIndex === 5) {
         vm.curStepContent = vm.project.desc;
         vm.progress = 'situation';
       } else {
-        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 5].content;
+        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 6].content;
       }
       break;
       case 'work-done':
-        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 5].content;
+        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 6].content;
         vm.progress = 'work-on';
         vm.nextStepText = '接下来 →';
       break;
@@ -804,6 +795,10 @@ $(function () {
         vm.nextStepText = '开始任务';
       break;
       case 'help':
+        vm.progress = 'hint';
+        vm.nextStepText = '接下来 →';
+      break;
+      case 'hint':
         vm.progress = 'situation';
         vm.curStepContent = vm.project.desc;
         vm.nextStepText = '接下来 →';
@@ -813,10 +808,10 @@ $(function () {
         vm.curStepContent = vm.project.tasks[0].content;
       break;
       case 'work-on':
-      if(vm.curStepIndex - 5 === vm.taskLen) {
+      if(vm.curStepIndex - 6 === vm.taskLen) {
         vm.progress = 'work-done';
       } else {
-        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 5].content;
+        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 6].content;
       }
       break;
     }

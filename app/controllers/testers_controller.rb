@@ -11,13 +11,19 @@ class TestersController < ApplicationController
     @devices = ['iPhone', 'iPad', 'Android Phone', 'Android Pad']
     @personality = ['温柔', '粗犷', '活泼', '老成', '内向', '开朗', '豪爽', '沉默', '急躁', '稳重']
     @interests = ['足球', '健身', '旅游', '二次元', '音乐', '看书', '电影', '星座']
+    @tester_infor = current_user.to_tester.tester_infor
+    if @tester_infor.already_finish
+      return redirect_to edit_tester_path
+    end
     render '/testers/new'
   end
 
   def create
+    json = { status: 0, code: 1, msg: 'success' }
     @tester_infor = TesterInfor.new
     if params[:device] && params[:device].kind_of?(Array)
       @tester_infor.device = params[:device]
+      @tester_infor.tester_id = current_user.id
 
       if @tester_infor.save(validate: false)
         current_user.update_attribute(:role, 'both') if current_user.role == 'pm'
@@ -30,14 +36,15 @@ class TestersController < ApplicationController
           UserMailer.new_task_notice(@tester_infor.email_contract || current_user.email,
                                      a.project.name, task_url).deliver_later
 
-          return redirect_to assignments_path
+          return render json: json
         else
           NotificationAdmin.project_error.deliver_later
         end
       end
     end
 
-    render :choose
+    json[:code], json[:msg] = 0, "failed"
+    render json: json
 
   end
 
@@ -47,15 +54,17 @@ class TestersController < ApplicationController
     @interests = ['足球', '健身', '旅游', '二次元', '音乐', '看书', '电影', '星座']
     @tester_infor = current_user.to_tester.tester_infor
 
-    if @tester_infor
-      if @tester_infor.already_finish
-        render 'testers/edit'
-      else
-        render 'testers/new'
-      end
-    else
-      redirect_to infor_testers_path
-    end
+    #if @tester_infor
+      #if @tester_infor.already_finish
+        #render 'testers/edit'
+      #else
+        #render 'testers/new'
+      #end
+    #else
+      #redirect_to choose_device_testers_path
+    #end
+
+    render 'testers/edit'
 
   end
 
@@ -90,7 +99,7 @@ class TestersController < ApplicationController
 
   def choose
     infor = current_user.to_tester.try(:tester_infor)
-    redirect_to infor_testers_path if infor && infor.device
+    redirect_to assignments_path if infor && infor.device
   end
 
 private

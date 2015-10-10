@@ -38,34 +38,45 @@
 
 #section1
   position: relative
-  height: 700px
+  height: 600px
+
+#section2,
+#section3
+  background: $light-yellow
+.index-container
+  max-width: 1440px
+  margin-left: auto
+  margin-right: auto
+
 .step-desc
   p
     color: $light-yellow
     font-size: 1.4rem
     letter-spacing: .1rem
     text-align: center
-.step:nth-child(1)
+.tester-step:nth-child(1)
   background: $light-yellow image_url('testers/index_bg.png') center -6px no-repeat
   height: 810px
   .step-desc
     position: relative
     top: 500px
-.step:nth-child(2)
+    text-align: center
+.tester-step:nth-child(2)
   background-color: $dark-blue
   height: 300px
-.step:nth-child(3)
+.tester-step:nth-child(3)
   height: 400px
   background-color: $blue
   .triangle-down
     border-top-color: $dark-blue
-.step:nth-child(4)
+.tester-step:nth-child(4)
   height: 300px
   background-color: $dark-blue
   .triangle-down
     border-top-color: $blue
 .experience
   padding-top: 100px
+  text-align: center
 .triangle-down
   width: 0
   height: 0
@@ -77,10 +88,9 @@
   border-left-color: transparent
 
 #section3
-  background-color: $light-yellow
   padding-bottom: 100px
 .video-info
-  height: 400px
+  height: 430px
   padding-top: 150px
   background: $light-yellow image_url('testers/index_bg_1.png') center top no-repeat
   +background-size(100%)
@@ -92,7 +102,7 @@
 .player-area
   position: relative
   background-color: $dark-blue
-  //background-image: image_url('testers/index_bg.png')
+  background-image: image_url('testers/video_bg.png')
   background-size: cover
   width: 100%
   max-width: 1120px
@@ -128,18 +138,19 @@
   margin-left: -20px
   display: inline-block
   width: 40px
-  height: 50px
+  height: 52px
   background: image_url('testers/arrow_down.png')
   cursor: pointer
   +animation(bounce 1.7s linear 0s infinite normal forwards)
-.icon-file,
+.icon-file-index,
 .icon-video,
 .icon-score-index,
 .icon-gift
   display: inline-block
   width: 47px
   height: 48px
-.icon-file
+  margin-bottom: 40px
+.icon-file-index
   background: image_url('testers/file.png')
 .icon-video
   background: image_url('testers/video.png')

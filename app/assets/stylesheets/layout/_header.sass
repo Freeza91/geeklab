@@ -1,4 +1,23 @@
 @import ../helpers/variables
+
+// 头部dropdown所需icon
+.profile-icon
+  background: image_url("testers/profile-icon.png")
+  display: inline-block
+  width: 18px
+  height: 18px
+  margin-right: 10px
+  margin-bottom: -4px
+.profile-icon.home
+  background-position: 0 0
+.profile-icon.info-card
+  background-position: -20px 0
+.profile-icon.bulb
+  background-position: -38px 0
+.profile-icon.geekcoin
+  background-position: -56px 0
+.profile-icon.poweroff
+  background-position: -74px 0
 // 改版后的头部
 #header
   height: 50px
@@ -56,10 +75,6 @@
   .top-logo
     display: inline-block
     margin-top: 14px
-    cursor: default
-    img
-      width: 220px
-      height: 32px
   .btn
     color: #fff
     height: 38px
@@ -90,8 +105,7 @@
       background-color: #fff
       border: none
   .dropdown-menu
-    left: 30px
-    right: 0
+    left: 15px
     background-color: #fff
     padding: 0
     > li

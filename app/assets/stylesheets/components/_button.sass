@@ -67,6 +67,23 @@ a.btn:focus
 .btn-line-darkblue:focus
   color: #fff
 
+.btn-ghost.darkblue
+  border: 1px solid $dark-blue
+  background: $blue
+  color: $dark-blue
+.btn-ghost.darkblue:hover
+  border-color: $dark-blue
+  background: $dark-blue
+  color: $blue
+.btn-ghost.white
+  border: 1px solid #fff
+  background: $blue
+  color: #fff
+.btn-ghost.white:hover
+  border-color: #fff
+  background-color: #fff
+  color: $dark-blue
+
 .btn:hover,
 .btn:active,
 .btn:focus,
@@ -78,8 +95,13 @@ a.btn:focus
 .btn-m
   width: 160px
 .btn-g
-  width: 300px
+  width: 200px
+  height: 40px
+  font-size: 1.2rem
+  line-height: 28px
 .btn-full
   width: 100%
 .btn-rounded
   border-radius: 30px
+.btn-rounded.btn-g
+  border-radius: 40px

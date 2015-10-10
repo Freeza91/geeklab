@@ -5,13 +5,14 @@ class AssignmentsController < ApplicationController
 
   def index
     tester = current_user.to_tester
+    unless tester.tester_infor
+      return redirect_to choose_device_testers_path
+    end
     assignments = tester.assignments
     if tester.approved
       @assignments = assignments.new_tasks.order("id desc").page(params[:page]).per(10)
-      @num = assignments.not_view_num(tester.last_view_time)
     else
       @assignments = assignments.test_task.order("id desc").page(params[:page]).per(10)
-      @num = nil
     end
 
     respond_to do |format|
@@ -76,11 +77,6 @@ class AssignmentsController < ApplicationController
       end
     end
 
-  end
-
-  def not_interest
-    current_user.update_column(:last_view_time, Time.now)
-    render json: { status: 0, code: 1 }
   end
 
   def join

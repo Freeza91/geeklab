@@ -271,16 +271,24 @@ $(function () {
       return false;
     }
 
+    var id = $('#id').attr('value');
+
+    // loading
+    Geeklab.showLoading();
+
     $.ajax({
-      url: '/testers',
-      method: 'post',
+      url: '/testers/' + id,
+      method: 'put',
       data: data
     })
     .done(function (data, status, xhr) {
       if(data.status === 0 && data.code === 1) {
-        var $modal = $('#form-finish');
-        $('body').append('<div class="main-mask"></div>')
-        $modal.addClass('show');
+        setTimeout(function () {
+          Geeklab.removeLoading();
+          var $modal = $('#form-finish');
+          $('body').append('<div class="main-mask"></div>')
+          $modal.addClass('show');
+        }, 1500);
       }
     })
     .error(function (errors, status) {
@@ -295,13 +303,13 @@ $(function () {
     var $root = $el.parents('.form-group');
     switch(type) {
       case 'email':
-        result = emailValid(value, $el);
+        result = Geeklab.emailValid(value, $el);
         if(!result) {
           $root.find('.form-control-feedback').removeClass('sr-only');
         }
       break;
       case 'nickname':
-        result = formValid(value, 'required');
+        result = Geeklab.formValueValid(value, 'required');
         if(!result) {
           $root.addClass('has-error').find('.form-control-feedback').removeClass('sr-only');
         }
@@ -311,7 +319,7 @@ $(function () {
         $root.addClass('has-error').find('.form-control-feedback').removeClass('sr-only').text('请输入手机号');
         result = false;
       } else {
-        result = formValid(value, 'mobile_phone');
+        result = Geeklab.formValueValid(value, 'mobile_phone');
         if(!result) {
           $root.addClass('has-error').find('.form-control-feedback').removeClass('sr-only').text('格式错误');
         }
@@ -332,19 +340,6 @@ $(function () {
     })
   }
   verticalMiddleTitle();
-
-  function showHint () {
-      var $modal = $('#info-modal');
-      $modal.find('.content').html('想体验更合你口味的产品?先填下个人信息吧');
-      $modal.find('.btn').text('好的');
-      $('body').append('<div class="main-mask"></div>');
-      $modal.addClass('show');
-  }
-  $('#info-modal .js-operate-cancel').on('click', function () {
-    $('#info-modal').removeClass('show');
-    $('body .main-mask').remove();
-  });
-  showHint();
 
   function updateErrorPosition (newErrorPosition, errorPosition) {
     if (errorPosition) {

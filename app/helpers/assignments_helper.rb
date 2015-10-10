@@ -27,4 +27,10 @@ module AssignmentsHelper
     end
   end
 
+  def isAssignmentEmpty(assignments)
+    if assignments.size == 0
+      return 'empty'
+    end
+  end
+
 end

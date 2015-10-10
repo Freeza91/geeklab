@@ -1,10 +1,4 @@
 $(function () {
-  if($('body').hasClass('testers') || $('body').hasClass('assignments')) {
-    $('#js-change-role').on('click', function () {
-      var href = $(this).data('href');
-      location.href = href;
-    });
-  }
   if(!$('body').hasClass('testers_index')) {
     return false;
   }
@@ -137,6 +131,7 @@ $(function () {
 
   function setTrangleBorderWidth () {
     var width = parseInt(document.documentElement.clientWidth / 2);
+    width = window.innerWidth > 1440 ? 600: width;
     $('.triangle-down').css({
       'border-left-width': width,
       'border-right-width': width,

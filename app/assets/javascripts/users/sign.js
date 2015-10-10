@@ -7,10 +7,12 @@ $(function () {
       data: {
         rememberMe: true,
         hint: {
-          email: ''
+          email: '',
+          password: ''
         },
         error: {
           email: false,
+          password: false,
           login: false
         }
       },
@@ -26,6 +28,7 @@ $(function () {
         mailbox: '',
         countDown: 60,
         canSendCode: true,
+        isPasswordFocus: false,
         hint: {
           email: '',
           code: '',
@@ -43,6 +46,7 @@ $(function () {
         checkEmail: checkEmail,
         checkPasswordFormat: checkPasswordFormat,
         sendCode: sendCode,
+        passwordFocus: passwordFocus,
         submit: regist
       }
     });
@@ -90,11 +94,12 @@ $(function () {
           case 0:
             // 登录失败
             vm.error.email = true;
-            vm.error.all = true;
+            vm.error.password = true;
+            vm.error.login = true;
           break;
           case 1:
-            // 登录成功
-            location.reload();
+            // 登录成功, 进行跳转
+            location.href = data.url;
           break;
         }
       }
@@ -127,7 +132,7 @@ $(function () {
         switch(data.code) {
           case 1:
             // 注册成功
-            location.reload();
+            location.href = "/assignments";
           break;
           case 2:
             // 邮箱已被注册
@@ -151,13 +156,13 @@ $(function () {
 
   function sendCode (vm) {
     if(!vm.email || vm.email === '') {
-      vm.hint = '请输入邮箱';
-      vm.error.regist = true;
+      vm.hint.email = '请输入邮箱';
+      vm.error.email = true;
       return false;
     }
-    if(!formValid(vm.email, 'email')) {
-      vm.hint = '邮箱格式错误,请重新输入';
-      vm.error.regist = true;
+    if(!Geeklab.formValueValid(vm.email, 'email')) {
+      vm.hint.email = '邮箱格式错误';
+      vm.error.email = true;
       return false;
     }
     if(!vm.canSendCode) {
@@ -203,13 +208,22 @@ $(function () {
       vm.hint.email = '请输入邮箱';
       validated = false;
     }
+
+    // check password
+    if(!password) {
+      vm.error.password = true;
+      validated = false;
+    }
     return validated;
   }
 
   function checkRegistInfo (vm) {
     var email = vm.email,
+        code = vm.code,
         password = vm.password,
         validated = true;
+
+    // check email
     if(email) {
       if(!checkEmailFormat(vm)) {
         validated = false;
@@ -219,6 +233,15 @@ $(function () {
       vm.error.email = true;
       validated = false;
     }
+
+    // check code
+    if(!code) {
+       vm.error.code = true;
+       vm.hint.code = '请输入验证码';
+       validated = false;
+    }
+
+    // check password
     if(password) {
       if(!checkPasswordFormat(vm)) {
         validated = false;
@@ -239,7 +262,7 @@ $(function () {
 
   function checkEmailFormat (vm) {
     var email = vm.email;
-    if(email && !formValid(email, 'email')) {
+    if(email && !Geeklab.formValueValid(email, 'email')) {
       vm.error.email = true;
       vm.hint.email = '邮箱格式错误';
       return false;
@@ -247,8 +270,10 @@ $(function () {
     return true;
   }
   function checkPasswordFormat (vm) {
+    vm.isPasswordFocus = false;
+
     var password = vm.password;
-    if(password && !formValid(password, 'password')) {
+    if(password && !Geeklab.formValueValid(password, 'password')) {
       vm.error.password = true;
       vm.hint.password = '密码格式错误';
       return false;
@@ -258,12 +283,17 @@ $(function () {
   function isEmailRegisted (vm) {
     var email = vm.email,
         validated = true;
-    emailRegisted(email, function () {
+    Geeklab.emailRegisted(email, function () {
       vm.hint.email = '邮箱已被注册';
       vm.error.email = true;
       validated = false;
     });
     return validated
+  }
+
+  function passwordFocus (vm) {
+    vm.error.password = false;
+    vm.isPasswordFocus = true;
   }
 
   function clearHint (hint) {
@@ -272,52 +302,5 @@ $(function () {
         hint[key] = '';
       }
     }
-  }
-
-  function formValid (value, type) {
-    var result;
-    switch(type){
-      case 'email':
-        var emailReg = /^(\w)+(\.\w+)*@(\w)+((\.\w{2,3}){1,3})$/;
-        result = emailReg.test(value);
-      break;
-      case 'password':
-        var passwordReg = /[0-9a-zA-Z_]{6,16}/;
-        result = passwordReg.test(value);
-      break;
-      case 'mobile_phone':
-        var mobileReg = /^1[3|5|7|8][0-9]{9}$/;
-        result = mobileReg.test(value);
-        break;
-      case 'required':
-        result = (value.length > 0);
-        break;
-    }
-    return result;
-  }
-
-  function emailRegisted(email, callback) {
-    $.ajax({
-      url: '/users/registrations/is_emails_exist',
-      data: {email: email}
-    })
-    .done(function (data, status, xhr) {
-      if(data.status === 0) {
-        switch(data.code) {
-          case 0:
-            // 已被注册
-            if(callback !== undefined) {
-              callback();
-            }
-          break;
-          case 1:
-            // 未被注册
-          break;
-        }
-      }
-    })
-    .error(function (errors, status) {
-      console.log(errors);
-    });
   }
 });

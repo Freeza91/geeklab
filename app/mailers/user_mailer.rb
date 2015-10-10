@@ -29,16 +29,6 @@ class UserMailer < ApplicationMailer
     render 'user_mailer/new_task_notice', layout: false
   end
 
-  def novice_task_approved(email, title, task_url)
-    @email = email
-    @title = title
-    @task_url = task_url
-
-    sendgrid_category "novice task approved send"
-    mail to: email, subject: "恭喜你，成为体验师"
-    render 'user_mailer/novice_task_approved', layout: false
-  end
-
   def video_check_failed(email, name, task_url)
     @email = email
     @name = name

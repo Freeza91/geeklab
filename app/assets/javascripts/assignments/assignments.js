@@ -471,12 +471,12 @@ $(function () {
     $('.time').each(function (index, item) {
       //countDownInterval[index] = setInterval(assignmentTimeCountDown(deadline, $ele));
       var $ele = $(item),
-          deadline = $ele.data('deadline');
+          // 兼容safari Date对象
+          deadline = $ele.data('deadline').replace(/-/g, '/');
           now = new Date();
 
       assignmentDeadline[index] = new Date(deadline);
       var times = assignmentDeadline[index] - now;
-
       if(times <= 0 || times > max_times) {
         return false;
       }

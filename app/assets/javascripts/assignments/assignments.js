@@ -714,7 +714,7 @@ $(function () {
     var hash = location.hash.substr(1);
     if(hash === 'done') {
       $('[data-hash="done"]').click();
-      var isEmpty = $('assignments-done .card').length === 0;
+      var isEmpty = ($('#assignments-done .card').length === 0);
       toggleEmpty(isEmpty);
     }
   }

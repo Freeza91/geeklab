@@ -10,13 +10,18 @@ class Dashboard::ProjectsController < Dashboard::BaseController
     respond_to do |format|
       format.html
       format.json do
-        json = { code: 0, msg: '', porject: {}, tasks: {} , user_feature: {} }
+        json = { code: 0, msg: '', project: {} }
         @project = Project.includes(:tasks).includes(:user_feature).find(params[:id])
 
         if @project
-          json[:porject] = @project
-          json[:tasks] = @project.tasks
-          json[:user_feature] = @project.user_feature
+          json[:project] = {
+            id: @project.id,
+            expired_at: @project.expired_at,
+            credit: @project.credit,
+            status: @project.status,
+            reasons: @project.reasons,
+            basic_bonus: @project.basic_bonus,
+          }
         end
 
         render json: json
@@ -84,7 +89,7 @@ class Dashboard::ProjectsController < Dashboard::BaseController
 private
 
   def project_params
-    params.require(:projects).permit(:reasons, :expired_at, :credit, :status)
+    params.require(:project).permit(:expired_at, :credit, :basic_bonus, :status)
   end
 
   def load_info_from_redis(project)

@@ -1,4 +1,4 @@
-.assignment-info
+.content-block
   .assignment-name
     span.name
       | 任务名称:
@@ -14,14 +14,14 @@
       | 过期时间:
     span
       = @assignment.project.expired_at.strftime("%F: %T")
-.assignment-video
+.content-block
   - if @assignment.video && @assignment.video != ''
     video controls="controls" style="width: 30%; height: 20%; align: center"
       source src="#{@assignment.try(:video)}"
   - else
     p
       | 用户还未上传视频
-.assignment-edit#assignment
+.content-block#assignment
   form
     .assignment-visibility
       span.name
@@ -115,7 +115,7 @@ javascript:
         }
       });
     })
-    .error(function (erors) {
+    .error(function (errors) {
       console.log(errors);
     });
 

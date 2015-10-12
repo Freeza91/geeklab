@@ -12,8 +12,10 @@ class Dashboard::BaseController < ApplicationController
 private
 
   def is_admin?
-    unless current_user.admin > 0
-      # return render text: "你没有权限"
+    if Rails.env.production?
+      unless current_user.admin > 0
+        return render text: "你没有权限"
+      end
     end
   end
 

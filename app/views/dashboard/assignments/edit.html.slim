@@ -98,7 +98,6 @@ javascript:
       dataType: 'json'
     })
     .done(function (data) {
-      console.log(data);
       data.assignment.public = data.assignment.public.toString();
       var assignmentVm = new Vue({
         el: '#assignment',
@@ -125,7 +124,6 @@ javascript:
     }
     function addComment (vm) {
       vm.assignment.reasons.push('');
-      console.log(vm.assignment.reasons)
     }
 
     function deleteComment (vm, index) {
@@ -141,7 +139,6 @@ javascript:
     }
 
     function deleteFeedback (vm, feedback, index) {
-      console.log(vm, feedback);
       vm.assignment.feedbacks.$remove(index);
       if(feedback.id) {
         deleteFeedbacks.push(feedback.id);

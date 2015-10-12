@@ -7,6 +7,8 @@ class Order < ActiveRecord::Base
   belongs_to :sku
   has_one    :address, dependent: :destroy
 
+  accepts_nested_attributes_for :address, update_only: true
+
   validates :good_id, :sku_id, :user_id, presence: true
 
   after_create :set_order_id

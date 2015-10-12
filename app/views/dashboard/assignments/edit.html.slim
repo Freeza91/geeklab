@@ -1,0 +1,205 @@
+.assignment-info
+  .assignment-name
+    span.name
+      | 任务名称:
+    a href="#{dashboard_project_path(@assignment.project)}" target="_blank"
+      = @assignment.project.name
+  .teseter-email
+    span.name
+      | 体验师邮箱:
+    a href="#{edit_dashboard_user_path(@assignment.tester)}" target="_blank"
+      = @assignment.tester.email
+  .assignment-deadline
+    span.name
+      | 过期时间:
+    span
+      = @assignment.project.expired_at.strftime("%F: %T")
+.assignment-video
+  - if @assignment.video && @assignment.video != ''
+    video controls="controls" style="width: 30%; height: 20%; align: center"
+      source src="#{@assignment.try(:video)}"
+  - else
+    p
+      | 用户还未上传视频
+.assignment-edit#assignment
+  form
+    .assignment-visibility
+      span.name
+        | 是否展示:
+      input type="radio" name="show" value="true" v-model="assignment.public"
+      span
+        | 展示
+      input type="radio" name="show" value="false" v-model="assignment.public"
+      span
+        | 不展示
+    .assignment-status
+      span.name
+        | 任务状态
+      select v-model="assignment.status"
+        option value="wait_check"
+          | 等待审核
+        option value="checking"
+          | 正在审核
+        option value="not_accept"
+          | 审核未通过
+        option value="success"
+          | 审核通过
+    .assignment-comment v-show="assignment.status === 'not_accept'"
+      .comment v-repeat="assignment.reasons"
+        input type="text" v-attr="value: $value" v-on="change: updateComment(this, $index, $event)"
+        input type="button" value="删除" v-on="click: deleteComment(this, $index)"
+      input type="button" value="添加未通过说明" v-on="click: addComment(this)"
+    .assignment-quality
+      span.name
+        | 视频质量:
+      select v-model="assignment.rank"
+        option value="1"
+          | 1
+        option value="2"
+          | 2
+        option value="3"
+          | 3
+        option value="4"
+          | 4
+        option value="5"
+          | 5
+    .assignment-feedback
+      table.ui.celled.table
+        thead
+          tr
+            th
+              | 时间点
+            th
+              | 问题描述
+            th
+              | 建议
+            th
+              | 操作
+
+        tbody
+          tr v-repeat="feedback: assignment.feedbacks"
+            td
+              input type="text" v-model="feedback.timeline"
+            td
+              input type="text" v-model="feedback.desc"
+            td
+              input type="text" v-model="feedback.suggestion"
+            td
+              span v-on="click: deleteFeedback(this, feedback, $index)"
+                | 删除
+      input type="button" value="添加视频反馈" v-on="click: addFeedback(this)"
+    input type="submit" value="提交" v-on="click: submit(this, $event)"
+
+javascript:
+  $(function(){
+    var deleteFeedbacks = [];
+    $.ajax({
+      url: location.href,
+      dataType: 'json'
+    })
+    .done(function (data) {
+      console.log(data);
+      data.assignment.public = data.assignment.public.toString();
+      var assignmentVm = new Vue({
+        el: '#assignment',
+        data: {
+          assignment: data.assignment
+        },
+        methods: {
+          updateComment: updateComment,
+          addComment     : addComment,
+          deleteComment  : deleteComment,
+          addFeedback    : addFeedback,
+          deleteFeedback : deleteFeedback,
+          submit         : submit
+        }
+      });
+    })
+    .error(function (erors) {
+      console.log(errors);
+    });
+
+    function updateComment (vm, index, event) {
+      var value = event.target.value;
+      vm.assignment.reasons.$set(index, value);
+    }
+    function addComment (vm) {
+      vm.assignment.reasons.push('');
+      console.log(vm.assignment.reasons)
+    }
+
+    function deleteComment (vm, index) {
+      vm.assignment.reasons.$remove(index);
+    }
+
+    function addFeedback (vm) {
+      vm.assignment.feedbacks.push({
+        timeline: '',
+        desc: '',
+        suggestion: ''
+      });
+    }
+
+    function deleteFeedback (vm, feedback, index) {
+      console.log(vm, feedback);
+      vm.assignment.feedbacks.$remove(index);
+      if(feedback.id) {
+        deleteFeedbacks.push(feedback.id);
+      }
+    }
+
+    function submit (vm, event) {
+      event.preventDefault();
+      var assignment = vm.assignment;
+      var data = {};
+      if(assignment.public === 'true') {
+        data.public = true;
+      } else {
+        data.public = false;
+      }
+      data.rank = assignment.rank;
+      data.status = assignment.status;
+      data.reasons = [];
+      assignment.reasons.forEach(function (reason) {
+        if(reason) {
+          data.reasons.push(reason);
+        }
+      });
+      data.feedbacks_attributes = [];
+      assignment.feedbacks.forEach(function (feedback) {
+        if(feedback.suggestion) {
+          //data.feedbacks_attributes.push({
+            //timeline: feedback.timeline,
+            //desc: feedback.desc,
+            //suggestion: feedback.suggestion
+          //});
+          data.feedbacks_attributes.push(feedback);
+        }
+      });
+      deleteFeedbacks.forEach(function(item) {
+        data.feedbacks_attributes.push({
+          id: item,
+          _destroy: 1
+        });
+      });
+      console.log(data);
+
+      var url = '/admin/videos/' + vm.assignment.id;
+      $.ajax({
+        url: url,
+        method: 'put',
+        data: {assignment: data}
+      })
+      .done(function (data) {
+        if(data.status === 0 && data.code === 1) {
+          location.href = '/admin/videos';
+        } else {
+          alert('保存失败');
+        }
+      })
+      .error(function (errors) {
+        console.log(errors);
+      });
+    }
+
+  });

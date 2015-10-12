@@ -6,10 +6,15 @@ class Assignment < ActiveRecord::Base
   scope :not_take_part,-> { where("assignments.status = ?",  "new") }
   scope :ing,          -> { where('assignments.status in (?)', ['wait_check', 'checking', 'not_accept', 'delete']) }
   scope :done,         -> { where("assignments.status = ?", "success") }
+  scope :show_pm,      -> { where("public = ?", true) }
 
   belongs_to :tester,  inverse_of: :assignments
   belongs_to :project, inverse_of: :assignments
   has_one    :comment, dependent: :destroy
+  has_many   :feedbacks
+  has_one    :credit_records
+
+  accepts_nested_attributes_for :feedbacks, allow_destroy: true
 
   after_update :video_notice_to_tester
   after_update :auto_update_assignment_status

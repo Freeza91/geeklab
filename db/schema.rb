@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150730091345) do
+ActiveRecord::Schema.define(version: 20151010032954) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,18 +33,42 @@ ActiveRecord::Schema.define(version: 20150730091345) do
     t.integer  "tester_id"
     t.string   "status"
     t.string   "video"
-    t.boolean  "is_transfer", default: false
-    t.boolean  "is_sexy",     default: false
-    t.string   "reasons",                     array: true
+    t.boolean  "is_transfer",       default: false
+    t.boolean  "is_sexy",           default: false
+    t.string   "reasons",                           array: true
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_read",     default: false
+    t.boolean  "is_read",           default: false
+    t.boolean  "public",            default: false
+    t.integer  "rating_from_pm"
+    t.integer  "rating_from_admin"
   end
 
   create_table "comments", force: :cascade do |t|
     t.boolean "target_user"
     t.integer "assignment_id"
     t.boolean "qualified"
+  end
+
+  create_table "credit_records", force: :cascade do |t|
+    t.integer  "project_id"
+    t.integer  "tester_id"
+    t.integer  "assignment_id"
+    t.integer  "credits"
+    t.integer  "bonus_credits"
+    t.integer  "rating"
+    t.string   "rating_type"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "feedbacks", force: :cascade do |t|
+    t.string   "timeline"
+    t.string   "desc"
+    t.string   "suggestion"
+    t.integer  "assignment_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "goods", force: :cascade do |t|
@@ -103,6 +127,7 @@ ActiveRecord::Schema.define(version: 20150730091345) do
     t.string   "reasons",                                                   array: true
     t.boolean  "beginner",     default: false
     t.datetime "assign_time",  default: '2015-03-02 00:00:00'
+    t.integer  "basic_bonus",  default: 0
   end
 
   create_table "skus", force: :cascade do |t|
@@ -175,6 +200,9 @@ ActiveRecord::Schema.define(version: 20150730091345) do
     t.datetime "last_view_time",         default: '2015-05-21 11:37:35'
     t.integer  "credits",                default: 0
     t.datetime "approved_time",          default: '2015-07-28 18:03:00'
+    t.integer  "admin",                  default: 0
+    t.datetime "last_login"
+    t.boolean  "limit_user",             default: false
   end
 
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", unique: true, using: :btree

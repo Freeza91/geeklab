@@ -1,0 +1,39 @@
+table.ui.celled.table
+  thead
+    tr
+      th 订单号
+      th 商品名
+      th 价格
+      th 购买人邮箱
+      th 商品类别
+      th 订单状态
+      th 操作
+  tbody
+    - @orders.each do |order|
+      tr
+        td
+          | #{order.order_id}
+        td
+          | #{order.good.try(:name)}
+        td
+          | #{order.good.try(:cost)}
+        td
+          | #{order.user.try(:email)}
+        - if order.good.virtual?
+          td
+            | 虚拟商品
+          td
+            | 不涉及
+        - else
+          td
+            | 实体商品
+          td
+            | #{order.address.parse_status}
+        td
+          = link_to("编辑", edit_dashboard_order_path(order))
+          span |
+          = link_to("删除", dashboard_order_path(order), method: 'delete', data: {confirm: "你确定要删除？#{order.order_id}"})
+
+ui.container
+  p
+    = paginate @orders

@@ -48,6 +48,7 @@ RailsAdmin.config do |config|
       field :username
       field :email
       field :approved
+      field :admin
       field :credits
       field :created_at
     end

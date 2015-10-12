@@ -1,0 +1,25 @@
+div
+  span 用户邮箱： #{@user.email}
+div
+  - if @user.to_tester && @user.to_tester.tester_infor
+    span 用户昵称: #{@user.to_tester.tester_infor.try(:username)}
+  - else
+    span 用户昵称: 暂无
+
+= form_for [:dashboard, @user] do |f|
+  div
+    = f.label '是否为体验师'
+    = f.label '是'
+    = f.radio_button :approved, true, checked: @user.approved
+    = f.label '否'
+    = f.radio_button :approved, false, checked: !@user.approved
+  div
+    = f.label '积分:'
+    = f.text_field :credits, value: @user.credits
+  div
+    = f.label '是否禁用'
+    = f.radio_button :limit_user, '是', value: true, checked: true
+    = f.radio_button :limit_user, '否', value: false
+  div
+    = f.submit '保存'
+

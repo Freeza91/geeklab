@@ -14,6 +14,7 @@ class Project < ActiveRecord::Base
   has_many :tasks,         inverse_of: :project, dependent: :destroy
   has_one  :user_feature,  inverse_of: :project, dependent: :destroy
   belongs_to :pm
+  has_many :credit_records, inverse_of: :project
 
   accepts_nested_attributes_for :tasks, allow_destroy: true
   accepts_nested_attributes_for :user_feature, allow_destroy: true, update_only: true

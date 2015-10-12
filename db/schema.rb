@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151012062558) do
+ActiveRecord::Schema.define(version: 20151012075320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,8 @@ ActiveRecord::Schema.define(version: 20151012062558) do
     t.datetime "updated_at",                    null: false
     t.boolean  "used",          default: false
   end
+
+  add_index "credit_records", ["tester_id", "assignment_id"], name: "index_credit_records_on_tester_id_and_assignment_id", unique: true, using: :btree
 
   create_table "feedbacks", force: :cascade do |t|
     t.string   "timeline"

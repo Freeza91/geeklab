@@ -3,7 +3,7 @@ class Dashboard::ProjectsController < Dashboard::BaseController
   load_and_authorize_resource
 
   def index
-    @projects = Project.order(:id).page(params[:pgae]).per(10)
+    @projects = Project.order(:id).page(params[:page]).per(10)
   end
 
   def edit
@@ -40,6 +40,7 @@ class Dashboard::ProjectsController < Dashboard::BaseController
     if project
       tester_ids = load_info_from_redis(project)
       ids = JSON.parse tester_ids
+
       ids.each do |id|
         json = $redis.get("assignment-tester_#{id}")
         @projects << json
@@ -88,31 +89,50 @@ private
 
   def load_info_from_redis(project)
     ids = $redis.get("project-user-#{project.id}")
-    unless ids
-      tester_array = []
-      assignment_info = []
+    tester_array = []
+    assignment_info = []
 
+    unless ids
       TesterInfor.find_each(batch_size: 100) do |infor|
         if AssignmentCategory.select_tester(infor,
             AssignmentCategory.get_device(project.platform, project.device))
           tester_array << infor.tester_id
-
-          email = infor.try(:email_contract) || infor.tester.email
-          tester = infor.tester
-          finish_demand = tester.assignments.try(:size) || 0
-          status = tester.assignments.map(&:project_id).include?(project_id)
-
-          json = { status: status, email: email, last_login: tester.try(:last_login),
-                   finish_demand: finish_demand, ave: "" }
-
-          $redis.set "assignment-tester_#{id}", json.to_json
-          $redis.expire "assignment-tester_#{id}", 1.day / 2
         end
       end
 
-      $redis.expire("project-user-#{project.id}", 1.day / 2 - 1.hour / 2) if tester_array.present?
+      if project.assignments
+        ids = project.assignments.collect { |a| a.tester_id }
+        tester_array += ids
+      end
+
+      tester_array.uniq!
     end
+
+    save_data_on_redis(tester_array)
+
+    if tester_array.present?
+      $redis.set("project-user-#{project.id}", tester_array.to_json)
+      $redis.expire("project-user-#{project.id}", 1.day / 2 - 1.hour / 2)
+    end
+
     $redis.get("project-user-#{project.id}") || [].to_json
+  end
+
+
+  def save_data_on_redis(tester_array = [])
+    tester_array.each do |tester_id|
+      infor = TesterInfor.find_by(tester_id: tester_id)
+      email = infor.try(:email_contract) || infor.tester.email
+      tester = infor.tester
+      finish_demand = tester.assignments.try(:size) || 0
+      status = tester.assignments.map(&:project_id).include?(project_id)
+
+      json = { status: status, email: email, last_login: tester.try(:last_login),
+               finish_demand: finish_demand, ave: "" }
+
+      $redis.set "assignment-tester_#{tester_id}", json.to_json
+      $redis.expire "assignment-tester_#{tester_id}", 1.day / 2
+    end
   end
 
 end

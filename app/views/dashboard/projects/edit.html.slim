@@ -115,7 +115,7 @@
     .item
       span.name
         | 截止时间:
-      input type="text" v-model="project.expired_at" required="required"
+      input#time-picker type="text" v-model="project.expired_at" required="required"
     .item
       span.name
         | 任务积分:
@@ -145,6 +145,13 @@
 
 javascript:
   $(function() {
+
+    // init time picker
+    $('#time-picker').datetimepicker({
+      formatDate: 'Y-m-d',
+      minDate: '0'
+    });
+
     $.ajax({
       url: location.href,
       dataType: 'json'

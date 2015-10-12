@@ -16,7 +16,7 @@ class Dashboard::ProjectsController < Dashboard::BaseController
         if @project
           json[:project] = {
             id: @project.id,
-            expired_at: @project.expired_at,
+            expired_at: @project.expired_at.strftime('%F %T'),
             credit: @project.credit,
             status: @project.status,
             reasons: @project.reasons,

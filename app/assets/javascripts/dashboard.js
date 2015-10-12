@@ -5,6 +5,7 @@
 //vue
 //= require vue
 //
+//= require jquery.datetimepicker.min
 // Chart
 //= require Chart
 //

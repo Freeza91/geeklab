@@ -11,3 +11,4 @@ production: # work model
   - [pfop_video_images]
   - [start_assign, 10]
   - [inc_good_stock, 5]
+  - [add_bonus_credit]

@@ -49,7 +49,9 @@
     end
 
     resources :assignments, only: :show do
-      resources :comments, only: :create
+      member do
+        put 'rating', to: 'assignments#rating'
+      end
     end
   end
 

@@ -3,7 +3,7 @@ class Dashboard::UsersController < Dashboard::BaseController
   load_and_authorize_resource
 
   def index
-    @users = User.order(:id).page(params[:page]).per(10)
+    @users = User.order('id desc').page(params[:page]).per(10)
   end
 
   def edit

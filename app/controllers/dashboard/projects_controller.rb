@@ -19,7 +19,7 @@ class Dashboard::ProjectsController < Dashboard::BaseController
             expired_at: @project.expired_at ? @project.expired_at.strftime('%F %T') : nil,
             credit: @project.credit,
             status: @project.status,
-            reasons: @project.reasons,
+            reasons: @project.reasons || [],
             basic_bonus: @project.basic_bonus,
           }
         end

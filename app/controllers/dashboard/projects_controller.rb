@@ -89,7 +89,8 @@ class Dashboard::ProjectsController < Dashboard::BaseController
 private
 
   def project_params
-    params.require(:project).permit(:expired_at, :credit, :basic_bonus, :status, :reasons)
+    params.require(:project).permit(:expired_at, :credit,
+                                    :basic_bonus, :status, reasons: [])
   end
 
   def load_info_from_redis(project)

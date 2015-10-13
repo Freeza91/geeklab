@@ -30,51 +30,55 @@
         | 二维码
       img src="#{@project.qr_code.url}"
 .content-block
-  .item
-    span.name
-      | 用户个数:
-    span
-      = @project.demand
-  .item
-    span.name
-      | 年龄范围:
-    span
-      = @project.user_feature.age
-  .item
-    span.name
-      | 收入范围:
-    span
-      = @project.user_feature.income
-  .item
-    span.name
-      | 性别:
-    span
-      = @project.user_feature.sex.join(', ')
-  .item
-    span.name
-      | 城市级别:
-    span
-      = get_city(@project.user_feature.city_level)
-  .item
-    span.name
-      | 学历:
-    span
-      = @project.user_feature.education.join(', ')
-  .item
-    span.name
-      | 情感状态:
-    span
-      = @project.user_feature.emotional_status.join(', ')
-  .item
-    span.name
-      | 性取向:
-    span
-      = @project.user_feature.sex_orientation.join(', ')
-  .item
-    span.name
-      | 兴趣标签:
-    span
-      = @project.user_feature.interest.join(', ')
+  - if @project.user_feature
+    .item
+      span.name
+        | 用户个数:
+      span
+        = @project.demand
+    .item
+      span.name
+        | 年龄范围:
+      span
+        = @project.user_feature.age
+    .item
+      span.name
+        | 收入范围:
+      span
+        = @project.user_feature.income
+    .item
+      span.name
+        | 性别:
+      span
+        = @project.user_feature.sex.join(', ')
+    .item
+      span.name
+        | 城市级别:
+      span
+        = get_city(@project.user_feature.city_level)
+    .item
+      span.name
+        | 学历:
+      span
+        = @project.user_feature.education.join(', ')
+    .item
+      span.name
+        | 情感状态:
+      span
+        = @project.user_feature.emotional_status.join(', ')
+    .item
+      span.name
+        | 性取向:
+      span
+        = @project.user_feature.sex_orientation.join(', ')
+    .item
+      span.name
+        | 兴趣标签:
+      span
+        = @project.user_feature.interest.join(', ')
+  - else
+    | 曾经是新手任务，此处没有要求
+
 .content-block
   .item
     span.name

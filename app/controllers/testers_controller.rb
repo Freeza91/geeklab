@@ -97,6 +97,9 @@ class TestersController < ApplicationController
     end
   end
 
+  def rating_help
+  end
+
   def choose
     infor = current_user.to_tester.try(:tester_infor)
     redirect_to assignments_path if infor && infor.device

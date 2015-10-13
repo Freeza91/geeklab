@@ -58,7 +58,8 @@
   resources :testers do
     collection do
       get 'help'
-      get 'choose-device', to: "testers#choose"
+      get 'how-to-get-five-star', to: 'testers#rating_help'
+      get 'choose-device', to: 'testers#choose'
       #get 'infor', to: "testers#edit"
     end
   end

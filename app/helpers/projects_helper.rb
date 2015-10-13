@@ -11,7 +11,8 @@ module ProjectsHelper
         'not_accept': '审核未通过',
         'success': '正在进行中',
         'failed': '任务失败',
-        'finish': '任务成功'
+        'finish': '任务成功',
+        'delete': '任务被产品经理删除'
     }
     info[status.to_sym]
   end

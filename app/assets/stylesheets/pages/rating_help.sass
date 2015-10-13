@@ -1,4 +1,5 @@
 @import ../helpers/variables
+@import ../helpers/mixin
 
 .testers_rating_help
   .wrapper
@@ -6,17 +7,28 @@
   main
     height: calc(100% - 50px) !important
 .rating-help
+  position: relative
   height: 100%
 .rating-help-item
-  float: left
+  position: absolute
   width: calc(100% / 6)
   height: 100%
+  +transition(width .5s ease-in-out)
+  cursor: default
 .rating-help-content
   width: 90%
   p
+    display: none
+    opacity: 0
     color: $dark-blue
     font-size: 14px
     letter-spacing: .1rem
+    +transition(opacity .3s ease-in-out)
+.rating-help-title
+  color: $dark-blue
+  font-size: 14px
+  font-weight: normal
+  +transition(all .2s ease-in-out)
 .rating-help-item:nth-child(1)
   background: rgba(92, 188, 201, 1)
 .rating-help-item:nth-child(2)
@@ -29,4 +41,12 @@
   background: rgba(92, 188, 201, .4)
 .rating-help-item:nth-child(6)
   background: rgba(92, 188, 201, .25)
+
+.rating-help-item:hover
+  .rating-help-title
+    font-size: 1.2rem
+  .rating-help-content p
+    display: block
+    opacity: 1
 .rating-help-item.expand
+

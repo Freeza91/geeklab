@@ -39,6 +39,9 @@ main role="main" class="#{isAssignmentEmpty(@assignments)}"
                     i.icon-inner.icon-score-old
                   span.number
                     = assignment.project.credit
+                  span.extra
+                    | 评分奖励
+                    = render partial: "assignments/shared/extra_score"
     .load-more
       - if @assignments.try(:size) > 0
         - if @assignments.try(:size) < 10

@@ -25,7 +25,6 @@ $(function () {
 
   function expandRatingItem (ratingItemIndex) {
     //calcRatingItemWidth(6);
-    console.log(ratingItemIndex);
     var $ratingItems = $('.rating-help-item'),
         widthSum = 0;
     $ratingItems.each(function (index, item) {
@@ -36,10 +35,10 @@ $(function () {
       } else {
         newWidth -= 30;
       }
-      $item.css({
+      $item.animate({
         width: newWidth,
         left: widthSum
-      });
+      }, 500);
       widthSum += newWidth;
     });
   }

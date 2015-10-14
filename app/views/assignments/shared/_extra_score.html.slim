@@ -1,17 +1,30 @@
 .extra-score
-  p
-    | 产品经理会对上传的视频进行评分, 评分星级为1-5星
-  p
-    | (请谨慎录制, 审核通过的视频将无法修改)
-  p
-    | 评分奖励 = 50 * 星
+  - if credit_record
+    p
+      | 评分
+      - credit_record.rating.times
+        .fa.fa-star
+      - (5 - credit_record.rating).times
+        .fa.fa-star style="color: #fff"
+    p
+      = credit_record.bonus_credits
+      | &nbsp=&nbsp
+      = bonus
+      | &nbsp*&nbsp
+      = credit_record.rating
+      | &nbsp星
+  - else
+    p
+      | 产品经理会对上传的视频进行评分, 评分星级为1-5星
+    p
+      | (请谨慎录制, 审核通过的视频将无法修改)
+    p
+      | 评分奖励 =
+      span style="padding: 0 3px"
+        = bonus
+      | * 星
 
-  p
-    a href="#" target="_blank"
+  p style="padding-top: 15px"
+    a href="#{how_to_get_five_star_testers_path}" target="_blank"
       | 如何获得5星好评
-  p
-    .fa.fa-star
-    .fa.fa-star
-    .fa.fa-star
-    .fa.fa-star
   .extra-score-triangle

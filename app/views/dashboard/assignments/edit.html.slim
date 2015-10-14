@@ -1,4 +1,4 @@
-.assignment-info
+.content-block
   .assignment-name
     span.name
       | 任务名称:
@@ -14,14 +14,14 @@
       | 过期时间:
     span
       = @assignment.project.expired_at.strftime("%F: %T")
-.assignment-video
+.content-block
   - if @assignment.video && @assignment.video != ''
     video controls="controls" style="width: 30%; height: 20%; align: center"
       source src="#{@assignment.try(:video)}"
   - else
     p
       | 用户还未上传视频
-.assignment-edit#assignment
+.content-block#assignment
   form
     .assignment-visibility
       span.name
@@ -98,7 +98,6 @@ javascript:
       dataType: 'json'
     })
     .done(function (data) {
-      console.log(data);
       data.assignment.public = data.assignment.public.toString();
       var assignmentVm = new Vue({
         el: '#assignment',
@@ -115,7 +114,7 @@ javascript:
         }
       });
     })
-    .error(function (erors) {
+    .error(function (errors) {
       console.log(errors);
     });
 
@@ -125,7 +124,6 @@ javascript:
     }
     function addComment (vm) {
       vm.assignment.reasons.push('');
-      console.log(vm.assignment.reasons)
     }
 
     function deleteComment (vm, index) {
@@ -141,7 +139,6 @@ javascript:
     }
 
     function deleteFeedback (vm, feedback, index) {
-      console.log(vm, feedback);
       vm.assignment.feedbacks.$remove(index);
       if(feedback.id) {
         deleteFeedbacks.push(feedback.id);

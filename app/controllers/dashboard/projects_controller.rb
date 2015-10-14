@@ -3,20 +3,25 @@ class Dashboard::ProjectsController < Dashboard::BaseController
   load_and_authorize_resource
 
   def index
-    @projects = Project.order(:id).page(params[:page]).per(10)
+    @projects = Project.order('id desc').page(params[:page]).per(10)
   end
 
   def edit
     respond_to do |format|
       format.html
       format.json do
-        json = { code: 0, msg: '', porject: {}, tasks: {} , user_feature: {} }
+        json = { code: 0, msg: '', project: {} }
         @project = Project.includes(:tasks).includes(:user_feature).find(params[:id])
 
         if @project
-          json[:porject] = @project
-          json[:tasks] = @project.tasks
-          json[:user_feature] = @project.user_feature
+          json[:project] = {
+            id: @project.id,
+            expired_at: @project.expired_at ? @project.expired_at.strftime('%F %T') : nil,
+            credit: @project.credit,
+            status: @project.status,
+            reasons: @project.reasons || [],
+            basic_bonus: @project.basic_bonus,
+          }
         end
 
         render json: json
@@ -35,21 +40,21 @@ class Dashboard::ProjectsController < Dashboard::BaseController
   end
 
   def select
-    @projects = []
+    @user_infos = []
     project = Project.find params[:id]
     if project
       tester_ids = load_info_from_redis(project)
       ids = JSON.parse tester_ids
 
       ids.each do |id|
-        json = $redis.get("assignment-tester_#{id}")
-        @projects << json
+        json = JSON.parse($redis.get("assignment-tester_#{id}"))
+        @user_infos << json
       end
     else
       return redirect_to dashboard_projects_path
     end
 
-    @projects = Kaminari.paginate_array(@projects).page(params[:page]).per(10)
+    @user_infos = Kaminari.paginate_array(@user_infos).page(params[:page]).per(10)
   end
 
   def deliver
@@ -84,7 +89,8 @@ class Dashboard::ProjectsController < Dashboard::BaseController
 private
 
   def project_params
-    params.require(:projects).permit(:reasons, :expired_at, :credit, :status)
+    params.require(:project).permit(:expired_at, :credit,
+                                    :basic_bonus, :status, reasons: [])
   end
 
   def load_info_from_redis(project)
@@ -108,7 +114,7 @@ private
       tester_array.uniq!
     end
 
-    save_data_on_redis(tester_array)
+    save_data_on_redis(tester_array, project.id)
 
     if tester_array.present?
       $redis.set("project-user-#{project.id}", tester_array.to_json)
@@ -119,16 +125,21 @@ private
   end
 
 
-  def save_data_on_redis(tester_array = [])
+  def save_data_on_redis(tester_array = [], project_id)
     tester_array.each do |tester_id|
       infor = TesterInfor.find_by(tester_id: tester_id)
       email = infor.try(:email_contract) || infor.tester.email
       tester = infor.tester
-      finish_demand = tester.assignments.try(:size) || 0
-      status = tester.assignments.map(&:project_id).include?(project_id)
+      assignments = tester.assignments
+      finish_demand = assignments.done.try(:size) || 0
+
+      sum = CreditRecord.where(tester_id: tester_id).inject { |sum, item| sum + item }
+      ave = sum ? sum / finish_demand.to_f : 0
+      status = assignments.map(&:project_id).include?(project_id)
 
       json = { status: status, email: email, last_login: tester.try(:last_login),
-               finish_demand: finish_demand, ave: "" }
+               tester_id: tester_id ,finish_demand: finish_demand, ave: ave.round(1),
+               username: infor.try(:username) }
 
       $redis.set "assignment-tester_#{tester_id}", json.to_json
       $redis.expire "assignment-tester_#{tester_id}", 1.day / 2

@@ -49,14 +49,17 @@
     end
 
     resources :assignments, only: :show do
-      resources :comments, only: :create
+      member do
+        put 'rating', to: 'assignments#rating'
+      end
     end
   end
 
   resources :testers do
     collection do
       get 'help'
-      get 'choose-device', to: "testers#choose"
+      get 'how-to-get-five-star', to: 'testers#rating_help'
+      get 'choose-device', to: 'testers#choose'
       #get 'infor', to: "testers#edit"
     end
   end

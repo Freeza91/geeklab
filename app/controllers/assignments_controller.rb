@@ -40,6 +40,28 @@ class AssignmentsController < ApplicationController
     render json: json
   end
 
+  def rating
+    json = { msg: 'success', code: 1 }
+    assignment = Assignment.find_by(id: params[:id])
+    if assignment
+      record = CreditRecord.find_by(tester_id: current_user.id, assignment_id: assignment.id)
+      if record
+        rating = params[:rating] || 5
+        assignment.update_column(:rating_from_pm, rating)
+        record.update_columns(rating_type: 'pm', rating: rating, used: true)
+
+        credits = current_user.credits || 0
+        bonus_credits = record.bonus_credits || 5
+        credits += rating * bonus_credits
+        current_user.update_column(:credits, credits)
+      end
+    else
+      json[:code], json[:msg] = 0, '没有找到资源'
+    end
+
+    render json: json
+  end
+
   def get_video
     json = { status: 0, code: 1, msg: 'successful', video: '' }
     assignment =  Assignment.find_by(id: params[:assignment_id])
@@ -138,7 +160,6 @@ class AssignmentsController < ApplicationController
 
     render json: json
   end
-
 
 private
 

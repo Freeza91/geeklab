@@ -18,17 +18,24 @@ div
           td
             = user.email
           td
-            = user.to_tester.tester_infor.try(:username)
+            - tester = user.to_tester
+            - if tester && info = tester.tester_infor
+              = info.try(:username)
+            - else
+              | 暂无
           td
             - if user.approved
               | 是
             - else
               | 否
           td
-            = user.to_tester.assignments.done.size
+            - if tester && tester.assignments.done
+              = tester.assignments.done.size
+            - else
+              | 0
           td
             - if user.to_pm
-              = user.to_pm.projects.try(:size)
+              = user.to_pm.projects.try(:size) || 0
             - else
               | 0
           td

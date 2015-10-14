@@ -44,4 +44,12 @@ module AssignmentsHelper
     end
   end
 
+  def showBonus(credit_record)
+    if credit_record
+      credit_record.bonus_credits
+    else
+      '评分奖励'
+    end
+  end
+
 end

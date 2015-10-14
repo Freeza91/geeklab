@@ -23,7 +23,36 @@ $(function () {
     }
   }
 
+  function expandRatingItem (ratingItemIndex) {
+    //calcRatingItemWidth(6);
+    console.log(ratingItemIndex);
+    var $ratingItems = $('.rating-help-item'),
+        widthSum = 0;
+    $ratingItems.each(function (index, item) {
+      var $item = $(item),
+          newWidth = width = $item.width();
+      if(index === ratingItemIndex) {
+        newWidth += 150;
+      } else {
+        newWidth -= 30;
+      }
+      $item.css({
+        width: newWidth,
+        left: widthSum
+      });
+      widthSum += newWidth;
+    });
+  }
+
   $(window).on('resize', function () {
+    calcRatingItemWidth(6);
+  });
+
+  $('.rating-help-item').on('mouseenter', function () {
+    expandRatingItem($(this).index());
+  });
+
+  $('.rating-help-item').on('mouseleave', function () {
     calcRatingItemWidth(6);
   });
 

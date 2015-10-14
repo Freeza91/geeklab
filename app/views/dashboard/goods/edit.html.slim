@@ -1,25 +1,5 @@
-hello good info
-.ui.internally.celled.grid
-  .row
-    .two.wide.column
-      | 商品信息
-    .fourteen.wide.column
-      div 商品名称：
-      div 商品描述：
-      div 商品价格：
-      div 商品状态：
-      div 商品类型：
-      div 库存数量：
-      div 卖出数量：
-      div 是否显示：
-  .row
-    .two.wide.column
-      | 商品图片
-    .fourteen.wide.column
-      | 测试情景：想象一下你现在正在......
-      .ten.wide.column
-        div 任务1：xxxxxxxxxx
-        div 任务1：xxxxxxxxxx
-        div 任务1：xxxxxxxxxx
-        div 任务1：xxxxxxxxxx
-        div 任务1：xxxxxxxxxx
+= render partial: 'form', locals: { method: :put, url: dashboard_good_path(@good) }
+
+p
+  div
+    p= link_to '添加商品详情', new_dashboard_good_sku_path(@good)

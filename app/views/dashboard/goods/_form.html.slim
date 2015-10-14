@@ -1,0 +1,59 @@
+= nested_form_for @good, url: url, method: method do |f|
+  .ui.internally.celled.grid
+    .row
+      .two.wide.column
+        | 商品信息
+      .fourteen.wide.column
+        div
+          span 商品名称：
+          span
+            = f.text_field :name
+        div
+          span 商品描述：
+          span
+            = f.text_area :describle
+        div
+          span 商品价格：
+          span
+            = f.text_field :cost
+        div
+          span 商品状态：
+          span
+            = f.select :status, select_good_status(@good.status)
+        div
+          span 商品类型：
+          span
+            = f.select :label, select_good_label(@good.label)
+        div
+          span 库存数量：
+          span
+            = f.label :stock, value: (@good.label || 0)
+        div
+          span 卖出数量：
+          span
+            = f.label :used_num, value: (@good.used_num || 0)
+        div
+          span 是否发布：
+          span
+            = f.select :is_publish, select_good_is_publish(@good.is_publish)
+        div
+          span 是否受限
+          span
+            = f.select :is_limit, select_good_is_limit(@good.is_limit)
+    .row
+      .two.wide.column
+        | 商品图片
+      .fourteen.wide.column
+        table#pictures
+          = f.fields_for :pictures do |picture|
+            div
+              = picture.file_field :url
+              = image_tag picture.object.url
+              = picture.link_to_remove '删除'
+
+
+        = f.link_to_add '添加图片', :pictures, data: { target: "#pictures" }
+
+    .row
+      .sixteen.wide.column
+        = f.submit '提交'

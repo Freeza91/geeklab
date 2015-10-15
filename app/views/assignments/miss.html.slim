@@ -34,12 +34,8 @@ main role="main" class="#{isAssignmentEmpty(@assignments)}"
                     = assignment.project.credit
     .load-more
       - if @assignments.try(:size) > 0
-        - if @assignments.try(:size) < 10
-          p
-            | 没有更多了
-        - else
-          button.btn.btn-base.yellow.btn-full
-            | 加载更多
+        button.btn.btn-base.yellow.btn-full
+          | 加载更多
     - if @assignments.try(:size) == 0
         p.no-assignment-hint
           | 还没有过期的任务噢

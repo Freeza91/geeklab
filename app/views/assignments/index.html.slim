@@ -45,13 +45,9 @@ main role="main" class="#{isAssignmentEmpty(@assignments)}"
                     | 评分奖励
                     = render partial: "assignments/shared/extra_score", locals: {credit_record: assignment.credit_record, bonus: assignment.project.basic_bonus}
     .load-more
-      - if @assignments.try(:size) > 0
-        - if @assignments.try(:size) < 10
-          p
-            | 没有更多了
-        - else
-          button.btn.btn-base.yellow.btn-full
-            | 加载更多
+      - if @assignments.try(:size) == 10
+        button.btn.btn-base.yellow.btn-full
+          | 加载更多
     - if @assignments.try(:size) == 0
         p.no-assignment-hint
           | 目前没有新任务，过段时间再来查看吧

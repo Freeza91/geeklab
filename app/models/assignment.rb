@@ -92,16 +92,17 @@ class Assignment < ActiveRecord::Base
       hash_tester_id = self.to_params(tester_id)
       tester = Tester.find_by(id: hash_tester_id)
       if tester
-        record = tester.credit_records
-        if record && record.map(&:project_id).include?(id)
+        records = tester.credit_records
+        if records && records.map(&:project_id).include?(id)
           "已经添加过积分了！"
         else
           project = self.project
           record = CreditRecord.new(tester_id: tester.id,
-                                     assignment_id: id,
-                                     project_id: project.id,
-                                     credits: project.try(:credit),
-                                     bonus_credits: project.try(:bonus_credits))
+                                    project_id: project.id,
+                                    assignment_id: id,
+                                    credits: project.try(:credit),
+                                    bonus_credits: project.try(:bonus_credits))
+
           if record.save
             credits = tester.try(:credits) + project.try(:credit).to_i
             tester.update_column(:credits, credits)

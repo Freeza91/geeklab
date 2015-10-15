@@ -1,6 +1,6 @@
 class CreditRecord < ActiveRecord::Base
 
-  validates :tester_id, :project_id, :assingment_id, presence: true
+  validates :tester_id, :project_id, :assignment_id, presence: true
 
   belongs_to :tester
   belongs_to :assingment

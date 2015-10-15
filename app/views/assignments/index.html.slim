@@ -62,7 +62,9 @@ main role="main" class="#{isAssignmentEmpty(@assignments)}"
 
   //= render partial: 'assignments/shared/miss_assignments_reminder'
   <!-- 过期任务入口 -->
-  a.assignments-reminder href="#{miss_assignments_path}" target="_blank"
+  .assignments-reminder
+   a href="#{miss_assignments_path}" target="_blank"
+    | 过期任务
 
 - if !current_user.to_tester.tester_infor.try(:already_finish) && current_user.approved
   <!-- 完成个人信息的提示 -->

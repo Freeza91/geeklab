@@ -100,7 +100,7 @@ class Assignment < ActiveRecord::Base
           record = CreditRecord.new(tester_id: tester.id,
                                      assignment_id: id,
                                      project_id: project.id,
-                                     credit: project.try(:credit),
+                                     credits: project.try(:credit),
                                      bonus_credits: project.try(:bonus_credits))
           if record.save
             credits = tester.try(:credits) + project.try(:credit).to_i

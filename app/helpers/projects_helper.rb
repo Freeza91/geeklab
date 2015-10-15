@@ -41,11 +41,12 @@ module ProjectsHelper
     platforms[platform.to_sym]
   end
 
-    def get_device(device)
-      devices = {
-        'phone': '智能手机',
-        'pad': '平板电脑'
-      }
-      devices[device.to_sym]
-    end
+  def get_device(device)
+    devices = {
+      'phone': '智能手机',
+      'pad': '平板电脑'
+    }
+    devices[device.to_sym]
+  end
+
 end

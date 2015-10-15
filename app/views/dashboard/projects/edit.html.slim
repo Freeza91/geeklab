@@ -118,6 +118,13 @@
   form
     .item
       span.name
+      | 是否是新手任务：
+      input type="radio" v-model="project.beginner" name="beginner" value="true"
+        | 是
+      input type="radio" v-model="project.beginner" name="beginner" value="false"
+        | 否
+    .item
+      span.name
         | 截止时间:
       input#time-picker type="text" v-model="project.expired_at" required="required"
     .item
@@ -173,6 +180,7 @@ javascript:
           submit         : submit
         }
       });
+      projectVm.$data.project.beginner = projectVm.$data.project.beginner.toString();
     })
     .error(function (errors) {
       console.log(errors);
@@ -201,6 +209,11 @@ javascript:
       data.expired_at = project.expired_at;
       data.basic_bonus = project.basic_bonus;
       data.reasons = [];
+      if(project.beginner === 'true') {
+        data.beginner = true;
+      } else {
+        data.beginner = false;
+      }
       project.reasons.forEach(function (reason) {
         if(reason) {
           data.reasons.push(reason);

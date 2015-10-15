@@ -21,6 +21,7 @@ class Dashboard::ProjectsController < Dashboard::BaseController
             status: @project.status,
             reasons: @project.reasons || [],
             basic_bonus: @project.basic_bonus,
+            beginner: @project.beginner
           }
         end
 
@@ -89,7 +90,7 @@ class Dashboard::ProjectsController < Dashboard::BaseController
 private
 
   def project_params
-    params.require(:project).permit(:expired_at, :credit,
+    params.require(:project).permit(:expired_at, :credit, :beginner,
                                     :basic_bonus, :status, reasons: [])
   end
 

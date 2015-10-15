@@ -92,21 +92,26 @@ class Assignment < ActiveRecord::Base
       hash_tester_id = self.to_params(tester_id)
       tester = Tester.find_by(id: hash_tester_id)
       if tester
-        recocrd = tester.credit_records
-        if recocrd && recocrd.map(&:project_id).include?(id)
+        record = tester.credit_records
+        if record && record.map(&:project_id).include?(id)
           "已经添加过积分了！"
         else
           project = self.project
-          recocrd = CreditRecord.new(tester_id: tester.id,
+          record = CreditRecord.new(tester_id: tester.id,
                                      assignment_id: id,
                                      project_id: project.id,
                                      credit: project.try(:credit),
                                      bonus_credits: project.try(:bonus_credits))
-          if recocrd.save
+          if record.save
             credits = tester.try(:credits) + project.try(:credit).to_i
             tester.update_column(:credits, credits)
 
-            AddBonusCreditJob.set(wait_until: project.expired_at || Time.now).perform_later(recocrd.id)
+            if !project.beginner
+               AddBonusCreditJob.set(wait_until: project.expired_at || Time.now).perform_later(record.id)
+            else
+              record.update_column(:used, true)
+           end
+
           end
         end
       else

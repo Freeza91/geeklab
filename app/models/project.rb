@@ -91,6 +91,7 @@ class Project < ActiveRecord::Base
 
   def prepare_assign
     StartAssignJob.perform_later(id) if status == 'success' &&
+                                        status_was != 'success' &&
                                         expired? && is_beigner?
   end
 

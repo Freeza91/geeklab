@@ -30,7 +30,22 @@ div
               = link_to("审核", edit_dashboard_video_path(assignment))
               span |
               = link_to("删除", dashboard_video_path(assignment), method: 'delete', data: {confirm: "你确定要删除？#{assignment.project.name}"})
-
+        - else
+          tr
+            td
+              | #{assignment.id}
+            td
+              | 你已经不小心把此任务删除
+            td
+              | 不涉及
+            td
+              | 不涉及
+            td
+              | 不涉及
+            td
+              | 不涉及
+            td
+              | 不涉及
 div.ui.container
   p
     = paginate @assignments

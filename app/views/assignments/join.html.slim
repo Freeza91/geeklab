@@ -19,7 +19,7 @@ main role="main" class="#{isAssignmentEmpty(@assignments_ing)}"
       .clearfix
         - if @assignments_ing
           -  @assignments_ing.each do |assignment|
-            .card data-assignment-id="#{assignment.to_params}" data-status="#{assignment.status}"
+            .card data-assignment-id="#{assignment.to_params}" data-status="#{assignment.status}" data-video="#{assignment.video}"
               .inner
                 header
                   h1.title

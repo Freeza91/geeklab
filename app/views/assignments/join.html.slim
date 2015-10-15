@@ -62,11 +62,12 @@ main role="main" class="#{isAssignmentEmpty(@assignments_ing)}"
                       i.icon-inner.icon-score-old
                     span.number
                       = assignment.project.credit
-                    span
-                      | &nbsp+&nbsp
-                    span.extra
-                      = showBonus(assignment.credit_record)
-                      = render partial: "assignments/shared/extra_score", locals: {credit_record: assignment.credit_record, bonus: assignment.project.basic_bonus}
+                    - unless assignment.project.beginner
+                      span
+                        | &nbsp+&nbsp
+                      span.extra
+                        = showBonus(assignment.credit_record)
+                        = render partial: "assignments/shared/extra_score", locals: {credit_record: assignment.credit_record, bonus: assignment.project.basic_bonus}
       .load-more
         - if @assignments_ing.try(:size) == 10
           button.btn.btn-base.yellow.btn-full
@@ -120,11 +121,12 @@ main role="main" class="#{isAssignmentEmpty(@assignments_ing)}"
                       i.icon-inner.icon-score-old
                     span.number
                       = assignment.project.credit
-                    span
-                      | &nbsp+&nbsp
-                    span.extra
-                      = showBonus(assignment.credit_record)
-                      = render partial: "assignments/shared/extra_score", locals: {credit_record: assignment.credit_record, bonus: assignment.project.basic_bonus}
+                    - unless assignment.project.beginner
+                      span
+                        | &nbsp+&nbsp
+                      span.extra
+                        = showBonus(assignment.credit_record)
+                        = render partial: "assignments/shared/extra_score", locals: {credit_record: assignment.credit_record, bonus: assignment.project.basic_bonus}
       .load-more
         - if @assignments_done.try(:size) == 10
           button.btn.btn-base.yellow.btn-full

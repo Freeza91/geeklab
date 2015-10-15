@@ -39,11 +39,12 @@ main role="main" class="#{isAssignmentEmpty(@assignments)}"
                     i.icon-inner.icon-score-old
                   span.number
                     = assignment.project.credit
-                  span
-                    | &nbsp+&nbsp
-                  span.extra
-                    | 评分奖励
-                    = render partial: "assignments/shared/extra_score", locals: {credit_record: assignment.credit_record, bonus: assignment.project.basic_bonus}
+                  - unless assignment.beginner
+                    span
+                      | &nbsp+&nbsp
+                    span.extra
+                      | 评分奖励
+                      = render partial: "assignments/shared/extra_score", locals: {credit_record: assignment.credit_record, bonus: assignment.project.basic_bonus}
     .load-more
       - if @assignments.try(:size) == 10
         button.btn.btn-base.yellow.btn-full

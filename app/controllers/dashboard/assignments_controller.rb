@@ -18,8 +18,10 @@ class Dashboard::AssignmentsController < Dashboard::BaseController
             public: @assignment.public,
             status: @assignment.status,
             reasons: @assignment.reasons || [],
-            rank: @assignment.rank,
-            feedbacks: @assignment.feedbacks
+            feedbacks: @assignment.feedbacks,
+            rating_from_pm: @assignment.rating_from_pm,
+            rating_from_admin: @assignment.rating_from_admin,
+            is_record: !!@assignment.credit_record
           }
         end
 
@@ -48,7 +50,7 @@ class Dashboard::AssignmentsController < Dashboard::BaseController
 private
 
   def assignment_params
-    params.require(:assignment).permit(:public, :rank, :status,
+    params.require(:assignment).permit(:public, :rating_from_pm, :rating_from_admin, :status,
                                        reasons: [],
                                        feedbacks_attributes:
                                          [:id, :timeline, :desc, :suggestion, :_destroy])

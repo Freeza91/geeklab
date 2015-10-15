@@ -50,19 +50,37 @@
         input type="button" value="删除" v-on="click: deleteComment(this, $index)"
       input type="button" value="添加未通过说明" v-on="click: addComment(this)"
     .assignment-quality
-      span.name
-        | 视频质量:
-      select v-model="assignment.rank"
-        option value="1"
-          | 1
-        option value="2"
-          | 2
-        option value="3"
-          | 3
-        option value="4"
-          | 4
-        option value="5"
-          | 5
+      .item
+        span.name
+          | 产品经理评分:
+        - if @assignment.rating_from_pm
+          span v-text="assignment.rating_from_pm"
+        - else
+          select v-model="assignment.rating_from_pm"
+            option value="1"
+              | 1
+            option value="2"
+              | 2
+            option value="3"
+              | 3
+            option value="4"
+              | 4
+            option value="5"
+              | 5
+      .item
+        span.name
+          | 视频质量:
+        select v-model="assignment.rating_from_admin"
+          option value="1"
+            | 1
+          option value="2"
+            | 2
+          option value="3"
+            | 3
+          option value="4"
+            | 4
+          option value="5"
+            | 5
     .assignment-feedback
       table.ui.celled.table
         thead
@@ -149,12 +167,14 @@ javascript:
       event.preventDefault();
       var assignment = vm.assignment;
       var data = {};
+      console.log(assignment);
       if(assignment.public === 'true') {
         data.public = true;
       } else {
         data.public = false;
       }
-      data.rank = assignment.rank;
+      data.rating_from_pm = assignment.rating_from_pm;
+      data.rating_from_admin = assignment.rating_from_admin;
       data.status = assignment.status;
       data.reasons = [];
       assignment.reasons.forEach(function (reason) {
@@ -165,11 +185,6 @@ javascript:
       data.feedbacks_attributes = [];
       assignment.feedbacks.forEach(function (feedback) {
         if(feedback.suggestion) {
-          //data.feedbacks_attributes.push({
-            //timeline: feedback.timeline,
-            //desc: feedback.desc,
-            //suggestion: feedback.suggestion
-          //});
           data.feedbacks_attributes.push(feedback);
         }
       });

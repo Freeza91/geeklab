@@ -39,7 +39,7 @@ main role="main" class="#{isAssignmentEmpty(@assignments)}"
                     i.icon-inner.icon-score-old
                   span.number
                     = assignment.project.credit
-                  - unless assignment.beginner
+                  - unless assignment.project.beginner
                     span
                       | &nbsp+&nbsp
                     span.extra

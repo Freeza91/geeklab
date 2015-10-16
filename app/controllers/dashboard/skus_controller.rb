@@ -2,16 +2,33 @@ class Dashboard::SkusController < Dashboard::BaseController
 
   load_and_authorize_resource
 
+  def new
+    @good = Good.where(id: params[:good_id]).first
+  end
+
+  def create_or_update
+    @good = Good.where(id: params[:good_id]).first
+    @good && @good.update_attributes(goos_skus_params)
+
+    render :new
+  end
+
   def update
-    @sku = Sku.find params[:id]
-    @sku.update_attributes(sku_params) if @sku.orders.ids.include?(params[:order_id].to_i)
+    @good = Good.where(id: params[:good_id]).first
+    @good && @good.update_attributes(good_skus_order_params)
 
     redirect_to dashboard_orders_path
   end
 
 private
 
-  def sku_params
+  def goos_skus_params
+    params.require(:good).permit(skus_attributes:
+                                  [:id, :account, :secret, :_destroy, :num])
+  end
+
+  def good_skus_order_params
     params.permit(:account, :secret)
   end
+
 end

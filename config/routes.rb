@@ -117,7 +117,11 @@
       end
     end
     resources :goods do
-      resources :skus
+      resources :skus do
+        collection do
+          put 'create_or_update', to: 'skus#create_or_update'
+        end
+      end
     end
     resources :orders, only: [:index, :edit, :destroy] do
       member do

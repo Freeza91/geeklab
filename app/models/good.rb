@@ -13,6 +13,7 @@ class Good < ActiveRecord::Base
 
 
   accepts_nested_attributes_for :pictures, allow_destroy: true
+  accepts_nested_attributes_for :skus, allow_destroy: true
 
   attr_reader :available
 

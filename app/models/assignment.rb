@@ -89,13 +89,11 @@ class Assignment < ActiveRecord::Base
 
   def add_credit_to_user
     if status == "success" && status_was != "success"
-      hash_tester_id = self.to_params(tester_id)
-      tester = Tester.find_by(id: hash_tester_id)
+      tester = self.tester
       if tester
-        records = tester.credit_records
-        if records && records.map(&:project_id).include?(id)
-          "已经添加过积分了！"
-        else
+        record = CreditRecord.where(assignment_id: id,
+                                    tester_id: tester.id).first
+        unless record
           project = self.project
           record = CreditRecord.new(tester_id: tester.id,
                                     project_id: project.id,
@@ -103,20 +101,28 @@ class Assignment < ActiveRecord::Base
                                     credits: project.try(:credit),
                                     bonus_credits: project.try(:bonus_credits))
 
-          if record.save
-            credits = tester.try(:credits) + project.try(:credit).to_i
-            tester.update_column(:credits, credits)
+          if project.beginner # 新手任务
+              record.rating_type = 'new'
+              record.used = true
+              record.save && tester.update_column(:credits, project.try(:credits).to_i)
+          else # 不是新手任务
+            if rating_from_pm #项目经理有评分
+              record.rating_from_pm = rating_from_pm.to_i
+              record.rating_type = 'pm'
+              record.used = true
 
-            if !project.beginner
-               AddBonusCreditJob.set(wait_until: project.expired_at || Time.now).perform_later(record.id)
+              credits = tester.try(:credits) + project.try(:credit).to_i
+              bonus_credits = rating_from_pm.to_i * bonus_credits.to_i
+
+              record.save && tester.update_column(:credits, credits + bonus_credits)
             else
-              record.update_column(:used, true)
-           end
-
+              # 设置过期自动评分
+              AddBonusCreditJob.set(wait_until: project.expired_at || Time.now).perform_later(id, tester.id)
+            end
           end
         end
       else
-        "已经添加过积分了！"
+        "没有找到用户"
       end
     end
   end

@@ -7,7 +7,7 @@
       - (5 - credit_record.rating).times
         .fa.fa-star style="color: #fff"
     p
-      = credit_record.bonus_credits
+      = credit_record.bonus_credits * credit_record.rating
       | &nbsp=&nbsp
       span.icon-img.icon-outer-18 style="margin: 0 5px -5px"
         i.icon-inner.icon-score-old

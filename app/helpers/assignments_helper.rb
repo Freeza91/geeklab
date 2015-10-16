@@ -8,7 +8,7 @@ module AssignmentsHelper
     'failed': '任务过期'
   }
 
-  def get_status_info(status)
+  def get_assignment_status_info(status)
     INFO[status.to_sym]
   end
 

@@ -23,7 +23,7 @@ div
             td
               | #{assignment.project.pm.try(:email)}
             td
-              = get_status_info(assignment.status)
+              = get_assignment_status_info(assignment.status)
             td
               | #{assignment.project.expired_at.strftime("%F %T")}
             td

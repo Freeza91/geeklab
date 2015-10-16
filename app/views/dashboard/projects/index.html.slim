@@ -22,7 +22,7 @@ div
           td
             | #{project.demand}
           td
-            = get_status_info(project.status)
+            = get_project_status_info(project.status)
           td
             - if project.expired_at
               | #{project.expired_at.strftime("%F %T")}

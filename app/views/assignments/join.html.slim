@@ -42,7 +42,7 @@ main role="main" class="#{isAssignmentEmpty(@assignments_ing)}"
                   = render partial: 'assignments/operators/wait_check'
                   .status class=("status_" + "#{assignment.status}")
                     p
-                      = get_status_info(assignment.status)
+                      = get_assignment_status_info(assignment.status)
                       - if assignment.status == "not_accept"
                         i.fa.fa-question-circle
                     - if assignment.status == "not_accept" && assignment.reasons.size > 0

@@ -13,8 +13,7 @@ main role="main"
                       = project.name
                     p.status class=("status_" + "#{project.status}")
                       i.fa.fa-exclamation-circle
-                      /= get_status_info(project.status, project.demand, @assignments[index].size)
-                      = get_status_info(project.get_status)
+                      = get_project_status_info(project.get_status)
                     - if project.status == "not_accept" && project.reasons && project.reasons.size > 0
                       ol.comment
                         - project.reasons.each do |reason|

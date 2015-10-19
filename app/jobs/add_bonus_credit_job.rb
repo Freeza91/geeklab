@@ -3,7 +3,7 @@ class AddBonusCreditJob < ActiveJob::Base
 
   def perform(assignment_id, tester_id)
     assignment = Assignment.where(id: assignment_id).first
-    if assignment.expired_at <= Time.now && tester = assignment.tester# project
+    if assignment && tester = assignment.tester
 
       record = CreditRecord.where(assignment_id: assignment_id, tester_id: tester_id).first
       unless record

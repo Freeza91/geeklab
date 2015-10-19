@@ -16,7 +16,7 @@ div
             td
               | #{assignment.id}
             td
-              a(href=dashboard_project_path(assignment.project) target='_blank')
+              a(href=edit_dashboard_project_path(assignment.project) target='_blank')
                 = assignment.project.name
             td
               | #{assignment.tester.try(:email)}

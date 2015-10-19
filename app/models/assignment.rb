@@ -104,7 +104,9 @@ class Assignment < ActiveRecord::Base
           if project.beginner # 新手任务
               record.rating_type = 'new'
               record.used = true
-              record.save && tester.update_column(:credits, project.try(:credits).to_i)
+              num = tester.try(:credits).to_i + project.try(:credit).to_i
+              binding.pry
+              record.save && tester.update_column(:credits, num)
           else # 不是新手任务
             if rating_from_pm #项目经理有评分
               record.rating_from_pm = rating_from_pm.to_i

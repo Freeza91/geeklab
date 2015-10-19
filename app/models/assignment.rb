@@ -112,8 +112,8 @@ class Assignment < ActiveRecord::Base
               record.rating_type = 'pm'
               record.used = true
 
-              credits = tester.try(:credits) + project.try(:credit).to_i
-              bonus_credits = rating_from_pm.to_i * bonus_credits.to_i
+              credits = tester.credits + project.credit
+              bonus_credits = rating_from_pm * project.basic_bonus
 
               record.save && tester.update_column(:credits, credits + bonus_credits)
             else

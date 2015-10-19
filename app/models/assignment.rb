@@ -98,8 +98,8 @@ class Assignment < ActiveRecord::Base
           record = CreditRecord.new(tester_id: tester.id,
                                     project_id: project.id,
                                     assignment_id: id,
-                                    credits: project.try(:credit),
-                                    bonus_credits: project.try(:bonus_credits))
+                                    credits: project.credit || 0,
+                                    bonus_credits: project.basic_bonus)
 
           if project.beginner # 新手任务
               record.rating_type = 'new'

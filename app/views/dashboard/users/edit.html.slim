@@ -8,11 +8,17 @@ div
 
 = form_for [:dashboard, @user] do |f|
   div
-    = f.label '是否为体验师'
+    = f.label '是否为体验师:'
     = f.label '是'
     = f.radio_button :approved, true, checked: @user.approved
     = f.label '否'
     = f.radio_button :approved, false, checked: !@user.approved
+  div
+    = f.label '是否为管理员:'
+    = f.label '是'
+    = f.radio_button :admin, 1, checked: @user.admin == 1
+    = f.label '否'
+    = f.radio_button :admin, 0, checked: @user.admin == 0
   div
     = f.label '积分:'
     = f.text_field :credits, value: @user.credits

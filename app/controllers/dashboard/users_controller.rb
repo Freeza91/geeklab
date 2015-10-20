@@ -29,7 +29,7 @@ class Dashboard::UsersController < Dashboard::BaseController
 private
 
   def user_params
-    params.require(:user).permit(:approved, :credits, :limit_user)
+    params.require(:user).permit(:approved, :credits, :limit_user, :admin)
   end
 
 end

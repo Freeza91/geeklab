@@ -2,7 +2,7 @@
   .assignment-name
     span.name
       | 任务名称:
-    a href="#{dashboard_project_path(@assignment.project)}" target="_blank"
+    a href="#{edit_dashboard_project_path(@assignment.project)}" target="_blank"
       = @assignment.project.name
   .teseter-email
     span.name

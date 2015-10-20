@@ -1,6 +1,6 @@
 module ProjectsHelper
 
-  def get_status_info(status)
+  def get_project_status_info(status)
     #if demand == video_size
       #'任务成功'
     #else

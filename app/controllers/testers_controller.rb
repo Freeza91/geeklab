@@ -32,9 +32,15 @@ class TestersController < ApplicationController
         if project_id
           a = Assignment.create(project_id: project_id, tester_id: current_user.id,  status: 'test')
 
+          mail =
+            if @tester_infor.email_contract.present?
+              @tester_infor.email_contract
+            else
+              current_user.email
+            end
+
           task_url = "#{Settings.domain}/assignments"
-          UserMailer.new_task_notice(@tester_infor.email_contract || current_user.email,
-                                     a.project.name, task_url).deliver_later
+          UserMailer.new_task_notice(mail, a.project.name, task_url).deliver_later
 
           return render json: json
         else
@@ -95,9 +101,6 @@ class TestersController < ApplicationController
           @target = 'windows'
       end
     end
-  end
-
-  def rating_help
   end
 
   def choose

@@ -42,7 +42,7 @@ main role="main" class="#{isAssignmentEmpty(@assignments_ing)}"
                   = render partial: 'assignments/operators/wait_check'
                   .status class=("status_" + "#{assignment.status}")
                     p
-                      = get_status_info(assignment.status)
+                      = get_assignment_status_info(assignment.status)
                       - if assignment.status == "not_accept"
                         i.fa.fa-question-circle
                     - if assignment.status == "not_accept" && assignment.reasons.size > 0
@@ -66,8 +66,8 @@ main role="main" class="#{isAssignmentEmpty(@assignments_ing)}"
                       span
                         | &nbsp+&nbsp
                       span.extra
-                        = showBonus(assignment.credit_record)
-                        = render partial: "assignments/shared/extra_score", locals: {credit_record: assignment.credit_record, bonus: assignment.project.basic_bonus}
+                        = showBonus(assignment.try(:credit_record))
+                        = render partial: "assignments/shared/extra_score", locals: {credit_record: assignment.try(:credit_record), bonus: assignment.project.basic_bonus}
       .load-more
         - if @assignments_ing.try(:size) == 10
           button.btn.btn-base.yellow.btn-full
@@ -125,8 +125,8 @@ main role="main" class="#{isAssignmentEmpty(@assignments_ing)}"
                       span
                         | &nbsp+&nbsp
                       span.extra
-                        = showBonus(assignment.credit_record)
-                        = render partial: "assignments/shared/extra_score", locals: {credit_record: assignment.credit_record, bonus: assignment.project.basic_bonus}
+                        = showBonus(assignment.try(:credit_record))
+                        = render partial: "assignments/shared/extra_score", locals: {credit_record: assignment.try(:credit_record), bonus: assignment.project.basic_bonus}
       .load-more
         - if @assignments_done.try(:size) == 10
           button.btn.btn-base.yellow.btn-full
@@ -136,7 +136,7 @@ main role="main" class="#{isAssignmentEmpty(@assignments_ing)}"
             | 还没有完成的任务噢
 
   <!-- 上传视频文件选择-->
-  input type="file" id="video" accept="video/*" style="display:none"
+  input type="file" id="video" accept="video/mp4,video/x-m4v,video/*" style="display:none"
   <!-- 上传视频文件选择-->
 
 <!-- 完成个人信息的提示 -->

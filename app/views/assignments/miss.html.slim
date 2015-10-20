@@ -20,7 +20,7 @@ main role="main" class="#{isAssignmentEmpty(@assignments)}"
                     i.fa.fa-file-video-o.fa-4x
                 .status class=("status_" + "#{assignment.status}")
                   p
-                    = get_status_info(assignment.status)
+                    = get_assignment_status_info(assignment.status)
               footer
                 .timer
                   p

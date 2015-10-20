@@ -1,5 +1,5 @@
 .extra-score
-  - if credit_record.used
+  - if credit_record && credit_record.used
     p
       | 评分
       - credit_record.rating.times
@@ -7,8 +7,10 @@
       - (5 - credit_record.rating).times
         .fa.fa-star style="color: #fff"
     p
-      = credit_record.bonus_credits
+      = credit_record.bonus_credits * credit_record.rating
       | &nbsp=&nbsp
+      span.icon-img.icon-outer-18 style="margin: 0 5px -5px"
+        i.icon-inner.icon-score-old
       = bonus
       | &nbsp*&nbsp
       = credit_record.rating
@@ -20,6 +22,8 @@
       | (请谨慎录制, 审核通过的视频将无法修改)
     p
       | 评分奖励 =
+      span.icon-img.icon-outer-18 style="margin: 0 5px -5px"
+        i.icon-inner.icon-score-old
       span style="padding: 0 3px"
         = bonus
       | * 星

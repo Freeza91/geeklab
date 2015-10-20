@@ -16,14 +16,14 @@ div
             td
               | #{assignment.id}
             td
-              a(href=dashboard_project_path(assignment.project) target='_blank')
+              a(href=edit_dashboard_project_path(assignment.project) target='_blank')
                 = assignment.project.name
             td
               | #{assignment.tester.try(:email)}
             td
               | #{assignment.project.pm.try(:email)}
             td
-              = get_status_info(assignment.status)
+              = get_assignment_status_info(assignment.status)
             td
               | #{assignment.project.expired_at.strftime("%F %T")}
             td

@@ -1,4 +1,5 @@
 @import ../helpers/variables
+@import ../helpers/mixin
 
 .form-control
   border-radius: 0
@@ -121,14 +122,22 @@ input[type='checkbox']
     margin-bottom: 7px
   .form-hint.error
     color: #e40909
-  .hint-text
+  .hint-text,
+  .field-warn
     position: absolute
+    background-color: $warn-red
+    color: #fff
+    font-size: .8rem
+    font-weight: bold
+    padding: 3px 8px
+    +border-radius(15px)
+  .hint-text
     right: 8px
     top: 8px
-    background-color: #f00
-    color: #fff
-    padding: 0 2px
-    border-radius: 6px
+  .field-warn
+    top: 50%
+    right: 0
+    margin-top: -.5rem
   #code .hint-text
     right: 51%
     border-top-right-radius: 0

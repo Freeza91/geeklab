@@ -154,7 +154,7 @@ $(function () {
   }
 
   function initTesterVm (testerInfo) {
-    var testerInforDefault = {
+    var testerInfoDefault = {
       name: '',
       email: '',
       cellphone: '',
@@ -174,50 +174,105 @@ $(function () {
         cellphone: ''
       },
       error: {
-
+        name: false,
+        email: false,
+        cellphone: false,
+        device: false,
+        profession: false
       }
     };
-    $.extend(testerInforDefault, testerInfo);
-    console.log(testerInforDefault);
+    $.extend(testerInfoDefault, testerInfo);
+    console.log(testerInfoDefault);
 
     var infoVm = new Vue({
       el:  '#tester-info',
-      data: testerInforDefault,
+      data: testerInfoDefault,
       methods: {
         updateDevice: updateDevice,
         updateInterest: updateInterest,
+        checkValue: checkValue,
         submit: submit
       }
     });
   }
 
-  function generateTesterInfor (vm) {
-    var testerInfor = vm.$data,
+  function checkValue (vm, event, type) {
+    var target = event.target,
+        value = target.value,
+        name = target.name;
+    console.log(value, name);
+    if(value && !Geeklab.formValueValid(value, type)) {
+      vm.hint[name] = '格式错误';
+      vm.error[name] = true;
+    }
+    return false;
+  }
+  function generateTesterInfo (vm) {
+    var testerInfo = vm.$data,
         data = {};
 
     data.id = id;
-    data.username = testerInfor.name;
-    data.email_contract = testerInfor.email;
-    data.mobile_phone = testerInfor.cellphone
+    data.username = testerInfo.name;
+    data.email_contract = testerInfo.email;
+    data.mobile_phone = testerInfo.cellphone
 
-    data.sex = testerInfor.sex;
-    data.birthday = testerInfor.birthday;
-    data.birthplace = testerInfor.birthplace;
-    data.livingplace = testerInfor.livingplace;
+    data.sex = testerInfo.sex;
+    data.birthday = testerInfo.birthday;
+    data.birthplace = testerInfo.birthplace;
+    data.livingplace = testerInfo.livingplace;
 
-    data.device = testerInfor.device;
-    data.emotional_status = testerInfor.emotion_status;
-    data.sex_orientation = testerInfor.orientation;
-    data.education = testerInfor.education;
-    data.profession = testerInfor.profession;
-    data.income = testerInfor.income;
-    data.interest = testerInfor.interest;
+    data.device = testerInfo.device;
+    data.emotional_status = testerInfo.emotion_status;
+    data.sex_orientation = testerInfo.orientation;
+    data.education = testerInfo.education;
+    data.profession = testerInfo.profession;
+    data.income = testerInfo.income;
+    data.interest = testerInfo.interest;
 
 
     return data;
   }
 
-  function postTesterInfor (data, callback) {
+  function checkTesterInfo (vm) {
+    var result = true;
+
+    if(!vm.name) {
+      vm.error.name = true;
+      result = false;
+    }
+
+    if(!vm.email) {
+      vm.hint.email = '请输入邮箱';
+      vm.error.email = true;
+      result = false;
+    } else {
+      if(!Geeklab.formValueValid(vm.email, 'email')) {
+        vm.hint.email = '格式错误';
+        vm.error.email = true;
+        result = false;
+      }
+    }
+    if(!vm.cellphone) {
+      vm.hint.cellphone = '请输入手机号';
+      vm.error.cellphone = true;
+      result = false;
+    } else {
+      if(!Geeklab.formValueValid(vm.cellphone, 'mobile_phone')) {
+        vm.hint.cellphone = '格式错误';
+        vm.error.cellphone = true;
+        result = false;
+      }
+    }
+
+    if(vm.device.length === 0) {
+      vm.error.device = true;
+      result = false;
+    }
+
+    return result;
+  }
+
+  function postTesterInfo (data, callback) {
     $.ajax({
       url: '/testers/' + id,
       method: 'put',
@@ -237,6 +292,9 @@ $(function () {
   function updateDevice (vm, event) {
     var target = event.target,
         value = target.value;
+    if(vm.error.device) {
+      vm.error.device = false;
+    }
     if(target.checked) {
       vm.device.push(value);
     } else {
@@ -264,18 +322,22 @@ $(function () {
 
   function submit (vm, event) {
     event.preventDefault();
-    var tester = generateTesterInfor(vm);
-    console.log(tester);
-    // loading
-    //Geeklab.showLoading();
-    //postTesterInfor(
-      //data,
-      //setTimeout(function () {
-        //Geeklab.removeLoading();
-        //var $modal = $('#form-finish');
-        //$('body').append('<div class="main-mask"></div>')
-        //$modal.addClass('show');
-      //}, 1500));
+    if(checkTesterInfo(vm)) {
+      // var vm = generateTesterInfo(vm);
+      // console.log(testerInfo);
+      // loading
+      //Geeklab.showLoading();
+      //postTesterInfo(
+        //data,
+        //setTimeout(function () {
+          //Geeklab.removeLoading();
+          //var $modal = $('#form-finish');
+          //$('body').append('<div class="main-mask"></div>')
+          //$modal.addClass('show');
+        //}, 1500));
+    } else {
+      return false;
+    }
   }
 
   // 文本字段验证

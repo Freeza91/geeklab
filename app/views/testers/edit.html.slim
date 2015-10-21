@@ -1,31 +1,29 @@
 main role="mian"
   form#tester-info.form style="max-width: 600px; margin: 0 auto"
     fieldset
-      .form-field.with-hint-text
+      .form-field
         .field-name
           span
             | 昵称
         .field-content
-          input.form-input type="text" name="name" v-model="name"
-          span.hint-text
-            | xkhkdf
-      .form-field.with-hint-text
+          input.form-input type="text" name="name" v-model="name" v-on="focus: error.name = false"
+          span.hint-text v-show="error.name"
+            | 请输入昵称
+      .form-field
         .field-name
           label
             | 邮箱
         .field-content
-          input.form-input type="text" name="email" v-model="email"
-          span.hint-text
-            | xkhkdf
-      .form-field.with-hint-text
+          input.form-input type="text" name="email" v-model="email" v-on="focus: error.email = false, blur: checkValue(this, $event, 'email')"
+          span.hint-text v-show="error.email" v-text="hint.email"
+      .form-field
         .field-name
           label
             | 手机
         .field-content
-          input.form-input type="text" name="cellphone" v-model="cellphone"
-          span.hint-text
-            | xkhkdf
-      .form-group.required.has-feedback data-type='radio'
+          input.form-input type="text" name="cellphone" v-model="cellphone" v-on="focus: error.cellphone = false, blur: checkValue(this, $event, 'mobile_phone')"
+          span.hint-text v-show="error.cellphone" v-text="hint.cellphone"
+      .form-field
         .field-name
           label
             | 性别
@@ -42,7 +40,7 @@ main role="mian"
         .field-name
           label
             | 生日
-        .field-content
+        .field-content#birth
           select.year
           span 年
           select.month
@@ -74,6 +72,9 @@ main role="mian"
               input type="checkbox" v-on="change: updateDevice(this, $event)" value="#{device}" checked=(@tester_infor.device.include?(device))
               span
                 = device
+        .field-warn v-show="error.device"
+          span
+            | 请选择设备
       .form-field
         .field-name
           label

@@ -1,0 +1,35 @@
+div
+  table.ui.celled.table
+    thead
+      tr
+        th 选择
+        th 邮箱
+        th 昵称
+        th 最近登录时间
+        th 完成任务
+        th 平均分
+    tbody
+      - @user_infos.each do |info|
+        tr
+          td
+            - if info["status"]
+              | 已发
+            - else
+              | 添加选择
+          td
+            | #{info['email']}
+          td
+            | #{info['username']}
+          td
+            | #{info['last_login']}
+          td
+            | #{info['finish_demand']}
+          td
+            | #{info['ave']}
+
+div.ui.container
+  p
+    = paginate @user_infos
+
+
+

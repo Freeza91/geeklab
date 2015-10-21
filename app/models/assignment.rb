@@ -6,10 +6,15 @@ class Assignment < ActiveRecord::Base
   scope :not_take_part,-> { where("assignments.status = ?",  "new") }
   scope :ing,          -> { where('assignments.status in (?)', ['wait_check', 'checking', 'not_accept', 'delete']) }
   scope :done,         -> { where("assignments.status = ?", "success") }
+  scope :show_pm,      -> { where("public = ?", true) }
 
   belongs_to :tester,  inverse_of: :assignments
   belongs_to :project, inverse_of: :assignments
   has_one    :comment, dependent: :destroy
+  has_many   :feedbacks
+  has_one    :credit_record
+
+  accepts_nested_attributes_for :feedbacks, allow_destroy: true
 
   after_update :video_notice_to_tester
   after_update :auto_update_assignment_status
@@ -84,13 +89,41 @@ class Assignment < ActiveRecord::Base
 
   def add_credit_to_user
     if status == "success" && status_was != "success"
-      hash_tester_id = self.to_params(tester_id)
-      tester = Tester.find_by(id: hash_tester_id)
+      tester = self.tester
       if tester
-        credits = tester.try(:credits) + self.project.credit.to_i
-        tester.update_column(:credits, credits)
+        record = CreditRecord.where(assignment_id: id,
+                                    tester_id: tester.id).first
+        unless record
+          project = self.project
+          record = CreditRecord.new(tester_id: tester.id,
+                                    project_id: project.id,
+                                    assignment_id: id,
+                                    credits: project.credit || 0,
+                                    bonus_credits: project.basic_bonus)
+
+          if project.beginner # 新手任务
+              record.rating_type = 'new'
+              record.used = true
+              num = tester.try(:credits).to_i + project.try(:credit).to_i
+              record.save && tester.update_column(:credits, num)
+          else # 不是新手任务
+            if rating_from_pm #项目经理有评分
+              record.rating = rating_from_pm.to_i
+              record.rating_type = 'pm'
+              record.used = true
+
+              credits = tester.credits + project.credit
+              bonus_credits = rating_from_pm * project.basic_bonus
+
+              record.save && tester.update_column(:credits, credits + bonus_credits)
+            else
+              # 设置过期自动评分
+              AddBonusCreditJob.set(wait_until: project.expired_at || Time.now).perform_later(id, tester.id)
+            end
+          end
+        end
       else
-        "已经添加过积分了！"
+        "没有找到用户"
       end
     end
   end

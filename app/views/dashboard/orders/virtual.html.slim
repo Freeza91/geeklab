@@ -1,0 +1,18 @@
+hello 虚拟订单
+.ui.internally.celled.grid
+  .row
+    .two.wide.column
+      | 订单信息
+    .fourteen.wide.column
+      = form_for [:dashboard, @order, @sku], method: 'put' do |f|
+        div 订单号：#{@order.order_id}
+        div 商品名：#{@order.good.name}
+        div 价格：#{@order.good.cost}
+        div 购买人邮箱：#{@order.user.email}
+        div
+          label 卡号:
+          = text_field_tag :account, value="#{@sku.account}"
+        div
+          label 卡密：
+          = text_field_tag :secret, value="#{@sku.secret}"
+        = f.submit '保存'

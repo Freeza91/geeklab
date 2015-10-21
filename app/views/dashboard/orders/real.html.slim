@@ -1,0 +1,31 @@
+hello 实体订单
+.ui.internally.celled.grid
+  .row
+    .two.wide.column
+      | 订单信息
+    .fourteen.wide.column
+      = form_for [:dashboard, @order, @address], method: 'put' do |f|
+        div 订单号：#{@order.order_id}
+        div 商品名：#{@order.good.name}
+        div 价格：#{@order.good.cost}
+        div 购买人邮箱：#{@order.user.email}
+
+        div
+          label 订单状态：
+          = select_tag :status, dashboard_address_select_status(@address.status)
+        div
+          label 收货人姓名：
+          = text_field_tag :name, value="#{@address.name}"
+        div
+          label 收货人电话：
+          = text_field_tag :tel, value="#{@address.tel}"
+        div
+          label 收货人地址：
+          = text_field_tag :location, value="#{@address.location}"
+        div
+          label 快递单号：
+          = text_field_tag :deliver_id, value="#{@address.deliver_id}"
+        div
+          label 快递公司：
+          = text_field_tag :deliver_company, value="#{@address.deliver_company}"
+        = f.submit '保存'

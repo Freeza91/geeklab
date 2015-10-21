@@ -1,0 +1,242 @@
+.content-block
+  .item
+    span.name
+      | 任务名称:
+    span
+      = @project.name
+  .item
+    span.name
+      | 平台:
+    span
+      = @project.platform
+  .item
+    span.name
+      | 设备:
+    span
+      = @project.device
+  .item
+    span.name
+      | 系统要求:
+    span
+      = @project.requirement
+  .item
+    span.name
+      | 产品简介:
+    span
+      = @project.profile
+  - if @project.qr_code
+    .item
+      span.name
+        | 二维码
+      img src="#{@project.qr_code.url}"
+.content-block
+  - if @project.user_feature
+    .item
+      span.name
+        | 用户个数:
+      span
+        = @project.demand
+    .item
+      span.name
+        | 年龄范围:
+      span
+        = @project.user_feature.age
+    .item
+      span.name
+        | 收入范围:
+      span
+        = @project.user_feature.income
+    .item
+      span.name
+        | 性别:
+      span
+        = @project.user_feature.sex.join(', ')
+    .item
+      span.name
+        | 城市级别:
+      span
+        = get_city(@project.user_feature.city_level)
+    .item
+      span.name
+        | 学历:
+      span
+        = @project.user_feature.education.join(', ')
+    .item
+      span.name
+        | 情感状态:
+      span
+        = @project.user_feature.emotional_status.join(', ')
+    .item
+      span.name
+        | 性取向:
+      span
+        = @project.user_feature.sex_orientation.join(', ')
+    .item
+      span.name
+        | 兴趣标签:
+      span
+        = @project.user_feature.interest.join(', ')
+  - else
+    | 曾经是新手任务，此处没有要求
+
+.content-block
+  .item
+    span.name
+      | 测试情景:
+    span
+      = @project.desc
+  - @project.tasks.each_with_index do |task, index|
+    .item
+      span.name
+        | 任务
+        = index + 1
+        | :
+      span
+        = task.content
+.content-block
+  .item
+    span.name
+      | 姓名:
+    span
+      = @project.contact_name
+  .item
+    span.name
+      | 手机:
+    span
+      = @project.phone
+  .item
+    span.name
+      | 邮箱:
+    span
+      = @project.email
+  .item
+    span.name
+      | 公司:
+    span
+      = @project.company
+.content-block#project-check
+  form
+    .item
+      span.name
+      | 是否是新手任务：
+      input type="radio" v-model="project.beginner" name="beginner" value="true"
+        | 是
+      input type="radio" v-model="project.beginner" name="beginner" value="false"
+        | 否
+    .item
+      span.name
+        | 截止时间:
+      input#time-picker type="text" v-model="project.expired_at" required="required"
+    .item
+      span.name
+        | 任务积分:
+      input type="text" v-model="project.credit" required="required"
+    .item
+      span.name
+        | 奖励基数:
+      input type="text" v-model="project.basic_bonus" required="required"
+    .item
+      span.name
+        | 任务状态
+      select v-model="project.status"
+        option value="wait_check"
+          | 等待审核
+        option value="checking"
+          | 正在审核
+        option value="success"
+            | 审核通过
+        option value="not_accept"
+          | 审核未通过
+    .item v-show="project.status === 'not_accept'"
+      .comment v-repeat="project.reasons"
+        input type="text" v-attr="value: $value" v-on="change: updateComment(this, $index, $event)"
+        input type="button" value="删除" v-on="click: deleteComment(this, $index)"
+      input type="button" value="添加未通过说明" v-on="click: addComment(this)"
+    input type="submit" value="提交" v-on="click: submit(this, $event)"
+
+javascript:
+  $(function() {
+
+    // init time picker
+    $('#time-picker').datetimepicker({
+      formatDate: 'Y-m-d',
+      minDate: '0'
+    });
+
+    $.ajax({
+      url: location.href,
+      dataType: 'json'
+    })
+    .done(function (data) {
+      var projectVm = new Vue({
+        el: '#project-check',
+        data: {
+          project: data.project
+        },
+        methods: {
+          updateComment: updateComment,
+          addComment     : addComment,
+          deleteComment  : deleteComment,
+          submit         : submit
+        }
+      });
+      projectVm.$data.project.beginner = projectVm.$data.project.beginner.toString();
+    })
+    .error(function (errors) {
+      console.log(errors);
+    });
+
+    function updateComment (vm, index, event) {
+      var value = event.target.value;
+      vm.project.reasons.$set(index, value);
+    }
+
+    function addComment (vm) {
+      console.log(vm.$data.project);
+      vm.project.reasons.push('');
+    }
+
+    function deleteComment (vm, index) {
+      vm.project.reasons.$remove(index);
+    }
+
+    function submit (vm, event) {
+      event.preventDefault();
+      var project = vm.project;
+      var data = {};
+      data.status = project.status;
+      data.credit = project.credit;
+      data.expired_at = project.expired_at;
+      data.basic_bonus = project.basic_bonus;
+      data.reasons = [];
+      if(project.beginner === 'true') {
+        data.beginner = true;
+      } else {
+        data.beginner = false;
+      }
+      project.reasons.forEach(function (reason) {
+        if(reason) {
+          data.reasons.push(reason);
+        }
+      });
+      console.log(data);
+
+      var url = '/admin/projects/' + vm.project.id;
+      $.ajax({
+        url: url,
+        method: 'put',
+        data: {project: data}
+      })
+      .done(function (data) {
+        if(data.status === 0 && data.code === 1) {
+          location.href = '/admin/projects';
+        } else {
+          alert('保存失败');
+        }
+      })
+      .error(function (errors) {
+        console.log(errors);
+      });
+    }
+
+  });

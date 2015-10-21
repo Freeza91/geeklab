@@ -1,0 +1,26 @@
+doctype html
+html lang=session[:locale]
+  head
+    title 极客实验室-后台
+    meta name="viewport" content="width=device-width, initial-scale=1"
+    meta charset="utf-8"
+    meta name="generator" content="vuejs, rails"
+    meta http-equiv="Content-Type" content="text/html; charset=utf-8"
+    meta http-equiv="Content-Style-Type" content="text/css"
+    meta http-equiv="Content-Script-Type" content="text/javascript"
+    link rel="shortcut icon" href="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
+
+    = stylesheet_link_tag 'dashboard'
+    = csrf_meta_tags
+    <!-- 在最后加载js -->
+    = javascript_include_tag 'dashboard'
+    = csrf_meta_tags
+
+  body class=(controller_name + ' ' + controller_name + '_' + action_name)
+    .ui.grid
+      .sixteen.wide.column
+        = render 'dashboard/shared/header'
+      .two.wide.column
+        = render partial: 'dashboard/shared/nav'
+      .thirteen.wide.column
+        = yield

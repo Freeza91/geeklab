@@ -18,7 +18,7 @@ GIT
       sass-rails (>= 4.0, < 6)
 
 GEM
-  remote: http://ruby.taobao.org/
+  remote: https://ruby.taobao.org/
   specs:
     actionmailer (4.2.1)
       actionpack (= 4.2.1)
@@ -73,6 +73,7 @@ GEM
     byebug (4.0.5)
       columnize (= 0.9.0)
     callsite (0.0.11)
+    cancancan (1.10.1)
     carrierwave (0.10.0)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
@@ -83,6 +84,8 @@ GEM
       qiniu (~> 6.4.2)
     celluloid (0.16.0)
       timers (~> 4.0.0)
+    chart-js-rails (0.0.9)
+      railties (> 3.1)
     choice (0.2.0)
     chronic (0.10.2)
     coderay (1.1.0)
@@ -183,6 +186,8 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry-nav (0.2.4)
+      pry (>= 0.9.10, < 0.11.0)
     qiniu (6.4.2)
       json (~> 1.8)
       mime-types (~> 2.4.3)
@@ -254,6 +259,8 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (~> 1.1)
+    semantic-ui-sass (1.11.5.0)
+      sass (~> 3.2)
     sendgrid (1.2.0)
       json
     settingslogic (2.0.9)
@@ -326,8 +333,10 @@ DEPENDENCIES
   binding_of_caller
   bootstrap-sass
   byebug
+  cancancan
   carrierwave
   carrierwave-qiniu
+  chart-js-rails
   coffee-rails (~> 4.1.0)
   font-awesome-rails
   guard-livereload (~> 2.4)
@@ -344,6 +353,7 @@ DEPENDENCIES
   newrelic_rpm
   pg
   pry
+  pry-nav
   qiniu
   quiet_assets
   rails (= 4.2.1)
@@ -353,6 +363,7 @@ DEPENDENCIES
   redis
   rest-client
   sass-rails (~> 5.0)
+  semantic-ui-sass
   sendgrid
   settingslogic
   sidekiq

@@ -1,4 +1,4 @@
-source 'http://ruby.taobao.org/'
+source 'https://ruby.taobao.org/'
 
 gem 'rails', '4.2.1'
 gem 'pg'
@@ -13,6 +13,10 @@ gem 'therubyracer'
 
 gem "nested_form"
 gem 'simditor-rails'
+gem 'semantic-ui-sass'
+
+gem 'cancancan'
+gem 'chart-js-rails'
 
 gem 'settingslogic'
 gem 'slim-rails'
@@ -43,6 +47,7 @@ gem 'rails_admin', :git => 'git://github.com/sferik/rails_admin.git'
 group :development, :test do
   gem 'byebug'
   gem 'pry'
+  gem 'pry-nav'
   gem 'web-console', '~> 2.0'
   gem 'spring'
 

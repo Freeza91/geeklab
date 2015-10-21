@@ -39,25 +39,29 @@ main role="main" class="#{isAssignmentEmpty(@assignments)}"
                     i.icon-inner.icon-score-old
                   span.number
                     = assignment.project.credit
+                  - unless assignment.project.beginner
+                    span
+                      | &nbsp+&nbsp
+                    span.extra
+                      | 评分奖励
+                      = render partial: "assignments/shared/extra_score", locals: {credit_record: nil, bonus: assignment.project.basic_bonus}
     .load-more
-      - if @assignments.try(:size) > 0
-        - if @assignments.try(:size) < 10
-          p
-            | 没有更多了
-        - else
-          button.btn.btn-base.yellow.btn-full
-            | 加载更多
+      - if @assignments.try(:size) == 10
+        button.btn.btn-base.yellow.btn-full
+          | 加载更多
     - if @assignments.try(:size) == 0
         p.no-assignment-hint
           | 目前没有新任务，过段时间再来查看吧
 
   <!-- 上传视频文件选择-->
-  input type="file" id="video" accept="video/*" style="display:none"
+  input type="file" id="video" accept="video/mp4,video/x-m4v,video/*" style="display:none"
   <!-- 上传视频文件选择-->
 
   //= render partial: 'assignments/shared/miss_assignments_reminder'
   <!-- 过期任务入口 -->
-  a.assignments-reminder href="#{miss_assignments_path}" target="_blank"
+  .assignments-reminder
+   a href="#{miss_assignments_path}" target="_blank"
+    | 过期任务
 
 - if !current_user.to_tester.tester_infor.try(:already_finish) && current_user.approved
   <!-- 完成个人信息的提示 -->

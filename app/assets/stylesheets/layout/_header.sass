@@ -43,6 +43,8 @@
       margin-left: 10px
   // dropdown
   .nav.login
+    .dropdown:hover > a
+      color: $dark-blue
     > li
       > a
         padding-top: 7px
@@ -98,8 +100,6 @@
 
 // dropdown
 .nav.login
-  a
-    color: #313131
   > li
     > a:hover
       background-color: #fff
@@ -113,24 +113,12 @@
     > li > a
       text-align: center
       line-height: 34px
-      font-size: 14px
+      font-size: 1rem
       > .fa
         margin-right: 8px
     > li > a:hover
       background-color: #16a0c6
       color: #fff
-  .score
-    > .fa
-      margin: 0 8px
-  .tester-mark
-    padding: 4px 8px
-    border: 1px solid #eee
-    color: #a0a0a0
-    > .fa
-      margin-right: 3px
-  .tester-mark.active
-    border-color: #16a0c6
-    color: #16a0c6
 
 @media(max-width: 1080px)
   #header.no-logged

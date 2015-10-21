@@ -19,7 +19,7 @@ main role="main" class="#{isAssignmentEmpty(@assignments_ing)}"
       .clearfix
         - if @assignments_ing
           -  @assignments_ing.each do |assignment|
-            .card data-assignment-id="#{assignment.to_params}" data-status="#{assignment.status}"
+            .card data-assignment-id="#{assignment.to_params}" data-status="#{assignment.status}" data-video="#{assignment.video}"
               .inner
                 header
                   h1.title
@@ -42,7 +42,7 @@ main role="main" class="#{isAssignmentEmpty(@assignments_ing)}"
                   = render partial: 'assignments/operators/wait_check'
                   .status class=("status_" + "#{assignment.status}")
                     p
-                      = get_status_info(assignment.status)
+                      = get_assignment_status_info(assignment.status)
                       - if assignment.status == "not_accept"
                         i.fa.fa-question-circle
                     - if assignment.status == "not_accept" && assignment.reasons.size > 0
@@ -62,14 +62,16 @@ main role="main" class="#{isAssignmentEmpty(@assignments_ing)}"
                       i.icon-inner.icon-score-old
                     span.number
                       = assignment.project.credit
+                    - unless assignment.project.beginner
+                      span
+                        | &nbsp+&nbsp
+                      span.extra
+                        = showBonus(assignment.try(:credit_record))
+                        = render partial: "assignments/shared/extra_score", locals: {credit_record: assignment.try(:credit_record), bonus: assignment.project.basic_bonus}
       .load-more
-        - if @assignments_ing.try(:size) > 0
-          - if @assignments_ing.try(:size) < 10
-            p
-              | 没有更多了
-          - else
-            button.btn.btn-base.yellow.btn-full
-              | 加载更多
+        - if @assignments_ing.try(:size) == 10
+          button.btn.btn-base.yellow.btn-full
+            | 加载更多
       - if @assignments_ing.try(:size) == 0
           p.no-assignment-hint
             | 没有正在进行中的任务，快去做任务吧
@@ -119,20 +121,22 @@ main role="main" class="#{isAssignmentEmpty(@assignments_ing)}"
                       i.icon-inner.icon-score-old
                     span.number
                       = assignment.project.credit
+                    - unless assignment.project.beginner
+                      span
+                        | &nbsp+&nbsp
+                      span.extra
+                        = showBonus(assignment.try(:credit_record))
+                        = render partial: "assignments/shared/extra_score", locals: {credit_record: assignment.try(:credit_record), bonus: assignment.project.basic_bonus}
       .load-more
-        - if @assignments_done.try(:size) > 0
-          - if @assignments_done.try(:size) < 10
-            p
-              | 没有更多了
-          - else
-            button.btn.btn-base.yellow.btn-full
-              | 加载更多
+        - if @assignments_done.try(:size) == 10
+          button.btn.btn-base.yellow.btn-full
+            | 加载更多
       - if @assignments_done.try(:size) == 0
           p.no-assignment-hint
             | 还没有完成的任务噢
 
   <!-- 上传视频文件选择-->
-  input type="file" id="video" accept="video/*" style="display:none"
+  input type="file" id="video" accept="video/mp4,video/x-m4v,video/*" style="display:none"
   <!-- 上传视频文件选择-->
 
 <!-- 完成个人信息的提示 -->

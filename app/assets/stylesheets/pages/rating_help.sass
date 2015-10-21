@@ -1,0 +1,109 @@
+@import ../helpers/variables
+@import ../helpers/mixin
+
+.testers_rating_help
+  .wrapper
+    height: 100% !important
+  main
+    height: calc(100% - 50px) !important
+.rating-help
+  position: relative
+  height: 100%
+.rating-help-item
+  position: absolute
+  width: calc(100% / 6)
+  height: 100%
+  cursor: default
+.rating-help-content
+  width: 90%
+  height: 40%
+  p
+    display: block
+    max-width: 200px
+    opacity: 0
+    margin-left: auto
+    margin-right: auto
+    padding-bottom: .2rem
+    color: $dark-blue
+    font-size: 14px
+    letter-spacing: .1rem
+    +transition(opacity .3s ease-in-out)
+.rating-help-title
+  color: $dark-blue
+  font-size: 14px
+  font-weight: normal
+  +transition(all .2s ease-in-out)
+.rating-help-item:nth-child(1)
+  background: rgba(92, 188, 201, 1)
+.rating-help-item:nth-child(2)
+  background: rgba(92, 188, 201, .85)
+.rating-help-item:nth-child(3)
+  background: rgba(92, 188, 201, .7)
+.rating-help-item:nth-child(4)
+  background: rgba(92, 188, 201, .55)
+.rating-help-item:nth-child(5)
+  background: rgba(92, 188, 201, .4)
+.rating-help-item:nth-child(6)
+  background: rgba(92, 188, 201, .25)
+
+.rating-help-item:hover
+  .rating-help-title
+    font-size: 1.2rem
+  .rating-help-content p
+    display: block
+    opacity: 1
+  .icon-phone
+    background-position: -250px 0
+  .icon-chair
+    background-position: -150px 0
+  .icon-lip
+    background-position: -50px 0
+  .icon-bulb
+    background-position: -350px 0
+  .icon-spoon
+    background-position: -450px 0
+  .icon-todos
+    background-position: -550px 0
+
+.icon-phone,
+.icon-phone-dark,
+.icon-chair,
+.icon-chair-dark,
+.icon-lip,
+.icon-lip-dark,
+.icon-bulb,
+.icon-bulb-dark,
+.icon-spoon,
+.icon-spoon-dark,
+.icon-todos,
+.icon-todos-dark
+  display: inline-block
+  width: 50px
+  height: 50px
+  margin-bottom: 30px
+  background-image: image_url("testers/rating-help-icon.png")
+
+.icon-phone
+  background-position: -300px 0
+.icon-phone-dark
+  background-position: -250px 0
+.icon-chair
+  background-position: -100px 0
+.icon-chair-dark
+  background-position: -150px 0
+.icon-lip
+  background-position: -200px 0
+.icon-lip-dark
+  background-position: -50px 0
+.icon-bulb
+  background-position: 0 0
+.icon-bulb-dark
+  background-position: -350px 0
+.icon-spoon
+  background-position: -400px 0
+.icon-spoon-dark
+  background-position: -450px 0
+.icon-todos
+  background-position: -500px 0
+.icon-todos-dark
+  background-position: -550px 0

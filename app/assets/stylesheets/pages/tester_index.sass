@@ -132,16 +132,20 @@
 .icon-play:hover
   background-position: -100px 0
 .icon-arrow-down
-  position: absolute
-  bottom: 0
-  left: 50%
-  margin-left: -20px
   display: inline-block
   width: 40px
   height: 52px
   background: image_url('testers/arrow_down.png')
   cursor: pointer
   +animation(bounce 1.7s linear 0s infinite normal forwards)
+
+.testers_index
+  .icon-arrow-down
+    position: absolute
+    bottom: 0
+    left: 50%
+    margin-left: -20px
+
 .icon-file-index,
 .icon-video,
 .icon-score-index,

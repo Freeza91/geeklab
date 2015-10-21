@@ -1,6 +1,6 @@
 module ProjectsHelper
 
-  def get_status_info(status)
+  def get_project_status_info(status)
     #if demand == video_size
       #'任务成功'
     #else
@@ -11,7 +11,8 @@ module ProjectsHelper
         'not_accept': '审核未通过',
         'success': '正在进行中',
         'failed': '任务失败',
-        'finish': '任务成功'
+        'finish': '任务成功',
+        'delete': '任务被产品经理删除'
     }
     info[status.to_sym]
   end
@@ -40,11 +41,12 @@ module ProjectsHelper
     platforms[platform.to_sym]
   end
 
-    def get_device(device)
-      devices = {
-        'phone': '智能手机',
-        'pad': '平板电脑'
-      }
-      devices[device.to_sym]
-    end
+  def get_device(device)
+    devices = {
+      'phone': '智能手机',
+      'pad': '平板电脑'
+    }
+    devices[device.to_sym]
+  end
+
 end

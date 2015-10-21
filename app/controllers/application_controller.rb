@@ -5,6 +5,8 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user
 
+  rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
+
   def current_user
     @current_user ||= (from_session || from_cookies)
   end
@@ -68,6 +70,10 @@ private
     User.find_by(id: cookies.signed[:id]).tap do |user|
       user && session[:id] = user.to_params
     end if cookies.signed[:id]
+  end
+
+  def record_not_found
+    render 'errors/record_not_found', layout: false
   end
 
 end

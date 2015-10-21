@@ -1,4 +1,5 @@
 @import ../helpers/variables
+@import ../helpers/mixin
 .assignments
   background-color: $blue
   .nav-tabs > li
@@ -209,6 +210,13 @@
   height: 70px
   z-index: 10
   background: image_url("testers/past_ass.png")
+  a
+    position: relative
+    top: 30px
+    left: 10px
+    color: $light-yellow
+  a:hover
+    color: $blue
 
 .highlight
   color: $blue
@@ -240,3 +248,45 @@
   video
     width: 570px
     height: 320px
+
+
+// extrao score
+.extra
+  position: relative
+  cursor: pointer
+  color: $blue
+  font-size: 1rem
+.extra-score
+  position: absolute
+  bottom: 100%
+  opacity: 0
+  width: 200px
+  margin-bottom: 17px
+  margin-left: -50px
+  padding: 12px 8px
+  background: $light-yellow
+  box-shadow: 0 0 3px rgba(0, 0, 0, .3)
+  z-index: 20
+  +transition(opacity .5s ease)
+  p
+    font-size: .8rem
+    color: $dark-blue
+  .fa-star
+    padding-left: 3px
+    padding-right: 3px
+    font-size: 1rem
+    color: $blue
+.extra-score-triangle
+  position: absolute
+  top: 100%
+  left: 50%
+  margin-top: -8px
+  display: block
+  width: 15px
+  height: 15px
+  background-color: $light-yellow
+  +box-shadow(1px 1px 1px rgba(0, 0, 0, .3))
+  +transform(rotate(45deg))
+.extra:hover
+  .extra-score
+    opacity: 1

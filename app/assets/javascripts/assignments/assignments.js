@@ -96,8 +96,28 @@ $(function () {
   $('.assignments-wrp').on('click', '.js-upload-cancel', function () {
     uploadAjax.abort();
     $card.find('.operator.uploading').hide();
+    var $image = $card.find('.content img');
+    if($image.attr('src')) {
+      $image.fadeIn();
+      $card.find('.operator.wait-check').fadeIn();
+      return false;
+    }
     $card.find('.operator.wait-upload').fadeIn();
   });
+
+
+  // 上传失败取消
+  $('.assignments-wrp').on('click', '.js-reupload-cancel', function () {
+    $card.find('.operator.upload-failed').hide();
+    var $image = $card.find('.content img');
+    if($image.attr('src')) {
+      $image.fadeIn();
+      $card.find('.operator.wait-check').fadeIn();
+      return false;
+    }
+    $card.find('.operator.wait-upload').fadeIn();
+  });
+
   // 开始上传视频
   $('#video').on('change', function () {
     // 清理task-guide
@@ -109,8 +129,8 @@ $(function () {
         // 切换operator
         $card.find('.operator').fadeOut();
         $card.find('.operator.uploading').fadeIn();
-        // 删除视频截图
-        $card.find('img').removeAttr('src');
+        // 隐藏视频截图
+        $card.find('img').fadeOut();
 
         var filename = file.name
 
@@ -186,7 +206,9 @@ $(function () {
 
   // 上传失败重新上传 click event
   $('.assignments-wrp').on('click', '.js-video-reupload', function () {
-    console.log(uploadAjax);
+    // 显示该任务详情的最后一页
+    $('.task-pagination').click();
+    $('#assignment-detail').modal();
   });
 
   // 播放视频 click event
@@ -824,13 +846,13 @@ $(function () {
 
   function close(vm) {
     $('#assignment-detail').modal('hide');
-    vm.progress = 'requirement';
-    vm.curStepContent = '';
-    vm.curStepIndex = 1;
-    vm.stepLen = 0;
-    vm.taskLen = 0;
-    vm.project = {};
-    vm.nextStepText = '好的';
+    //vm.progress = 'requirement';
+    //vm.curStepContent = '';
+    //vm.curStepIndex = 1;
+    //vm.stepLen = 0;
+    //vm.taskLen = 0;
+    //vm.project = {};
+    //vm.nextStepText = '好的';
   }
 
   function refreshQrImage (event) {

@@ -14,6 +14,7 @@ class Project < ActiveRecord::Base
   has_many :tasks,         inverse_of: :project, dependent: :destroy
   has_one  :user_feature,  inverse_of: :project, dependent: :destroy
   belongs_to :pm
+  has_many :credit_records, inverse_of: :project
 
   accepts_nested_attributes_for :tasks, allow_destroy: true
   accepts_nested_attributes_for :user_feature, allow_destroy: true, update_only: true
@@ -90,6 +91,7 @@ class Project < ActiveRecord::Base
 
   def prepare_assign
     StartAssignJob.perform_later(id) if status == 'success' &&
+                                        status_was != 'success' &&
                                         expired? && is_beigner?
   end
 
@@ -106,7 +108,6 @@ class Project < ActiveRecord::Base
   end
 
   def auto_update_status
-    self.update_column(:status, 'wait_check') if status_was == 'not_accept'
     if status == 'wait_check' && status_was != 'wait_check'
       AutoUpdateProjectJob.set(wait: (1.day / 2)).perform_later(id)
     end

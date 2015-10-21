@@ -1,7 +1,24 @@
 @import ../helpers/variables
+@import ../helpers/mixin
 
 #tester-info
+  fieldset
+    padding-top: 15px
+    padding-bottom: 50px
   fieldset:nth-child(1)
     background: $light-yellow
   fieldset:nth-child(2)
     background: #fff
+    .fieldset-name
+      margin-top: -60px
+      background-color: #fff
+  .fieldset-name
+    width: 100px
+    height: 100px
+    margin-left: auto
+    margin-right: auto
+    border-bottom: none
+    +border-radius(50px)
+    text-align: center
+    .name-text
+      color: $blue

@@ -2,13 +2,6 @@ $(function () {
   if(!$('body').hasClass('testers_new')) {
     return false;
   }
-  var id = $('#id').attr('value');
-  $.ajax({
-    url: '/testers/' + id,
-  }).done(function (data) {
-    console.log(data);
-  });
-  // birth select init
   var birth = $('#birth').data('birth');
   $('#birth').dateSelect({
     startYear: 1980,
@@ -146,9 +139,22 @@ $(function () {
     city: '互联网'
   });
 
-  var infoVm = new Vue({
-    el:  '#tester-info',
-    data: {
+  var id = $('#id').attr('value');
+  fetchTesterInfo(id, initTesterVm);
+
+  function fetchTesterInfo (id, callback) {
+    $.ajax({
+      url: '/testers/' + id,
+    }).done(function (data) {
+      console.log(data);
+      if(data.status === 0 && data.code ===1) {
+        callback(data.tester);
+      }
+    });
+  }
+
+  function initTesterVm (testerInfo) {
+    var testerInforDefault = {
       name: '',
       email: '',
       cellphone: '',
@@ -156,17 +162,33 @@ $(function () {
       birthday: '',
       birthplace: '',
       livingplace: '',
-      device: ['ipad', 'iphone'],
+      device: [],
       emotion: '',
-      sexOrientation: '',
+      orientation: '',
       education: '',
       profession: '',
       income: '',
-      interest: ['1', '2']
-    }
-  });
+      interest: []
+    };
+    $.extend(testerInforDefault, testerInfo);
+    console.log(testerInforDefault);
 
-  function getTesterInfor (vm) {
+    var infoVm = new Vue({
+      el:  '#tester-info',
+      data: testerInforDefault,
+      methods: {
+        submit: submit
+      }
+    });
+    //for(key in testerInfor) {
+      //if(testerInfor.hasOwnProperty(key) {
+
+      //});
+    //}
+
+  }
+
+  function generateTesterInfor (vm) {
     var testerInfor = vm.$data,
         data = {};
 
@@ -181,7 +203,8 @@ $(function () {
     data.livingplace = testerInfor.livingplace;
 
     data.device = testerInfor.device;
-    data.emotion_status = testerInfor.emotion_status;
+    data.emotional_status = testerInfor.emotion_status;
+    data.sex_orientation = testerInfor.orientation;
     data.education = testerInfor.education;
     data.profession = testerInfor.profession;
     data.income = testerInfor.income;
@@ -208,17 +231,20 @@ $(function () {
 
   }
 
-  function submit (vm) {
+  function submit (vm, event) {
+    event.preventDefault();
+    var tester = generateTesterInfor(vm);
+    console.log(tester);
     // loading
-    Geeklab.showLoading();
-    postTesterInfor(
-      data,
-      setTimeout(function () {
-        Geeklab.removeLoading();
-        var $modal = $('#form-finish');
-        $('body').append('<div class="main-mask"></div>')
-        $modal.addClass('show');
-      }, 1500));
+    //Geeklab.showLoading();
+    //postTesterInfor(
+      //data,
+      //setTimeout(function () {
+        //Geeklab.removeLoading();
+        //var $modal = $('#form-finish');
+        //$('body').append('<div class="main-mask"></div>')
+        //$modal.addClass('show');
+      //}, 1500));
   }
 
   // 文本字段验证
@@ -254,17 +280,6 @@ $(function () {
     return result;
   }
 
-  // 让title垂直居中
-  function verticalMiddleTitle() {
-    var titleSet = $('.info-form .title');
-    titleSet.each(function(index, title) {
-      var $title = $(title);
-      var $root = $title.parents('fieldset');
-      var height = $root.height();
-      $title.css('line-height', height + 'px');
-    })
-  }
-  verticalMiddleTitle();
 
   function updateErrorPosition (newErrorPosition, errorPosition) {
     if (errorPosition) {

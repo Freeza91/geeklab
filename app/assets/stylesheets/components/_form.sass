@@ -29,9 +29,11 @@ input[type='checkbox']
 // checkbox-inline
 .checkbox-default
   margin-left: 0
-  [type="checkbox"]
+  [type="checkbox"],
+  [type="radio"]
     display: none
-  [type="checkbox"] + span
+  [type="checkbox"] + span,
+  [type="radio"] + span
     display: inline-block
     width: 100px
     height: 30px
@@ -43,20 +45,24 @@ input[type='checkbox']
     color: #313131
     text-align: center
     transition: all .3s ease
-  [type="checkbox"] + span:hover
+  [type="checkbox"] + span:hover,
+  [type="radio"] + span:hover
     border-color: $blue
-  [type="checkbox"]:checked + span
+  [type="checkbox"]:checked + span,
+  [type="radio"]:checked + span
     background-color: $blue
     color: #fff
 
 .checkbox-rounded
-  [type="checkbox"] + span
+  [type="checkbox"] + span,
+  [type="radio"] + span
     width: 140px
     height: 38px
     +border-radius(19px)
     line-height: 38px
 .checkbox-with-icon
-  [type="checkbox"] + span
+  [type="checkbox"] + span,
+  [type="radio"] + span
     width: 80px
     height: 80px
     +border-radius(50%)

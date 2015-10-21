@@ -17,7 +17,7 @@ class TesterInfor < ActiveRecord::Base
   def to_json
     time = birthday.to_datetime
     {
-      username: username,
+      name: username,
       birthday: [time.year, time.month, time.day],
       livingplace: livingplace.split('-'),
       birthplace: birthplace.split('-'),

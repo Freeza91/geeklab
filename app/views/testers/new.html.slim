@@ -1,12 +1,12 @@
 main role="mian"
-  form#teseter-info.form style="max-width: 600px; margin: 0 auto"
+  form#tester-info.form style="max-width: 600px; margin: 0 auto"
     fieldset
       .form-field.with-hint-text
         .field-name
           span
             | 昵称
         .field-content
-          input.form-input type="text" name="email" placeholder="邮箱"
+          input.form-input type="text" name="name" v-model="name"
           span.hint-text
             | xkhkdf
       .form-field.with-hint-text
@@ -14,7 +14,7 @@ main role="mian"
           label
             | 邮箱
         .field-content
-          input.form-input type="text" name="email" placeholder="邮箱"
+          input.form-input type="text" name="email" v-model="email"
           span.hint-text
             | xkhkdf
       .form-field.with-hint-text
@@ -22,7 +22,7 @@ main role="mian"
           label
             | 手机
         .field-content
-          input.form-input type="text" name="email" placeholder="邮箱"
+          input.form-input type="text" name="cellphone" v-model="cellphone"
           span.hint-text
             | xkhkdf
       .form-group.required.has-feedback data-type='radio'
@@ -30,7 +30,7 @@ main role="mian"
           label
             | 性别
         .field-content
-          label.radio-inline.checkbox-default.checkbox-with-icon
+          label.checkbox-inline.checkbox-default.checkbox-with-icon
             input type="radio" name="sex" value="男" v-model="sex"
             span
               | 男
@@ -95,9 +95,9 @@ main role="mian"
             span
               | 单身
           label.radio-inline.checkbox-default.checkbox-rounded
-            input type="radio" name="emotion" value="恋爱" v-model="emotion"
+            input type="radio" name="emotion" value="恋爱中" v-model="emotion"
             span
-              | 恋爱
+              | 恋爱中
           label.radio-inline.checkbox-default.checkbox-rounded
             input type="radio" name="emotion" value="已婚" v-model="emotion"
             span
@@ -108,13 +108,17 @@ main role="mian"
             | 性取向
         .field-content
           label.radio-inline.checkbox-default.checkbox-rounded
-            input type="radio" name="oretention" value="straight" v-model="oretention"
+            input type="radio" name="orientation" value="异性恋" v-model="orientation"
             span
               | straight
           label.radio-inline.checkbox-default.checkbox-rounded
-            input type="radio" name="oretention" value="lgbt" v-model="oretention"
+            input type="radio" name="orientation" value="同性恋" v-model="orientation"
             span
-              | lgbt
+              | 同性恋
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="orientation" value="双性恋" v-model="orientation"
+            span
+              | 异性恋
       .form-field
         .field-name
           label
@@ -128,6 +132,18 @@ main role="mian"
             input type="radio" name="education" value="大专" v-model="education"
             span
               | 大专
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="education" value="本科" v-model="education"
+            span
+              | 本科
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="education" value="硕士" v-model="education"
+            span
+              | 硕士
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="education" value="博士" v-model="education"
+            span
+              | 博士
       .form-field
         .field-name
           label
@@ -142,17 +158,41 @@ main role="mian"
             | 年收入
         .field-content
           label.radio-inline.checkbox-default.checkbox-rounded
-            input type="radio" name="income" value="1" v-model="income"
+            input type="radio" name="income" value="0-2" v-model="income"
             span
               | 2万以下
           label.radio-inline.checkbox-default.checkbox-rounded
-            input type="radio" name="income" value="1" v-model="income"
+            input type="radio" name="income" value="2-5" v-model="income"
             span
               | 2~5万
           label.radio-inline.checkbox-default.checkbox-rounded
-            input type="radio" name="income" value="1" v-model="income"
+            input type="radio" name="income" value="5-8" v-model="income"
             span
               | 5~8万
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="income" value="8-10" v-model="income"
+            span
+              | 8~10万
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="income" value="10-15" v-model="income"
+            span
+              | 10~15万
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="income" value="15-30" v-model="income"
+            span
+              | 15~30万
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="income" value="30-50" v-model="income"
+            span
+              | 30~50万
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="income" value="50-100" v-model="income"
+            span
+              | 50~100万
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="income" value="100" v-model="income"
+            span
+              | 100万以上
       .form-field
         .field-name
           label
@@ -163,7 +203,7 @@ main role="mian"
               input type="checkbox"
               span
                 = interest
-    button.btn.btn-blue.submit
+    button.btn.btn-blue.submit v-on="click: submit(this, $event)"
       | 提交
 input#id type="hidden" value="#{current_user.to_params}"
 .operate#form-finish data-backdrop='static'

@@ -69,22 +69,11 @@ main role="mian"
           label
             | 我的设备(可多选)
         .field-content
-          label.checkbox-inline.checkbox-default.checkbox-with-icon
-            input type="checkbox"
-            span
-              | ipad
-          label.checkbox-inline.checkbox-default.checkbox-with-icon
-            input type="checkbox"
-            span
-              | iphone
-          label.checkbox-inline.checkbox-default.checkbox-with-icon
-            input type="checkbox"
-            span
-              | android pad
-          label.checkbox-inline.checkbox-default.checkbox-with-icon
-            input type="checkbox"
-            span
-              | android phone
+          - for device in @devices
+            label.checkbox-inline.checkbox-default.checkbox-with-icon
+              input type="checkbox" v-on="change: updateDevice(this, $event)" value="#{device}" checked=(@tester_infor.device.include?(device))
+              span
+                = device
       .form-field
         .field-name
           label
@@ -200,7 +189,7 @@ main role="mian"
         .field-content
           - for interest in @interests
             label.checkbox-inline.checkbox-default.checkbox-with-icon
-              input type="checkbox"
+              input type="checkbox" v-on="change: updateInterest(this, $event)" value="#{interest}" checked=(@tester_infor.interest && @tester_infor.interest.include?(interest))
               span
                 = interest
     button.btn.btn-blue.submit v-on="click: submit(this, $event)"

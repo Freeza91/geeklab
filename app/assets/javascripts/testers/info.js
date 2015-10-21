@@ -168,7 +168,7 @@ $(function () {
       education: '',
       profession: '',
       income: '',
-      interest: []
+      interest: [],
     };
     $.extend(testerInforDefault, testerInfo);
     console.log(testerInforDefault);
@@ -177,6 +177,8 @@ $(function () {
       el:  '#tester-info',
       data: testerInforDefault,
       methods: {
+        updateDevice: updateDevice,
+        updateInterest: updateInterest,
         submit: submit
       }
     });
@@ -229,6 +231,34 @@ $(function () {
       console.log(errors);
     });
 
+  }
+
+  function updateDevice (vm, event) {
+    var target = event.target,
+        value = target.value;
+    if(target.checked) {
+      vm.device.push(value);
+    } else {
+      var index = vm.device.indexOf(value);
+      if(index !== -1) {
+        vm.device.splice(index, 1);
+      }
+    }
+    console.log(vm.device);
+  }
+
+  function updateInterest (vm, event) {
+    var target = event.target,
+        value = target.value;
+    if(target.checked) {
+      vm.interest.push(value);
+    } else {
+      var index = vm.interest.indexOf(value);
+      if(index !== -1) {
+        vm.interest.splice(index, 1);
+      }
+    }
+    console.log(vm.interest);
   }
 
   function submit (vm, event) {

@@ -2,6 +2,12 @@ $(function () {
   if(!$('body').hasClass('testers_new')) {
     return false;
   }
+  var id = $('#id').attr('value');
+  $.ajax({
+    url: '/testers/' + id,
+  }).done(function (data) {
+    console.log(data);
+  });
   // birth select init
   var birth = $('#birth').data('birth');
   $('#birth').dateSelect({
@@ -130,6 +136,7 @@ $(function () {
       },
     ]
   };
+
   $('#profession').citySelect({
     // 不知道为什么不能从 professionselect_data.js中获取数据
     url: profession,
@@ -137,164 +144,82 @@ $(function () {
     required: true,
     prov: '信息技术',
     city: '互联网'
-
   });
 
-  // 感情状况， 性取向, 教育程度， 收入 init
-  var initData = {
-    'citylist': [
-      {'p': 1},
-      {'p': 2},
-      {'p': 3},
-      {'p': 4},
-      {'p': 5},
-    ]
-  }
-  var emotionData = {
-    'citylist': [
-      {'p': '单身'},
-      {'p': '恋爱中'},
-      {'p': '已婚'}
-    ]
-  };
-  var sexOrientationData = {
-    'citylist': [
-      {'p': '异性恋'},
-      {'p': '同性恋'},
-      {'p': '双性恋'}
-    ]
-  };
-  var educationData = {
-    'citylist': [
-      {'p': '高中及以下'},
-      {'p': '大专'},
-      {'p': '本科'},
-      {'p': '硕士'},
-      {'p': '博士'}
-    ]
-  };
-  $('#emotion').citySelect({
-    url: emotionData,
-    nodata: 'none',
-    required: true,
-  });
-  $('#sex_orientation').citySelect({
-    url: sexOrientationData,
-    nodata: 'none',
-    required: true
-  });
-  $('#education').citySelect({
-    url: educationData,
-    nodata: 'none',
-    required: true,
-    prov: '本科'
-  });
-  $('.info-form .submit').on('click', function (event) {
-    event.preventDefault();
-
-    var data = {};
-    var $form = $('.info-form');
-    var $infoSet = $form.find('.form-group');
-
-    // 清理验证提示信息
-    $form.find('.has-error').removeClass('has-error').find('.form-control-feedback').addClass('sr-only');
-    // 表单是否通过验证的标志
-    var valided = true;
-    var errorPosition;
-
-    $infoSet.each(function(index,item) {
-      var $item = $(item)
-      var key = $item.find('.info-title').data('name');
-      var type = $item.data('type');
-      var value = '';
-      var infoName = '';
-      var $el;
-      switch(type){
-        case 'text':
-          value = $item.find('input').val();
-          if($item.hasClass('required')) {
-            $el = $item.find('input');
-            infoName = $item.find('input').data('infoName');
-            if(!textValid($el, infoName)) {
-              valided = false;
-              errorPosition = updateErrorPosition($item.offset(), errorPosition);
-            }
-          }
-        break;
-        case 'radio':
-          value = $item.find('input:radio:checked').val();
-          if(value === undefined) {
-            $item.addClass('has-error').find('.form-control-feedback').removeClass('sr-only');
-            valided = false;
-            errorPosition = updateErrorPosition($item.offset(), errorPosition);
-          }
-        break;
-        case 'checkbox':
-          value = [];
-          $checkboxSet = $item.find('input:checkbox:checked');
-          if($item.hasClass('required') && $checkboxSet.length === 0) {
-            $item.addClass('has-error').find('.form-control-feedback').removeClass('sr-only')
-            valided = false;
-            errorPosition = updateErrorPosition($item.offset(), errorPosition);
-          }
-          $checkboxSet.each(function (index, checkbox) {
-            value.push($(checkbox).val());
-          });
-        break;
-        case 'select':
-          $selectSet = $item.find('select');
-          for(var i = 0; i < $selectSet.length; i++) {
-            var $select = $($selectSet[i]);
-            if($select.val() === null) {
-              valided = false;
-              errorPosition = updateErrorPosition($item.offset(), errorPosition);
-              $item.addClass('has-error').find('.form-control-feedback').removeClass('sr-only');
-              break;
-            } else {
-              if(i > 0) {
-                value += '-';
-              }
-              value += $select.val();
-            }
-          }
-        break;
-      }
-      data[key] = value;
-    });
-    console.log(data);
-
-    console.log(valided);
-    if(!valided) {
-      // 滚动到最高处的错误位置
-      scrollToErrorArea(errorPosition);
-      errorPosition = undefined;
-      return false;
+  var infoVm = new Vue({
+    el:  '#tester-info',
+    data: {
+      name: '',
+      email: '',
+      cellphone: '',
+      sex: '',
+      birthday: '',
+      birthplace: '',
+      livingplace: '',
+      device: ['ipad', 'iphone'],
+      emotion: '',
+      sexOrientation: '',
+      education: '',
+      profession: '',
+      income: '',
+      interest: ['1', '2']
     }
+  });
 
-    var id = $('#id').attr('value');
+  function getTesterInfor (vm) {
+    var testerInfor = vm.$data,
+        data = {};
 
-    // loading
-    Geeklab.showLoading();
+    data.id = id;
+    data.username = testerInfor.name;
+    data.email_contract = testerInfor.email;
+    data.mobile_phone = testerInfor.cellphone
 
+    data.sex = testerInfor.sex;
+    data.birthday = testerInfor.birthday;
+    data.birthplace = testerInfor.birthplace;
+    data.livingplace = testerInfor.livingplace;
+
+    data.device = testerInfor.device;
+    data.emotion_status = testerInfor.emotion_status;
+    data.education = testerInfor.education;
+    data.profession = testerInfor.profession;
+    data.income = testerInfor.income;
+    data.interest = testerInfor.interest;
+
+
+    return data;
+  }
+
+  function postTesterInfor (data, callback) {
     $.ajax({
       url: '/testers/' + id,
       method: 'put',
       data: data
     })
-    .done(function (data, status, xhr) {
+    .done(function (data) {
       if(data.status === 0 && data.code === 1) {
-        setTimeout(function () {
-          Geeklab.removeLoading();
-          var $modal = $('#form-finish');
-          $('body').append('<div class="main-mask"></div>')
-          $modal.addClass('show');
-        }, 1500);
+        callback();
       }
     })
     .error(function (errors, status) {
       console.log(errors);
-    })
-  });
+    });
+
+  }
+
+  function submit (vm) {
+    // loading
+    Geeklab.showLoading();
+    postTesterInfor(
+      data,
+      setTimeout(function () {
+        Geeklab.removeLoading();
+        var $modal = $('#form-finish');
+        $('body').append('<div class="main-mask"></div>')
+        $modal.addClass('show');
+      }, 1500));
+  }
 
   // 文本字段验证
   function textValid($el, type) {

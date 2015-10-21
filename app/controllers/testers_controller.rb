@@ -91,6 +91,18 @@ class TestersController < ApplicationController
     render json: json
   end
 
+  def show
+    tester = current_user.to_tester
+    json = { status: 0, code: 1 }
+    if tester && tester.tester_infor
+      json[:tester] = tester.tester_infor.to_json
+    else
+      json[:code], json[:status] = 0, '用户信息不存在'
+    end
+
+    render json: json
+  end
+
   def help
     if params[:q] == 'web'
       @target

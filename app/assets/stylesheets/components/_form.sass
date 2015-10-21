@@ -6,6 +6,20 @@ label
   color: #717071
   font-size: 12px
 
+// form field
+.field-name
+  position: absolute
+  top: 10px
+  left: 0
+  width: 50px
+  color: $dark-blue
+  font-size: .8rem
+  text-align: right
+.field-content
+  padding-left: 70px
+
+
+
 .has-error
   .form-control
     box-shadow: 0 0 10px rgba(169, 68, 66, .8)
@@ -14,6 +28,7 @@ input[type='checkbox']
 
 // checkbox-inline
 .checkbox-default
+  margin-left: 0
   [type="checkbox"]
     display: none
   [type="checkbox"] + span
@@ -21,19 +36,35 @@ input[type='checkbox']
     width: 100px
     height: 30px
     padding-left: 0
-    background-color: #dadada
+    background-color: #fff
+    border: 1px solid $dark-blue
     line-height: 30px
     font-size: 14px
     color: #313131
     text-align: center
     transition: all .3s ease
+  [type="checkbox"] + span:hover
+    border-color: $blue
   [type="checkbox"]:checked + span
-    background-color: #16a0c6
+    background-color: $blue
     color: #fff
+
+.checkbox-rounded
+  [type="checkbox"] + span
+    width: 140px
+    height: 38px
+    +border-radius(19px)
+    line-height: 38px
+.checkbox-with-icon
+  [type="checkbox"] + span
+    width: 80px
+    height: 80px
+    +border-radius(50%)
 
 .form
   margin-bottom: 50px
   .form-field
+    position: relative
     margin-bottom: 15px
     //position: relative
     text-align: left
@@ -84,8 +115,6 @@ input[type='checkbox']
     margin-bottom: 7px
   .form-hint.error
     color: #e40909
-  .with-hint-text
-    position: relative
   .hint-text
     position: absolute
     right: 8px

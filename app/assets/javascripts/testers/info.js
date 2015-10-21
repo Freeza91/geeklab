@@ -158,17 +158,24 @@ $(function () {
       name: '',
       email: '',
       cellphone: '',
-      sex: '',
+      sex: '男',
       birthday: '',
       birthplace: '',
       livingplace: '',
       device: [],
-      emotion: '',
-      orientation: '',
-      education: '',
+      emotion: '单身',
+      orientation: '异性恋',
+      education: '本科',
       profession: '',
-      income: '',
+      income: '0-2',
       interest: [],
+      hint: {
+        email: '',
+        cellphone: ''
+      },
+      error: {
+
+      }
     };
     $.extend(testerInforDefault, testerInfo);
     console.log(testerInforDefault);
@@ -182,12 +189,6 @@ $(function () {
         submit: submit
       }
     });
-    //for(key in testerInfor) {
-      //if(testerInfor.hasOwnProperty(key) {
-
-      //});
-    //}
-
   }
 
   function generateTesterInfor (vm) {

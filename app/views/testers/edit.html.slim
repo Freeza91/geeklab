@@ -1,190 +1,207 @@
-main role="main"
-  section style="padding: 50px 0"
-    .container
-      form.form-horizontal.info-form
-        fieldset.row
-          .col-xs-2.col-sm-2.col-md-2.col-lg-2
-            legend.title
-              | 完善基本信息
-          .col-xs-10.col-sm-10.col-md-10.col-lg-10.info-box
-            .form-group.required.has-feedback data-type='text'
-              label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='username'
-                | 昵称
-              .col-xs-4.col-sm-4.col-md-4.col-lg-4
-                input.form-control type='text' data-info-name='nickname' value="#{@tester_infor.username}"
-                span.form-control-feedback.text.sr-only 请输入昵称
-            .form-group.required.has-feedback data-type='radio'
-              label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='sex'
-                | 性别
-              .col-xs-7.col-sm-7.col-md-7.col-lg-7
-                label.radio-inline
-                  input type='radio' name='sex' value='男' checked=("#{@tester_infor.sex}" == "男")
-                  | 男
-                label.radio-inline
-                  input type='radio' name='sex' value='女' checked=("#{@tester_infor.sex}" == "女")
-                  | 女
-                span.form-control-feedback.text.sr-only 请选择性别
-            .form-group.required.has-feedback#birth data-type='select' data-birth="#{@tester_infor.to_json[:birthday]}"
-              label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='birthday'
-                | 生日
-              .col-xs-7.col-sm-7.col-md-7.col-lg-7
-                select.year
-                span 年
-                select.month
-                span 月
-                select.date
-                span 日
-                span.form-control-feedback.text.sr-only 请选择生日
-            .form-group.required.has-feedback#birthplace data-type='select' data-birthplace="#{@tester_infor.to_json[:birthplace]}"
-              label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='birthplace'
-                | 出生地
-              .col-xs-7.col-sm-7.col-md-7.col-lg-7
-                select.prov.margin-right
-                select.city disabled='disabled'
-                span.form-control-feedback.text.sr-only 请选择出生地
-            .form-group.required.has-feedback#livingplace data-type='select' data-livingplace="#{@tester_infor.to_json[:livingplace]}"
-              label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='livingplace'
-                | 居住地
-              .col-xs-7.col-sm-7.col-md-7.col-lg-7
-                select.prov.margin-right
-                select.city disabled='disabled'
-                span.form-control-feedback.text.sr-only 请选择居住地
-            .form-group.required.has-feedback data-type='checkbox'
-              label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='device'
-                | 我的常用设备(可多选)
-              .col-xs-7.col-sm-7.col-md-7.col-lg-7
-                - for device in @devices
-                  label.checkbox-inline
-                    input type='checkbox' value=device checked=(@tester_infor.device && @tester_infor.device.include?(device) )
-                      = device
-                span.form-control-feedback.text.sr-only 至少选择一个设备
-        fieldset.row
-          .col-xs-2.col-sm-2.col-md-2.col-lg-2
-            legend.title
-              | 填写详细资料
-          .col-xs-10.col-sm-10.col-md-10.col-lg-10.info-box
-            .form-group.required.has-feedback#emotion data-type='select' data-emotion="#{@tester_infor.to_json[:emotional_status]}"
-              label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='emotional_status'
-                | 感情状况
-              .col-xs-7.col-sm-7.col-md-7.col-lg-7
-                select
-                  option value="单身"
-                    | 单身
-                  option value="恋爱中"
-                    | 恋爱中
-                  option value="结婚"
-                    | 结婚
-                span.form-control-feedback.text.sr-only 请选择感情状况
-            .form-group.required.has-feedback#sex_orientation data-type='select' data-sex-orientation="#{@tester_infor.to_json[:sex_orientation]}"
-              label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='sex_orientation'
-                | 性取向
-              .col-xs-7.col-sm-7.col-md-7.col-lg-7
-                select
-                  option value="异性恋"
-                    | 异性恋
-                  option value="双性恋"
-                    | 双性恋
-                  option value="同性恋"
-                    | 同性恋
-                span.form-control-feedback.text.sr-only 请选择性取向
-            .form-group.required.has-feedback#education data-type='select' data-education="#{@tester_infor.to_json[:education]}"
-              label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='education'
-                | 教育程度
-              .col-xs-7.col-sm-7.col-md-7.col-lg-7
-                select
-                  option value="高中及以下"
-                    | 高中及以下
-                  option value="大专"
-                    | 大专
-                  option value="本科"
-                    | 本科
-                  option value="硕士"
-                    | 硕士
-                  option value="博士"
-                    | 博士
-                span.form-control-feedback.text.sr-only 请选择教育程度
-            .form-group.required.has-feedback#profession data-type='select' data-profession="#{@tester_infor.to_json[:profession]}"
-              label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='profession'
-                | 职业信息
-              .col-xs-7.col-sm-7.col-md-7.col-lg-7
-                select.prov.margin-right
-                select.city disabled='disabled'
-                span.form-control-feedback.text.sr-only 请选择职业信息
-            .form-group.required.has-feedback#income data-type='select' data-income="#{@tester_infor.to_json[:income]}"
-              label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='income'
-                | 年收入
-              .col-xs-7.col-sm-7.col-md-7.col-lg-7
-                select
-                  option value="0-2"
-                    | 2万以下
-                  option value="2-5"
-                    | 2-5万
-                  option value="5-8"
-                    | 5-8万
-                  option value="8-10"
-                    | 8-10万
-                  option value="10-15"
-                    | 10-15万
-                  option value="15-30"
-                    | 15-30万
-                  option value="30-50"
-                    | 30-50万
-                  option value="50-100"
-                    | 50-100万
-                  option value="100-999"
-                    | 100万以上
-                span.form-control-feedback.text.sr-only 请选择年收入
-            .form-group data-type='checkbox'
-              label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='personality'
-                | 性格(可多选)
-              .col-xs-7.col-sm-7.col-md-7.col-lg-7
-                - for personal in @personality
-                  label.checkbox-inline
-                    input type='checkbox' value=personal checked=(@tester_infor.personality && @tester_infor.personality.include?(personal))
-                      = personal
-            .form-group data-type='checkbox'
-              label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='interest'
-                | 兴趣爱好(可多选)
-              .col-xs-7.col-sm-7.col-md-7.col-lg-7
-                - for interest in @interests
-                  label.checkbox-inline
-                    input type='checkbox' value=interest checked=(@tester_infor.interest && @tester_infor.interest.include?(interest))
-                      = interest
-        fieldset.row
-          .col-xs-2.col-sm-2.col-md-2.col-lg-2
-            legend.title
-              | 您的联系方式
-          .col-xs-10.col-sm-10.col-md-10.col-lg-10.info-box
-            .form-group.required.has-feedback data-type='text'
-              label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='email_contract'
-                | 邮箱
-              .col-xs-4.col-sm-4.col-md-4.col-lg-4
-                input.input-valid.form-control type='email' data-info-name='email' value="#{@tester_infor.email_contract}"
-                span.form-control-feedback.text
-            .form-group.required.has-feedback data-type='text'
-              label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='mobile_phone'
-                | 手机
-              .col-xs-4.col-sm-4.col-md-4.col-lg-4
-                input.input-valid.form-control type='text' data-info-name='mobile_phone'value="#{@tester_infor.mobile_phone}"
-                span.form-control-feedback.text
-            /*.form-group data-type='text' */
-              /*label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='wechat'*/
-                /*| 微信*/
-              /*.col-xs-4.col-sm-4.col-md-4.col-lg-4*/
-                /*input.form-control type='text'*/
-                /*span.glyphicon.glyphicon-ok.form-control-feedback.sr-only aria-hidden="true"*/
-                /*span.form-control-feedback.text*/
-            /*.form-group data-type='text' */
-              /*label.info-title.col-xs-3.col-sm-3.col-md-3.col-lg-3 data-name='ali_pay'*/
-                /*| 支付宝*/
-              /*.col-xs-4.col-sm-4.col-md-4.col-lg-4*/
-                /*input.form-control type='text'*/
-                /*span.glyphicon.glyphicon-ok.form-control-feedback.sr-only aria-hidden="true"*/
-                /*span.form-control-feedback.text*/
-        .row
-          .col-xs-2.col-sm-2.col-md-2.col-lg-2
-          .col-xs-10.col-sm-10.col-md-10.col-lg-10.info-box
-            .col-xs-3.col-sm-3.col-md-3.col-lg-3
-            .col-xs-4.col-sm-4.col-md-4.col-lg-4
-              button.btn.btn-blue.submit
-                | 提交
+main role="mian"
+  form#tester-info.form style="max-width: 600px; margin: 0 auto"
+    fieldset
+      .form-field.with-hint-text
+        .field-name
+          span
+            | 昵称
+        .field-content
+          input.form-input type="text" name="name" v-model="name"
+          span.hint-text
+            | xkhkdf
+      .form-field.with-hint-text
+        .field-name
+          label
+            | 邮箱
+        .field-content
+          input.form-input type="text" name="email" v-model="email"
+          span.hint-text
+            | xkhkdf
+      .form-field.with-hint-text
+        .field-name
+          label
+            | 手机
+        .field-content
+          input.form-input type="text" name="cellphone" v-model="cellphone"
+          span.hint-text
+            | xkhkdf
+      .form-group.required.has-feedback data-type='radio'
+        .field-name
+          label
+            | 性别
+        .field-content
+          label.checkbox-inline.checkbox-default.checkbox-with-icon
+            input type="radio" name="sex" value="男" v-model="sex"
+            span
+              | 男
+          label.radio-inline.checkbox-default.checkbox-with-icon
+            input type="radio" name="sex" value="女" v-model="sex"
+            span
+              | 女
+      .form-field
+        .field-name
+          label
+            | 生日
+        .field-content
+          select.year
+          span 年
+          select.month
+          span 月
+          select.date
+          span 日
+      .form-field
+        .field-name
+          label
+            | 出生地
+        .field-content
+          select.prov.margin-right
+          select.city disabled='disabled'
+          span.form-control-feedback.text.sr-only 请选择出生地
+      .form-field#livingplace
+        .field-name
+          label
+            | 居住地
+        .field-content
+          select.prov.margin-right
+          select.city disabled='disabled'
+      .form-field
+        .field-name
+          label
+            | 我的设备(可多选)
+        .field-content
+          - for device in @devices
+            label.checkbox-inline.checkbox-default.checkbox-with-icon
+              input type="checkbox" v-on="change: updateDevice(this, $event)" value="#{device}" checked=(@tester_infor.device.include?(device))
+              span
+                = device
+      .form-field
+        .field-name
+          label
+            | 感情状况
+        .field-content
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="emotion" value="单身" v-model="emotion"
+            span
+              | 单身
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="emotion" value="恋爱中" v-model="emotion"
+            span
+              | 恋爱中
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="emotion" value="已婚" v-model="emotion"
+            span
+              | 已婚
+      .form-field
+        .field-name
+          label
+            | 性取向
+        .field-content
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="orientation" value="异性恋" v-model="orientation"
+            span
+              | straight
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="orientation" value="同性恋" v-model="orientation"
+            span
+              | 同性恋
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="orientation" value="双性恋" v-model="orientation"
+            span
+              | 异性恋
+      .form-field
+        .field-name
+          label
+            | 教育程度
+        .field-content
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="education" value="高中及以下" v-model="education"
+            span
+              | 高中及以下
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="education" value="大专" v-model="education"
+            span
+              | 大专
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="education" value="本科" v-model="education"
+            span
+              | 本科
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="education" value="硕士" v-model="education"
+            span
+              | 硕士
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="education" value="博士" v-model="education"
+            span
+              | 博士
+      .form-field
+        .field-name
+          label
+            | 职业信息
+        .field-content#profession
+          select.prov.margin-right
+          select.city disabled='disabled'
+          //input type="hidden" v-model="profession"
+      .form-field
+        .field-name
+          label
+            | 年收入
+        .field-content
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="income" value="0-2" v-model="income"
+            span
+              | 2万以下
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="income" value="2-5" v-model="income"
+            span
+              | 2~5万
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="income" value="5-8" v-model="income"
+            span
+              | 5~8万
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="income" value="8-10" v-model="income"
+            span
+              | 8~10万
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="income" value="10-15" v-model="income"
+            span
+              | 10~15万
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="income" value="15-30" v-model="income"
+            span
+              | 15~30万
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="income" value="30-50" v-model="income"
+            span
+              | 30~50万
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="income" value="50-100" v-model="income"
+            span
+              | 50~100万
+          label.radio-inline.checkbox-default.checkbox-rounded
+            input type="radio" name="income" value="100" v-model="income"
+            span
+              | 100万以上
+      .form-field
+        .field-name
+          label
+            | 兴趣爱好(可多选)
+        .field-content
+          - for interest in @interests
+            label.checkbox-inline.checkbox-default.checkbox-with-icon
+              input type="checkbox" v-on="change: updateInterest(this, $event)" value="#{interest}" checked=(@tester_infor.interest && @tester_infor.interest.include?(interest))
+              span
+                = interest
+    button.btn.btn-blue.submit v-on="click: submit(this, $event)"
+      | 提交
+input#id type="hidden" value="#{current_user.to_params}"
+.operate#form-finish data-backdrop='static'
+.handle
+.operate-content
+p.content
+  | OK, 接下来就去体验产品吧
+.tools
+  a.btn.btn-flat.blue.btn-rounded.btn-s href="#{assignments_path}"
+    | 即刻出发
+  a.btn.btn-flat.blue.btn-rounded.btn-s href="#{testers_path}"
+    | 稍后再去

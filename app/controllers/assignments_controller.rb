@@ -106,7 +106,7 @@ class AssignmentsController < ApplicationController
     assignments = tester.assignments
     tester.update_column(:last_view_time, Time.now)
     @assignments_ing =  assignments.take_part_ing.order("id desc").page(params[:page]).per(10)
-    @assignments_done = Kaminari.paginate_array(assignments.take_part_done).page(params[:page]).per(10)
+    @assignments_done = Kaminari.paginate_array(assignments.take_part_expired + assignments.done).page(params[:page]).per(10)
   end
 
   def ing

@@ -474,6 +474,71 @@ $(function () {
     ]
   };
 
+  // birthday select init
+  var $birthYearSelect,
+      $birthMonthSelect,
+      $birthDateSelect,
+      birthYearSelect,
+      birthMonthSelect,
+      birthDateSelect;
+
+  var dateOption = [];
+  for(var i = 1; i <= 31; i++) {
+    dateOption.push({value: i});
+  }
+
+  $birthYearSelect = $('#birth-year').selectize({
+    onChange: function (value) {
+      infoVm.birthday[0] = $.trim(value);
+
+      birthDateSelect.disable();
+      birthDateSelect.clearOptions();
+      birthDateSelect.load(function (callback) {
+        var  results = dateOption;
+        birthDateSelect.enable();
+        callback(results);
+
+        birthMonthSelect.addItem(1, false);
+        birthDateSelect.addItem(1, false);
+      });
+    }
+  });
+  $birthMonthSelect = $('#birth-month').selectize({
+    onChange: function (value) {
+      infoVm.birthday[1] = $.trim(value);
+
+      var year = infoVm.birthday[0],
+          month = value;
+
+      birthDateSelect.disable();
+      birthDateSelect.clearOptions();
+      birthDateSelect.load(function (callback) {
+        var dates = new Date(year, month, 0).getDate(),
+            results = [];
+        for(var i = 1; i <= dates; i++) {
+          results.push({value: i});
+        }
+        birthDateSelect.enable();
+        callback(results);
+        birthDateSelect.addItem(1, false);
+      });
+    }
+  });
+  $birthDateSelect = $('#birth-date').selectize({
+    labelField: 'value',
+    options: dateOption,
+    items: ['1'],
+    onChange: function (value) {
+      infoVm.birthday[2] = $.trim(value);
+      console.log(infoVm.birthday);
+    }
+  });
+
+  birthYearSelect = $birthYearSelect[0].selectize;
+  birthMonthSelect = $birthMonthSelect[0].selectize;
+  birthDateSelect = $birthDateSelect[0].selectize;
+
+
   var $birthProvSelect,
       $birthCitySelect,
       birthProvSelect,
@@ -669,6 +734,7 @@ $(function () {
       {value: "电信运营"},
       {value: "网络游戏"}
     ],
+    items: ['互联网'],
     onChange: function (value) {
       infoVm.profession[1] = value;
     }
@@ -676,8 +742,6 @@ $(function () {
 
   professionLevelOneSelect = $professionLevelOneSelect[0].selectize;
   professionLevelTwoSelect = $professionLevelTwoSelect[0].selectize;
-
-  professionLevelTwoSelect.addItem('互联网', true);
 
   //$('#profession').citySelect({
     //// 不知道为什么不能从 professionselect_data.js中获取数据
@@ -708,7 +772,7 @@ $(function () {
       email: '',
       cellphone: '',
       sex: '男',
-      birthday: '',
+      birthday: [1980, 1, 1],
       birthplace: '',
       livingplace: '',
       device: [],
@@ -768,12 +832,12 @@ $(function () {
     data.mobile_phone = testerInfo.cellphone
 
     data.sex = testerInfo.sex;
-    data.birthday = testerInfo.birthday;
+    data.birthday = testerInfo.birthday.join('-');;
     data.birthplace = testerInfo.birthplace;
     data.livingplace = testerInfo.livingplace;
 
     data.device = testerInfo.device;
-    data.emotional_status = testerInfo.emotion_status;
+    data.emotional_status = testerInfo.emotion;
     data.sex_orientation = testerInfo.orientation;
     data.education = testerInfo.education;
     if (testerInfo.profession[1]) {

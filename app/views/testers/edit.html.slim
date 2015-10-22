@@ -2,7 +2,8 @@ main role="mian"
   form#tester-info.form
     fieldset
       .fieldset-name
-        .naem-icon.icon.icon-file-index
+        .naem-icon
+          .edit-icon.edit-icon-info-simple
         .name-text
           | 基本信息
       .fieldset-content
@@ -36,11 +37,13 @@ main role="mian"
             label.radio-default.radio-with-icon
               input type="radio" name="sex" value="男" v-model="sex"
               span
-                | 男
+                .edit-icon.edit-icon-male
+              h6 男
             label.radio-default.radio-with-icon
               input type="radio" name="sex" value="女" v-model="sex"
               span
-                | 女
+                .edit-icon.edit-icon-female
+              h6 女
         .form-field
           .field-name.middle
             span
@@ -277,13 +280,16 @@ main role="mian"
               label.checkbox-default.checkbox-with-icon
                 input type="checkbox" v-on="change: updateDevice(this, $event)" value="#{device}" checked=(@tester_infor.device.include?(device))
                 span
+                  .edit-icon class=("edit-icon-" + "#{get_device_iconname(device)}")
+                h6
                   = device
           .field-warn v-show="error.device"
             span
               | 请选择设备
     fieldset
       .fieldset-name
-        .naem-icon.icon.icon-file-index
+        .naem-icon
+          .edit-icon.edit-icon-info-detail
         .name-text
           | 详细资料
       .fieldset-content
@@ -312,7 +318,7 @@ main role="mian"
             label.radio-default.radio-rounded
               input type="radio" name="orientation" value="异性恋" v-model="orientation"
               span
-                | straight
+                | 异性恋
             label.radio-default.radio-rounded
               input type="radio" name="orientation" value="同性恋" v-model="orientation"
               span
@@ -326,23 +332,23 @@ main role="mian"
             span
               | 教育程度
           .field-content
-            label.radio-default.radio-rounded
+            label.radio-default.radio-rounded.need-padding-bottom
               input type="radio" name="education" value="高中及以下" v-model="education"
               span
                 | 高中及以下
-            label.radio-default.radio-rounded
+            label.radio-default.radio-rounded.need-padding-bottom
               input type="radio" name="education" value="大专" v-model="education"
               span
                 | 大专
-            label.radio-default.radio-rounded
+            label.radio-default.radio-rounded.need-padding-bottom
               input type="radio" name="education" value="本科" v-model="education"
               span
                 | 本科
-            label.radio-default.radio-rounded
+            label.radio-default.radio-rounded.need-padding-bottom
               input type="radio" name="education" value="硕士" v-model="education"
               span
                 | 硕士
-            label.radio-default.radio-rounded
+            label.radio-default.radio-rounded.need-padding-bottom
               input type="radio" name="education" value="博士" v-model="education"
               span
                 | 博士
@@ -376,39 +382,39 @@ main role="mian"
             span
               | 年收入
           .field-content
-            label.radio-default.radio-rounded
+            label.radio-default.radio-rounded.need-padding-bottom
               input type="radio" name="income" value="0-2" v-model="income"
               span
                 | 2万以下
-            label.radio-default.radio-rounded
+            label.radio-default.radio-rounded.need-padding-bottom
               input type="radio" name="income" value="2-5" v-model="income"
               span
                 | 2~5万
-            label.radio-default.radio-rounded
+            label.radio-default.radio-rounded.need-padding-bottom
               input type="radio" name="income" value="5-8" v-model="income"
               span
                 | 5~8万
-            label.radio-default.radio-rounded
+            label.radio-default.radio-rounded.need-padding-bottom
               input type="radio" name="income" value="8-10" v-model="income"
               span
                 | 8~10万
-            label.radio-default.radio-rounded
+            label.radio-default.radio-rounded.need-padding-bottom
               input type="radio" name="income" value="10-15" v-model="income"
               span
                 | 10~15万
-            label.radio-default.radio-rounded
+            label.radio-default.radio-rounded.need-padding-bottom
               input type="radio" name="income" value="15-30" v-model="income"
               span
                 | 15~30万
-            label.radio-default.radio-rounded
+            label.radio-default.radio-rounded.need-padding-bottom
               input type="radio" name="income" value="30-50" v-model="income"
               span
                 | 30~50万
-            label.radio-default.radio-rounded
+            label.radio-default.radio-rounded.need-padding-bottom
               input type="radio" name="income" value="50-100" v-model="income"
               span
                 | 50~100万
-            label.radio-default.radio-rounded
+            label.radio-default.radio-rounded.need-padding-bottom
               input type="radio" name="income" value="100" v-model="income"
               span
                 | 100万以上
@@ -418,10 +424,13 @@ main role="mian"
               | 兴趣爱好(可多选)
           .field-content
             - for interest in @interests
-              label.checkbox-default.checkbox-with-icon
+              label.checkbox-default.checkbox-with-icon.need-padding-bottom
                 input type="checkbox" v-on="change: updateInterest(this, $event)" value="#{interest}" checked=(@tester_infor.interest && @tester_infor.interest.include?(interest))
                 span
+                  .edit-icon class=("edit-icon-" + "#{get_interest_iconname(interest)}")
+                h6
                   = interest
+
     fieldset
       button.btn.btn-flat.blue.btn-rounded.btn-g v-on="click: submit(this, $event)"
         | 保存

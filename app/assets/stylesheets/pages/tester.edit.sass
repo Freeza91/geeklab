@@ -4,10 +4,11 @@
 #tester-info
   fieldset
     padding-top: 15px
-    padding-bottom: 50px
     text-align: center
+    padding-bottom: 20px
   fieldset:nth-child(1)
     background: $light-yellow
+    padding-bottom: 100px
   fieldset:nth-child(2)
     background: #fff
     .fieldset-name
@@ -18,11 +19,23 @@
     height: 100px
     margin-left: auto
     margin-right: auto
+    margin-bottom: 20px
     border-bottom: none
     +border-radius(50px)
     text-align: center
     .name-text
       color: $blue
+      font-size: 1rem
+      font-weight: bold
+      letter-spacing: .1rem
+
+  .checkbox-default h6,
+  .radio-default h6
+    margin: 0
+    padding-top: 8px
+    font-size: 14px
+    color: $dark-blue
+    text-align: center
 
   .birth-label
     display: inline-block
@@ -52,3 +65,42 @@
       width: 120px
       margin-right: 0
 
+// icon
+.edit-icon
+  display: inline-block
+  width: 48px
+  height: 48px
+  margin-top: 16px
+  background-image: image_url("testers/edit-icon.png")
+.edit-icon-info-simple
+  background-position: -336px 0
+.edit-icon-info-detail
+  background-position: -240px 0
+.edit-icon-male
+  background-position: -96px 0
+.edit-icon-female
+  background-position: -144px 0
+.edit-icon-iphone
+  background-position: -192px 0
+.edit-icon-ipad
+  background-position: -288px 0
+.edit-icon-aphone
+  background-position: -48px 0
+.edit-icon-apad
+  background-position: -720px 0
+.edit-icon-travel
+  background-position: -384px 0
+.edit-icon-fitness
+  background-position: 0 0
+.edit-icon-music
+  background-position: -432px 0
+.edit-icon-movie
+  background-position: -480px 0
+.edit-icon-comic
+  background-position: -528px 0
+.edit-icon-read
+  background-position: -576px 0
+.edit-icon-sign
+  background-position: -624px 0
+.edit-icon-soccer
+  background-position: -672px 0

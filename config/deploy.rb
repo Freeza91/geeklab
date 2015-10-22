@@ -6,7 +6,6 @@ require 'mina/rvm' #rbenv
 require 'mina/whenever'
 require 'mina_sidekiq/tasks'
 
-
 set :user, 'deploy'
 set :forward_agent, true
 set :port, 9527
@@ -50,8 +49,6 @@ else
   set :unicorn_config, lambda { "#{app_path}/config/unicorn_master.rb" }
 end
 
-p "将要部署到：#{branch}"
-
 task :environment do
   queue! 'source ~/.bashrc'
   invoke :'rvm:use[ruby-2.2.0]'
@@ -78,6 +75,9 @@ end
 
 desc "Deploys the current version to the server."
 task deploy: :environment do
+
+  p "将要部署到：#{branch}"
+
   deploy do
 
     invoke :'git:clone'
@@ -95,4 +95,11 @@ task deploy: :environment do
       queue "touch #{deploy_to}/tmp/restart.txt"
     end
   end
+end
+
+# mina log default
+
+task debug: :environment do
+  queue! "cd #{app_path}"
+  queue! "bundle exec rails c production"
 end

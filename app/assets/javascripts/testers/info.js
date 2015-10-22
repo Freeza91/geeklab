@@ -474,15 +474,6 @@ $(function () {
     ]
   };
 
-  var birth = $('#birth').data('birth');
-  $('#birth').dateSelect({
-    startYear: 1980,
-    required: true,
-    year: 1980,
-    month: 1,
-    date: 1
-  });
-
   var $birthProvSelect,
       $birthCitySelect,
       birthProvSelect,
@@ -523,23 +514,45 @@ $(function () {
   birthProvSelect = $birthProvSelect[0].selectize;
   birthCitySelect = $birthCitySelect[0].selectize;
 
-  // city select init
-  //$('#birthplace').citySelect({
-    ////url: '/assets/cityselect_data.min',
-    //url: cityData,
-    //nodata: 'none',
-    //required: true,
-    //prov: '北京',
-    //city: '北京'
-  //});
-  //$('#livingplace').citySelect({
-    ////url: '/assets/cityselect_data.min',
-    //url: cityData,
-    //nodata: 'none',
-    //required: true,
-    //prov: '北京',
-    //city: '北京'
-  //});
+  var $livingProvSelect,
+      $livingCitySelect,
+      livingProvSelect,
+      livingCitySelect;
+
+  $livingProvSelect = $('#livingplace-prov').selectize({
+    onChange: function (value) {
+      console.log(value);
+      // 更新model中的数据
+      //infoVm.profession[0] = value;
+
+      // 更新二级类目
+      livingCitySelect.disable();
+      livingCitySelect.clearOptions();
+      livingCitySelect.load(function (callback) {
+        var results = cityData[value];
+        if (results) {
+          livingCitySelect.enable();
+          callback(results);
+        } else {
+          return false;
+        }
+      });
+    }
+  });
+  $livingCitySelect = $('#livingplace-city').selectize({
+    labelField: 'value',
+    options: [
+      {value: "北京"},
+      {value: "上海"}
+    ],
+    onChange: function (value) {
+      //infoVm.profession[1] = value;
+      console.log(value);
+    }
+  });
+
+  livingProvSelect = $livingProvSelect[0].selectize;
+  livingCitySelect = $livingCitySelect[0].selectize;
 
   // profession select init
   var professionLevelOne = [

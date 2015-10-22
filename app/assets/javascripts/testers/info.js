@@ -1,5 +1,5 @@
 $(function () {
-  if(!$('body').hasClass('testers_new')) {
+  if(!$('body').hasClass('testers_new') && !$('body').hasClass('testers_edit')) {
     return false;
   }
 
@@ -719,7 +719,7 @@ $(function () {
     $livingCitySelect = $('#livingplace-city').selectize({
       labelField: 'value',
       options: cityData[infoVm.livingplace[0]],
-      items: [infoVm.livingplace[0]],
+      items: [infoVm.livingplace[1]],
 
       onChange: function (value) {
         // 更新model中的数据
@@ -968,10 +968,14 @@ $(function () {
         testerInfo,
         function () {
           setTimeout(function () {
-            Geeklab.removeLoading();
-            var $modal = $('#form-finish');
-            $('body').append('<div class="main-mask"></div>')
-            $modal.addClass('show');
+            if($('body').hasClass('testers_new')) {
+              Geeklab.removeLoading();
+              var $modal = $('#form-finish');
+              $('body').append('<div class="main-mask"></div>')
+              $modal.addClass('show');
+            } else {
+              location.href = '/testers';
+            }
           }, 1500);
         });
     } else {

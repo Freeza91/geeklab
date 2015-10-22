@@ -1,5 +1,5 @@
 $(function () {
-  if(!$('body').hasClass('testers_edit')) {
+  if(!$('body').hasClass('123')) {
     return false;
   }
   // birth select init

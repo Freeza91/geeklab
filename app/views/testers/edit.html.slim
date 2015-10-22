@@ -16,21 +16,21 @@ main role="mian"
               | 请输入昵称
         .form-field
           .field-name.middle
-            label
+            span
               | 邮箱
           .field-content
             input.form-input type="text" name="email" v-model="email" v-on="focus: error.email = false, blur: checkValue(this, $event, 'email')"
             span.hint-text v-show="error.email" v-text="hint.email"
         .form-field
           .field-name.middle
-            label
+            span
               | 手机
           .field-content
             input.form-input type="text" name="cellphone" v-model="cellphone" v-on="focus: error.cellphone = false, blur: checkValue(this, $event, 'mobile_phone')"
             span.hint-text v-show="error.cellphone" v-text="hint.cellphone"
         .form-field
           .field-name.middle
-            label
+            span
               | 性别
           .field-content
             label.radio-default.radio-with-icon
@@ -43,7 +43,7 @@ main role="mian"
                 | 女
         .form-field
           .field-name.middle
-            label
+            span
               | 生日
           .field-content#birth
             select.year
@@ -54,7 +54,7 @@ main role="mian"
             span 日
         .form-field
           .field-name.middle
-            label
+            span
               | 出生地
           .field-content
             select.prov.margin-right
@@ -62,14 +62,14 @@ main role="mian"
             span.form-control-feedback.text.sr-only 请选择出生地
         .form-field#livingplace
           .field-name.middle
-            label
+            span
               | 居住地
           .field-content
             select.prov.margin-right
             select.city disabled='disabled'
         .form-field
           .field-name.top
-            label
+            span
               | 我的设备(可多选)
           .field-content
             - for device in @devices
@@ -88,7 +88,7 @@ main role="mian"
       .fieldset-content
         .form-field
           .field-name.middle
-            label
+            span
               | 感情状况
           .field-content
             label.radio-default.radio-rounded
@@ -105,7 +105,7 @@ main role="mian"
                 | 已婚
         .form-field
           .field-name.middle
-            label
+            span
               | 性取向
           .field-content
             label.radio-default.radio-rounded
@@ -122,7 +122,7 @@ main role="mian"
                 | 异性恋
         .form-field
           .field-name.top
-            label
+            span
               | 教育程度
           .field-content
             label.radio-default.radio-rounded
@@ -147,15 +147,32 @@ main role="mian"
                 | 博士
         .form-field
           .field-name.middle
-            label
+            span
               | 职业信息
-          .field-content#profession
-            select.prov.margin-right
-            select.city disabled='disabled'
-            //input type="hidden" v-model="profession"
+          .field-content
+            select#profession-level-one
+              option value="学生"
+                | 学生
+              option value="信息技术" selected="selected"
+                | 信息技术
+              option value="金融技术"
+                | 金融技术
+              option value="商业服务"
+                | 商业服务
+              option value="工程制造"
+                | 工程制造
+              option value="交通运输"
+                | 交通运输
+              option value="文化传媒"
+                | 文化传媒
+              option value="娱乐体育"
+                | 娱乐体育
+              option value="公共事业"
+                | 公共事业
+            select#profession-level-two
         .form-field
           .field-name.top
-            label
+            span
               | 年收入
           .field-content
             label.radio-default.radio-rounded
@@ -196,7 +213,7 @@ main role="mian"
                 | 100万以上
         .form-field
           .field-name.top
-            label
+            span
               | 兴趣爱好(可多选)
           .field-content
             - for interest in @interests
@@ -204,8 +221,9 @@ main role="mian"
                 input type="checkbox" v-on="change: updateInterest(this, $event)" value="#{interest}" checked=(@tester_infor.interest && @tester_infor.interest.include?(interest))
                 span
                   = interest
-    button.btn.btn-blue.submit v-on="click: submit(this, $event)"
-      | 提交
+    fieldset
+      button.btn.btn-flat.blue.btn-rounded.btn-g v-on="click: submit(this, $event)"
+        | 保存
 input#id type="hidden" value="#{current_user.to_params}"
 .operate#form-finish data-backdrop='static'
 .handle
@@ -217,3 +235,4 @@ p.content
     | 即刻出发
   a.btn.btn-flat.blue.btn-rounded.btn-s href="#{testers_path}"
     | 稍后再去
+              option value="学生"

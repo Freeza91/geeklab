@@ -2,6 +2,9 @@ $(function () {
   if(!$('body').hasClass('testers_new')) {
     return false;
   }
+
+  var infoVm;
+
   var birth = $('#birth').data('birth');
   $('#birth').dateSelect({
     startYear: 1980,
@@ -32,112 +35,138 @@ $(function () {
   });
 
   // profession select init
-  var profession = {
-    "citylist": [
-      {"p": "无"},
-      {"p": "学生"},
-      {
-        "p": "信息技术",
-        "c": [
-          {"n": "互联网"},
-          {"n": "IT"},
-          {"n": "通讯"},
-          {"n": "电信运营"},
-          {"n": "网络游戏"}
-        ]
-      },
-      {
-        "p": "金融保险",
-        "c": [
-          {"n": "投资"},
-          {"n": "股票/基金"},
-          {"n": "保险"},
-          {"n": "银行"},
-          {"n": "信托保险"}
-        ]
-      },
-      {
-        "p": "商业服务",
-        "c": [
-          {"n": "咨询"},
-          {"n": "个体运营"},
-          {"n": "美容美发"},
-          {"n": "旅游"},
-          {"n": "酒店餐饮"},
-          {"n": "休闲娱乐"},
-          {"n": "贸易"},
-          {"n": "汽车"},
-          {"n": "房地产"},
-          {"n": "物业管理"},
-          {"n": "装修/装潢"}
-        ]
-      },
-      {
-        "p": "工程制造",
-        "c": [
-          {"n": "建筑"},
-          {"n": "土木工程"},
-          {"n": "机械制造"},
-          {"n": "电子"},
-          {"n": "生物医药"},
-          {"n": "食品"},
-          {"n": "服装"},
-          {"n": "能源"}
-        ]
-      },
-      {
-        "p": "交通运输",
-        "c": [
-          {"n": "航空"},
-          {"n": "铁路"},
-          {"n": "航运/船舶"},
-          {"n": "公共交通"},
-          {"n": "物流运输"}
-        ]
-      },
-      {
-        "p": "文化传媒",
-        "c": [
-          {"n": "媒体出版"},
-          {"n": "设计"},
-          {"n": "文化传播"},
-          {"n": "广告创意"},
-          {"n": "动漫"},
-          {"n": "公关/会展"},
-          {"n": "摄影"}
-        ]
-      },
-      {
-        "p": "娱乐体育",
-        "c": [
-          {"n": "影视"},
-          {"n": "运动体育"},
-          {"n": "音乐"},
-          {"n": "模特"}
-        ]
-      },
-      {
-        "p": "公共事业",
-        "c": [
-          {"n": "医疗"},
-          {"n": "法律"},
-          {"n": "教育"},
-          {"n": "政府机关"},
-          {"n": "科研"},
-          {"n": "公益"}
-        ]
-      },
-    ]
+  var professionLevelOne = [
+    {value: '学生'},
+    {value: '信息技术'},
+    {value: '金融保险'},
+    {value: '商业服务'},
+    {value: '工程制造'},
+    {value: '交通运输'},
+    {value: '文化传媒'},
+    {value: '娱乐体育'},
+    {value: '公共事业'}
+  ],
+  professionLevelTow = {
+    "信息技术": [
+      {value: "互联网"},
+      {value: "IT"},
+      {value: "通讯"},
+      {value: "电信运营"},
+      {value: "网络游戏"}
+    ],
+    "金融保险": [
+      {value: "投资"},
+      {value: "股票/基金"},
+      {value: "保险"},
+      {value: "银行"},
+      {value: "信托保险"}
+    ],
+    "商业服务": [
+      {value: "咨询"},
+      {value: "个体运营"},
+      {value: "美容美发"},
+      {value: "旅游"},
+      {value: "酒店餐饮"},
+      {value: "休闲娱乐"},
+      {value: "贸易"},
+      {value: "汽车"},
+      {value: "房地产"},
+      {value: "物业管理"},
+      {value: "装修/装潢"}
+    ],
+    "工程制造": [
+      {value: "建筑"},
+      {value: "土木工程"},
+      {value: "机械制造"},
+      {value: "电子"},
+      {value: "生物医药"},
+      {value: "食品"},
+      {value: "服装"},
+      {value: "能源"}
+    ],
+    "交通运输": [
+      {value: "航空"},
+      {value: "铁路"},
+      {value: "航运/船舶"},
+      {value: "公共交通"},
+      {value: "物流运输"}
+    ],
+    "文化传媒": [
+      {value: "媒体出版"},
+      {value: "设计"},
+      {value: "文化传播"},
+      {value: "广告创意"},
+      {value: "动漫"},
+      {value: "公关/会展"},
+      {value: "摄影"}
+    ],
+    "娱乐体育": [
+      {value: "影视"},
+      {value: "运动体育"},
+      {value: "音乐"},
+      {value: "模特"}
+    ],
+    "公共事业": [
+      {value: "医疗"},
+      {value: "法律"},
+      {value: "教育"},
+      {value: "政府机关"},
+      {value: "科研"},
+      {value: "公益"}
+    ],
   };
 
-  $('#profession').citySelect({
-    // 不知道为什么不能从 professionselect_data.js中获取数据
-    url: profession,
-    nodata: 'none',
-    required: true,
-    prov: '信息技术',
-    city: '互联网'
+  var $professionLevelOneSelect,
+      $professionLevelTwoSelect,
+      professionLevelOneSelect,
+      professionLevelTwoSelect;
+
+  $professionLevelOneSelect = $('#profession-level-one').selectize({
+    onChange: function (value) {
+      // 更新model中的数据
+      infoVm.profession[0] = value;
+
+      // 更新二级类目
+      professionLevelTwoSelect.disable();
+      professionLevelTwoSelect.clearOptions();
+      professionLevelTwoSelect.load(function (callback) {
+        var results = professionLevelTow[value];
+        if (results) {
+          professionLevelTwoSelect.enable();
+          callback(results);
+        } else {
+          return false;
+        }
+      });
+    }
   });
+  $professionLevelTwoSelect = $('#profession-level-two').selectize({
+    labelField: 'value',
+    options: [
+      {value: "互联网"},
+      {value: "IT"},
+      {value: "通讯"},
+      {value: "电信运营"},
+      {value: "网络游戏"}
+    ],
+    onChange: function (value) {
+      infoVm.profession[1] = value;
+    }
+  });
+
+  professionLevelOneSelect = $professionLevelOneSelect[0].selectize;
+  professionLevelTwoSelect = $professionLevelTwoSelect[0].selectize;
+
+  professionLevelTwoSelect.addItem('互联网', true);
+
+  //$('#profession').citySelect({
+    //// 不知道为什么不能从 professionselect_data.js中获取数据
+    //url: profession,
+    //nodata: 'none',
+    //required: true,
+    //prov: '信息技术',
+    //city: '互联网'
+  //});
 
   var id = $('#id').attr('value');
   fetchTesterInfo(id, initTesterVm);
@@ -166,7 +195,7 @@ $(function () {
       emotion: '单身',
       orientation: '异性恋',
       education: '本科',
-      profession: '',
+      profession: ['信息技术', '互联网'],
       income: '0-2',
       interest: [],
       hint: {
@@ -181,10 +210,11 @@ $(function () {
         profession: false
       }
     };
+
     $.extend(testerInfoDefault, testerInfo);
     console.log(testerInfoDefault);
 
-    var infoVm = new Vue({
+    infoVm = new Vue({
       el:  '#tester-info',
       data: testerInfoDefault,
       methods: {
@@ -207,6 +237,7 @@ $(function () {
     }
     return false;
   }
+
   function generateTesterInfo (vm) {
     var testerInfo = vm.$data,
         data = {};
@@ -225,10 +256,13 @@ $(function () {
     data.emotional_status = testerInfo.emotion_status;
     data.sex_orientation = testerInfo.orientation;
     data.education = testerInfo.education;
-    data.profession = testerInfo.profession;
+    if (testerInfo.profession[1]) {
+      data.profession = testerInfo.profession.join('-');
+    } else {
+      data.profession = testerInfo.profession[0];
+    }
     data.income = testerInfo.income;
     data.interest = testerInfo.interest;
-
 
     return data;
   }
@@ -322,9 +356,9 @@ $(function () {
 
   function submit (vm, event) {
     event.preventDefault();
-    if(checkTesterInfo(vm)) {
-      // var vm = generateTesterInfo(vm);
-      // console.log(testerInfo);
+    //if(checkTesterInfo(vm)) {
+     var testerInfo = generateTesterInfo(vm);
+     console.log(testerInfo);
       // loading
       //Geeklab.showLoading();
       //postTesterInfo(
@@ -335,9 +369,9 @@ $(function () {
           //$('body').append('<div class="main-mask"></div>')
           //$modal.addClass('show');
         //}, 1500));
-    } else {
-      return false;
-    }
+    //} else {
+      //return false;
+    //}
   }
 
   // 文本字段验证

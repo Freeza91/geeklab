@@ -546,9 +546,8 @@ $(function () {
 
   $birthProvSelect = $('#birthplace-prov').selectize({
     onChange: function (value) {
-      console.log(value);
       // 更新model中的数据
-      //infoVm.profession[0] = value;
+      infoVm.birthplace[0] = value;
 
       // 更新二级类目
       birthCitySelect.disable();
@@ -558,6 +557,7 @@ $(function () {
         if (results) {
           birthCitySelect.enable();
           callback(results);
+          birthCitySelect.addItem(results[0].value, false);
         } else {
           return false;
         }
@@ -568,11 +568,12 @@ $(function () {
     labelField: 'value',
     options: [
       {value: "北京"},
-      {value: "上海"}
     ],
+    items: ['北京'],
     onChange: function (value) {
-      //infoVm.profession[1] = value;
-      console.log(value);
+      // 更新model中的数据
+      infoVm.birthplace[1] = value;
+      console.log(infoVm.birthplace);
     }
   });
 
@@ -586,9 +587,8 @@ $(function () {
 
   $livingProvSelect = $('#livingplace-prov').selectize({
     onChange: function (value) {
-      console.log(value);
       // 更新model中的数据
-      //infoVm.profession[0] = value;
+      infoVm.livingplace[0] = value;
 
       // 更新二级类目
       livingCitySelect.disable();
@@ -598,6 +598,7 @@ $(function () {
         if (results) {
           livingCitySelect.enable();
           callback(results);
+          livingCitySelect.addItem(results[0].value, false);
         } else {
           return false;
         }
@@ -608,11 +609,12 @@ $(function () {
     labelField: 'value',
     options: [
       {value: "北京"},
-      {value: "上海"}
     ],
+    items: ['北京'],
     onChange: function (value) {
-      //infoVm.profession[1] = value;
-      console.log(value);
+      // 更新model中的数据
+      infoVm.livingplace[1] = value;
+      console.log(infoVm.livingplace);
     }
   });
 
@@ -773,8 +775,8 @@ $(function () {
       cellphone: '',
       sex: '男',
       birthday: [1980, 1, 1],
-      birthplace: '',
-      livingplace: '',
+      birthplace: ['北京', '北京'],
+      livingplace: ['北京', '北京'],
       device: [],
       emotion: '单身',
       orientation: '异性恋',
@@ -833,8 +835,8 @@ $(function () {
 
     data.sex = testerInfo.sex;
     data.birthday = testerInfo.birthday.join('-');;
-    data.birthplace = testerInfo.birthplace;
-    data.livingplace = testerInfo.livingplace;
+    data.birthplace = testerInfo.birthplace.join('-');
+    data.livingplace = testerInfo.livingplace.join('-');
 
     data.device = testerInfo.device;
     data.emotional_status = testerInfo.emotion;

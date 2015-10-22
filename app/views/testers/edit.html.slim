@@ -427,13 +427,12 @@ main role="mian"
         | 保存
 input#id type="hidden" value="#{current_user.to_params}"
 .operate#form-finish data-backdrop='static'
-.handle
-.operate-content
-p.content
-  | OK, 接下来就去体验产品吧
-.tools
-  a.btn.btn-flat.blue.btn-rounded.btn-s href="#{assignments_path}"
-    | 即刻出发
-  a.btn.btn-flat.blue.btn-rounded.btn-s href="#{testers_path}"
-    | 稍后再去
-              option value="学生"
+  .handle
+  .operate-content
+    p.content
+      | OK, 接下来就去体验产品吧
+    .tools
+      a.btn.btn-flat.blue.btn-rounded.btn-s href="#{assignments_path}"
+        | 即刻出发
+      a.btn.btn-flat.blue.btn-rounded.btn-s href="#{testers_path}"
+        | 稍后再去

@@ -4,6 +4,7 @@ $(function () {
   }
 
   var infoVm;
+
   var cityData = {
     "北京": [
       {value:"北京"}
@@ -472,157 +473,8 @@ $(function () {
       {value:"花莲县"},
       {value:"澎湖县"}
     ]
-  };
-
-  // birthday select init
-  var $birthYearSelect,
-      $birthMonthSelect,
-      $birthDateSelect,
-      birthYearSelect,
-      birthMonthSelect,
-      birthDateSelect;
-
-  var dateOption = [];
-  for(var i = 1; i <= 31; i++) {
-    dateOption.push({value: i});
-  }
-
-  $birthYearSelect = $('#birth-year').selectize({
-    onChange: function (value) {
-      infoVm.birthday[0] = $.trim(value);
-
-      birthDateSelect.disable();
-      birthDateSelect.clearOptions();
-      birthDateSelect.load(function (callback) {
-        var  results = dateOption;
-        birthDateSelect.enable();
-        callback(results);
-
-        birthMonthSelect.addItem(1, false);
-        birthDateSelect.addItem(1, false);
-      });
-    }
-  });
-  $birthMonthSelect = $('#birth-month').selectize({
-    onChange: function (value) {
-      infoVm.birthday[1] = $.trim(value);
-
-      var year = infoVm.birthday[0],
-          month = value;
-
-      birthDateSelect.disable();
-      birthDateSelect.clearOptions();
-      birthDateSelect.load(function (callback) {
-        var dates = new Date(year, month, 0).getDate(),
-            results = [];
-        for(var i = 1; i <= dates; i++) {
-          results.push({value: i});
-        }
-        birthDateSelect.enable();
-        callback(results);
-        birthDateSelect.addItem(1, false);
-      });
-    }
-  });
-  $birthDateSelect = $('#birth-date').selectize({
-    labelField: 'value',
-    options: dateOption,
-    items: ['1'],
-    onChange: function (value) {
-      infoVm.birthday[2] = $.trim(value);
-      console.log(infoVm.birthday);
-    }
-  });
-
-  birthYearSelect = $birthYearSelect[0].selectize;
-  birthMonthSelect = $birthMonthSelect[0].selectize;
-  birthDateSelect = $birthDateSelect[0].selectize;
-
-
-  var $birthProvSelect,
-      $birthCitySelect,
-      birthProvSelect,
-      birthCitySelect;
-
-  $birthProvSelect = $('#birthplace-prov').selectize({
-    onChange: function (value) {
-      // 更新model中的数据
-      infoVm.birthplace[0] = value;
-
-      // 更新二级类目
-      birthCitySelect.disable();
-      birthCitySelect.clearOptions();
-      birthCitySelect.load(function (callback) {
-        var results = cityData[value];
-        if (results) {
-          birthCitySelect.enable();
-          callback(results);
-          birthCitySelect.addItem(results[0].value, false);
-        } else {
-          return false;
-        }
-      });
-    }
-  });
-  $birthCitySelect = $('#birthplace-city').selectize({
-    labelField: 'value',
-    options: [
-      {value: "北京"},
-    ],
-    items: ['北京'],
-    onChange: function (value) {
-      // 更新model中的数据
-      infoVm.birthplace[1] = value;
-      console.log(infoVm.birthplace);
-    }
-  });
-
-  birthProvSelect = $birthProvSelect[0].selectize;
-  birthCitySelect = $birthCitySelect[0].selectize;
-
-  var $livingProvSelect,
-      $livingCitySelect,
-      livingProvSelect,
-      livingCitySelect;
-
-  $livingProvSelect = $('#livingplace-prov').selectize({
-    onChange: function (value) {
-      // 更新model中的数据
-      infoVm.livingplace[0] = value;
-
-      // 更新二级类目
-      livingCitySelect.disable();
-      livingCitySelect.clearOptions();
-      livingCitySelect.load(function (callback) {
-        var results = cityData[value];
-        if (results) {
-          livingCitySelect.enable();
-          callback(results);
-          livingCitySelect.addItem(results[0].value, false);
-        } else {
-          return false;
-        }
-      });
-    }
-  });
-  $livingCitySelect = $('#livingplace-city').selectize({
-    labelField: 'value',
-    options: [
-      {value: "北京"},
-    ],
-    items: ['北京'],
-    onChange: function (value) {
-      // 更新model中的数据
-      infoVm.livingplace[1] = value;
-      console.log(infoVm.livingplace);
-    }
-  });
-
-  livingProvSelect = $livingProvSelect[0].selectize;
-  livingCitySelect = $livingCitySelect[0].selectize;
-
-  // profession select init
-  var professionLevelOne = [
+  },
+  professionLevelOne = [
     {value: '学生'},
     {value: '信息技术'},
     {value: '金融保险'},
@@ -703,59 +555,224 @@ $(function () {
     ],
   };
 
-  var $professionLevelOneSelect,
-      $professionLevelTwoSelect,
-      professionLevelOneSelect,
-      professionLevelTwoSelect;
-
-  $professionLevelOneSelect = $('#profession-level-one').selectize({
-    onChange: function (value) {
-      // 更新model中的数据
-      infoVm.profession[0] = value;
-
-      // 更新二级类目
-      professionLevelTwoSelect.disable();
-      professionLevelTwoSelect.clearOptions();
-      professionLevelTwoSelect.load(function (callback) {
-        var results = professionLevelTow[value];
-        if (results) {
-          professionLevelTwoSelect.enable();
-          callback(results);
-        } else {
-          return false;
-        }
-      });
-    }
-  });
-  $professionLevelTwoSelect = $('#profession-level-two').selectize({
-    labelField: 'value',
-    options: [
-      {value: "互联网"},
-      {value: "IT"},
-      {value: "通讯"},
-      {value: "电信运营"},
-      {value: "网络游戏"}
-    ],
-    items: ['互联网'],
-    onChange: function (value) {
-      infoVm.profession[1] = value;
-    }
-  });
-
-  professionLevelOneSelect = $professionLevelOneSelect[0].selectize;
-  professionLevelTwoSelect = $professionLevelTwoSelect[0].selectize;
-
-  //$('#profession').citySelect({
-    //// 不知道为什么不能从 professionselect_data.js中获取数据
-    //url: profession,
-    //nodata: 'none',
-    //required: true,
-    //prov: '信息技术',
-    //city: '互联网'
-  //});
-
+  // init testerInfoVm
   var id = $('#id').attr('value');
-  fetchTesterInfo(id, initTesterVm);
+  fetchTesterInfo(id, function (testerInfo) {
+    initTesterVm(testerInfo);
+    initSelect();
+  });
+
+  /* select initialization
+   * birthday select
+   * birthplace select
+   * livingplace select
+   * profession select
+   */
+  function initSelect() {
+    var $birthYearSelect,
+        $birthMonthSelect,
+        $birthDateSelect,
+        birthYearSelect,
+        birthMonthSelect,
+        birthDateSelect;
+
+    var defaultDateOption = [],
+        initDateOption = [],
+        initDates = new Date(infoVm.birthday[0], infoVm.birthday[1], 0).getDate();
+    for(var i = 1; i <= 31; i++) {
+      defaultDateOption.push({value: i});
+    }
+    for(var i = 1; i <= initDates; i++) {
+      initDateOption.push({value: i});
+    }
+
+    $birthYearSelect = $('#birth-year').selectize({
+      items: [infoVm.birthday[0]],
+
+      onChange: function (value) {
+        infoVm.birthday[0] = $.trim(value);
+
+        birthDateSelect.disable();
+        birthDateSelect.clearOptions();
+        birthDateSelect.load(function (callback) {
+          var  results = defaultDateOption;
+          birthDateSelect.enable();
+          callback(results);
+
+          birthMonthSelect.addItem(1, false);
+          birthDateSelect.addItem(1, false);
+        });
+      }
+    });
+
+    $birthMonthSelect = $('#birth-month').selectize({
+      items: [infoVm.birthday[1]],
+
+      onChange: function (value) {
+        infoVm.birthday[1] = $.trim(value);
+
+        var year = infoVm.birthday[0],
+            month = value;
+
+        birthDateSelect.disable();
+        birthDateSelect.clearOptions();
+        birthDateSelect.load(function (callback) {
+          var dates = new Date(year, month, 0).getDate(),
+              results = [];
+          for(var i = 1; i <= dates; i++) {
+            results.push({value: i});
+          }
+          birthDateSelect.enable();
+          callback(results);
+          birthDateSelect.addItem(1, false);
+        });
+      }
+    });
+
+    $birthDateSelect = $('#birth-date').selectize({
+      labelField: 'value',
+      options: initDateOption,
+      items: [infoVm.birthday[2]],
+
+      onChange: function (value) {
+        infoVm.birthday[2] = $.trim(value);
+        console.log(infoVm.birthday);
+      }
+    });
+
+    birthYearSelect = $birthYearSelect[0].selectize;
+    birthMonthSelect = $birthMonthSelect[0].selectize;
+    birthDateSelect = $birthDateSelect[0].selectize;
+
+
+    var $birthProvSelect,
+        $birthCitySelect,
+        birthProvSelect,
+        birthCitySelect;
+
+    $birthProvSelect = $('#birthplace-prov').selectize({
+      items: [infoVm.birthplace[0]],
+
+      onChange: function (value) {
+        // 更新model中的数据
+        infoVm.birthplace[0] = value;
+
+        // 更新二级类目
+        birthCitySelect.disable();
+        birthCitySelect.clearOptions();
+        birthCitySelect.load(function (callback) {
+          var results = cityData[value];
+          if (results) {
+            birthCitySelect.enable();
+            callback(results);
+            birthCitySelect.addItem(results[0].value, false);
+          } else {
+            return false;
+          }
+        });
+      }
+    });
+    $birthCitySelect = $('#birthplace-city').selectize({
+      labelField: 'value',
+      options: cityData[infoVm.birthplace[0]],
+      items: [infoVm.birthplace[1]],
+
+      onChange: function (value) {
+        // 更新model中的数据
+        infoVm.birthplace[1] = value;
+        console.log(infoVm.birthplace);
+      }
+    });
+
+    birthProvSelect = $birthProvSelect[0].selectize;
+    birthCitySelect = $birthCitySelect[0].selectize;
+
+
+    var $livingProvSelect,
+        $livingCitySelect,
+        livingProvSelect,
+        livingCitySelect;
+
+    $livingProvSelect = $('#livingplace-prov').selectize({
+      items: [infoVm.livingplace[0]],
+
+      onChange: function (value) {
+        // 更新model中的数据
+        infoVm.livingplace[0] = value;
+
+        // 更新二级类目
+        livingCitySelect.disable();
+        livingCitySelect.clearOptions();
+        livingCitySelect.load(function (callback) {
+          var results = cityData[value];
+          if (results) {
+            livingCitySelect.enable();
+            callback(results);
+            livingCitySelect.addItem(results[0].value, false);
+          } else {
+            return false;
+          }
+        });
+      }
+    });
+
+    $livingCitySelect = $('#livingplace-city').selectize({
+      labelField: 'value',
+      options: cityData[infoVm.livingplace[0]],
+      items: [infoVm.livingplace[0]],
+
+      onChange: function (value) {
+        // 更新model中的数据
+        infoVm.livingplace[1] = value;
+        console.log(infoVm.livingplace);
+      }
+    });
+
+    livingProvSelect = $livingProvSelect[0].selectize;
+    livingCitySelect = $livingCitySelect[0].selectize;
+
+
+    var $professionLevelOneSelect,
+        $professionLevelTwoSelect,
+        professionLevelOneSelect,
+        professionLevelTwoSelect;
+
+    $professionLevelOneSelect = $('#profession-level-one').selectize({
+      items: [infoVm.profession[0]],
+
+      onChange: function (value) {
+        // 更新model中的数据
+        infoVm.profession[0] = value;
+
+        // 更新二级类目
+        professionLevelTwoSelect.disable();
+        professionLevelTwoSelect.clearOptions();
+        professionLevelTwoSelect.load(function (callback) {
+          var results = professionLevelTow[value];
+          if (results) {
+            professionLevelTwoSelect.enable();
+            callback(results);
+            professionLevelTwoSelect.addItem(results[0].value);
+          } else {
+            return false;
+          }
+        });
+      }
+    });
+
+    $professionLevelTwoSelect = $('#profession-level-two').selectize({
+      labelField: 'value',
+      options: professionLevelTow[infoVm.profession[0]],
+      items: [infoVm.profession[1]],
+
+      onChange: function (value) {
+        infoVm.profession[1] = value;
+      }
+    });
+
+    professionLevelOneSelect = $professionLevelOneSelect[0].selectize;
+    professionLevelTwoSelect = $professionLevelTwoSelect[0].selectize;
+  }
 
   function fetchTesterInfo (id, callback) {
     $.ajax({
@@ -942,55 +959,24 @@ $(function () {
 
   function submit (vm, event) {
     event.preventDefault();
-    //if(checkTesterInfo(vm)) {
-     var testerInfo = generateTesterInfo(vm);
-     console.log(testerInfo);
-      // loading
-      //Geeklab.showLoading();
-      //postTesterInfo(
-        //data,
-        //setTimeout(function () {
-          //Geeklab.removeLoading();
-          //var $modal = $('#form-finish');
-          //$('body').append('<div class="main-mask"></div>')
-          //$modal.addClass('show');
-        //}, 1500));
-    //} else {
-      //return false;
-    //}
-  }
-
-  // 文本字段验证
-  function textValid($el, type) {
-    var result;
-    var value = $el.val();
-    var $root = $el.parents('.form-group');
-    switch(type) {
-      case 'email':
-        result = Geeklab.emailValid(value, $el);
-        if(!result) {
-          $root.find('.form-control-feedback').removeClass('sr-only');
-        }
-      break;
-      case 'nickname':
-        result = Geeklab.formValueValid(value, 'required');
-        if(!result) {
-          $root.addClass('has-error').find('.form-control-feedback').removeClass('sr-only');
-        }
-      break;
-      case 'mobile_phone':
-      if(value === '') {
-        $root.addClass('has-error').find('.form-control-feedback').removeClass('sr-only').text('请输入手机号');
-        result = false;
-      } else {
-        result = Geeklab.formValueValid(value, 'mobile_phone');
-        if(!result) {
-          $root.addClass('has-error').find('.form-control-feedback').removeClass('sr-only').text('格式错误');
-        }
-      }
-      break;
+    if(checkTesterInfo(vm)) {
+      var testerInfo = generateTesterInfo(vm);
+      console.log(testerInfo);
+       //loading
+      Geeklab.showLoading();
+      postTesterInfo(
+        testerInfo,
+        function () {
+          setTimeout(function () {
+            Geeklab.removeLoading();
+            var $modal = $('#form-finish');
+            $('body').append('<div class="main-mask"></div>')
+            $modal.addClass('show');
+          }, 1500);
+        });
+    } else {
+      return false;
     }
-    return result;
   }
 
 

@@ -104,15 +104,20 @@ class Assignment < ActiveRecord::Base
           if project.beginner # 新手任务
               record.rating_type = 'new'
               record.used = true
-              num = tester.try(:credits).to_i + project.try(:credit).to_i
-              record.save && tester.update_column(:credits, num)
+              credits = tester.credits || 0
+              project_credit = project.credit || 0
+              credits += project_credit
+
+              record.save && tester.update_column(:credits, credits)
           else # 不是新手任务
             if rating_from_pm #项目经理有评分
               record.rating = rating_from_pm.to_i
               record.rating_type = 'pm'
               record.used = true
 
-              credits = tester.credits + project.credit
+              credits = tester.credits || 0
+              project_credit = project.credit || 0
+              credits += project_credit
               bonus_credits = rating_from_pm * project.basic_bonus
 
               record.save && tester.update_column(:credits, credits + bonus_credits)

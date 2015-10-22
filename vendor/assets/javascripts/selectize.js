@@ -2788,7 +2788,7 @@
       // 计算dropdown位置
 			this.$dropdown.css({
 				//width : $control.outerWidth(),
-        width: $control.outerWidth() - 40,
+        width: $control.outerWidth() - 30,
 				top   : offset.top,
 				//left  : offset.left
 				left  : offset.left + 20
@@ -3205,7 +3205,8 @@
 		wrapperClass: 'selectize-control',
 		inputClass: 'selectize-input',
 		dropdownClass: 'selectize-dropdown',
-		dropdownContentClass: 'right-dropdown-content',
+		//dropdownContentClass: 'right-dropdown-content',
+		dropdownContentClass: 'selectize-dropdown-content',
 
 		dropdownParent: null,
 

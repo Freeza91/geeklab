@@ -152,7 +152,7 @@ ActiveRecord::Schema.define(version: 20151022090855) do
 
   create_table "tester_infors", force: :cascade do |t|
     t.integer  "tester_id"
-    t.string   "username",         default: "tester-6"
+    t.string   "username",         default: ""
     t.string   "sex"
     t.string   "birthday"
     t.string   "birthplace"

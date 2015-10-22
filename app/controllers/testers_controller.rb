@@ -12,10 +12,10 @@ class TestersController < ApplicationController
     @personality = ['温柔', '粗犷', '活泼', '老成', '内向', '开朗', '豪爽', '沉默', '急躁', '稳重']
     @interests = ['足球', '健身', '旅游', '二次元', '音乐', '看书', '电影', '星座']
     @tester_infor = current_user.to_tester.tester_infor
-    if @tester_infor.already_finish
-      return redirect_to edit_tester_path
-    end
-    render '/testers/new'
+    #if @tester_infor.already_finish
+      #return redirect_to edit_tester_path
+    #end
+    render '/testers/edit'
   end
 
   def create
@@ -86,6 +86,18 @@ class TestersController < ApplicationController
     else
       json[:code] = 0
       json[:msg] = '没有找到相关的tester信息'
+    end
+
+    render json: json
+  end
+
+  def show
+    tester = current_user.to_tester
+    json = { status: 0, code: 1 }
+    if tester && tester.tester_infor
+      json[:tester] = tester.tester_infor.to_json
+    else
+      json[:code], json[:status] = 0, '用户信息不存在'
     end
 
     render json: json

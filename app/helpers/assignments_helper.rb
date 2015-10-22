@@ -52,4 +52,30 @@ module AssignmentsHelper
     end
   end
 
+  def get_device_iconname(device)
+    p device
+    icon_name = {
+      'iPhone': 'iphone',
+      'iPad': 'ipad',
+      'Android Phone': 'aphone',
+      'Android Pad': 'apad'
+    }
+    icon_name[device.to_sym]
+  end
+
+  def get_interest_iconname(interest)
+    p interest
+    icon_name = {
+      '旅游': 'travel',
+      '健身': 'fitness',
+      '音乐': 'music',
+      '电影': 'movie',
+      '二次元': 'comic',
+      '看书': 'read',
+      '星座': 'sign',
+      '足球': 'soccer'
+    }
+    icon_name[interest.to_sym]
+  end
+
 end

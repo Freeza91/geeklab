@@ -22,8 +22,7 @@
 // vue
 //= require vue
 
-// fullPage
-//= require jquery.fullPage.min
+//= require selectize
 
 // noUiSlider, a range slider plugin
 //= require jquery.nouislider

@@ -15,25 +15,29 @@ class TesterInfor < ActiveRecord::Base
   include TesterInforVirtualAttr
 
   def to_json
-    time = birthday.to_datetime
-    {
-      username: username,
-      birthday: [time.year, time.month, time.day],
-      livingplace: livingplace.split('-'),
-      birthplace: birthplace.split('-'),
-      device: device,
-      sex: sex,
-      sex_orientation: sex_orientation,
-      emotional_status: emotional_status,
-      education: education,
-      profession: profession.split('-'),
-      income: income,
-      personality: personality,
-      interest: interest,
-      email_contract: email_contract,
-      mobile_phone: mobile_phone,
-      wechat: wechat,
-      ali_pay: ali_pay
-    }
+    if sex
+      time = birthday.to_datetime
+      {
+        name: username,
+        birthday: [time.year, time.month, time.day],
+        livingplace: livingplace.split('-'),
+        birthplace: birthplace.split('-'),
+        device: device,
+        sex: sex,
+        orientation: sex_orientation,
+        emotion: emotional_status,
+        education: education,
+        profession: profession.split('-'),
+        income: income,
+        personality: personality,
+        interest: interest,
+        email: email_contract,
+        cellphone: mobile_phone,
+      }
+    else
+      {
+        device: device
+      }
+    end
   end
 end

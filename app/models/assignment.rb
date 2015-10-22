@@ -99,7 +99,7 @@ class Assignment < ActiveRecord::Base
                                     project_id: project.id,
                                     assignment_id: id,
                                     credits: project.credit || 0,
-                                    bonus_credits: project.basic_bonus)
+                                    bonus_credits: project.basic_bonus || 0)
 
           if project.beginner # 新手任务
               record.rating_type = 'new'

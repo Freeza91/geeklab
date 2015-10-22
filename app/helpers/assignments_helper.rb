@@ -46,7 +46,7 @@ module AssignmentsHelper
 
   def showBonus(credit_record)
     if credit_record && credit_record.used
-      credit_record.bonus_credits * credit_record.rating
+      (credit_record.bonus_credits.to_i) * (credit_record.rating.to_i)
     else
       '评分奖励'
     end

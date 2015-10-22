@@ -26,8 +26,8 @@ class Assignment < ActiveRecord::Base
       not_expired.ing
     end
 
-    def take_part_done
-      not_expired.done + take_part_ing.expired
+    def take_part_expired
+      ing.expired
     end
 
     def new_tasks

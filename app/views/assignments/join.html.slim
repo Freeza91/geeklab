@@ -123,7 +123,7 @@ main role="main" class="#{isAssignmentEmpty(@assignments_ing)}"
                     span.number
                       = assignment.project.credit
                     //- unless assignment.project.beginner
-                    - if !assignment.project.beginner && !is_old_assignment(assignment.project..created_at)
+                    - if !assignment.project.beginner && !is_old_assignment(assignment.project.created_at)
                       span
                         | &nbsp+&nbsp
                       span.extra

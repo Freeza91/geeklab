@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151012075320) do
+ActiveRecord::Schema.define(version: 20151022090855) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -202,7 +202,7 @@ ActiveRecord::Schema.define(version: 20151012075320) do
     t.datetime "updated_at"
     t.datetime "last_view_time",         default: '2015-05-21 11:37:35'
     t.integer  "credits",                default: 0
-    t.datetime "approved_time",          default: '2015-07-28 18:03:00'
+    t.datetime "approved_time",          default: '2015-07-31 11:54:50'
     t.integer  "admin",                  default: 0
     t.datetime "last_login"
     t.boolean  "limit_user",             default: false

@@ -26,8 +26,8 @@ class Assignment < ActiveRecord::Base
       not_expired.ing
     end
 
-    def take_part_done
-      not_expired.done + take_part_ing.expired
+    def take_part_expired
+      ing.expired
     end
 
     def new_tasks
@@ -99,24 +99,34 @@ class Assignment < ActiveRecord::Base
                                     project_id: project.id,
                                     assignment_id: id,
                                     credits: project.credit || 0,
-                                    bonus_credits: project.basic_bonus)
+                                    bonus_credits: project.basic_bonus || 0)
 
           if project.beginner # 新手任务
               record.rating_type = 'new'
               record.used = true
-              num = tester.try(:credits).to_i + project.try(:credit).to_i
-              record.save && tester.update_column(:credits, num)
+              credits = tester.credits || 0
+              project_credit = project.credit || 0
+              credits += project_credit
+
+              record.save && tester.update_column(:credits, credits)
           else # 不是新手任务
+
+            # 基础分累加
+            credits = tester.credits || 0
+            project_credit = project.credit || 0
+            credits += project_credit
+
             if rating_from_pm #项目经理有评分
               record.rating = rating_from_pm.to_i
               record.rating_type = 'pm'
               record.used = true
 
-              credits = tester.credits + project.credit
               bonus_credits = rating_from_pm * project.basic_bonus
 
               record.save && tester.update_column(:credits, credits + bonus_credits)
             else
+              # 累加基础分
+              tester.update_column(:credits, credits)
               # 设置过期自动评分
               AddBonusCreditJob.set(wait_until: project.expired_at || Time.now).perform_later(id, tester.id)
             end

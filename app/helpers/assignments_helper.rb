@@ -46,10 +46,40 @@ module AssignmentsHelper
 
   def showBonus(credit_record)
     if credit_record && credit_record.used
-      credit_record.bonus_credits * credit_record.rating
+      (credit_record.bonus_credits.to_i) * (credit_record.rating.to_i)
     else
       '评分奖励'
     end
+  end
+
+  def is_old_assignment(create_time)
+    create_time < Date.new(2015, 10, 23)
+  end
+
+  def get_device_iconname(device)
+    p device
+    icon_name = {
+      'iPhone': 'iphone',
+      'iPad': 'ipad',
+      'Android Phone': 'aphone',
+      'Android Pad': 'apad'
+    }
+    icon_name[device.to_sym]
+  end
+
+  def get_interest_iconname(interest)
+    p interest
+    icon_name = {
+      '旅游': 'travel',
+      '健身': 'fitness',
+      '音乐': 'music',
+      '电影': 'movie',
+      '二次元': 'comic',
+      '看书': 'read',
+      '星座': 'sign',
+      '足球': 'soccer'
+    }
+    icon_name[interest.to_sym]
   end
 
 end

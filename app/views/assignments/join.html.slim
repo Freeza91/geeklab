@@ -62,7 +62,8 @@ main role="main" class="#{isAssignmentEmpty(@assignments_ing)}"
                       i.icon-inner.icon-score-old
                     span.number
                       = assignment.project.credit
-                    - unless assignment.project.beginner
+                    //- unless assignment.project.beginner
+                    - if !assignment.project.beginner && !is_old_assignment(assignment.project.created_at)
                       span
                         | &nbsp+&nbsp
                       span.extra
@@ -121,7 +122,8 @@ main role="main" class="#{isAssignmentEmpty(@assignments_ing)}"
                       i.icon-inner.icon-score-old
                     span.number
                       = assignment.project.credit
-                    - unless assignment.project.beginner
+                    //- unless assignment.project.beginner
+                    - if !assignment.project.beginner && !is_old_assignment(assignment.project.created_at)
                       span
                         | &nbsp+&nbsp
                       span.extra

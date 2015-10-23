@@ -1,10 +1,35 @@
 @import ../helpers/variables
+@import ../helpers/mixin
 
 .form-control
   border-radius: 0
 label
   color: #717071
   font-size: 12px
+
+// form field
+.fieldset-content
+  max-width: 600px
+  margin-left: auto
+  margin-right: auto
+.field-name
+  position: absolute
+  left: 0
+  width: 60px
+  height: 20px
+  line-height: 20px
+  color: $dark-blue
+  font-size: 1rem
+  text-align: right
+.field-name.top
+  top: 8px
+.field-name.middle
+  top: 50%
+  margin-top: -10px
+.field-content
+  padding-left: 80px
+
+
 
 .has-error
   .form-control
@@ -13,27 +38,60 @@ input[type='checkbox']
   margin-top: 2px
 
 // checkbox-inline
+.checkbox-default,
+.radio-default
+  margin-bottom: 0
+  padding-left: 0
+  cursor: pointer
+  vertical-align: middle
 .checkbox-default
-  [type="checkbox"]
-    display: none
-  [type="checkbox"] + span
-    display: inline-block
-    width: 100px
-    height: 30px
-    padding-left: 0
-    background-color: #dadada
-    line-height: 30px
-    font-size: 14px
-    color: #313131
-    text-align: center
-    transition: all .3s ease
-  [type="checkbox"]:checked + span
-    background-color: #16a0c6
-    color: #fff
+  padding-right: 25px
+.radio-default
+  padding-right: 20px
+.checkbox-default.need-padding-bottom,
+.radio-default.need-padding-bottom
+  padding-bottom: 20px
+.checkbox-default [type="checkbox"],
+.radio-default [type="radio"]
+  display: none
+.checkbox-default [type="checkbox"] + span,
+.radio-default [type="radio"] + span
+  display: inline-block
+  width: 100px
+  height: 30px
+  padding-left: 0
+  background-color: #fff
+  border: 1px solid $dark-blue
+  line-height: 30px
+  font-size: 14px
+  font-weight: normal
+  color: #313131
+  text-align: center
+  transition: all .3s ease
+.checkbox-default [type="checkbox"] + span:hover,
+.radio-default [type="radio"] + span:hover
+  border-color: $blue
+.checkbox-default [type="checkbox"]:checked + span,
+.radio-default [type="radio"]:checked + span
+  background-color: $blue
+  color: #fff
+
+.checkbox-rounded [type="checkbox"] + span,
+.radio-rounded [type="radio"] + span
+  width: 140px
+  height: 38px
+  +border-radius(19px)
+  line-height: 38px
+.checkbox-with-icon [type="checkbox"] + span,
+.radio-with-icon [type="radio"] + span
+  width: 80px
+  height: 80px
+  +border-radius(50%)
 
 .form
   margin-bottom: 50px
   .form-field
+    position: relative
     margin-bottom: 15px
     //position: relative
     text-align: left
@@ -84,16 +142,22 @@ input[type='checkbox']
     margin-bottom: 7px
   .form-hint.error
     color: #e40909
-  .with-hint-text
-    position: relative
-  .hint-text
+  .hint-text,
+  .field-warn
     position: absolute
+    background-color: $warn-red
+    color: #fff
+    font-size: .8rem
+    font-weight: bold
+    padding: 3px 8px
+    +border-radius(15px)
+  .hint-text
     right: 8px
     top: 8px
-    background-color: #f00
-    color: #fff
-    padding: 0 2px
-    border-radius: 6px
+  .field-warn
+    top: 50%
+    right: 0
+    margin-top: -.5rem
   #code .hint-text
     right: 51%
     border-top-right-radius: 0

@@ -906,6 +906,12 @@ $(function () {
       result = false;
     }
 
+    if(!result) {
+      $('html, body').animate({
+        scrollTop: 100
+      }, 800);
+    }
+
     return result;
   }
 

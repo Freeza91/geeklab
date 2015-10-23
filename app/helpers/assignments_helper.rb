@@ -52,6 +52,10 @@ module AssignmentsHelper
     end
   end
 
+  def is_old_assignment(create_time)
+    create_time < Date.new(2015, 10, 23)
+  end
+
   def get_device_iconname(device)
     p device
     icon_name = {

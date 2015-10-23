@@ -11,7 +11,7 @@ class Users::RegistrationsController < ApplicationController
     json = { status: 0, code: 1, msg: [], url: ''}
     email = params[:user][:email].to_s.downcase
     if limit_ip?("register:#{email}")
-      json[:code], json[:msg] = -1, "休息会在注册吧"
+      json[:code], json[:msg] = -1, "休息会再注册吧"
       return render json: json
     end
     value = $redis.get(email) if $redis.exists email

@@ -146,6 +146,11 @@ $(function () {
             vm.error.regist = true;
             vm.error.code = true;
           break;
+          case -1:
+            // 注册频率限制
+            vm.hint.regist='操作太频繁,请稍后再试';
+            vm.error.regist = true;
+          break;
         }
       }
     })

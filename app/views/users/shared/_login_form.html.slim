@@ -1,7 +1,7 @@
 form.form
   .form-field.with-hint-text v-class="error.email ? 'error': ''"
     input.form-input type="text" name="email" placeholder="邮箱" v-model="email" v-on="focus: error.email = false, blur: checkEmailFormat(this)"
-    span.hint-text v-show="error.email"
+    span.hint-text v-show="error.email && !error.email"
       | {{hint.email}}
   .form-field.with-hint-text v-class="error.password ? 'error': ''"
     input.form-input type="password" name="password" placeholder="密码" v-model="password" v-on="focus: error.password = false"

@@ -1,0 +1,15 @@
+= nested_form_for @good, url: create_or_update_dashboard_good_skus_path, method: :put do |f|
+  .ui.celled.grid
+    = f.fields_for :skus do |sku_form|
+      .row
+        .sixteen.wide.column
+          = sku_form.label '库存数量：'
+          = sku_form.text_field :num
+        .two.wide.column
+          = sku_form.link_to_remove '删除'
+    .row
+      .sixteen.wide.column
+        = f.link_to_add '添加', :skus
+  .row
+    .sixteen.wide.column
+      = f.submit '提交'

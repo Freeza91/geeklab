@@ -29,11 +29,11 @@ $(function () {
   }
   sloganRotate();
 
-  $('#video-start').on('click', function () {
+  $('#video-start .icon-play').on('click', function () {
     $('[id^="cc_video"]').css({
       display: 'block'
     });
-    $(this).css({
+    $('#video-start').css({
       display: 'none'
     });
   });

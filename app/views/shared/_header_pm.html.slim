@@ -1,27 +1,26 @@
-header.header.navbar.navbar-static.clear-fix
-  .container
-    .navbar-header
-      a.top-logo href="#{pms_path}"
+header#header class=(current_user ? '' : 'no-logged')
+  .headers.clearfix
+    .logo
+      a.logo-text href="#{testers_path}"
         img src="http://7xjciz.com2.z0.glb.qiniucdn.com/geeklab.png"
-    .navbar-collapse.collapse
-      ul.nav.navbar-nav
+    ul.nav.navbar-nav.navbar-right.top-nav-right.login
+      li
+        button.btn.btn-line.blue.btn-rounded.btn-s.js-change-role data-href="#{testers_path}"
+          | 兼职体验产品
+      - if current_user
+        li.dropdown
+          a role='button'
+            =current_user.email
+          ul.dropdown-menu role='menu'
+            li
+              a href=assignments_path
+                .profile-icon.home
+                | 任务列表
+            li
+              a rel="noflow" data-method="delete" href=users_session_path(current_user.to_params)
+                .profile-icon.poweroff
+                | 退出登录
+      - else
         li
-          button.btn.btn-blue.js-change-role data-href="#{testers_path}"
-              | 兼职体验产品
-        - if current_user
-          ul.nav.navbar-nav.login
-            li.dropdown
-              a role='button'
-                =current_user.email
-              ul.dropdown-menu role='menu'
-                li
-                  a href=projects_path
-                    i.fa.fa-th-large
-                    | 任务列表
-                li
-                  a rel="noflow" data-method="delete" href=users_session_path(current_user.to_params)
-                    i.fa.fa-power-off
-                    | 退出登录
-        - else
-          button.btn.btn-blue.login data-toggle='modal' data-target='#sign'
+          button.btn.btn-flat.blue.btn-rounded.btn-s data-toggle='modal' data-target='#sign'
             | 登录/注册

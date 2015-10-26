@@ -5,6 +5,10 @@ class Dashboard::BaseController < ApplicationController
 
   layout "dashboard/layouts/dashboard_application"
 
+  rescue_from CanCan::AccessDenied do |exception|
+    render '/errors/access_denied', layout: 'application'
+  end
+
   def index
     render 'dashboard/index'
   end

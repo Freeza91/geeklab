@@ -107,7 +107,9 @@
   mount RailsAdmin::Engine => '/manage', as: 'rails_admin'
   namespace :dashboard, path: '/admin' do
     root 'charts#index'
-    resources :charts
+    resources :charts, only: [] do
+      get 'select', to: 'charts#select', on: :collection
+    end
     resources :videos, controller: :assignments
     resources :users
     resources :projects do
@@ -117,7 +119,11 @@
       end
     end
     resources :goods do
-      resources :skus
+      resources :skus do
+        collection do
+          put 'create_or_update', to: 'skus#create_or_update'
+        end
+      end
     end
     resources :orders, only: [:index, :edit, :destroy] do
       member do

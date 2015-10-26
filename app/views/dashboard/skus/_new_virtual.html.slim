@@ -1,0 +1,19 @@
+= nested_form_for @good, url: create_or_update_dashboard_good_skus_path, method: :put do |f|
+  .ui.celled.grid
+    = f.fields_for :skus do |sku_form|
+      .row
+        .six.wide.column
+          = sku_form.label '账号：'
+          = sku_form.text_field :account
+        .six.wide.column
+          = sku_form.label '密码：'
+          = sku_form.text_field :secret
+          = sku_form.hidden_field :num, value: 1
+        .two.wide.column
+          = sku_form.link_to_remove '删除'
+    .row
+      .sixteen.wide.column
+        = f.link_to_add '添加', :skus
+  .row
+    .sixteen.wide.column
+      = f.submit '提交'

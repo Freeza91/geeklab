@@ -18,7 +18,7 @@ module SkuVartualAttr
   end
 
   def combine
-    self.addition = @account.to_s + '&' + @secret.to_s
+    addition || self.addition = @account.to_s + '&' + @secret.to_s
   end
 
 end

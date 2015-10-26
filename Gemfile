@@ -51,7 +51,7 @@ group :development, :test do
   gem 'web-console', '~> 2.0'
   gem 'spring'
 
-  gem 'mina'
+  gem 'mina', git: "https://github.com/Freeza91/mina.git"
   gem 'mina-sidekiq'
   gem 'mina-unicorn', :require => false
 

@@ -103,7 +103,7 @@ $(function () {
   //}
 
   function sloganRotate () {
-    var item = $('#slogan .dynamic b'),
+    var item = $('.slogan .dynamic b'),
         index = 0;
     rotateInterval = setInterval(function () {
       var curInnerItem = $(item[index]).find('i'),
@@ -141,7 +141,9 @@ $(function () {
 
   // 首屏箭头
   $('.icon-arrow-down').on('click', function () {
-    $(window).scrollTop(760);
+    $('html, body').animate({
+      scrollTop: 760
+    }, 800);
   });
 
 });

@@ -1,44 +1,49 @@
 main role='main'
-  section.banner.banner_pm.content-box
-    .container
-      p.wtf 如何给用户提供更好的产品体验？
-      .topic
-        p
-          i.fa.fa-check Web
-          i.fa.fa-check App
-          i.fa.fa-check Everything
-          i ...
-        - if current_user
-          a.btn.btn-blue href=('/projects')
-            | 试一下
-        - else
-          button.btn.btn-blue data-toggle='modal' data-target='#sign'
-            | 试一下
-      .desc
-        .item
-          p &quot为什么我点击按钮不能跳转呢，难道这个不是按钮吗？&quot
-  section.content-box
-    .container
-      h2.section-title 怎么玩
-      .row
-        .step.col-xs-12.col-sm-12.col-md-4.col-lg-4.
-          .step-icon
-            i.fa.fa-users.fa-5x
-          .content
-            p.step-title  选择目标用户
-            p.step-content 我们会从海量的用户中为您筛选出
-            p.step-content 符合您要求的目标用户
-        .step.col-xs-12.col-sm-12.col-md-4.col-lg-4
-          .step-icon
-            i.fa.fa-list-ol.fa-5x
-          .content
-            p.step-title 设置测试任务
-            p.step-content 从测试的目的出发设计
-            p.step-content 围绕用户使用目标设计情景和任务
-        .step.col-xs-12.col-sm-12.col-md-4.col-lg-4
-          .step-icon
-            i.fa.fa-film.fa-5x
-          .content
-            p.step-title 观看测试视频
-            p.step-content 从视频中发现用户在使用产品中
-            p.step-content 遇到问题他们是怎么想和做的
+  section#pm-section-1
+    .slogan
+      p.item.static
+        | 观看产品测试视频
+      p.item.dynamic
+        span
+          | 提高
+        span#slogan-dynamic-text-wrap
+          b
+            i.in W
+            i.in e
+            i.in b
+          b
+            i.out A
+            i.out p
+            i.out p
+        span
+          | 体验
+    .icon-arrow-down
+  section#pm-section-2
+    h2.pm-index-title
+      | 选用户 & 发任务
+    p.pm-index-content
+      | 从各种特征中选择适合你的目标用户
+    p.pm-index-content
+      | 设置你希望用户在产品中体验的任务
+    img src=image_path("bg/pm-section-2.png")
+  section#pm-section-3
+    h2.pm-index-title
+      | 看视频 & 得反馈
+    p.pm-index-content
+      | 观看用户录制的产品测试视频
+    p.pm-index-content
+      span
+        | 分析视频
+      span
+        | 优化产品
+      span
+        | 提高用户体验
+    - if current_user
+      a.btn.btn-flat.btn-rounded.btn-g#start href="#{projects_path}"
+        | 试一下
+    - else
+      button.btn.btn-flat.btn-rounded.btn-g#start data-toggle='modal' data-target='#sign'
+        | 试一下
+    .player-area
+      script src="http://p.bokecc.com/player?vid=9EDEB68F2F20428F9C33DC5901307461&siteid=99F117B348066991&autoStart=true&width=1120&height=600&playerid=AB64ED27A1261F77&playertype=1" type="text/javascript"
+      .play.icon-play#video-start

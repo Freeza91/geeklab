@@ -13,7 +13,7 @@ header#header class=(current_user ? '' : 'no-logged')
             =current_user.email
           ul.dropdown-menu role='menu'
             li
-              a href=assignments_path
+              a href="#{projects_path}"
                 .profile-icon.home
                 | 任务列表
             li

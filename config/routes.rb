@@ -107,7 +107,9 @@
   mount RailsAdmin::Engine => '/manage', as: 'rails_admin'
   namespace :dashboard, path: '/admin' do
     root 'charts#index'
-    resources :charts
+    resources :charts, only: [] do
+      get 'select', to: 'charts#select', on: :collection
+    end
     resources :videos, controller: :assignments
     resources :users
     resources :projects do

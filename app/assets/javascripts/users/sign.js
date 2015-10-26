@@ -1,4 +1,4 @@
-$(function () {
+(function () {
 
   // 初始化登录框
   if($('#sign').length > 0) {
@@ -129,28 +129,29 @@ $(function () {
     })
     .done(function (data) {
       if(data.status === 0){
-        switch(data.code) {
-          case 1:
-            // 注册成功
-            location.href = "/assignments";
-          break;
-          case 2:
-            // 邮箱已被注册
-            vm.hint.regist='邮箱已被注册，请重新输入';
-            vm.error.regist = true;
-            vm.error.email = true;
-          break;
-          case 3:
-            // 验证码错误
-            vm.hint.regist='验证码错误或过期';
-            vm.error.regist = true;
-            vm.error.code = true;
-          break;
-          case -1:
-            // 注册频率限制
-            vm.hint.regist='操作太频繁,请稍后再试';
-            vm.error.regist = true;
-          break;
+        if(data.code === 1) {
+          // 注册成功
+          location.href = "/assignments";
+        } else {
+          switch(data.code) {
+            case 2:
+              // 邮箱已被注册
+              vm.hint.regist='邮箱已被注册，请重新输入';
+              vm.error.regist = true;
+              vm.error.email = true;
+            break;
+            case 3:
+              // 验证码错误
+              vm.hint.regist='验证码错误或过期';
+              vm.error.regist = true;
+              vm.error.code = true;
+            break;
+            case -1:
+              // 注册频率限制
+              vm.hint.regist='操作太频繁,请稍后再试';
+              vm.error.regist = true;
+            break;
+          }
         }
       }
     })
@@ -309,3 +310,4 @@ $(function () {
     }
   }
 });
+$(function () {

@@ -1,4 +1,4 @@
-(function () {
+$(function () {
 
   // 初始化登录框
   if($('#sign').length > 0) {
@@ -310,4 +310,3 @@
     }
   }
 });
-$(function () {

@@ -15,7 +15,7 @@ class Sku < ActiveRecord::Base
   end
 
   def inc_good_stock
-    inc_num = num - num_was.to_i
+    inc_num = num
     IncGoodStockJob.perform_later(good_id, inc_num)
   end
 

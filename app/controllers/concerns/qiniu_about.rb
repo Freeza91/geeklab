@@ -185,6 +185,9 @@ private
       callbackUrl: callbackUrl,
       callbackBody: "auth_token=#{auth_token}&key_name=#{key_name}",
       deadline: 1.days.from_now.to_i,
+      persistentPipeline: 'transfervideos',
+      fsizeMin: 524288,
+      fsizeLimit: 3221225472,
       persistentOps: "avthumb/mp4/stripmeta/1/rotate/auto/vb/512k/s/800x480/autoscale/1/wmImage/" + qiniu_encode("#{Settings.water_picture}") + "/wmGravity/SouthWest" + "|saveas/" + qiniu_encode("#{Settings.qiniu_bucket}:copy-#{key_name}") ,
       persistentNotifyUrl: persistentNotifyUrl
     }

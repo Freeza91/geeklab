@@ -4,6 +4,7 @@ class Dashboard::GoodsController < Dashboard::BaseController
 
   def index
     @goods = Good.order('updated_at desc').page(params[:page]).per(10)
+    @q = Good.ransack(params[:q])
   end
 
   def new
@@ -43,6 +44,15 @@ class Dashboard::GoodsController < Dashboard::BaseController
     @good = Good.find params[:id]
     @good && @good.destroy
     redirect_to dashboard_goods_path
+  end
+
+  def search
+    # it should be get http
+    @goods = Good.ransack(params[:q])
+                 .result.page(params[:page]).per(1000)
+    @q = Good.ransack(params[:q])
+
+    render :index
   end
 
 private

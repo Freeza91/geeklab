@@ -4,10 +4,14 @@ class Dashboard::UsersController < Dashboard::BaseController
 
   def index
     @users = User.order('id desc').page(params[:page]).per(10)
+    @q = User.ransack(params[:q])
   end
 
   def edit
     @user = User.find params[:id]
+    if @user && tester = @user.to_tester
+      @infor = tester.tester_infor
+    end
   end
 
   def update
@@ -24,6 +28,14 @@ class Dashboard::UsersController < Dashboard::BaseController
     @user && @user.destroy
 
     redirect_to dashboard_users_path
+  end
+
+  def search
+    # it should be get http
+    @users = User.ransack(params[:q])
+                 .result.page(params[:page]).per(1000)
+    @q = User.ransack(params[:q])
+    render :index
   end
 
 private

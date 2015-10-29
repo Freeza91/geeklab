@@ -4,6 +4,7 @@ class Dashboard::AssignmentsController < Dashboard::BaseController
 
   def index
     @assignments = Assignment.order('id desc').page(params[:page]).per(10)
+    @q = Assignment.ransack(params[:q])
   end
 
   def edit
@@ -45,6 +46,14 @@ class Dashboard::AssignmentsController < Dashboard::BaseController
     @assignment && @assignment.destroy
 
     redirect_to dashboard_videos_path
+  end
+
+  def search
+    # it should be get http
+    @q = Assignment.ransack(params[:q])
+    @assignments = Assignment.ransack(params[:q])
+                       .result.page(params[:page]).per(1000)
+    render :index
   end
 
 private

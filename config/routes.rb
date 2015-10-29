@@ -35,7 +35,6 @@
     end
   end
 
-
   resources :pms
   resources :projects do
     collection do
@@ -110,15 +109,21 @@
     resources :charts, only: [] do
       get 'select', to: 'charts#select', on: :collection
     end
-    resources :videos, controller: :assignments
-    resources :users
+    resources :videos, controller: :assignments do
+      post 'search', to: 'assignments#search', on: :collection
+    end
+    resources :users do
+      post 'search', to: 'users#search', on: :collection
+    end
     resources :projects do
       member do
         get 'select'
         post 'deliver'
       end
+      post 'search', to: 'projects#search', on: :collection
     end
     resources :goods do
+      post 'search', to: "goods#search", on: :collection
       resources :skus do
         collection do
           put 'create_or_update', to: 'skus#create_or_update'
@@ -126,6 +131,7 @@
       end
     end
     resources :orders, only: [:index, :edit, :destroy] do
+      post 'search', to: "orders#search", on: :collection
       member do
         get 'virtual'
         get 'real'

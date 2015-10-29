@@ -1,3 +1,8 @@
+ui.grid
+  = search_form_for @q, url: search_dashboard_projects_path, method: :post do |f|
+    div
+      = f.search_field :name_or_pm_email_cont, placeholder: '任务名或者产品经理邮箱'
+      = f.submit "搜索"
 div
   table.ui.celled.table
     thead
@@ -18,7 +23,8 @@ div
             a(href=edit_dashboard_project_path(project.id) target='_blank')
               = project.name
           td
-            | #{project.pm.try(:email)}
+            a(href=edit_dashboard_project_path(project.pm) target='_blank')
+              = project.pm.email
           td
             | #{project.demand}
           td

@@ -43,6 +43,7 @@ gem 'font-awesome-rails'
 gem 'newrelic_rpm'
 
 gem 'rails_admin', :git => 'git://github.com/sferik/rails_admin.git'
+gem 'ransack'
 
 group :development, :test do
   gem 'byebug'

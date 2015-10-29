@@ -4,6 +4,7 @@ class Dashboard::ProjectsController < Dashboard::BaseController
 
   def index
     @projects = Project.order('id desc').page(params[:page]).per(10)
+    @q = Project.ransack(params[:q])
   end
 
   def edit
@@ -85,6 +86,15 @@ class Dashboard::ProjectsController < Dashboard::BaseController
     @project && @project.destroy
 
     redirect_to dashboard_projects_path
+  end
+
+  def search
+    # it should be get http
+    @projects = Project.ransack(params[:q])
+                    .result.page(params[:page]).per(1000)
+    @q = Project.ransack(params[:q])
+
+    render :index
   end
 
 private

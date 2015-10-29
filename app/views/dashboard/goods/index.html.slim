@@ -1,3 +1,8 @@
+ui.grid
+  = search_form_for @q, url: search_dashboard_goods_path, method: :post do |f|
+    div
+      = f.search_field :name_cont, placeholder: '商品名字'
+      = f.submit "搜索"
 div
   table.ui.celled.table
     thead

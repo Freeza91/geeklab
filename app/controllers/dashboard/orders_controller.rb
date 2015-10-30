@@ -4,6 +4,7 @@ class Dashboard::OrdersController  < Dashboard::BaseController
 
   def index
     @orders = Order.includes(:good).page(params[:page]).per(10)
+    @q = Order.ransack(params[:q])
   end
 
   def edit
@@ -22,6 +23,14 @@ class Dashboard::OrdersController  < Dashboard::BaseController
     @orders.destroy
 
     redirect_to dashboard_orders_path
+  end
+
+  def search
+    @orders = Order.ransack(params[:q])
+                   .result.page(params[:page]).per(10)
+    @q = Order.ransack(params[:q])
+
+    render :index
   end
 
 end

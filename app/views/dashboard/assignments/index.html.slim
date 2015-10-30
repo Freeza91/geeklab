@@ -1,3 +1,9 @@
+ui.grid
+  = search_form_for @q, url: search_dashboard_videos_path, method: :get do |f|
+    div
+      = f.search_field :project_name_or_project_pm_email_or_tester_email_cont,
+                       placeholder: '任务名或者体验师邮箱或者产品经理邮箱'
+      = f.submit "搜索"
 div
   table.ui.celled.table
     thead
@@ -11,7 +17,7 @@ div
         th 操作
     tbody
       - @assignments.each do |assignment|
-        - if assignment.project
+        - if assignment.project && assignment.tester && assignment.project.pm
           tr
             td
               | #{assignment.id}
@@ -19,9 +25,11 @@ div
               a(href=edit_dashboard_project_path(assignment.project) target='_blank')
                 = assignment.project.name
             td
-              | #{assignment.tester.try(:email)}
+              a(href=edit_dashboard_user_path(assignment.tester) target='_blank')
+                = assignment.tester.email
             td
-              | #{assignment.project.pm.try(:email)}
+              a(href=edit_dashboard_user_path(assignment.project.pm) target='_blank')
+                = assignment.project.pm.email
             td
               = get_assignment_status_info(assignment.status)
             td

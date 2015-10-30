@@ -8,9 +8,11 @@ class Dashboard::SkusController < Dashboard::BaseController
 
   def create_or_update
     @good = Good.where(id: params[:good_id]).first
-    @good && @good.update_attributes(goos_skus_params)
-
-    render :new
+    if @good && @good.update_attributes(goos_skus_params)
+      redirect_to edit_dashboard_good_path(@good)
+    else
+      render :new
+    end
   end
 
   def update

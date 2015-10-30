@@ -8,7 +8,7 @@
         .six.wide.column
           = sku_form.label '密码：'
           = sku_form.text_field :secret
-          = sku_form.hidden_field :num, value: 1
+          = sku_form.hidden_field :num, value: @sku.num
         .two.wide.column
           = sku_form.link_to_remove '删除'
     .row

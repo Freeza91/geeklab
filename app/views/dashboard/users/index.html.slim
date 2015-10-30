@@ -1,3 +1,9 @@
+ui.grid
+  = search_form_for @q, url: search_dashboard_users_path, method: :get do |f|
+    div
+      = f.search_field :email_cont, placeholder: '邮箱'
+      = f.submit "搜索"
+
 div
   table.ui.celled.table
     thead
@@ -16,7 +22,7 @@ div
           td
             | #{user.id}
           td
-            = user.email
+            = link_to user.email, edit_dashboard_user_path(user)
           td
             - tester = user.to_tester
             - if tester && info = tester.tester_infor

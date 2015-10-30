@@ -1,31 +1,63 @@
-div
-  span 用户邮箱： #{@user.email}
-div
-  - if @user.to_tester && @user.to_tester.tester_infor
-    span 用户昵称: #{@user.to_tester.tester_infor.try(:username)}
+.content-block
+  div
+    span 用户邮箱： #{@user.email}
+  div
+    - if @user.to_tester && @user.to_tester.tester_infor
+      span 用户昵称: #{@user.to_tester.tester_infor.try(:username)}
+    - else
+      span 用户昵称: 暂无
+
+  = form_for [:dashboard, @user] do |f|
+    div
+      = f.label '是否为体验师:'
+      = f.label '是'
+      = f.radio_button :approved, true, checked: @user.approved
+      = f.label '否'
+      = f.radio_button :approved, false, checked: !@user.approved
+    div
+      = f.label '是否为管理员:'
+      = f.label '是'
+      = f.radio_button :admin, 1, checked: @user.admin == 1
+      = f.label '否'
+      = f.radio_button :admin, 0, checked: @user.admin == 0
+    div
+      = f.label '完成任务数量：'
+      - tester = @user.to_tester
+      - if tester && num = tester.assignments.done.size
+        = f.label "#{num}"
+      - else
+        = f.label '0'
+    div
+      = f.label '发布任务数量：'
+      - pm = @user.to_pm
+      - if pm && num = pm.projects.try(:size)
+        = f.label "#{num}"
+      - else
+        = f.label '0'
+    div
+      = f.label '积分:'
+      = f.text_field :credits, value: @user.credits
+    div
+      = f.label '是否禁用'
+      = f.radio_button :limit_user, '是', value: true, checked: true
+      = f.radio_button :limit_user, '否', value: false
+    div
+      = f.submit '保存'
+
+.content-block
+  - if @infor && @infor.already_finish
+    .mobile_phone 手机： #{@infor.mobile_phone}
+    .sex 性别： #{@infor.sex}
+    .birthday 生日： #{DateTime.parse(@infor.birthday).strftime("%F")}
+    .birthplace 出生地： #{@infor.birthplace}
+    .livingplace 居住地： #{@infor.livingplace}
+    .device 设备： #{@infor.device.join("， ")}
+    .emotional_status 情感状态： #{@infor.emotional_status}
+    .sex_orientation 性取向： #{@infor.sex_orientation}
+    .education 教育程度： #{@infor.education}
+    .profession 职业： #{@infor.profession}
+    .income 收入： #{@infor.income} 万
+    .personality 性格： #{@infor.personality.join('， ')}
+    .interest 兴趣爱好： #{@infor.interest.join('， ')}
   - else
-    span 用户昵称: 暂无
-
-= form_for [:dashboard, @user] do |f|
-  div
-    = f.label '是否为体验师:'
-    = f.label '是'
-    = f.radio_button :approved, true, checked: @user.approved
-    = f.label '否'
-    = f.radio_button :approved, false, checked: !@user.approved
-  div
-    = f.label '是否为管理员:'
-    = f.label '是'
-    = f.radio_button :admin, 1, checked: @user.admin == 1
-    = f.label '否'
-    = f.radio_button :admin, 0, checked: @user.admin == 0
-  div
-    = f.label '积分:'
-    = f.text_field :credits, value: @user.credits
-  div
-    = f.label '是否禁用'
-    = f.radio_button :limit_user, '是', value: true, checked: true
-    = f.radio_button :limit_user, '否', value: false
-  div
-    = f.submit '保存'
-
+    | 用户暂无填写

@@ -1,3 +1,8 @@
+ui.grid
+  = search_form_for @q, url: search_dashboard_goods_path, method: :get do |f|
+    div
+      = f.search_field :name_cont, placeholder: '商品名字'
+      = f.submit "搜索"
 div
   table.ui.celled.table
     thead
@@ -5,8 +10,8 @@ div
         th ID
         th 商品名
         th 价格
-        th 创建时间
-        th 最近更新时间
+        th 销量
+        th 库存
         th 操作
     tbody
       - @goods.each do |good|
@@ -19,9 +24,9 @@ div
             td
               | #{good.cost}
             td
-              | #{good.created_at.strftime("%F %T")}
+              | #{good.stock}
             td
-              | #{good.updated_at.strftime("%F %T")}
+              | #{good.used_num}
             td
               = link_to("编辑", edit_dashboard_good_path(good))
               span |

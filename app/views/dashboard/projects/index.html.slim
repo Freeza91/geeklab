@@ -1,5 +1,5 @@
 ui.grid
-  = search_form_for @q, url: search_dashboard_projects_path, method: :post do |f|
+  = search_form_for @q, url: search_dashboard_projects_path, method: :get do |f|
     div
       = f.search_field :name_or_pm_email_cont, placeholder: '任务名或者产品经理邮箱'
       = f.submit "搜索"

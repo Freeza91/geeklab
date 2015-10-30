@@ -110,17 +110,17 @@
       get 'select', to: 'charts#select', on: :collection
     end
     resources :videos, controller: :assignments do
-      post 'search', to: 'assignments#search', on: :collection
+      get 'search', to: 'assignments#search', on: :collection
     end
     resources :users do
-      post 'search', to: 'users#search', on: :collection
+      get 'search', to: 'users#search', on: :collection
     end
     resources :projects do
+      get 'search', to: 'projects#search', on: :collection
       member do
         get 'select'
         post 'deliver'
       end
-      post 'search', to: 'projects#search', on: :collection
     end
     resources :goods do
       post 'search', to: "goods#search", on: :collection
@@ -131,7 +131,7 @@
       end
     end
     resources :orders, only: [:index, :edit, :destroy] do
-      post 'search', to: "orders#search", on: :collection
+      get 'search', to: "orders#search", on: :collection
       member do
         get 'virtual'
         get 'real'

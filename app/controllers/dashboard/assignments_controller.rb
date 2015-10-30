@@ -49,10 +49,9 @@ class Dashboard::AssignmentsController < Dashboard::BaseController
   end
 
   def search
-    # it should be get http
     @q = Assignment.ransack(params[:q])
     @assignments = Assignment.ransack(params[:q])
-                       .result.page(params[:page]).per(1000)
+                             .result.page(params[:page]).per(10)
     render :index
   end
 

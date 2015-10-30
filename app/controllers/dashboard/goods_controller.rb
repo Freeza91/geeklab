@@ -47,9 +47,8 @@ class Dashboard::GoodsController < Dashboard::BaseController
   end
 
   def search
-    # it should be get http
     @goods = Good.ransack(params[:q])
-                 .result.page(params[:page]).per(1000)
+                 .result.page(params[:page]).per(10)
     @q = Good.ransack(params[:q])
 
     render :index

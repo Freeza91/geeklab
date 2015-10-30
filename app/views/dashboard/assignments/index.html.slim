@@ -17,7 +17,7 @@ div
         th 操作
     tbody
       - @assignments.each do |assignment|
-        - if assignment.project
+        - if assignment.project && assignment.tester && assignment.project.pm
           tr
             td
               | #{assignment.id}

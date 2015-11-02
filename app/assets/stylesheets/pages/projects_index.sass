@@ -14,8 +14,22 @@
       margin-right: 5px
       vertical-align: top
       font-size: 1.5em
-.table-1
-  border: 3px solid #dadada
+.table-with-name-highlight
+  border: 2px solid $dark-blue
+  > tbody
+    > tr
+      border-color: $dark-blue
+      > td
+        border-color: $dark-blue
+        border-width: 2px
+        font-size: 1rem
+        color: $dark-blue
+      > td.name
+        width: 150px
+        background: $light-yellow
+.task-icon
+  width: 14px
+  margin-right: 10px
 
 .rable-for-project
 

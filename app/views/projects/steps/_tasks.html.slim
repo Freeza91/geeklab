@@ -22,11 +22,11 @@
     ul.sortable
       li v-repeat="tasks"
         .form-group v-class="has-error: !validated.step_3 && !content"
-          textarea.form-control rows="4" v-model="content" v-on="keyup: textareaLengthLimit($index, $event, 30)"
+          textarea.form-control rows="4" v-model="content" v-on="keyup: textareaLengthLimit($index, $event, 50)"
           p.js-len-control
             | 还可以输入
-            span.js-len-count v-class="content.length >= 25 ? 'warn' : ''"
-              | {{30 - content.length}}
+            span.js-len-count v-class="content.length >= 45 ? 'warn' : ''"
+              | {{50 - content.length}}
             | 字
         .handle
           .drag-handle
@@ -37,4 +37,4 @@
       i.fa.fa-plus style="font-size: 1.5em"
     p.task-limit v-show="tasksLimited"
       span
-        | 最多添加5个任务
+        | 最多添加8个任务

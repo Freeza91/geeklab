@@ -224,7 +224,7 @@ $(function () {
     user_feature_attributes.sex_orientation = getVmCheckboxArr(vmData.orientation);
     user_feature_attributes.interest = getVmCheckboxArr(vmData.interests);
 
- 
+
     var tasks_attributes = {};
     vmData.tasks.forEach(function (task, index) {
       if(task.content.length > 0) {
@@ -348,7 +348,7 @@ $(function () {
   }
   function addTask (event) {
     event.preventDefault();
-    if(vm.tasks.length < 5) {
+    if(vm.tasks.length < 8) {
       vm.tasks.push({
         content: ''
       });
@@ -415,7 +415,7 @@ $(function () {
       case 'email':
         var emailReg = /^[0-9a-zA-Z_-]+@([0-9a-zA-Z]+.)+[a-zA-Z]$/;
         result = emailReg.test(value);
-      break; 
+      break;
       case 'mobile_phone':
         var mobileReg = /^1[3|5|7|8][0-9]{9}$/;
         result = mobileReg.test(value);
@@ -423,7 +423,7 @@ $(function () {
     }
     return result;
   }
-  
+
   function textareaLengthLimit (modelName, event, lengthLimit) {
     var el = event.target;
     var value = el.value;

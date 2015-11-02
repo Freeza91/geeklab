@@ -94,11 +94,15 @@ private
     weeks << week if week
     days << month if month
 
-    json[:days], json[:weeks], json[:months] = days, weeks, months
+    json[:days], json[:weeks], json[:months] = parse_hash_arr(days), parse_hash_arr(weeks),  parse_hash_arr(months)
     json[:register_num], json[:approved_num], json[:finish_info_num] =
     register_num, finish_info_num, approved_num
 
     json
+  end
+
+  def parse_hash_arr(arr)
+    arr.collect {|a| a.values.first }
   end
 
 end

@@ -7,7 +7,7 @@ class AddBonusCreditJob < ActiveJob::Base
 
       record = CreditRecord.where(assignment_id: assignment_id, tester_id: tester_id).first
       unless record
-        project = assignment_id.project
+        project = assignment.project
         rating = assignment.rating_from_admin || 5
         basic_bonus = project.basic_bonus || 0
         bonus = rating * basic_bonus

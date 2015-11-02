@@ -1,3 +1,5 @@
+@import ../helpers/variables
+
 .projects_show,
 .projects_video,
 .projects_index
@@ -14,6 +16,8 @@
       font-size: 1.5em
 .table-1
   border: 3px solid #dadada
+
+.rable-for-project
 
 // 任务详情页视频视频列表
 .video-list
@@ -197,3 +201,26 @@
     font-size: 23px
     vertical-align: bottom
     margin-right: 5px
+
+
+// revision
+.project-item
+  background: #fff
+.project-video-list
+  .video-item
+    float: left
+    width: 20%
+    a
+      background: $dark-blue
+
+.switch
+  padding-top: 5px
+  padding-bottom: 5px
+  text-align: center
+  .fa-angle-up,
+  .fa-angle-down
+    font-size: 1.2rem
+    cursor: pointer
+  .fa-angle-up:hover,
+  .fa-angle-down:hover
+    color: $blue

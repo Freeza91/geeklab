@@ -358,11 +358,10 @@ $(function () {
   }
   function addTask (event) {
     event.preventDefault();
-    if(vm.tasks.length < 5) {
+    if(vm.tasks.length < 8) {
       vm.tasks.push({
         content: ''
       }); } else {
-      console.log('xxx');
       vm.tasksLimited = true;
       setTimeout(function () {
         vm.tasksLimited = false;
@@ -403,7 +402,7 @@ $(function () {
   function isCheck(item) {
     return item.checked;
   }
- 
+
   // init task sortable
   function initSortable () {
     $('.sortable').sortable({
@@ -422,7 +421,7 @@ $(function () {
 
   // 上传二维码
   function uploadQrcode (event) {
-    event.preventDefault(); 
+    event.preventDefault();
     $('[name="qrcode"]').click();
   }
 
@@ -432,7 +431,7 @@ $(function () {
       case 'email':
         var emailReg = /^[0-9a-zA-Z_-]+@([0-9a-zA-Z]+.)+[a-zA-Z]$/;
         result = emailReg.test(value);
-      break; 
+      break;
       case 'mobile_phone':
         var mobileReg = /^1[3|5|7|8][0-9]{9}$/;
         result = mobileReg.test(value);

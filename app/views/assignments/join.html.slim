@@ -45,7 +45,7 @@ main role="main" class="#{isAssignmentEmpty(@assignments_ing)}"
                       = get_assignment_status_info(assignment.status)
                       - if assignment.status == "not_accept"
                         i.fa.fa-question-circle
-                    - if assignment.status == "not_accept" && assignment.reasons.size > 0
+                    - if assignment.status == "not_accept" && assignment.reasons && assignment.reasons.size > 0
                       ol.comment
                         - assignment.reasons.each do |reason|
                           li
@@ -105,7 +105,7 @@ main role="main" class="#{isAssignmentEmpty(@assignments_ing)}"
                       - else
                         | 任务已过期
                         i.fa.fa-question-circle
-                    - if assignment.status != "success" && assignment.reasons.size > 0
+                    - if assignment.status != "success" && assignment.reasons && assignment.reasons.size > 0
                       ol.comment
                         - assignment.reasons.each do |reason|
                           li

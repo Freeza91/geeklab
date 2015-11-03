@@ -1,60 +1,215 @@
 main role="main"
   section.projects-list data-pm-id="#{@current_user.to_params}"
-    .container
-      = render partial: 'projects/shared/add'
-      .projects-wrp.clear-fix
-        - if @projects
-          - @projects.each_with_index do |project, index|
-            .card data-project-id="#{project.to_params}"
-              .inner
-                header
-                  h1.title
-                    a href=("/projects/" + "#{project.to_params}") target="_blank"
-                      = project.name
-                    p.status class=("status_" + "#{project.status}")
-                      i.fa.fa-exclamation-circle
-                      = get_project_status_info(project.get_status)
-                    - if project.status == "not_accept" && project.reasons && project.reasons.size > 0
-                      ol.comment
-                        - project.reasons.each do |reason|
-                          li
-                            = reason
-                    - if project.status != "underway"
-                      span.close.delete-project
-                        | &times
-                .content
-                  .videos
+    //= render partial: 'projects/shared/add'
+    #project-list.project-list.clear-fix
+      .project-item
+        .item-header.clearfix
+          .title
+            .fa.fa-phone
+            | 测试任务
+          .right-operation
+            .timer
+              | 距离任务结束:
+              span.day
+                | 3
+              | 天
+              span.hour
+                | 10
+              | 时
+              span.minute
+                | 13
+              | 分
+            .operation
+              .fa.fa-trash
+            .project-status.wait-check
+              | 正在审核
+            .project-status.underway
+              | 正在审核
+            .project-status.not_accept
+              | 正在审核
+              .fa.fa-question.comment-reminder
+              .project-comment
+                ol
+                  li
+                    | comment1jmdshfh
+                  li
+                    | comment2
+                  li
+                    | comment3
+                .triangle
+            .project-status.finish
+              | 正在审核
+            .project-status.failed
+              | 正在审核
+        .item-body
+          .nav-subtabs
+            ul role="tablist"
+              li
+                a.active href="#project-detail"
+                  | 进行中
+              li
+                a href="#project-detail"
+                  | 进行中
+              li
+                a href="#project-video"
+                  | 已完成
+          .project-detail
+            table.table.table-with-name-highlight
+              colgroup
+                col width="15%"
+                col width="85%"
+              tbody
+                tr.website
+                  td.name
+                    | 网站地址
+                  td
+                    | ios
+                  tr
+                    td.name
+                      | 测试设备
+                    td
+                      | phone
+                  tr.requirement
+                    td.name
+                      | 系统要求
+                    td
+                      | 7.0及以上
+                  tr
+                    td.name
+                      | 产品简介
+                    td
+                      | 没有介绍
+            table.table.table-with-name-highlight
+              colgroup
+                col width="15%"
+                col width="35%"
+                col width="15%"
+                col width="35%"
+              tbody
+                tr
+                  td.name
+                    | 年龄范围
+                  td
+                    | 20 -30岁
+                  td.name
+                    | 教育程度
+                  td
+                    | 本科以上
+                tr
+                  td.name
+                    | 年收入
+                  td
+                    | 10
+                    | 万
+                  td.name
+                    | 情感状态
+                  td
+                    | 单身
+                tr
+                  td.name
+                    | 性别
+                  td
+                    | 男，女
+                  td.name
+                    | 性取向
+                  td
+                    | all
+                tr
+                  td.name
+                    | 城市级别
+                  td
+                    | 北上广
+                  td.name
+                    | 兴趣标签
+                  td
+                    | 无
+            table.table.table-with-name-highlight
+              colgroup
+                col width="15%"
+                col width="85%"
+              tbody
+                tr
+                  td.name
+                    | 测试场景
+                  td
+                    | situation
+                tr
+                  td.name
+                    | 任务详情
+                  td
                     ul
-                      - if @assignments[index].try(:size) > 0
-                        - @assignments[index].each do |assignment|
-                          li.col-md-4
-                            img src=("#{assignment.video}" + "?vframe/png/offset/0/w/480/h/200")
-                            a.available href=("/projects/" + "#{project.to_params}" + "/video/" + "#{assignment.to_params}") target="_blank"
-                              i.fa.fa-play-circle.fa-4x
-                            - if !assignment.is_read
-                              span.read-mark
-                      - (project.demand - @assignments[index].size).times
-                        li.col-md-4
-                          a href="javascript: void(0)"
-                            i.fa.fa-play-circle.fa-4x
-                  .progress-num
-                    span.done
-                      = @assignments[index].size
-                    span.total
-                      | /
-                      = project.demand
-                  - if project.get_status != 'finish'
-                    .count-down data-deadline="#{project.expired_at}"
-                      i.fa.fa-clock-o
-                      - if project.get_status == "failed"
-                        | 任务过期
-                      - else
-                        span.day
-                        | 天
-                        span.hour
-                        | 时
-                        span.minute
-                        | 分
+                      li
+                        img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
+                        span
+                          | task
+                      li
+                        img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
+                        span
+                          | task
+                      li
+                        img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
+                        span
+                          | task
+            table.table.table-with-name-highlight
+              colgroup
+                col width="15%"
+                col width="35%"
+                col width="15%"
+                col width="35%"
+              tbody
+                tr
+                  td.name
+                    | 昵称
+                  td
+                    | wangxiao
+                  td.name
+                    | 联系邮箱
+                  td
+                    | wangxiao@geekpark.net
+                tr
+                  td.name
+                    | 手机号
+                  td
+                    | 17090026516
+                  td.name
+                    | 公司名称
+                  td
+                    | geekpark
+          .project-video-list.clearfix
+            .video-item
+              a href="javascript: void(0)"
+                img src="#{image_path('logo/logo.png')}"
+              span.read-mark
+            .video-item
+              a href="javascript: void(0)"
+                img src="#{image_path('logo/logo.png')}"
+              span.read-mark
+            .video-item
+              a href="javascript: void(0)"
+                img src="#{image_path('logo/logo.png')}"
+              span.read-mark
+            .video-item
+              a href="javascript: void(0)"
+                img src="#{image_path('logo/logo.png')}"
+              span.read-mark
+            .video-item
+              a href="javascript: void(0)"
+                img src="#{image_path('logo/logo.png')}"
+              span.read-mark
+            .video-item
+              a href="javascript: void(0)"
+                img src="#{image_path('logo/logo.png')}"
+            .video-item
+              a href="javascript: void(0)"
+                img src="#{image_path('logo/logo.png')}"
+            .video-item
+              a href="javascript: void(0)"
+                img src="#{image_path('logo/logo.png')}"
+        .item-footer
+          .switch
+            .fa.fa-angle-down
+            .fa.fa-angle-up
+
       .load-more
         - if @projects.try(:size) < 10
           p

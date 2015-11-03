@@ -232,7 +232,7 @@
       color: $dark-blue
     .right-operation
       float: right
-      div
+      > div
         display: inline-block
   .item-body
     padding-left: 30px
@@ -282,6 +282,10 @@
 .project-status.failed
   background: $gray
 
+.not_accept:hover
+  .project-comment
+    display: block
+
 .comment-reminder
   position: absolute
   padding: 2px 5px
@@ -292,6 +296,7 @@
   color: #fff
   font-size: 1rem
 .project-comment
+  display: none
   position: absolute
   top: 100%
   left: -50%

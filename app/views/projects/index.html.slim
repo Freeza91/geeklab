@@ -1,7 +1,7 @@
 main role="main"
   section.projects-list data-pm-id="#{@current_user.to_params}"
     //= render partial: 'projects/shared/add'
-    .projects-wrp.clear-fix
+    .project-list.clear-fix
       .project-item
         .item-header.clearfix
           .title
@@ -36,6 +36,9 @@ main role="main"
             ul role="tablist"
               li
                 a.active href="#project-detail"
+                  | 进行中
+              li
+                a href="#project-detail"
                   | 进行中
               li
                 a href="#project-video"

@@ -4,7 +4,7 @@
 .projects_show,
 .projects_video,
 .projects_index
-  background-color: #eee
+  background-color: $blue
 
 .projects_video,
 .projects_show
@@ -219,6 +219,8 @@
 
 
 // revision
+.project-list
+  padding: 40px 60px
 .project-item
   background: #fff
   .item-header
@@ -232,31 +234,52 @@
       float: right
       div
         display: inline-block
-  .timer,
-  .operation
-    height: 100%
-    vertical-align: middle
-    color: $dark-blue
-  .timer
-    .day,
-    .hour,
-    .minute
-      color: $blue
-  .project-status
-    padding: 5px 9px
-    font-size: .8rem
-    font-weight: bold
-    color: #fff
-  .project-status.wait-check
-    background: $dark-blue
-  .project-status.underway
-    background: $blue
-  .project-status.not_accept
-    background-color: $warn-red
-  .project-status.finish
-    background: $green
-  .project-status.failed
-    background: $gray
+  .item-body
+    padding-left: 30px
+    padding-right: 30px
+  .nav-subtabs
+    padding-top: 15px
+    padding-bottom: 10px
+    text-align: center
+    ul
+      border-color: $dark-blue
+      > li
+        > a
+          background: #fff
+          color: $dark-blue
+        > a:hover
+          color: $blue
+        > a.active
+          background: $dark-blue
+          color: $blue
+      > li + li
+        > a
+          border-left: 1px solid $dark-blue
+.timer,
+.operation
+  height: 100%
+  vertical-align: middle
+  color: $dark-blue
+.timer
+  .day,
+  .hour,
+  .minute
+    color: $blue
+.project-status
+  padding: 5px 9px
+  font-size: .8rem
+  font-weight: bold
+  color: #fff
+.project-status.wait-check
+  background: $dark-blue
+.project-status.underway
+  background: $blue
+.project-status.not_accept
+  background-color: $warn-red
+.project-status.finish
+  background: $green
+.project-status.failed
+  background: $gray
 
 .switch
   padding-top: 5px

@@ -67,8 +67,20 @@ class Project < ActiveRecord::Base
       id: self.to_params,
       name: name,
       status: get_status,
+      profile: profile,
+      device: device,
       demand: demand,
-      expired_at: expired_at
+      requirement: requirement,
+      qr_code: qr_code.try(:url),
+      platform: platform,
+      desc: desc,
+      expired_at: expired_at,
+      contact_name: contact_name,
+      phone: phone,
+      email: email,
+      company: company,
+      user_feature: self.user_feature,
+      tasks: self.tasks
     }
   end
 

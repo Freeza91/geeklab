@@ -27,6 +27,15 @@ main role="main"
               | 正在审核
             .project-status.not_accept
               | 正在审核
+              .project-comment
+                ol
+                  li
+                    | comment1jmdshfh
+                  li
+                    | comment2
+                  li
+                    | comment3
+                .triangle
             .project-status.finish
               | 正在审核
             .project-status.failed
@@ -198,6 +207,7 @@ main role="main"
         .item-footer
           .switch
             .fa.fa-angle-down
+            .fa.fa-angle-up
 
       .load-more
         - if @projects.try(:size) < 10

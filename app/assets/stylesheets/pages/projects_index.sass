@@ -275,11 +275,38 @@
 .project-status.underway
   background: $blue
 .project-status.not_accept
+  position: relative
   background-color: $warn-red
 .project-status.finish
   background: $green
 .project-status.failed
   background: $gray
+
+.project-comment
+  position: absolute
+  top: 100%
+  left: -50%
+  margin-top: 20px
+  padding: 20px
+  background: $light-yellow
+  color: $warn-red
+  box-shadow: 0 0 3px $gray
+  ol
+    margin: 0
+    padding-left: 20px
+    > li
+      padding-top: 5px
+      padding-bottom: 5px
+  .triangle
+    top: 0
+    left: 50%
+    margin-left: -8px
+    width: 16px
+    height: 16px
+    background: $light-yellow
+    box-shadow: 1px -1px 1px $gray
+    transform-origin: top left
+    +transform(rotate(-45deg))
 
 .switch
   padding-top: 5px

@@ -8,7 +8,7 @@ class ProjectsController < ApplicationController
     @projects = @projects.page(params[:page]).per(10)
     @assignments = []
     @projects.each do |project|
-      @assignments << project.assignments.done.show_pm.order("updated_at desc").limit(project.demand)
+      @assignments << project.assignments.done.show_pm.order("id desc").limit(project.demand)
     end
 
     respond_to do |format|
@@ -28,23 +28,15 @@ class ProjectsController < ApplicationController
 
   end
 
-  def show
-    @project = current_user.to_pm.projects.show.includes(:tasks).includes(:user_feature).includes(:assignments).find_by(id: params[:id])
-    @assignments = @project ? @project.assignments.done.show_pm.order("id desc").limit(@project.try(:demand)) : []
-  end
-
   def video
-    @project = current_user.to_pm.projects.show.includes(:user_feature).includes(:assignments).find_by(id: params[:id])
-    @other_assignments = []
-    @assignment = []
+    @project = current_user.to_pm.projects
+                           .show.includes(:user_feature)
+                           .find_by(id: params[:id])
 
     if @project
-      assignments = @project.assignments.done.show_pm.limit(@project.try(:demand))
-      if assignments && assignments.size > 0
-        @assignment = assignments.find_by(id: params[:assignments_id])
-        @assignment.update_attribute(:is_read, true) if @assignment
-        @other_assignments = assignments - [@assignment]
-      end
+      @assignment = @projects.assignments.includes(:feedbacks)
+                             .find_by(id: params[:assignment_id])
+      @assignment.update_attribute(:is_read, true) if @assignment
     end
 
   end

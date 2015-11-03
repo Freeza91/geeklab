@@ -40,41 +40,6 @@ class AssignmentsController < ApplicationController
     render json: json
   end
 
-  def rating
-    json = { msg: 'success', code: 1 }
-
-    assignment = Assignment.find_by(id: params[:id])
-
-    if assignment && assignment.tester_id == current_user.id
-      record = CreditRecord.find_by(project_id: params[:project_id],
-                                    assignment_id: assignment.id)
-      unless record
-
-        rating = params[:rating] || 5
-        assignment.update_column(:rating_from_pm, rating)
-        project = assignment.project
-        basic_bonus = project.basic_bonus || 0
-        bonus = rating * basic_bonus
-        origin_credis = current_user.credits || 0
-
-        record = CreditRecord.new(tester_id: current_user.id,
-                                  project_id: project.id,
-                                  assignment_id: assignment.id,
-                                  credits: project.credit || 0,
-                                  bonus_credits: basic_bonus,
-                                  used: true,
-                                  rating_type: 'pm',
-                                  rating: rating)
-
-        record.save && tester.update_column(credits: bonus + origin_credis)
-      end
-    else
-      json[:code], json[:msg] = 0, '没有找到资源'
-    end
-
-    render json: json
-  end
-
   def get_video
     json = { status: 0, code: 1, msg: 'successful', video: '' }
     assignment =  Assignment.find_by(id: params[:assignment_id])
@@ -170,6 +135,41 @@ class AssignmentsController < ApplicationController
       delete_video_at_qiniu(assignment, json)
     else
       json[:code], json[:msg] = 0, '你没有权限操作'
+    end
+
+    render json: json
+  end
+
+  def rating
+    json = { msg: 'success', code: 1 }
+
+    assignment = Assignment.find_by(id: params[:id])
+
+    if assignment && assignment.tester_id == current_user.id
+      record = CreditRecord.find_by(project_id: params[:project_id],
+                                    assignment_id: assignment.id)
+      unless record
+
+        rating = params[:rating] || 5
+        assignment.update_column(:rating_from_pm, rating)
+        project = assignment.project
+        basic_bonus = project.basic_bonus || 0
+        bonus = rating * basic_bonus
+        origin_credis = current_user.credits || 0
+
+        record = CreditRecord.new(tester_id: current_user.id,
+                                  project_id: project.id,
+                                  assignment_id: assignment.id,
+                                  credits: project.credit || 0,
+                                  bonus_credits: basic_bonus,
+                                  used: true,
+                                  rating_type: 'pm',
+                                  rating: rating)
+
+        record.save && tester.update_column(credits: bonus + origin_credis)
+      end
+    else
+      json[:code], json[:msg] = 0, '没有找到资源'
     end
 
     render json: json

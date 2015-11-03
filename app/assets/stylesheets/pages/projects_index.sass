@@ -221,6 +221,42 @@
 // revision
 .project-item
   background: #fff
+  .item-header
+    background: $light-yellow
+    padding: 12px 20px
+    .title
+      display: inline-block
+      max-width: 300px
+      color: $dark-blue
+    .right-operation
+      float: right
+      div
+        display: inline-block
+  .timer,
+  .operation
+    height: 100%
+    vertical-align: middle
+    color: $dark-blue
+  .timer
+    .day,
+    .hour,
+    .minute
+      color: $blue
+  .project-status
+    padding: 5px 9px
+    font-size: .8rem
+    font-weight: bold
+    color: #fff
+  .project-status.wait-check
+    background: $dark-blue
+  .project-status.underway
+    background: $blue
+  .project-status.not_accept
+    background-color: $warn-red
+  .project-status.finish
+    background: $green
+  .project-status.failed
+    background: $gray
 
 .switch
   padding-top: 5px

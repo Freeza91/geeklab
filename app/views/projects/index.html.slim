@@ -3,15 +3,33 @@ main role="main"
     //= render partial: 'projects/shared/add'
     .projects-wrp.clear-fix
       .project-item
-        .item-header
-          h6.title
+        .item-header.clearfix
+          .title
             .fa.fa-phone
+            | 测试任务
           .right-operation
             .timer
-              | 2015-11-2
+              | 距离任务结束:
+              span.day
+                | 3
+              | 天
+              span.hour
+                | 10
+              | 时
+              span.minute
+                | 13
+              | 分
             .operation
               .fa.fa-trash
-            .item-status
+            .project-status.wait-check
+              | 正在审核
+            .project-status.underway
+              | 正在审核
+            .project-status.not_accept
+              | 正在审核
+            .project-status.finish
+              | 正在审核
+            .project-status.failed
               | 正在审核
         .item-body
           .nav-subtabs

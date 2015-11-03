@@ -26,23 +26,6 @@ $(function () {
     $modal.addClass('show');
   });
 
-  $('#confirm-modal #confirm').on('click', function () {
-    confirmClose();
-    var url = '/projects/' + id;
-    $.ajax({
-      url: url,
-      method: 'delete'
-    })
-    .done(function (data, status) {
-      if(data.status === 0 && data.code === 1) {
-        $card.remove();
-      }
-    })
-    .error(function (errors, status) {
-      console.log(errors);
-    });
-  });
-
   $('#confirm-modal .js-operate-cancel').on('click', confirmClose);
 
   function confirmClose() {
@@ -221,6 +204,37 @@ $(function () {
   });
   $('.projects-wrp').on('mouseout', '.status', function (){
     $(this).parents('.title').find('.comment').fadeOut();
+  });
+
+  // project card show & hide toggle
+  function showProjectBody($el) {
+    $el.slideDown();
+  }
+  function hidew ProjectBody($el) {
+    $el.slideUp();
+  }
+
+  function deleteProject (id, callback) {
+    var url = '/projects/' + id;
+    $.ajax({
+      url: url,
+      method: 'delete'
+    })
+    .done(function (data, status) {
+      if(data.status === 0 && data.code === 1) {
+        callback();
+      }
+    })
+    .error(function (errors, status) {
+      console.log(errors);
+    });
+  }
+
+  var projectList = new Vue({
+    el: '#project-list',
+    data: {
+      projects: []
+    }
   });
 
 });

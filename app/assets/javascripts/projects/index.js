@@ -117,82 +117,7 @@ $(function () {
     }
     $projectsWrp.append(cards.join(''));
 
-    // 重新初始化倒计时
-    countDownInterval.forEach(function (id, index) {
-      clearInterval(id);
-    })
-    timeCountDownInit();
   }
-
-
-  // 倒计时
-  var countDownInterval = [];
-  var projectDeadline = [];
-  function initCountDown () {
-    $('.count-down').each(function (index, item) {
-      var $ele = $(item),
-          deadline = $ele.data('deadline').replace(/-/g, '/'),
-          now = new Date();
-      projectDeadline[index] = new Date(deadline);
-      var times = projectDeadline[index] - now;
-
-      if(times > 0) {
-
-        countDown(times, $ele);
-
-        countDownInterval[index] = setInterval(function () {
-          var deadline = projectDeadline[index],
-              now = new Date(),
-              times = deadline - now;
-          if(times <= 0) {
-            clearInterval(countDownInterval[index]);
-            return false;
-          }
-          countDown(times, $ele);
-        }, 1000 * 60);
-      }
-    });
-  }
-
-
-  function countDown (count, $ele) {
-    var days = ~~ (count / (24 * 60 * 60 * 1000)), //天
-        hours = ~~ ((count / (60 * 60 * 1000)) % 24), //小时
-        minutes = ~~ ((count / (60 * 1000)) % 60), //分钟
-    days = days < 10 ? '0' + days : days;
-    hours = hours < 10 ? '0' + hours : hours;
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-    $ele.find('.day').text(days);
-    $ele.find('.hour').text(hours);
-    $ele.find('.minute').text(minutes);
-  }
-
-
-  // 计算comment的位置
-  function caculateCommentPosition () {
-    var comments = $('.comment');
-    comments.each(function (index, comment) {
-      var $comment = $(comment),
-          $status = $comment.parent().find('.status');
-      var statusPosition = $status.position();
-      var left = statusPosition.left + $status.width() + 10,
-          topPosition = ($comment.height() / 2) - statusPosition.top - 7;
-      $comment.css({
-        'top': '-' + topPosition + 'px',
-        'left': left + 'px'
-      });
-    });
-  }
-
-  caculateCommentPosition();
-
-  // 显示comment, 当鼠标移到状态栏图标上时
-  $('.projects-wrp').on('mouseenter', '.status', function (){
-    $(this).parents('.title').find('.comment').fadeIn();
-  });
-  $('.projects-wrp').on('mouseout', '.status', function (){
-    $(this).parents('.title').find('.comment').fadeOut();
-  });
 
   // project card show & hide toggle
   function showProjectBody(event) {
@@ -258,6 +183,11 @@ $(function () {
     return status !== 'underway' && status !== 'success';
   }
 
+  function canShowCountDown (project) {
+    var isRightStatus = (project.status === 'underway' || project.status === 'success');
+    return isRightStatus && project.deadline;
+  }
+
   function getStatusMap (status) {
     var statusMap = {
       'underway': '正在进行中',
@@ -293,6 +223,7 @@ $(function () {
     methods: {
       editable: isProjectEditable,
       canBeDeleted: canBeDeleted,
+      canShowCountDown: canShowCountDown,
       getStatusMap: getStatusMap,
       getCityMap: getCityMap,
       showProjectBody: showProjectBody,
@@ -300,9 +231,6 @@ $(function () {
       toggleItemBodyContent: toggleItemBodyContent,
       showDeleteConfirm: showDeleteConfirm,
       deleteProject: deleteProject
-    },
-    attached: function () {
-      initCountDown();
     }
   });
 
@@ -364,10 +292,9 @@ $(function () {
               }
             }
           }
-          console.log(deadline);
         }
       }
-    }, 1000 * 10)
+    }, 1000 * 60)
 
   });
 

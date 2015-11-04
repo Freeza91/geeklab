@@ -10,7 +10,7 @@ main role="main"
             span v-text="project.name"
             //| 测试任务
           .right-operation
-            .timer v-if="project.deadline"
+            .timer v-if="canShowCountDown(project)"
               | 距离任务结束:
               span.day v-text="project.deadline[0]"
                 | 3

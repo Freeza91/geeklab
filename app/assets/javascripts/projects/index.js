@@ -72,7 +72,7 @@ $(function () {
     .done(function (data, status) {
       if(data.status === 0 && data.code === 1) {
         if(data.projects.length != 0) {
-          callback(data);
+          callback(data.projects);
         }
         if(data.projects.length < 10) {
           $(window).unbind('scroll');
@@ -210,7 +210,7 @@ $(function () {
   function showProjectBody($el) {
     $el.slideDown();
   }
-  function hidew ProjectBody($el) {
+  function hideProjectBody($el) {
     $el.slideUp();
   }
 
@@ -235,6 +235,10 @@ $(function () {
     data: {
       projects: []
     }
+  });
+
+  getProjectPaging(1, function(projects) {
+    projectList.projects = projects;
   });
 
 });

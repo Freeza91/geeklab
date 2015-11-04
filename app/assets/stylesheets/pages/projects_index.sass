@@ -158,25 +158,6 @@
     .done
     .total
       color: #a0a0a0
-  .status
-    font-size: 17px
-    position: absolute
-    right: 55px
-    top: 2px
-
-  // 不同状态的提示
-  .status.status_wait_check
-    color: rgba(23, 160, 198, 1)
-  .status.status_checking
-    color: rgba(255, 241, 0, 1)
-  .status_not_accept
-    color: rgba(235, 97, 0, 1)
-  .status.status_failed
-    color: rgba(160, 160, 160, 1)
-  .status.status_success,
-  .status.status_underway,
-  .status.status_finish
-    color: rgba(50, 177, 108, 1)
 
 // 添加project
 .add-project
@@ -224,7 +205,7 @@
 .project-list
   padding: 40px 60px
 .project-item
-  margin-bottom: 10px
+  margin-bottom: 15px
   background: #fff
   .item-header
     background: $light-yellow
@@ -233,6 +214,7 @@
       display: inline-block
       max-width: 300px
       color: $dark-blue
+      vertical-align: middle
     .right-operation
       float: right
       > div
@@ -273,8 +255,9 @@
   font-size: .8rem
   font-weight: bold
   color: #fff
-.project-status.wait-check
+.project-status.wait_check
   background: $dark-blue
+.project-status.success,
 .project-status.underway
   background: $blue
 .project-status.not_accept

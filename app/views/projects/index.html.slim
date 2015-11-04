@@ -2,11 +2,13 @@ main role="main"
   section.projects-list data-pm-id="#{@current_user.to_params}"
     //= render partial: 'projects/shared/add'
     #project-list.project-list.clear-fix
-      .project-item
+      .project-item v-repeat="project: projects"
         .item-header.clearfix
           .title
-            .fa.fa-phone
-            | 测试任务
+            .fa.fa-mobile v-if="project.device !== 'web'"
+            .fa.fa-desktop v-if="project.device === 'web'"
+            span v-text="project.name"
+            //| 测试任务
           .right-operation
             .timer
               | 距离任务结束:
@@ -21,12 +23,9 @@ main role="main"
               | 分
             .operation
               .fa.fa-trash
-            .project-status.wait-check
-              | 正在审核
-            .project-status.underway
-              | 正在审核
-            .project-status.not_accept
-              | 正在审核
+            .project-status v-class="project.status"
+              span v-text="project.status"
+                | 正在审核
               .fa.fa-question.comment-reminder
               .project-comment
                 ol
@@ -37,48 +36,46 @@ main role="main"
                   li
                     | comment3
                 .triangle
-            .project-status.finish
-              | 正在审核
-            .project-status.failed
-              | 正在审核
         .item-body
           .nav-subtabs
             ul role="tablist"
               li
                 a.active href="#project-detail"
-                  | 进行中
+                  | 体验视频
               li
                 a href="#project-detail"
-                  | 进行中
-              li
-                a href="#project-video"
-                  | 已完成
+                  | 任务详情
           .project-detail
             table.table.table-with-name-highlight
               colgroup
                 col width="15%"
                 col width="85%"
               tbody
-                tr.website
+                tr v-if="project.device === 'web'"
                   td.name
                     | 网站地址
-                  td
+                  td v-text="project.platform"
                     | ios
-                  tr
-                    td.name
-                      | 测试设备
-                    td
-                      | phone
-                  tr.requirement
-                    td.name
-                      | 系统要求
-                    td
-                      | 7.0及以上
-                  tr
-                    td.name
-                      | 产品简介
-                    td
-                      | 没有介绍
+                tr v-if="project.device !== 'web'"
+                  td.name
+                    | 平台
+                  td v-text="project.platform"
+                    | ios
+                tr v-if="project.device !== 'web'"
+                  td.name
+                    | 测试设备
+                  td v-text="project.device"
+                    | phone
+                tr v-if="project.device !== 'web'"
+                  td.name
+                    | 系统要求
+                  td v-text="project.requirement"
+                    | 7.0及以上
+                tr
+                  td.name
+                    | 产品简介
+                  td v-text="project.profile"
+                    | 没有介绍
             table.table.table-with-name-highlight
               colgroup
                 col width="15%"
@@ -89,39 +86,39 @@ main role="main"
                 tr
                   td.name
                     | 年龄范围
-                  td
+                  td v-text="project.user_feature.age + '岁'"
                     | 20 -30岁
                   td.name
                     | 教育程度
-                  td
+                  td v-text="project.user_feature.education"
                     | 本科以上
                 tr
                   td.name
                     | 年收入
-                  td
+                  td v-text="project.user_feature.income + '万'"
                     | 10
                     | 万
                   td.name
                     | 情感状态
-                  td
+                  td v-text="project.user_feature.emotional_status"
                     | 单身
                 tr
                   td.name
                     | 性别
-                  td
+                  td v-text="project.user_feature.sex"
                     | 男，女
                   td.name
                     | 性取向
-                  td
+                  td v-text="project.user_feature.sex_orientation"
                     | all
                 tr
                   td.name
                     | 城市级别
-                  td
+                  td v-text="project.user_feature.city_level"
                     | 北上广
                   td.name
                     | 兴趣标签
-                  td
+                  td v-text="project.user_feature.interest"
                     | 无
             table.table.table-with-name-highlight
               colgroup
@@ -131,24 +128,16 @@ main role="main"
                 tr
                   td.name
                     | 测试场景
-                  td
+                  td v-text="project.desc"
                     | situation
                 tr
                   td.name
                     | 任务详情
                   td
                     ul
-                      li
+                      li v-repeat="task: project.tasks"
                         img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
-                        span
-                          | task
-                      li
-                        img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
-                        span
-                          | task
-                      li
-                        img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
-                        span
+                        span v-text="task.content"
                           | task
             table.table.table-with-name-highlight
               colgroup
@@ -160,51 +149,30 @@ main role="main"
                 tr
                   td.name
                     | 昵称
-                  td
+                  td v-text="project.contact_name"
                     | wangxiao
                   td.name
                     | 联系邮箱
-                  td
+                  td v-text="project.email"
                     | wangxiao@geekpark.net
                 tr
                   td.name
                     | 手机号
-                  td
+                  td v-text="project.phone"
                     | 17090026516
                   td.name
                     | 公司名称
-                  td
+                  td v-text="project.company"
                     | geekpark
           .project-video-list.clearfix
-            .video-item
+            .video-item v-repeat="assignment: project.assignments"
               a href="javascript: void(0)"
-                img src="#{image_path('logo/logo.png')}"
+                img v-attr="src: assignment.video + '?vframe/png/offset/0/w/480/h/200'"
+              span.read-mark v-if="!assignment.is_read"
+            .video-item v-repeat="project.demand - project.assignments.length"
+              a href="javascript: void(0)"
+                .fa.fa-file-video-o
               span.read-mark
-            .video-item
-              a href="javascript: void(0)"
-                img src="#{image_path('logo/logo.png')}"
-              span.read-mark
-            .video-item
-              a href="javascript: void(0)"
-                img src="#{image_path('logo/logo.png')}"
-              span.read-mark
-            .video-item
-              a href="javascript: void(0)"
-                img src="#{image_path('logo/logo.png')}"
-              span.read-mark
-            .video-item
-              a href="javascript: void(0)"
-                img src="#{image_path('logo/logo.png')}"
-              span.read-mark
-            .video-item
-              a href="javascript: void(0)"
-                img src="#{image_path('logo/logo.png')}"
-            .video-item
-              a href="javascript: void(0)"
-                img src="#{image_path('logo/logo.png')}"
-            .video-item
-              a href="javascript: void(0)"
-                img src="#{image_path('logo/logo.png')}"
         .item-footer
           .switch
             .fa.fa-angle-down

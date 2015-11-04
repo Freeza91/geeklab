@@ -80,7 +80,8 @@ class Project < ActiveRecord::Base
       email: email,
       company: company,
       user_feature: self.user_feature,
-      tasks: self.tasks
+      tasks: self.tasks,
+      assignments: self.assignments.done.show_pm.order("updated_at desc").limit(self.demand)
     }
   end
 

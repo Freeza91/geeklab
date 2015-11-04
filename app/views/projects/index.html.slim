@@ -48,6 +48,15 @@ main role="main"
                 a data-target=".project-detail"
                   | 任务详情
           .project-video-list.clearfix.active
+            .progress-num
+              span.done v-text="project.assignments.length"
+                | 0
+              span
+                | /
+              span.total v-text="project.demand"
+                | 5
+              span
+                | 个视频
             .video-item v-repeat="assignment: project.assignments"
               a href="javascript: void(0)"
                 img v-attr="src: assignment.video + '?vframe/png/offset/0/w/480/h/200'"
@@ -55,7 +64,6 @@ main role="main"
             .video-item v-repeat="project.demand - project.assignments.length"
               a href="javascript: void(0)"
                 .fa.fa-file-video-o
-              span.read-mark
           .project-detail
             table.table.table-with-name-highlight
               colgroup

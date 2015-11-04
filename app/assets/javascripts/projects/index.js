@@ -3,8 +3,10 @@ $(function () {
     return false;
   }
 
-  var id,
-      $card;
+  function confirmClose() {
+    $('#confirm-modal').removeClass('show');
+    $('body .main-mask').remove();
+  }
 
   $('#confirm').on('click', function () {
     var eventName = $('#confirm-modal').data('event-name');
@@ -18,18 +20,8 @@ $(function () {
 
   $('#confirm-modal .js-operate-cancel').on('click', confirmClose);
 
-  function confirmClose() {
-    $('#confirm-modal').removeClass('show');
-    $('body .main-mask').remove();
-  }
-
   // 瀑布流加载，监听window滚动事件
   $(window).on('scroll', function () {
-    // 第一页数量小于10
-    if(!!$('.load-more p')){
-      $(window).unbind('scroll');
-      return false;
-    }
     // 页面高度
     var pageHeight = $(document).height();
     // 视窗高度
@@ -38,21 +30,23 @@ $(function () {
     var scrollTop = $(window).scrollTop();
      //滚动到底部时自动加载新任务
     if((viewHeight + scrollTop) > (pageHeight - 10)) {
-      // 页数自增
-      page++;
-      getProjectPaging(page, function (data) {
-        appendProjects(data);
+      projectList.page = projectList.page + 1;
+      getProjectPaging(projectList.page, function (projects) {
+        projects = generateProjectDeadline(projects);
+        projectList.projects = projectList.projects.concat(projects);
       });
     }
   });
 
-  $('.load-more').on('click', 'button', function () {
-    page++;
-    getProjectPaging(page, function (data) {
-      appendProjects(data);
+  $('.load-more').on('click', function () {
+    projectList.page = projectList.page + 1;
+    getProjectPaging(projectList.page, function (projects) {
+      projects = generateProjectDeadline(projects);
+      projectList.projects = projectList.projects.concat(projects);
     });
   });
 
+  // 获取project分页数据
   function getProjectPaging (page, callback) {
     $.ajax({
       url: '/projects',
@@ -65,7 +59,9 @@ $(function () {
           callback(data.projects);
         }
         if(data.projects.length < 10) {
+          projectList.isAll = true;
           $(window).unbind('scroll');
+          $('.load-more').unbind('click');
         }
       }
     })
@@ -74,65 +70,7 @@ $(function () {
     });
   }
 
-  function appendProjects (data) {
-    var projects = data.projects,
-        assignments = data.assignments;
-    var $projectsWrp = $('.projects-wrp');
-    var $projectCard = $('.card:last').clone();
-    var cards = [];
-
-    for(var i = 0; i < projects.length; i++) {
-      // name
-      $projectCard.find('.title a').text(projects[i].name)
-      $projectCard.find('.title a').attr('href', '/projects/' + projects[i].id);
-      // status
-      $projectCard.find('.status').removeClass().addClass('status status_' + projects[i].status).find('span').text(statusMap[projects[i].status]);
-      // 完成进度
-      $projectCard.find('.progress-num .done').text(assignments[i].length);
-      $projectCard.find('.progress-num .total').text('/' + projects[i].demand);
-
-      // 视频截图
-      var $video = $projectCard.find('.videos ul');
-      var videoTemplate = $video.children().last();
-      if(videoTemplate.find('img').length === 0) {
-        videoTemplate.prepend('<img>');
-      }
-      $video.empty();
-      assignments[i].forEach(function (assignment) {
-        var video = videoTemplate.clone();
-        video.find('img')[0].src =  assignment.video + '?vframe/png/offset/0/w/480/h/200';
-        video.find('a')[0].href = '/projects/' + projects[i].id + '/video/' + assignment.id;
-        $video.append(video);
-      });
-      videoTemplate.find('img').remove();
-      for(var j = 0, len = projects[i].demand-assignments[i].length; j < len; j++) {
-        $video.append(videoTemplate.clone());
-      }
-
-      // deadline
-      $projectCard.find('.count-down').data('deadline', projects[i].expired_at);
-
-      // 将每个任务的html暂存在数组中
-      cards.push('<div class="card">' + $projectCard.html() + '</div>');
-    }
-    $projectsWrp.append(cards.join(''));
-
-  }
-
-  // project card show & hide toggle
-  function showProjectBody(event) {
-    var $target = $(event.target);
-    $target.parents('.project-item').find('.item-body').slideDown(600);
-    $target.hide();
-    $target.parent().children('.fa-angle-up').show();
-  }
-  function hideProjectBody(event) {
-    var $target = $(event.target);
-    $target.parents('.project-item').find('.item-body').slideUp(600);
-    $target.hide();
-    $target.parent().children('.fa-angle-down').show();
-  }
-
+  // 发送删除project的请求
   function sentDeleteProjectRequest (id, callback) {
     var url = '/projects/' + id;
     $.ajax({
@@ -149,6 +87,46 @@ $(function () {
     });
   }
 
+  // 生成projects的dealine数据
+  function generateProjectDeadline (projects) {
+    // 初始化倒计时
+    var count = 0,
+        day = 0,
+        hour = 0,
+        minute = 0;
+    for(var i = 0, len = projects.length; i < len; i++) {
+      count = new Date(projects[i].expired_at) - new Date();
+      if(count > 0) {
+        projects[i].deadline = [];
+
+        days = ~~ (count / (24 * 60 * 60 * 1000)), //天
+        hours = ~~ ((count / (60 * 60 * 1000)) % 24), //小时
+        minutes = ~~ ((count / (60 * 1000)) % 60), //分钟
+
+        projects[i].deadline[0] = days < 10 ? '0' + days : days;
+        projects[i].deadline[1] = hours < 10 ? '0' + hours : hours;
+        projects[i].deadline[2] = minutes < 10 ? '0' + minutes : minutes;
+      }
+    }
+    return projects;
+  }
+
+  // project card show & hide toggle
+  function showProjectBody(event) {
+    var $target = $(event.target);
+    $target.parents('.project-item').find('.item-body').slideDown(600);
+    $target.hide();
+    $target.parent().children('.fa-angle-up').show();
+  }
+
+  function hideProjectBody(event) {
+    var $target = $(event.target);
+    $target.parents('.project-item').find('.item-body').slideUp(600);
+    $target.hide();
+    $target.parent().children('.fa-angle-down').show();
+  }
+
+  // 显示删除project确认对话框
   function showDeleteConfirm (index) {
     var $modal = $('#confirm-modal');
     $modal.data('eventName', 'deleteProject');
@@ -160,12 +138,14 @@ $(function () {
     projectList.currProjectIndex = index;
   }
 
+  // 删除project
   function deleteProject () {
     sentDeleteProjectRequest (projectList.currProjectId, function () {
       projectList.projects.$remove(projectList.currProjectIndex);
     });
   }
 
+  // projectItem bodyContent显示toggle
   function toggleItemBodyContent (event) {
     var $target = $(event.target),
         selector = $target.data('target');
@@ -175,6 +155,7 @@ $(function () {
     $target.parents('.item-body').find(selector).fadeIn().addClass('active');
   }
 
+  // delete,edit,countDown是否显示的判断
   function isProjectEditable (status) {
     return status === 'wait_check' || status === 'not_accept';
   }
@@ -188,6 +169,7 @@ $(function () {
     return isRightStatus && project.deadline;
   }
 
+  // statusMap, cityMap
   function getStatusMap (status) {
     var statusMap = {
       'underway': '正在进行中',
@@ -212,13 +194,14 @@ $(function () {
     return cityLevel;
   }
 
-
+  // new projectList vue object
   var projectList = new Vue({
     el: '#project-list',
     data: {
-      page: 1,
-      currProjectId: 0,
-      projects: []
+      page          : 1,
+      currProjectId : 0,
+      projects      : [],
+      isAll         : false
     },
     methods: {
       editable: isProjectEditable,
@@ -234,27 +217,11 @@ $(function () {
     }
   });
 
+  // 页面初始化，获取第一页数据
   getProjectPaging(1, function(projects) {
-    // 初始化倒计时
-    var count = 0,
-        day = 0,
-        hour = 0,
-        minute = 0;
-    for(var i = 0, len = projects.length; i < len; i++) {
-      count = new Date(projects[i].expired_at) - new Date();
-      if(count > 0) {
-        projects[i].deadline = [];
 
-        days = ~~ (count / (24 * 60 * 60 * 1000)), //天
-        hours = ~~ ((count / (60 * 60 * 1000)) % 24), //小时
-        minutes = ~~ ((count / (60 * 1000)) % 60), //分钟
-
-        projects[i].deadline[0] = days < 10 ? '0' + days : days;
-        projects[i].deadline[1] = hours < 10 ? '0' + hours : hours;
-        projects[i].deadline[2] = minutes < 10 ? '0' + minutes : minutes;
-      }
-    }
-
+    // 生成deadline
+    projects = generateProjectDeadline(projects);
     // 全量更新projectList.$data.projects
     projectList.projects = projects;
 
@@ -295,7 +262,6 @@ $(function () {
         }
       }
     }, 1000 * 60)
-
   });
 
 });

@@ -180,13 +180,9 @@ main role="main"
             .fa.fa-angle-down v-on="click: showProjectBody($event)" v-show="$index !== 0"
             .fa.fa-angle-up v-on="click: hideProjectBody($event)" v-show="$index === 0"
 
-      .load-more
-        - if @projects.try(:size) < 10
-          p
-            | 没有更多了
-        - else
-          button.btn.btn-blue
-            | 加载更多
+      .load-more v-show="!isAll"
+        button.btn.btn-flat.yellow.btn-full
+          | 加载更多
 
 = render 'shared/confirm_modal'
 = render 'projects/shared/add_modal'

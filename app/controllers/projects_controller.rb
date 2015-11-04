@@ -14,7 +14,7 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       format.html
       format.json do
-        json = {status: 0, code: 1, assignments: [], projects: [] }
+        json = {status: 0, code: 1, projects: [] }
         @projects.each do |project|
           json[:projects] << project.to_json_for_index
         end

@@ -2,8 +2,6 @@ main role="main"
   section.projects-list data-pm-id="#{@current_user.to_params}"
     //= render partial: 'projects/shared/add'
     #project-list.project-list.clear-fix
-      span
-        | {{$index}}
       .project-item v-repeat="project: projects"
         .item-header.clearfix
           .title
@@ -12,15 +10,15 @@ main role="main"
             span v-text="project.name"
             //| 测试任务
           .right-operation
-            .timer
+            .timer v-if="project.deadline"
               | 距离任务结束:
-              span.day
+              span.day v-text="project.deadline[0]"
                 | 3
               | 天
-              span.hour
+              span.hour v-text="project.deadline[1]"
                 | 10
               | 时
-              span.minute
+              span.minute v-text="project.deadline[2]"
                 | 13
               | 分
             .operation

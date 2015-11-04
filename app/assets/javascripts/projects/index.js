@@ -6,15 +6,14 @@ $(function () {
   var id,
       $card;
 
-  $('.projects-wrp').on('click', '.delete-project', function () {
-    $card = $(this).parents('.card');
-    id = $(this).parents('.card').data('projectId');
-
-    var $modal = $('#confirm-modal');
-    $modal.data('eventName', 'deleteProject');
-    $modal.find('.content').text('确认删除任务?');
-    $('body').append('<div class="main-mask"></div>')
-    $modal.addClass('show');
+  $('#confirm').on('click', function () {
+    var eventName = $('#confirm-modal').data('event-name');
+    switch (eventName) {
+      case 'deleteProject':
+        deleteProject();
+      break;
+    }
+    confirmClose();
   });
 
   $('#confirm-modal .js-operate-cancel').on('click', confirmClose);
@@ -209,7 +208,7 @@ $(function () {
     $target.parent().children('.fa-angle-down').show();
   }
 
-  function deleteProject (id, callback) {
+  function sentDeleteProjectRequest (id, callback) {
     var url = '/projects/' + id;
     $.ajax({
       url: url,
@@ -222,6 +221,23 @@ $(function () {
     })
     .error(function (errors, status) {
       console.log(errors);
+    });
+  }
+
+  function showDeleteConfirm (index) {
+    var $modal = $('#confirm-modal');
+    $modal.data('eventName', 'deleteProject');
+    $modal.find('.content').text('确认删除任务?');
+    $('body').append('<div class="main-mask"></div>')
+    $modal.addClass('show');
+
+    projectList.currProjectId = projectList.projects[index].id;
+    projectList.currProjectIndex = index;
+  }
+
+  function deleteProject () {
+    sentDeleteProjectRequest (projectList.currProjectId, function () {
+      projectList.projects.$remove(projectList.currProjectIndex);
     });
   }
 
@@ -271,6 +287,7 @@ $(function () {
     el: '#project-list',
     data: {
       page: 1,
+      currProjectId: 0,
       projects: []
     },
     methods: {
@@ -280,7 +297,9 @@ $(function () {
       getCityMap: getCityMap,
       showProjectBody: showProjectBody,
       hideProjectBody: hideProjectBody,
-      toggleItemBodyContent: toggleItemBodyContent
+      toggleItemBodyContent: toggleItemBodyContent,
+      showDeleteConfirm: showDeleteConfirm,
+      deleteProject: deleteProject
     }
   });
 

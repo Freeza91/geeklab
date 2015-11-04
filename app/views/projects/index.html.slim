@@ -24,8 +24,9 @@ main role="main"
                 | 13
               | 分
             .operation
-              .fa.fa-trash v-if="canBeDeleted(project.status)"
-              .fa.fa-edit v-if="isEditable(project.status)"
+              .fa.fa-trash-o v-on="click: showDeleteConfirm($index)" v-if="canBeDeleted(project.status)"
+              .fa.fa-edit
+              //v-if="isEditable(project.status)"
             .project-status v-class="project.status"
               span v-text="getStatusMap(project.status)"
                 | 正在审核

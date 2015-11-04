@@ -59,19 +59,23 @@
   position: fixed
   top: 140px
   left: 20px
-  width: 70px
+  width: 78px
   height: 70px
-  padding: 7px
-  border-radius: 50%
-  background-color: #fff
-  border: 2px solid #16a0c6
-  box-shadow: 0 0 10px rgba(22, 160, 198, .8)
-  text-align: center
-  line-height: 25px
+  background: image_url('projects/new_project.png')
   cursor: pointer
   z-index: 10
   p
+    position: relative
+    top: 46px
+    padding-left: 3px
     margin-bottom: 0
+    font-size: .8rem
+    color: $dark-blue
+    text-align: center
+.add-project:hover
+  background: image_url('projects/new_project_hover.png')
+  p
+    color: $blue
 
 // 是否看过的标记
 .read-mark

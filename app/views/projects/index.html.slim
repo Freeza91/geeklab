@@ -1,6 +1,6 @@
 main role="main"
   section.projects-list data-pm-id="#{@current_user.to_params}"
-    //= render partial: 'projects/shared/add'
+    = render partial: 'projects/shared/add'
     #project-list.project-list.clear-fix
       .project-item v-repeat="project: projects"
         .item-header.clearfix

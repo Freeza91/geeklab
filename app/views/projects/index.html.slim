@@ -41,14 +41,14 @@ main role="main"
                 .triangle
         .item-body v-show="$index === 0"
           .nav-subtabs
-            ul role="tablist"
+            ul role="tablist" v-on="click: toggleItemBodyContent($event)"
               li
-                a.active href="#project-detail"
+                a.active data-target=".project-video-list"
                   | 体验视频
               li
-                a href="#project-detail"
+                a data-target=".project-detail"
                   | 任务详情
-          .project-video-list.clearfix
+          .project-video-list.clearfix.active
             .video-item v-repeat="assignment: project.assignments"
               a href="javascript: void(0)"
                 img v-attr="src: assignment.video + '?vframe/png/offset/0/w/480/h/200'"

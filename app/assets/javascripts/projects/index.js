@@ -225,6 +225,15 @@ $(function () {
     });
   }
 
+  function toggleItemBodyContent (event) {
+    var $target = $(event.target),
+        selector = $target.data('target');
+    $target.parents('.item-body').find('a.active').removeClass('active');
+    $target.addClass('active');
+    $target.parents('.item-body').children('.active').hide().removeClass('active');
+    $target.parents('.item-body').find(selector).fadeIn().addClass('active');
+  }
+
   function isProjectEditable (status) {
     return status === 'wait_check' || status === 'not_accept';
   }
@@ -270,7 +279,8 @@ $(function () {
       getStatusMap: getStatusMap,
       getCityMap: getCityMap,
       showProjectBody: showProjectBody,
-      hideProjectBody: hideProjectBody
+      hideProjectBody: hideProjectBody,
+      toggleItemBodyContent: toggleItemBodyContent
     }
   });
 

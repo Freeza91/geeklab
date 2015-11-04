@@ -4,17 +4,8 @@ $(function () {
   }
 
   var id,
-      $card,
-      page = 1;
+      $card;
 
-  var statusMap = {
-    'underway': '正在进行中',
-    'wait_check': '等待审核',
-    'checking': '正在审核',
-    'not_accept': '审核未通过',
-    'success': '审核成功',
-    'failed': '任务过期'
-  };
   $('.projects-wrp').on('click', '.delete-project', function () {
     $card = $(this).parents('.card');
     id = $(this).parents('.card').data('projectId');
@@ -76,8 +67,6 @@ $(function () {
         }
         if(data.projects.length < 10) {
           $(window).unbind('scroll');
-          $('.load-more').unbind('click').find('button').hide();
-          $('.load-more').append('<p>没有更多了</p>');
         }
       }
     })
@@ -230,10 +219,49 @@ $(function () {
     });
   }
 
+  function isProjectEditable (status) {
+    return status === 'wait_check' || status === 'not_accept';
+  }
+
+  function canBeDeleted (status) {
+    return status !== 'underway' && status !== 'success';
+  }
+
+  function getStatusMap (status) {
+    var statusMap = {
+      'underway': '正在进行中',
+      'wait_check': '等待审核',
+      'checking': '正在审核',
+      'not_accept': '审核未通过',
+      'success': '审核成功',
+      'failed': '任务过期'
+    };
+    return statusMap[status];
+  }
+
+  function getCityMap (cityLevel) {
+    var cityMap = {
+      '1': '北上广深',
+      '2': '省会城市',
+      '3': '其它'
+    };
+    for(var i = 0, len = cityLevel.length; i < len; i++) {
+      cityLevel[i] = cityMap[cityLevel[i]];
+    }
+    return cityLevel;
+  }
+
   var projectList = new Vue({
     el: '#project-list',
     data: {
+      page: 1,
       projects: []
+    },
+    methods: {
+      editable: isProjectEditable,
+      canBeDeleted: canBeDeleted,
+      getStatusMap: getStatusMap,
+      getCityMap: getCityMap
     }
   });
 

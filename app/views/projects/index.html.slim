@@ -22,9 +22,10 @@ main role="main"
                 | 13
               | 分
             .operation
-              .fa.fa-trash
+              .fa.fa-trash v-if="canBeDeleted(project.status)"
+              .fa.fa-edit v-if="isEditable(project.status)"
             .project-status v-class="project.status"
-              span v-text="project.status"
+              span v-text="getStatusMap(project.status)"
                 | 正在审核
               .fa.fa-question.comment-reminder
               .project-comment
@@ -45,6 +46,15 @@ main role="main"
               li
                 a href="#project-detail"
                   | 任务详情
+          .project-video-list.clearfix
+            .video-item v-repeat="assignment: project.assignments"
+              a href="javascript: void(0)"
+                img v-attr="src: assignment.video + '?vframe/png/offset/0/w/480/h/200'"
+              span.read-mark v-if="!assignment.is_read"
+            .video-item v-repeat="project.demand - project.assignments.length"
+              a href="javascript: void(0)"
+                .fa.fa-file-video-o
+              span.read-mark
           .project-detail
             table.table.table-with-name-highlight
               colgroup
@@ -114,7 +124,7 @@ main role="main"
                 tr
                   td.name
                     | 城市级别
-                  td v-text="project.user_feature.city_level"
+                  td v-text="getCityMap(project.user_feature.city_level)"
                     | 北上广
                   td.name
                     | 兴趣标签
@@ -164,15 +174,6 @@ main role="main"
                     | 公司名称
                   td v-text="project.company"
                     | geekpark
-          .project-video-list.clearfix
-            .video-item v-repeat="assignment: project.assignments"
-              a href="javascript: void(0)"
-                img v-attr="src: assignment.video + '?vframe/png/offset/0/w/480/h/200'"
-              span.read-mark v-if="!assignment.is_read"
-            .video-item v-repeat="project.demand - project.assignments.length"
-              a href="javascript: void(0)"
-                .fa.fa-file-video-o
-              span.read-mark
         .item-footer
           .switch
             .fa.fa-angle-down

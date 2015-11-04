@@ -2,6 +2,8 @@ main role="main"
   section.projects-list data-pm-id="#{@current_user.to_params}"
     //= render partial: 'projects/shared/add'
     #project-list.project-list.clear-fix
+      span
+        | {{$index}}
       .project-item v-repeat="project: projects"
         .item-header.clearfix
           .title
@@ -37,7 +39,7 @@ main role="main"
                   li
                     | comment3
                 .triangle
-        .item-body
+        .item-body v-show="$index === 0"
           .nav-subtabs
             ul role="tablist"
               li
@@ -176,8 +178,8 @@ main role="main"
                     | geekpark
         .item-footer
           .switch
-            .fa.fa-angle-down
-            .fa.fa-angle-up
+            .fa.fa-angle-down v-on="click: showProjectBody($event)" v-show="$index !== 0"
+            .fa.fa-angle-up v-on="click: hideProjectBody($event)" v-show="$index === 0"
 
       .load-more
         - if @projects.try(:size) < 10

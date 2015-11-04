@@ -196,11 +196,17 @@ $(function () {
   });
 
   // project card show & hide toggle
-  function showProjectBody($el) {
-    $el.slideDown();
+  function showProjectBody(event) {
+    var $target = $(event.target);
+    $target.parents('.project-item').find('.item-body').slideDown(600);
+    $target.hide();
+    $target.parent().children('.fa-angle-up').show();
   }
-  function hideProjectBody($el) {
-    $el.slideUp();
+  function hideProjectBody(event) {
+    var $target = $(event.target);
+    $target.parents('.project-item').find('.item-body').slideUp(600);
+    $target.hide();
+    $target.parent().children('.fa-angle-down').show();
   }
 
   function deleteProject (id, callback) {
@@ -251,6 +257,7 @@ $(function () {
     return cityLevel;
   }
 
+
   var projectList = new Vue({
     el: '#project-list',
     data: {
@@ -261,7 +268,9 @@ $(function () {
       editable: isProjectEditable,
       canBeDeleted: canBeDeleted,
       getStatusMap: getStatusMap,
-      getCityMap: getCityMap
+      getCityMap: getCityMap,
+      showProjectBody: showProjectBody,
+      hideProjectBody: hideProjectBody
     }
   });
 

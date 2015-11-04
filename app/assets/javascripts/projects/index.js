@@ -3,60 +3,25 @@ $(function () {
     return false;
   }
 
-  var id,
-      $card,
-      page = 1;
-
-  var statusMap = {
-    'underway': '正在进行中',
-    'wait_check': '等待审核',
-    'checking': '正在审核',
-    'not_accept': '审核未通过',
-    'success': '审核成功',
-    'failed': '任务过期'
-  };
-  $('.projects-wrp').on('click', '.delete-project', function () {
-    $card = $(this).parents('.card');
-    id = $(this).parents('.card').data('projectId');
-
-    var $modal = $('#confirm-modal');
-    $modal.data('eventName', 'deleteProject');
-    $modal.find('.content').text('确认删除任务?');
-    $('body').append('<div class="main-mask"></div>')
-    $modal.addClass('show');
-  });
-
-  $('#confirm-modal #confirm').on('click', function () {
-    confirmClose();
-    var url = '/projects/' + id;
-    $.ajax({
-      url: url,
-      method: 'delete'
-    })
-    .done(function (data, status) {
-      if(data.status === 0 && data.code === 1) {
-        $card.remove();
-      }
-    })
-    .error(function (errors, status) {
-      console.log(errors);
-    });
-  });
-
-  $('#confirm-modal .js-operate-cancel').on('click', confirmClose);
-
   function confirmClose() {
     $('#confirm-modal').removeClass('show');
     $('body .main-mask').remove();
   }
 
+  $('#confirm').on('click', function () {
+    var eventName = $('#confirm-modal').data('event-name');
+    switch (eventName) {
+      case 'deleteProject':
+        deleteProject();
+      break;
+    }
+    confirmClose();
+  });
+
+  $('#confirm-modal .js-operate-cancel').on('click', confirmClose);
+
   // 瀑布流加载，监听window滚动事件
   $(window).on('scroll', function () {
-    // 第一页数量小于10
-    if(!!$('.load-more p')){
-      $(window).unbind('scroll');
-      return false;
-    }
     // 页面高度
     var pageHeight = $(document).height();
     // 视窗高度
@@ -65,21 +30,23 @@ $(function () {
     var scrollTop = $(window).scrollTop();
      //滚动到底部时自动加载新任务
     if((viewHeight + scrollTop) > (pageHeight - 10)) {
-      // 页数自增
-      page++;
-      getProjectPaging(page, function (data) {
-        appendProjects(data);
+      projectList.page = projectList.page + 1;
+      getProjectPaging(projectList.page, function (projects) {
+        projects = generateProjectDeadline(projects);
+        projectList.projects = projectList.projects.concat(projects);
       });
     }
   });
 
-  $('.load-more').on('click', 'button', function () {
-    page++;
-    getProjectPaging(page, function (data) {
-      appendProjects(data);
+  $('.load-more').on('click', function () {
+    projectList.page = projectList.page + 1;
+    getProjectPaging(projectList.page, function (projects) {
+      projects = generateProjectDeadline(projects);
+      projectList.projects = projectList.projects.concat(projects);
     });
   });
 
+  // 获取project分页数据
   function getProjectPaging (page, callback) {
     $.ajax({
       url: '/projects',
@@ -89,12 +56,12 @@ $(function () {
     .done(function (data, status) {
       if(data.status === 0 && data.code === 1) {
         if(data.projects.length != 0) {
-          callback(data);
+          callback(data.projects);
         }
         if(data.projects.length < 10) {
+          projectList.isAll = true;
           $(window).unbind('scroll');
-          $('.load-more').unbind('click').find('button').hide();
-          $('.load-more').append('<p>没有更多了</p>');
+          $('.load-more').unbind('click');
         }
       }
     })
@@ -103,124 +70,198 @@ $(function () {
     });
   }
 
-  function appendProjects (data) {
-    var projects = data.projects,
-        assignments = data.assignments;
-    var $projectsWrp = $('.projects-wrp');
-    var $projectCard = $('.card:last').clone();
-    var cards = [];
-
-    for(var i = 0; i < projects.length; i++) {
-      // name
-      $projectCard.find('.title a').text(projects[i].name)
-      $projectCard.find('.title a').attr('href', '/projects/' + projects[i].id);
-      // status
-      $projectCard.find('.status').removeClass().addClass('status status_' + projects[i].status).find('span').text(statusMap[projects[i].status]);
-      // 完成进度
-      $projectCard.find('.progress-num .done').text(assignments[i].length);
-      $projectCard.find('.progress-num .total').text('/' + projects[i].demand);
-
-      // 视频截图
-      var $video = $projectCard.find('.videos ul');
-      var videoTemplate = $video.children().last();
-      if(videoTemplate.find('img').length === 0) {
-        videoTemplate.prepend('<img>');
-      }
-      $video.empty();
-      assignments[i].forEach(function (assignment) {
-        var video = videoTemplate.clone();
-        video.find('img')[0].src =  assignment.video + '?vframe/png/offset/0/w/480/h/200';
-        video.find('a')[0].href = '/projects/' + projects[i].id + '/video/' + assignment.id;
-        $video.append(video);
-      });
-      videoTemplate.find('img').remove();
-      for(var j = 0, len = projects[i].demand-assignments[i].length; j < len; j++) {
-        $video.append(videoTemplate.clone());
-      }
-
-      // deadline
-      $projectCard.find('.count-down').data('deadline', projects[i].expired_at);
-
-      // 将每个任务的html暂存在数组中
-      cards.push('<div class="card">' + $projectCard.html() + '</div>');
-    }
-    $projectsWrp.append(cards.join(''));
-
-    // 重新初始化倒计时
-    countDownInterval.forEach(function (id, index) {
-      clearInterval(id);
+  // 发送删除project的请求
+  function sentDeleteProjectRequest (id, callback) {
+    var url = '/projects/' + id;
+    $.ajax({
+      url: url,
+      method: 'delete'
     })
-    timeCountDownInit();
-  }
-
-  // 倒计时
-  var countDownInterval = [];
-  var projectDeadline = [];
-  function countDownInit () {
-    $('.count-down').each(function (index, item) {
-      var $ele = $(item),
-          deadline = $ele.data('deadline').replace(/-/g, '/'),
-          now = new Date();
-      projectDeadline[index] = new Date(deadline);
-      var times = projectDeadline[index] - now;
-
-      if(times > 0) {
-
-        countDown(times, $ele);
-
-        countDownInterval[index] = setInterval(function () {
-          var deadline = projectDeadline[index],
-              now = new Date(),
-              times = deadline - now;
-          if(times <= 0) {
-            clearInterval(countDownInterval[index]);
-            return false;
-          }
-          countDown(times, $ele);
-        }, 1000 * 60);
+    .done(function (data, status) {
+      if(data.status === 0 && data.code === 1) {
+        callback();
       }
+    })
+    .error(function (errors, status) {
+      console.log(errors);
     });
   }
 
-  function countDown (count, $ele) {
-    var days = ~~ (count / (24 * 60 * 60 * 1000)), //天
+  // 生成projects的dealine数据
+  function generateProjectDeadline (projects) {
+    // 初始化倒计时
+    var count = 0,
+        day = 0,
+        hour = 0,
+        minute = 0;
+    for(var i = 0, len = projects.length; i < len; i++) {
+      count = new Date(projects[i].expired_at) - new Date();
+      if(count > 0) {
+        projects[i].deadline = [];
+
+        days = ~~ (count / (24 * 60 * 60 * 1000)), //天
         hours = ~~ ((count / (60 * 60 * 1000)) % 24), //小时
         minutes = ~~ ((count / (60 * 1000)) % 60), //分钟
-    days = days < 10 ? '0' + days : days;
-    hours = hours < 10 ? '0' + hours : hours;
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-    $ele.find('.day').text(days);
-    $ele.find('.hour').text(hours);
-    $ele.find('.minute').text(minutes);
+
+        projects[i].deadline[0] = days < 10 ? '0' + days : days;
+        projects[i].deadline[1] = hours < 10 ? '0' + hours : hours;
+        projects[i].deadline[2] = minutes < 10 ? '0' + minutes : minutes;
+      }
+    }
+    return projects;
   }
 
-  // 倒计时初始化
-  countDownInit();
+  // project card show & hide toggle
+  function showProjectBody(event) {
+    var $target = $(event.target);
+    $target.parents('.project-item').find('.item-body').slideDown(600);
+    $target.hide();
+    $target.parent().children('.fa-angle-up').show();
+  }
 
-  // 计算comment的位置
-  function caculateCommentPosition () {
-    var comments = $('.comment');
-    comments.each(function (index, comment) {
-      var $comment = $(comment),
-          $status = $comment.parent().find('.status');
-      var statusPosition = $status.position();
-      var left = statusPosition.left + $status.width() + 10,
-          topPosition = ($comment.height() / 2) - statusPosition.top - 7;
-      $comment.css({
-        'top': '-' + topPosition + 'px',
-        'left': left + 'px'
-      });
+  function hideProjectBody(event) {
+    var $target = $(event.target);
+    $target.parents('.project-item').find('.item-body').slideUp(600);
+    $target.hide();
+    $target.parent().children('.fa-angle-down').show();
+  }
+
+  // 显示删除project确认对话框
+  function showDeleteConfirm (index) {
+    var $modal = $('#confirm-modal');
+    $modal.data('eventName', 'deleteProject');
+    $modal.find('.content').text('确认删除任务?');
+    $('body').append('<div class="main-mask"></div>')
+    $modal.addClass('show');
+
+    projectList.currProjectId = projectList.projects[index].id;
+    projectList.currProjectIndex = index;
+  }
+
+  // 删除project
+  function deleteProject () {
+    sentDeleteProjectRequest (projectList.currProjectId, function () {
+      projectList.projects.$remove(projectList.currProjectIndex);
     });
   }
 
-  caculateCommentPosition();
+  // projectItem bodyContent显示toggle
+  function toggleItemBodyContent (event) {
+    var $target = $(event.target),
+        selector = $target.data('target');
+    $target.parents('.item-body').find('a.active').removeClass('active');
+    $target.addClass('active');
+    $target.parents('.item-body').children('.active').hide().removeClass('active');
+    $target.parents('.item-body').find(selector).fadeIn().addClass('active');
+  }
 
-  // 显示comment, 当鼠标移到状态栏图标上时
-  $('.projects-wrp').on('mouseenter', '.status', function (){
-    $(this).parents('.title').find('.comment').fadeIn();
+  // delete,edit,countDown是否显示的判断
+  function isProjectEditable (status) {
+    return status === 'wait_check' || status === 'not_accept';
+  }
+
+  function canBeDeleted (status) {
+    return status !== 'underway' && status !== 'success';
+  }
+
+  function canShowCountDown (project) {
+    var isRightStatus = (project.status === 'underway' || project.status === 'success');
+    return isRightStatus && project.deadline;
+  }
+
+  // statusMap, cityMap
+  function getStatusMap (status) {
+    var statusMap = {
+      'underway': '正在进行中',
+      'wait_check': '等待审核',
+      'checking': '正在审核',
+      'not_accept': '审核未通过',
+      'success': '审核成功',
+      'failed': '任务过期'
+    };
+    return statusMap[status];
+  }
+
+  function getCityMap (cityLevel) {
+    var cityMap = {
+      '1': '北上广深',
+      '2': '省会城市',
+      '3': '其它'
+    };
+    for(var i = 0, len = cityLevel.length; i < len; i++) {
+      cityLevel[i] = cityMap[cityLevel[i]];
+    }
+    return cityLevel;
+  }
+
+  // new projectList vue object
+  var projectList = new Vue({
+    el: '#project-list',
+    data: {
+      page          : 1,
+      currProjectId : 0,
+      projects      : [],
+      isAll         : false
+    },
+    methods: {
+      editable: isProjectEditable,
+      canBeDeleted: canBeDeleted,
+      canShowCountDown: canShowCountDown,
+      getStatusMap: getStatusMap,
+      getCityMap: getCityMap,
+      showProjectBody: showProjectBody,
+      hideProjectBody: hideProjectBody,
+      toggleItemBodyContent: toggleItemBodyContent,
+      showDeleteConfirm: showDeleteConfirm,
+      deleteProject: deleteProject
+    }
   });
-  $('.projects-wrp').on('mouseout', '.status', function (){
-    $(this).parents('.title').find('.comment').fadeOut();
+
+  // 页面初始化，获取第一页数据
+  getProjectPaging(1, function(projects) {
+
+    // 生成deadline
+    projects = generateProjectDeadline(projects);
+    // 全量更新projectList.$data.projects
+    projectList.projects = projects;
+
+    // 倒计时更新
+    setInterval(function () {
+      var deadline,
+          day,
+          hour,
+          minute;
+      for(var i = 0, len = projectList.projects.length; i < len; i++) {
+        deadline = projectList.projects[i].deadline;
+        if(deadline && deadline.join('') > 0) {
+          day = parseInt(deadline[0]);
+          hour = parseInt(deadline[1]);
+          minute = parseInt(deadline[2]);
+
+          if(minute > 0) {
+            minute = minute -1;
+            minute = minute < 10 ? '0' + minute : minute;
+            deadline.$set(2, minute);
+          } else {
+            if (day > 0 || hour > 0) {
+              deadline.$set(2, 59);
+            }
+            if (hour > 0) {
+              hour = hour -1;
+              hour = hour < 10 ? '0' + hour : hour;
+              deadline.$set(1, hour);
+            } else {
+              if (day > 0) {
+                day = day - 1;
+                day = day < 10 ? '0' + day : day;
+                deadline.$set(1, 23);
+                deadline.$set(0, day);
+              }
+            }
+          }
+        }
+      }
+    }, 1000 * 60)
   });
 
 });

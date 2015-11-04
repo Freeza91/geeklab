@@ -40,17 +40,10 @@
     collection do
       get 'web/new', to: 'projects#web'
       get 'app/new', to: 'projects#app'
-      get 'video', to: 'projects#video'
     end
 
     member do
-      get 'video/:assignments_id', to: 'projects#video'
-    end
-
-    resources :assignments, only: :show do
-      member do
-        put 'rating', to: 'assignments#rating'
-      end
+      get 'video/:assignment_id', to: 'projects#video'
     end
   end
 
@@ -59,7 +52,6 @@
       get 'help'
       get 'how-to-get-five-star', to: 'testers#rating_help'
       get 'choose-device', to: 'testers#choose'
-      #get 'infor', to: "testers#edit"
     end
   end
 
@@ -80,6 +72,7 @@
       post 'callback_from_qiniu'
       post 'callback_from_qiniu_transfer'
       post 'callback_from_qiniu_video_images'
+      post 'rating'
     end
 
   end

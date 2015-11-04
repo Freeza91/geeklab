@@ -1,44 +1,29 @@
+@import ../helpers/variables
+@import ../helpers/mixin
+
 .projects_show,
 .projects_video,
 .projects_index
-  background-color: #eee
+  background-color: $blue
 
-.projects_video,
-.projects_show
-  .title
-    font-size: 16px
-    line-height: 25px
-    .fa
-      margin-right: 5px
-      vertical-align: top
-      font-size: 1.5em
-.table-1
-  border: 3px solid #dadada
+.table-with-name-highlight
+  border: 2px solid $dark-blue
+  > tbody
+    > tr
+      border-color: $dark-blue
+      > td
+        border-color: $dark-blue
+        border-width: 2px
+        font-size: 1rem
+        color: $dark-blue
+      > td.name
+        width: 150px
+        background: $light-yellow
+        text-align: center
 
-// 任务详情页视频视频列表
-.video-list
-  > ul
-    list-style: none
-    margin: 0
-    padding: 0
-    > li
-      position: relative
-      box-shadow: 0 0 5px #aaa
-      .fa-play-circle
-        position: absolute
-        top: 50%
-        left: 50%
-        margin-top: -28px
-        margin-left: -24px
-        cursor: pointer
-      img
-        width: 100%
-        height: 150px
-    > li.available
-      .fa:hover
-        color: #fff
-    > li + li
-      margin-top: 15px
+.task-icon
+  width: 14px
+  margin-right: 10px
 
 .evaluate
   background-color: #fff
@@ -68,113 +53,29 @@
     width: 120px
     margin-top: 30px
 
-.projects-list
-  .videos
-    ul
-      height: 240px
-      margin: 0
-      padding: 0
-      list-style: none
-      > li
-        position: relative
-        background-color: #eee
-        background-clip: content-box
-        height: 120px
-        padding: 10px
-        img
-          width: 100%
-          height: 100%
-        a
-          position: absolute
-          top: 50%
-          left: 50%
-          margin-top: -28px
-          margin-left: -24px
-          color: #a0a0a0
-        a.available:hover
-          color: #fff
-  .card
-    header
-      background-color: #f9f9f9
-    .title
-      position: relative
-      margin: 0
-      a
-        color: #313131
-      a:hover
-        color: #16a0c6
-    .content
-      position: relative
-      background-color: #fff
-      height: 240px
-    .comment
-      display: none
-      position: absolute
-      width: 200px
-      background-color: #fff
-      z-index: 10
-      box-shadow: 0 0 5px #ccc
-      font-size: 15px
-      > li
-        padding: 7px
-    .comment::before
-      position: absolute
-      top: 50%
-      right: 100%
-      margin-top: -10px
-      content: ''
-      display: block
-      width: 0
-      height: 0
-      border-top: 10px solid transparent
-      border-right: 10px solid #fff
-      border-bottom: 10px solid transparent
-
-  .progress-num
-    position: absolute
-    right: 75px
-    bottom: 55px
-    .done
-    .total
-      color: #a0a0a0
-  .status
-    font-size: 17px
-    position: absolute
-    right: 55px
-    top: 2px
-
-  // 不同状态的提示
-  .status.status_wait_check
-    color: rgba(23, 160, 198, 1)
-  .status.status_checking
-    color: rgba(255, 241, 0, 1)
-  .status_not_accept
-    color: rgba(235, 97, 0, 1)
-  .status.status_failed
-    color: rgba(160, 160, 160, 1)
-  .status.status_success,
-  .status.status_underway,
-  .status.status_finish
-    color: rgba(50, 177, 108, 1)
 
 // 添加project
 .add-project
   position: fixed
   top: 140px
   left: 20px
-  width: 70px
+  width: 78px
   height: 70px
-  padding: 7px
-  border-radius: 50%
-  background-color: #fff
-  border: 2px solid #16a0c6
-  box-shadow: 0 0 10px rgba(22, 160, 198, .8)
-  text-align: center
-  line-height: 25px
+  background: image_url('projects/new_project.png')
   cursor: pointer
   z-index: 10
   p
+    position: relative
+    top: 46px
+    padding-left: 3px
     margin-bottom: 0
+    font-size: .8rem
+    color: $dark-blue
+    text-align: center
+.add-project:hover
+  background: image_url('projects/new_project_hover.png')
+  p
+    color: $blue
 
 // 是否看过的标记
 .read-mark
@@ -197,3 +98,173 @@
     font-size: 23px
     vertical-align: bottom
     margin-right: 5px
+
+
+// revision
+.project-list
+  padding: 40px 60px
+.project-item
+  margin-bottom: 15px
+  background: #fff
+  .item-header
+    background: $light-yellow
+    padding: 12px 20px
+    .title
+      display: inline-block
+      max-width: 300px
+      color: $dark-blue
+      vertical-align: middle
+      .fa
+        margin-right: 5px
+    .right-operation
+      float: right
+      > div
+        display: inline-block
+  .item-body
+    padding-left: 30px
+    padding-right: 30px
+  .nav-subtabs
+    padding-top: 15px
+    padding-bottom: 10px
+    text-align: center
+    ul
+      border-color: $dark-blue
+      > li
+        > a
+          background: #fff
+          color: $dark-blue
+        > a:hover
+          color: $blue
+        > a.active
+          background: $dark-blue
+          color: $blue
+      > li + li
+        > a
+          border-left: 1px solid $dark-blue
+.progress-num
+  padding-left: 10px
+  color: $dark-blue
+  font-size: .8rem
+  .done,
+  .total
+    padding-left: 2px
+    padding-right: 2px
+  .done
+    font-size: 1.2rem
+    color: $blue
+.timer,
+.operation
+  height: 100%
+  vertical-align: middle
+  color: $dark-blue
+.timer
+  .day,
+  .hour,
+  .minute
+    color: $blue
+.operation
+  a
+    display: inline-block
+  .fa
+    padding: 2px 4px
+    font-size: 1.4rem
+    cursor: pointer
+  .fa:hover
+    background: $dark-blue
+    color: $light-yellow
+.project-status
+  padding: 5px 9px
+  font-size: .8rem
+  font-weight: bold
+  color: #fff
+.project-status.wait_check
+  background: $dark-blue
+.project-status.success,
+.project-status.underway
+  background: $blue
+.project-status.not_accept
+  position: relative
+  background-color: $warn-red
+.project-status.finish
+  background: $green
+.project-status.failed
+  background: $gray
+
+.not_accept:hover
+  .project-comment
+    display: block
+
+.comment-reminder
+  position: absolute
+  padding: 2px 5px
+  top: -9px
+  right: -9px
+  +border-radius(10px)
+  background: $warn-red
+  color: #fff
+  font-size: 1rem
+.project-comment
+  display: none
+  position: absolute
+  top: 100%
+  left: -50%
+  margin-top: 20px
+  padding: 20px
+  background: $light-yellow
+  color: $warn-red
+  box-shadow: 0 0 3px $gray
+  ol
+    margin: 0
+    padding-left: 20px
+    > li
+      padding-top: 5px
+      padding-bottom: 5px
+  .triangle
+    top: 0
+    left: 50%
+    margin-left: -8px
+    width: 16px
+    height: 16px
+    background: $light-yellow
+    box-shadow: 1px -1px 1px $gray
+    transform-origin: top left
+    +transform(rotate(-45deg))
+
+.switch
+  padding-top: 5px
+  padding-bottom: 5px
+  text-align: center
+  .fa-angle-up,
+  .fa-angle-down
+    font-size: 1.2rem
+    cursor: pointer
+  .fa-angle-up:hover,
+  .fa-angle-down:hover
+    color: $blue
+
+.project-detail
+  display: none
+.project-video-list
+  .video-item
+    position: relative
+    float: left
+    width: 20%
+    min-width: 200px
+    height: 120px
+    padding: 10px
+    a
+      display: block
+      background: $dark-blue
+      height: 100px
+      overflow: hidden
+      text-align: center
+    img
+      width: 100%
+      height: 100%
+    .fa
+      line-height: 100px
+      font-size: 2.4rem
+  .video-item:hover
+    img
+      +transition(all .5s ease)
+      +transform(scale(1.1))

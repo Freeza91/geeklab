@@ -53,8 +53,6 @@ module QiniuAbout
       format.html { render 'assignments/mobiles/upload' }
 
       @token = params[:auth_token]
-      #@auth = auth_user_token(@token) &&
-              #@assignment = Assignment.includes(:project).find_by(id: params[:id])
       if auth_user_token(@token)
         if @assignment = Assignment.includes(:project).find_by(id: params[:id])
           @auth = true
@@ -188,7 +186,9 @@ private
       persistentPipeline: 'transfervideos',
       fsizeMin: 524288,
       fsizeLimit: 3221225472,
-      persistentOps: "avthumb/mp4/stripmeta/1/rotate/auto/vb/512k/s/800x480/autoscale/1/wmImage/" + qiniu_encode("#{Settings.water_picture}") + "/wmGravity/SouthWest" + "|saveas/" + qiniu_encode("#{Settings.qiniu_bucket}:copy-#{key_name}") ,
+      persistentOps: "avthumb/mp4/stripmeta/1/rotate/auto/vb/512k/s/800x480/autoscale/1/wmImage/" +
+                      qiniu_encode("#{Settings.water_picture}") + "/wmGravity/SouthWest" + "|saveas/" +
+                      qiniu_encode("#{Settings.qiniu_bucket}:copy-#{key_name}") ,
       persistentNotifyUrl: persistentNotifyUrl
     }
     Qiniu::Auth.generate_uptoken(put_policy)

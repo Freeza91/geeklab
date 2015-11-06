@@ -1,7 +1,7 @@
 ui.grid
   = search_form_for @q, url: search_dashboard_projects_path, method: :get do |f|
     div
-      = f.search_field :name_or_pm_email_cont, placeholder: '任务名或者产品经理邮箱'
+      = f.search_field :name_or_pm_email_or_status_cont, placeholder: '任务名或者产品经理邮箱或者任务状态', class: "search_field"
       = f.submit "搜索"
 div
   table.ui.celled.table

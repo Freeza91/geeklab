@@ -1,7 +1,7 @@
 ui.grid
   = search_form_for @q, url: search_dashboard_goods_path, method: :get do |f|
     div
-      = f.search_field :name_cont, placeholder: '商品名字'
+      = f.search_field :name_cont, placeholder: '商品名字', class: "search_field"
       = f.submit "搜索"
 div
   table.ui.celled.table

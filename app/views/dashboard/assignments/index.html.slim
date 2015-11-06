@@ -1,8 +1,8 @@
 ui.grid
   = search_form_for @q, url: search_dashboard_videos_path, method: :get do |f|
     div
-      = f.search_field :project_name_or_project_pm_email_or_tester_email_cont,
-                       placeholder: '任务名或者体验师邮箱或者产品经理邮箱'
+      = f.search_field :project_name_or_project_pm_email_or_tester_email_or_status_cont,
+                       placeholder: '任务名或者体验师邮箱或者产品经理邮箱或者视频状态', class: "search_field"
       = f.submit "搜索"
 div
   table.ui.celled.table
@@ -14,6 +14,7 @@ div
         th 产品经理邮箱
         th 任务状态
         th 过期时间
+        th 评分
         th 操作
     tbody
       - @assignments.each do |assignment|
@@ -35,6 +36,11 @@ div
             td
               | #{assignment.project.expired_at.strftime("%F %T")}
             td
+              - if assignment.credit_record
+                | #{assignment.credit_record.rating}
+              - else
+                | 暂无评分
+            td
               = link_to("审核", edit_dashboard_video_path(assignment))
               span |
               = link_to("删除", dashboard_video_path(assignment), method: 'delete', data: {confirm: "你确定要删除？#{assignment.project.name}"})
@@ -54,6 +60,9 @@ div
               | 不涉及
             td
               | 不涉及
+            td
+              span
+                = link_to("彻底删除", dashboard_video_path(assignment), method: 'delete', data: {confirm: "你确定要彻底删除？"})
 div.ui.container
   p
     = paginate @assignments

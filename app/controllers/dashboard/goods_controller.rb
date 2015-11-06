@@ -4,7 +4,7 @@ class Dashboard::GoodsController < Dashboard::BaseController
 
   def index
     @goods = Good.order('updated_at desc').page(params[:page]).per(10)
-    @q = Good.ransack(params[:q])
+    @q = Good.order('updated_at desc').ransack(params[:q])
   end
 
   def new
@@ -47,9 +47,9 @@ class Dashboard::GoodsController < Dashboard::BaseController
   end
 
   def search
-    @goods = Good.ransack(params[:q])
+    @goods = Good.order('updated_at desc').ransack(params[:q])
                  .result.page(params[:page]).per(10)
-    @q = Good.ransack(params[:q])
+    @q = Good.order('updated_at desc').ransack(params[:q])
 
     render :index
   end

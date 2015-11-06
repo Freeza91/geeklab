@@ -14,6 +14,117 @@ $(function () {
     // 瀑布流加载
     // 任务引导的vue model
 
+  // 七牛分片上传
+
+
+  var qiniuChunkUpload = {};
+  qiniuChunkUpload.option = {
+    uploadToken: ''
+  };
+  qiniuChunkUpload.httpCount = 0;
+  qiniuChunkUpload.ctx = '';
+
+  qiniuChunkUpload.segmentFile = function (file, segmentSize) {
+    var segmentSize = segmentSize || 4 << 20, // byte 文件分块大小, default: 4mb
+        fileSize = file.size;
+        segmentLen = Math.ceil(fileSize / segmentSize),
+        segmentArr = [],
+        start = 0,
+        end = 0;
+    for(var i = 0; i < segmentLen; i++) {
+      start = i * segmentSize;
+      end = start + segmentSize;
+      segmentArr[i] = file.slice(start, end);
+    }
+    return segmentArr;
+  }
+
+  qiniuChunkUpload.postBlock = function (block, uplaod) {
+    var chunkArr = segmentFile(block, 1024 * 1024);
+    makeBlock(chunkArr[0], uploadToken, function (data) {
+      var uploadHost = data.host,
+          ctx = data.ctx,
+          offset = data.offset;
+      for(var i = 1, len = chunkArr.len; i < len; i++) {
+        postChunk(chunkArr[i], uploadHost, uploadToken, ctx. offset);
+      }
+    });
+  }
+
+  qiniuChunkUpload.makeBlock = function (firstChunk, uploadToken) {
+    var size = firstChunk.size,
+        authorization = 'UpToken ' + uploadToken;
+    $.ajax({
+      url: '/mkblk/4194304',
+      method: 'post',
+      data: {data: firstChunk},
+      beforeSend: function (xhr) {
+        xhr,setRequestHeader('Host', 'http://upload.qiniu.com');
+        xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+        xhr.setRequestHeader('Content-Length', size);
+        xhr.setRequestHeader('Authorization', authorization);
+      }
+    })
+    .done(function (data) {
+      console.log(data);
+    })
+    .fail(function (xhr, status, errors) {
+
+    });
+  }
+
+  qiniuChunkUpload.postChunk = function (chunk, uplaodToken, ctx, chunkOffset) {
+    var size = chunk.size,
+        authorization = 'UpToken ' + uploadToken;
+    $.ajax({
+      //url:'http://upload.qiniu.com/bput/<ctx>/<nextChunkOffset>',
+      url:'/bput/' + ctx + '/' + chunkOffset,
+      method: 'post',
+      data: {data: chunk},
+      beforeSend: function (xhr){
+        xhr,setRequestHeader('Host', uploadHost);
+        xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+        xhr.setRequestHeader('Content-Length', size);
+        xhr.setRequestHeader('Authorization', authorization);
+      }
+    })
+    .done(function (data){
+      console.log(data);
+    })
+    .fail(function (xhr, status, errors) {
+
+    });
+  }
+
+  qiniuChunkUpload.makeFile = function (fileSize, ctx, uploadHost) {
+    $.ajax({
+      url:'/mkfile/' + fileSize;
+      method: 'post',
+      data: {data: ctxArr.join(',')},
+      beforeSend: function (xhr){
+        xhr.setRequestHeader('host', uploadHost);
+        xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+        xhr.setRequestHeader('Content-Length', '<chunkSize>');
+        xhr.setRequestHeader('Authorization', 'UpToken <UplaodToken>');
+      }
+    })
+    .done(function (data){
+      console.log(data);
+    })
+    .fail(function (xhr, status, errors) {
+
+    });
+  }
+
+  qiniuChunkUpload.uplaod = function (file) {
+    var fileSegmentArr = segmentFile (file, 4 * 1024 * 1024),
+        segmentIndex = 0;
+    var ctxArr = []; // 记录每个block最后一个chunk上传后返回的ctx
+    console.log(fileSegmentArr);
+    postBlock(block, uploadToken);
+  }
+
+
   // 保存testId
   var testerId = $('.assignments-list').data('testerId');
   var assignmentId = 0; // 当前执行操作的任务id
@@ -124,6 +235,8 @@ $(function () {
     $('#close').click();
     var file = $(this)[0].files[0];
     if(file) {
+      segmentFile(file);
+      return false;
       // 判断所选文件的类型是否为video
       if(file.type.split('/')[0] === 'video') {
         // 切换operator

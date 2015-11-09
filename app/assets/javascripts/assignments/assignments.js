@@ -80,7 +80,7 @@ $(function () {
         if(!data.error) {
           console.log(that.fileSize, firstChunk.size, that.fileLoaded, that.progressPercent);
           that.fileLoaded = that.fileLoaded + firstChunk.size;
-          that.progressPercent = Math.floor((that.fileLoaded / that.fileSize) * 100)
+          that.progressPercent = Math.floor((that.fileLoaded / that.fileSize) * 95);
           showUploadProgress(that.progressPercent);
           callback(data);
         }
@@ -143,7 +143,7 @@ $(function () {
         if(!data.error) {
           console.log(that.fileSize, chunk.size, that.fileLoaded, that.progressPercent);
           that.fileLoaded = that.fileLoaded + chunk.size;
-          that.progressPercent = Math.floor((that.fileLoaded / that.fileSize) * 100)
+          that.progressPercent = Math.floor((that.fileLoaded / that.fileSize) * 95)
           showUploadProgress(that.progressPercent);
           callback(data);
         }
@@ -170,6 +170,7 @@ $(function () {
       })
       .done(function (data){
         console.log(data);
+        showUploadProgress(100);
         if(data.status === 0) {
           switch(data.code) {
             case 0:

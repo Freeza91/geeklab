@@ -24,7 +24,6 @@ $(function () {
         uploadToken = '';
 
     this.segmentFile = function (file, segmentSize) {
-      console.log(file);
       var segmentSize = segmentSize,
           fileSize = file.size,
           segmentLen = Math.ceil(fileSize / segmentSize),
@@ -84,7 +83,9 @@ $(function () {
       that.postChunk(chunkArr[chunkIndex], uploadHost, ctx, offset, function (data) {
         if(chunkIndex === chunkLen - 1) {
           // 记录最后一片的ctx
-          console.log(data.ctx);
+          that.ctx = that.ctx || [];
+          that.ctx[blockIndex] = data.ctx;
+          console.log(that.ctx);
           // 开始一个新的postBlock
           that.httpCount = that.httpCount - 1;
           if(that.blockIndex < that.blockLen - 1) {
@@ -103,9 +104,7 @@ $(function () {
 
     this.postChunk = function (chunk, uploadHost, ctx, chunkOffset, callback) {
 
-      console.log(ctx, chunkOffset);
       var authorization = 'UpToken ' + that.uploadToken;
-
       $.ajax({
         url: uploadHost + '/bput/' + ctx + '/' + chunkOffset,
         method: 'post',
@@ -119,7 +118,6 @@ $(function () {
         }
       })
       .done(function (data){
-        console.log(data);
         if(!data.error) {
           callback(data);
         }

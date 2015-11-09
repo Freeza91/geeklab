@@ -18,12 +18,13 @@ $(function () {
   function QiniuChunkUpload () {
     var that = this,
         fileBlockArr = [],
+        blockLen = 0,
+        blockIndex = 0,
         httpCount = 0,
-        ctx = '',
-        uploadHost = '',
         uploadToken = '';
 
     this.segmentFile = function (file, segmentSize) {
+      console.log(file);
       var segmentSize = segmentSize,
           fileSize = file.size,
           segmentLen = Math.ceil(fileSize / segmentSize),
@@ -38,16 +39,15 @@ $(function () {
       return segmentArr;
     }
 
-    this.postBlock = function (block) {
+    this.postBlock = function (block, blockIndex) {
       var chunkSize = 1 << 20,
           chunkArr = that.segmentFile(block, chunkSize),
           chunkLen = chunkArr.length,
           chunkIndex = 0;
       that.makeBlock(chunkArr[chunkIndex], function (data) {
-        console.log(data);
-        chunkIndex = chunkIndex + 1;
 
-        that.postChunkQueue(chunkArr, chunkIndex, chunkSize, data.host, data.ctx, data.offset)
+        chunkIndex = chunkIndex + 1;
+        that.postChunkQueue(chunkArr, chunkIndex, data.host, data.ctx, data.offset, blockIndex)
       });
     }
 
@@ -79,17 +79,24 @@ $(function () {
       });
     }
 
-    this.postChunkQueue = function (chunkArr, chunkIndex, chunkSize, uploadHost, ctx, offset) {
+    this.postChunkQueue = function (chunkArr, chunkIndex, uploadHost, ctx, offset, blockIndex) {
       var chunkLen = chunkArr.length;
       that.postChunk(chunkArr[chunkIndex], uploadHost, ctx, offset, function (data) {
         if(chunkIndex === chunkLen - 1) {
           // 记录最后一片的ctx
-          that.ctx = that.ctx ?  ',' + data.ctx : data.ctx;
-          console.log(that.ctx);
+          console.log(data.ctx);
+          // 开始一个新的postBlock
+          that.httpCount = that.httpCount - 1;
+          if(that.blockIndex < that.blockLen - 1) {
+            that.blockIndex = that.blockIndex + 1;
+            that.httpCount = that.httpCount + 1;
+            that.postBlock(that.fileBlockArr[that.blockIndex], that.blockIndex);
+            console.log(that.blockIndex);
+          }
         } else {
           // 上传下一片
           chunkIndex = chunkIndex + 1;
-          that.postChunkQueue(chunkArr, chunkIndex, chunkSize, data.host, data.ctx, data.offset)
+          that.postChunkQueue(chunkArr, chunkIndex, data.host, data.ctx, data.offset, blockIndex)
         }
       });
     }
@@ -130,7 +137,6 @@ $(function () {
         beforeSend: function (xhr){
           xhr.setRequestHeader('host', uploadHost);
           xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-          xhr.setRequestHeader('Content-Length', '<chunkSize>');
           xhr.setRequestHeader('Authorization', 'UpToken <UplaodToken>');
         }
       })
@@ -143,22 +149,28 @@ $(function () {
     }
 
     this.upload = function (file) {
-      var fileSize = file.size,
-          fileBlockArr = that.segmentFile (file, 4 * 1024 * 1024),
-          blockLen = fileBlockArr.length,
-          blockIndex = 0;
+      //var fileSize = file.size,
+      console.log(file);
+      that.fileBlockArr = that.segmentFile (file, 4 * 1024 * 1024);
+      that.blockLen = that.fileBlockArr.length;
+      that.blockIndex = 0;
+      that.httpCount = 0;
+
       getUploadToken('rngz95q4', 'test', function (token) {
         that.uploadToken = token;
-        that.postBlock(fileBlockArr[blockIndex])
+        //that.postBlock(fileBlockArr[blockIndex])
+      //});
+        while(that.blockIndex < 5) {
+          that.httpCount = that.httpCount + 1;
+          that.postBlock(that.fileBlockArr[that.blockIndex], that.blockIndex);
+          that.blockIndex = that.blockIndex + 1;
+        }
+        //that.makeFile(fileSize that.ctx, that.uploadHost);
       });
-      //while(blockIndex < blockLen) {
-        //console.log(blockIndex);
-        //that.postBlock(fileBlockArr[blockIndex], that.uploadToken);
-        //blockIndex = blockIndex + 1;
-      //}
-      //that.makeFile(fileSize, that.ctx, that.uploadHost);
     }
+
   }
+
 
   var uploader = new QiniuChunkUpload();
 
@@ -1048,5 +1060,5 @@ $(function () {
     }
     return map[platform + device];
   }
-});
 
+});

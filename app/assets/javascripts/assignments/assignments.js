@@ -15,17 +15,13 @@ $(function () {
     // 任务引导的vue model
 
   // 七牛分片上传
-
-
   function QiniuChunkUpload () {
     var that = this,
         fileBlockArr = [],
         httpCount = 0,
         ctx = '',
-        option = {
-          uploadToken: ''
-        };
-
+        uploadHost = '',
+        uploadToken = '';
 
     this.segmentFile = function (file, segmentSize) {
       var segmentSize = segmentSize || 4 << 20, // byte 文件分块大小, default: 4mb
@@ -42,41 +38,54 @@ $(function () {
       return segmentArr;
     }
 
-    this.postBlock = function (block, uplaod) {
-      var chunkArr = segmentFile(block, 1024 * 1024);
-      makeBlock(chunkArr[0], uploadToken, function (data) {
-        var uploadHost = data.host,
-            ctx = data.ctx,
-            offset = data.offset;
-        for(var i = 1, len = chunkArr.len; i < len; i++) {
-          postChunk(chunkArr[i], uploadHost, uploadToken, ctx. offset);
-        }
+    this.postBlock = function (block, uplaodToken) {
+      //var chunkArr = segmentFile(block, 1024 * 1024);
+      //makeBlock(chunkArr[0], uploadToken, function (data) {
+
+      // 分块之后不再做分片处理，每块就是一片
+      that.makeBlock(block, uploadToken, function (data) {
+        // 记录ctx
+        that.ctx = that.ctx ?  ',' + data.ctx : data.ctx;
+        that.uploadHost = data.host;
+        //var uploadHost = data.host,
+            //offset = data.offset;
+        //for(var i = 1, len = chunkArr.len; i < len; i++) {
+          //postChunk(chunkArr[i], uploadHost, uploadToken, ctx. offset);
+        //}
       });
     }
 
-    this.makeBlock = function (firstChunk, uploadToken) {
+    this.makeBlock = function (firstChunk, uploadToken, callback) {
       var size = firstChunk.size,
           authorization = 'UpToken ' + uploadToken;
-      $.ajax({
-        url: '/mkblk/4194304',
-        method: 'post',
-        data: {data: firstChunk},
-        beforeSend: function (xhr) {
-          xhr,setRequestHeader('Host', 'http://upload.qiniu.com');
-          xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-          xhr.setRequestHeader('Content-Length', size);
-          xhr.setRequestHeader('Authorization', authorization);
-        }
-      })
-      .done(function (data) {
-        console.log(data);
-      })
-      .fail(function (xhr, status, errors) {
-
-      });
+      console.log(uploadToken);
+      var reader = new FileReader();
+      reader.onload = function (event) {
+        var chunkBinary = event.target.result;
+        $.ajax({
+          url: 'http://upload.qiniu.com/mkblk/4194304',
+          method: 'post',
+          data: {data: chunkBinary},
+          beforeSend: function (xhr) {
+            xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+            //xhr.setRequestHeader('Content-Length', size);
+            xhr.setRequestHeader('Authorization', authorization);
+          }
+        })
+        .done(function (data) {
+          console.log(data);
+          if(!data.error) {
+            callback(data);
+          }
+        })
+        .fail(function (xhr, status, errors) {
+          console.log(errors);
+        });
+      }
+      reader.readAsBinaryString(firstChunk);
     }
 
-    this.postChunk = function (chunk, uplaodToken, ctx, chunkOffset) {
+    this.postChunk = function (chunk, uploadHost, uplaodToken, ctx, chunkOffset) {
       var size = chunk.size,
           authorization = 'UpToken ' + uploadToken;
 
@@ -84,6 +93,8 @@ $(function () {
       var reader = new FileReader();
       reader.onload = function (event) {
         var chunkBinary = event.target.result;
+        console.log(chunkBinary);
+        return false;
         $.ajax({
           //url:'http://upload.qiniu.com/bput/<ctx>/<nextChunkOffset>',
           url:'/bput/' + ctx + '/' + chunkOffset,
@@ -108,9 +119,9 @@ $(function () {
 
     this.makeFile = function (fileSize, ctx, uploadHost) {
       $.ajax({
-        url:'/mkfile/' + fileSize;
+        url:'/mkfile/' + fileSize,
         method: 'post',
-        data: {data: ctxArr.join(',')},
+        data: {data: ctx},
         beforeSend: function (xhr){
           xhr.setRequestHeader('host', uploadHost);
           xhr.setRequestHeader('Content-Type', 'application/octet-stream');
@@ -126,15 +137,26 @@ $(function () {
       });
     }
 
-    this.uplaod = function (file) {
-      var fileSegmentArr = segmentFile (file, 4 * 1024 * 1024),
-          segmentIndex = 0;
-      var ctxArr = []; // 记录每个block最后一个chunk上传后返回的ctx
-      console.log(fileSegmentArr);
-      postBlock(block, uploadToken);
+    this.upload = function (file) {
+      var fileSize = file.size,
+          fileBlockArr = that.segmentFile (file, 4 * 1024 * 1024),
+          blockLen = fileBlockArr.length,
+          blockIndex = 0;
+      console.log(fileBlockArr);
+      getUploadToken('rngz95q4', 'test', function (token) {
+        that.uploadToken = token;
+        that.postBlock(fileBlockArr[blockIndex], uploadToken);
+      });
+      //while(blockIndex < blockLen) {
+        //console.log(blockIndex);
+        //that.postBlock(fileBlockArr[blockIndex], that.uploadToken);
+        //blockIndex = blockIndex + 1;
+      //}
+      //that.makeFile(fileSize, that.ctx, that.uploadHost);
     }
   }
 
+  var uploader = new QiniuChunkUpload();
 
   // 保存testId
   var testerId = $('.assignments-list').data('testerId');
@@ -246,8 +268,10 @@ $(function () {
     $('#close').click();
     var file = $(this)[0].files[0];
     if(file) {
-      segmentFile(file);
+      // 测试qiniuChunkUpload
+      uploader.upload(file);
       return false;
+
       // 判断所选文件的类型是否为video
       if(file.type.split('/')[0] === 'video') {
         // 切换operator
@@ -261,7 +285,7 @@ $(function () {
         // 清空input的value, 使再次选中同一视频时还能触发change事件
         $(this).val('');
 
-        getUploadToken(testerId, assignmentId, filename, function (token) {
+        getUploadToken(assignmentId, filename, function (token) {
           if(token) {
             $card.find('.status').hide();
             $card.find('.content img').hide();
@@ -358,6 +382,7 @@ $(function () {
     formData.append('token', token);
     formData.append('file', file);
     formData.append('accept', 'application/json');
+
     // ajax上传
     uploadAjax = $.ajax({
       url: 'http://upload.qiniu.com',
@@ -410,7 +435,7 @@ $(function () {
   }
 
   // 获取上传视屏的token
-  function getUploadToken(userId, assignmentId, filename, callback) {
+  function getUploadToken(assignmentId, filename, callback) {
     var url = '/assignments/upload_token/';
     $.ajax({
       url: url,

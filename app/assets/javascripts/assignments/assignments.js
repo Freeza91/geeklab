@@ -27,6 +27,8 @@ $(function () {
         fileSize = 0,
         fileLoaded = 0,
         progressPercent = 0,
+        // 存储xhr
+        xhrArr = [];
 
 
     this.segmentFile = function (file, segmentSize) {
@@ -60,9 +62,9 @@ $(function () {
       var size = firstChunk.size,
           authorization = 'UpToken ' + that.uploadToken;
 
-      var formData = new FormData();
-      formData.append('file', firstChunk);
-      $.ajax({
+      that.xhrArr = that.xhrArr || [];
+
+      var xhr = $.ajax({
         url: 'http://upload.qiniu.com/mkblk/' + blockSize,
         method: 'post',
         data: firstChunk,
@@ -86,6 +88,7 @@ $(function () {
       .fail(function (xhr, status, errors) {
         console.log(errors);
       });
+      that.xhrArr.push(xhr);
     }
 
     this.postChunkQueue = function (chunkArr, chunkIndex, uploadHost, ctx, offset, blockIndex) {
@@ -122,7 +125,9 @@ $(function () {
     this.postChunk = function (chunk, uploadHost, ctx, chunkOffset, callback) {
 
       var authorization = 'UpToken ' + that.uploadToken;
-      $.ajax({
+
+      that.xhrArr = that.xhrArr || [];
+      var xhr = $.ajax({
         url: uploadHost + '/bput/' + ctx + '/' + chunkOffset,
         method: 'post',
         data: chunk,
@@ -146,13 +151,15 @@ $(function () {
       .fail(function (xhr, status, errors) {
         console.log(errors);
       });
+      that.xhrArr.push(xhr);
     }
 
     this.makeFile = function (fileSize, ctx, uploadHost, callback) {
 
       var authorization = 'UpToken ' + that.uploadToken;
 
-      $.ajax({
+      that.xhrArr = that.xhrArr || [];
+      var xhr = $.ajax({
         url: uploadHost + '/mkfile/' + fileSize,
         method: 'post',
         data: that.ctx.join(','),
@@ -183,8 +190,9 @@ $(function () {
         }
       })
       .fail(function (xhr, status, errors) {
-
+        console.log(errors);
       });
+      that.xhrArr.push(xhr);
     }
 
     this.upload = function (assignmentId, file, callback) {
@@ -212,6 +220,12 @@ $(function () {
           that.blockIndex = that.blockIndex + 1;
         }
       });
+    }
+
+    this.abort = function () {
+      for(var i = 0, len = that.xhrArr.length; i < len; i++) {
+        that.xhrArr[i].abort();
+      }
     }
 
   }
@@ -300,8 +314,18 @@ $(function () {
 
   // 取消上传
   $('.assignments-wrp').on('click', '.js-upload-cancel', function () {
-    uploadAjax.abort();
+    //uploadAjax.abort();
+    uploader.abort();
     $card.find('.operator.uploading').hide();
+
+    // 恢复上传进度圆环
+    $card.find('.progressCircle .inner').css({
+      'transform': 'rotate(0)',
+      '-o-transform': 'rotate(0)',
+      '-moz-transform': 'rotate(0)',
+      '-webkit-transform': 'rotate(0)'
+    });
+
     var $image = $card.find('.content img');
     if($image.attr('src')) {
       $image.fadeIn();
@@ -310,7 +334,6 @@ $(function () {
     }
     $card.find('.operator.wait-upload').fadeIn();
   });
-
 
   // 上传失败取消
   $('.assignments-wrp').on('click', '.js-reupload-cancel', function () {

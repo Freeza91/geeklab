@@ -21,8 +21,13 @@ $(function () {
         blockLen = 0,
         blockIndex = 0,
         httpCount = 0,
-        ctxCount = 0,
-        uploadToken = '';
+        ctxCount = 0, // 记录ctx数量, 调用makeFile的标志
+        uploadToken = '',
+        // 计算上传进度所需数据
+        fileSize = 0,
+        fileLoaded = 0,
+        progressPercent = 0,
+
 
     this.segmentFile = function (file, segmentSize) {
       var segmentSize = segmentSize,
@@ -71,6 +76,10 @@ $(function () {
       })
       .done(function (data) {
         if(!data.error) {
+          console.log(that.fileSize, firstChunk.size, that.fileLoaded, that.progressPercent);
+          that.fileLoaded = that.fileLoaded + firstChunk.size;
+          that.progressPercent = Math.floor((that.fileLoaded / that.fileSize) * 100)
+          showUploadProgress(that.progressPercent);
           callback(data);
         }
       })
@@ -127,6 +136,10 @@ $(function () {
       })
       .done(function (data){
         if(!data.error) {
+          console.log(that.fileSize, chunk.size, that.fileLoaded, that.progressPercent);
+          that.fileLoaded = that.fileLoaded + chunk.size;
+          that.progressPercent = Math.floor((that.fileLoaded / that.fileSize) * 100)
+          showUploadProgress(that.progressPercent);
           callback(data);
         }
       })
@@ -177,6 +190,8 @@ $(function () {
     this.upload = function (assignmentId, file, callback) {
 
       that.fileSize = file.size;
+      that.fileLoaded = 0;
+      that.progressPercent = 0;
       that.fileBlockArr = that.segmentFile (file, 4 << 20);
       that.blockLen = that.fileBlockArr.length;
       that.blockIndex = 0;
@@ -334,6 +349,7 @@ $(function () {
             //$card.find('.status').hide();
             //$card.find('.content img').hide();
             //uploadVideo(file, token, function (data) {
+
           // 上传成功后的回调
           var imageUrl = data.video + '?vframe/png/offset/0/w/480/h/200'
           $card.find('.content img').attr('src', imageUrl).show();

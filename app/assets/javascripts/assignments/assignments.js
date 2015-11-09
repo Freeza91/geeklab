@@ -40,7 +40,7 @@ $(function () {
     }
 
     this.postBlock = function (block, blockIndex) {
-      var chunkSize = 1 << 20,
+      var chunkSize = 2 << 20,
           chunkArr = that.segmentFile(block, chunkSize),
           chunkLen = chunkArr.length,
           chunkIndex = 0;
@@ -98,7 +98,9 @@ $(function () {
           console.log(blockIndex, that.ctx);
           // 所有块上传完成之后makefile
           if(that.ctxCount === that.blockLen) {
-            that.makeFile(that.fileSize, that.ctx, data.host);
+            that.makeFile(that.fileSize, that.ctx, data.host, function (data) {
+
+            });
           }
         } else {
           // 上传下一片
@@ -133,7 +135,7 @@ $(function () {
       });
     }
 
-    this.makeFile = function (fileSize, ctx, uploadHost) {
+    this.makeFile = function (fileSize, ctx, uploadHost, callback) {
 
       var authorization = 'UpToken ' + that.uploadToken;
 
@@ -148,29 +150,52 @@ $(function () {
       })
       .done(function (data){
         console.log(data);
+        if(data.status === 0) {
+          switch(data.code) {
+            case 0:
+              $card.find('.operator.uploading').hide();
+              $card.find('.operator.upload-failed').fadeIn();
+              // 恢复上传进度圆环
+              $card.find('.progressCircle .inner').css({
+                'transform': 'rotate(0)',
+                '-o-transform': 'rotate(0)',
+                '-moz-transform': 'rotate(0)',
+                '-webkit-transform': 'rotate(0)'
+              });
+            break;
+            case 1:
+              that.callback(data);
+            break;
+          }
+        }
       })
       .fail(function (xhr, status, errors) {
 
       });
     }
 
-    this.upload = function (file) {
+    this.upload = function (assignmentId, file, callback) {
 
       that.fileSize = file.size;
-      that.fileBlockArr = that.segmentFile (file, 4 * 1024 * 1024);
+      that.fileBlockArr = that.segmentFile (file, 4 << 20);
       that.blockLen = that.fileBlockArr.length;
       that.blockIndex = 0;
       that.httpCount = 0;
       that.ctxCount = 0;
 
-      getUploadToken('rngz95q4', 'test', function (token) {
+      that.callback = callback;
+
+      getUploadToken(assignmentId, file.name, function (token) {
+        // card ui 操作
+        $card.find('.status').hide();
+        $card.find('.content img').hide();
+
         that.uploadToken = token;
         while(that.blockIndex < 5) {
           that.httpCount = that.httpCount + 1;
           that.postBlock(that.fileBlockArr[that.blockIndex], that.blockIndex);
           that.blockIndex = that.blockIndex + 1;
         }
-        //that.makeFile(fileSize that.ctx, that.uploadHost);
       });
     }
 
@@ -216,6 +241,7 @@ $(function () {
       });
     }
   });
+
   $('.load-more').on('click', 'button', function () {
     page++;
     getAssignmentPaging(page, function (data) {
@@ -290,8 +316,6 @@ $(function () {
     var file = $(this)[0].files[0];
     if(file) {
       // 测试qiniuChunkUpload
-      uploader.upload(file);
-      return false;
 
       // 判断所选文件的类型是否为video
       if(file.type.split('/')[0] === 'video') {
@@ -301,38 +325,35 @@ $(function () {
         // 隐藏视频截图
         $card.find('img').fadeOut();
 
-        var filename = file.name
-
         // 清空input的value, 使再次选中同一视频时还能触发change事件
         $(this).val('');
 
-        getUploadToken(assignmentId, filename, function (token) {
-          if(token) {
-            $card.find('.status').hide();
-            $card.find('.content img').hide();
-            uploadVideo(file, token, function (data) {
-              // 上传成功后的回调
-              var imageUrl = data.video + '?vframe/png/offset/0/w/480/h/200'
-              $card.find('.content img').attr('src', imageUrl).show();
-              // 切换operator
-              $card.find('.operator.wait-check').fadeIn();
-              $card.find('.operator.uploading').fadeOut();
-              // 显示状态，并将状态置为wait_check
-              $card.find('.status').fadeIn().removeClass().addClass('status status_wait_check').find('p').text('等待审核');
-              // 恢复上传进度圆环
-              $card.find('.progressCircle .inner').css({
-                'transform': 'rotate(0)',
-                '-o-transform': 'rotate(0)',
-                '-moz-transform': 'rotate(0)',
-                '-webkit-transform': 'rotate(0)'
-              });
+        uploader.upload(assignmentId, file, function (data) {
+        //getUploadToken(assignmentId, filename, function (token) {
+          //if(token) {
+            //$card.find('.status').hide();
+            //$card.find('.content img').hide();
+            //uploadVideo(file, token, function (data) {
+          // 上传成功后的回调
+          var imageUrl = data.video + '?vframe/png/offset/0/w/480/h/200'
+          $card.find('.content img').attr('src', imageUrl).show();
+          // 切换operator
+          $card.find('.operator.wait-check').fadeIn();
+          $card.find('.operator.uploading').fadeOut();
+          // 显示状态，并将状态置为wait_check
+          $card.find('.status').fadeIn().removeClass().addClass('status status_wait_check').find('p').text('等待审核');
+          // 恢复上传进度圆环
+          $card.find('.progressCircle .inner').css({
+            'transform': 'rotate(0)',
+            '-o-transform': 'rotate(0)',
+            '-moz-transform': 'rotate(0)',
+            '-webkit-transform': 'rotate(0)'
+          });
               // 清除上传input框的值
-              delete $(this)[0].files;
-              // 上传成功后跳转至正在进行中的任务页面
-              if(location.pathname.split('/').pop() === 'assignments') {
-                location.href = '/assignments/join';
-              }
-            });
+          delete $('#video')[0].files;
+          // 上传成功后跳转至正在进行中的任务页面
+          if(location.pathname.split('/').pop() === 'assignments') {
+            location.href = '/assignments/join';
           }
         });
       } else {

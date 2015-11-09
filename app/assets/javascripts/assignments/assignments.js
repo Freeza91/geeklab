@@ -21,6 +21,7 @@ $(function () {
         blockLen = 0,
         blockIndex = 0,
         httpCount = 0,
+        ctxCount = 0,
         uploadToken = '';
 
     this.segmentFile = function (file, segmentSize) {
@@ -43,21 +44,21 @@ $(function () {
           chunkArr = that.segmentFile(block, chunkSize),
           chunkLen = chunkArr.length,
           chunkIndex = 0;
-      that.makeBlock(chunkArr[chunkIndex], function (data) {
+      that.makeBlock(chunkArr[chunkIndex], block.size, function (data) {
 
         chunkIndex = chunkIndex + 1;
         that.postChunkQueue(chunkArr, chunkIndex, data.host, data.ctx, data.offset, blockIndex)
       });
     }
 
-    this.makeBlock = function (firstChunk, callback) {
+    this.makeBlock = function (firstChunk, blockSize, callback) {
       var size = firstChunk.size,
           authorization = 'UpToken ' + that.uploadToken;
 
       var formData = new FormData();
       formData.append('file', firstChunk);
       $.ajax({
-        url: 'http://upload.qiniu.com/mkblk/4194304',
+        url: 'http://upload.qiniu.com/mkblk/' + blockSize,
         method: 'post',
         data: firstChunk,
         cache: false,
@@ -82,17 +83,22 @@ $(function () {
       var chunkLen = chunkArr.length;
       that.postChunk(chunkArr[chunkIndex], uploadHost, ctx, offset, function (data) {
         if(chunkIndex === chunkLen - 1) {
+          // 开始一个新的postBlock
+          that.httpCount = that.httpCount - 1;
+          if(that.blockIndex < that.blockLen) {
+            that.httpCount = that.httpCount + 1;
+            that.postBlock(that.fileBlockArr[that.blockIndex], that.blockIndex);
+            that.blockIndex = that.blockIndex + 1;
+          }
+
           // 记录最后一片的ctx
           that.ctx = that.ctx || [];
           that.ctx[blockIndex] = data.ctx;
-          console.log(that.ctx);
-          // 开始一个新的postBlock
-          that.httpCount = that.httpCount - 1;
-          if(that.blockIndex < that.blockLen - 1) {
-            that.blockIndex = that.blockIndex + 1;
-            that.httpCount = that.httpCount + 1;
-            that.postBlock(that.fileBlockArr[that.blockIndex], that.blockIndex);
-            console.log(that.blockIndex);
+          that.ctxCount = that.ctxCount + 1;
+          console.log(blockIndex, that.ctx);
+          // 所有块上传完成之后makefile
+          if(that.ctxCount === that.blockLen) {
+            that.makeFile(that.fileSize, that.ctx, data.host);
           }
         } else {
           // 上传下一片
@@ -128,14 +134,16 @@ $(function () {
     }
 
     this.makeFile = function (fileSize, ctx, uploadHost) {
+
+      var authorization = 'UpToken ' + that.uploadToken;
+
       $.ajax({
-        url:'/mkfile/' + fileSize,
+        url: uploadHost + '/mkfile/' + fileSize,
         method: 'post',
-        data: {data: ctx},
+        data: that.ctx.join(','),
         beforeSend: function (xhr){
-          xhr.setRequestHeader('host', uploadHost);
           xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-          xhr.setRequestHeader('Authorization', 'UpToken <UplaodToken>');
+          xhr.setRequestHeader('Authorization', authorization);
         }
       })
       .done(function (data){
@@ -147,17 +155,16 @@ $(function () {
     }
 
     this.upload = function (file) {
-      //var fileSize = file.size,
-      console.log(file);
+
+      that.fileSize = file.size;
       that.fileBlockArr = that.segmentFile (file, 4 * 1024 * 1024);
       that.blockLen = that.fileBlockArr.length;
       that.blockIndex = 0;
       that.httpCount = 0;
+      that.ctxCount = 0;
 
       getUploadToken('rngz95q4', 'test', function (token) {
         that.uploadToken = token;
-        //that.postBlock(fileBlockArr[blockIndex])
-      //});
         while(that.blockIndex < 5) {
           that.httpCount = that.httpCount + 1;
           that.postBlock(that.fileBlockArr[that.blockIndex], that.blockIndex);

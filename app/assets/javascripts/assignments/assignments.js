@@ -38,12 +38,13 @@ $(function () {
       return segmentArr;
     }
 
-    this.postBlock = function (block, uplaodToken) {
+    this.postBlock = function (block) {
       //var chunkArr = segmentFile(block, 1024 * 1024);
       //makeBlock(chunkArr[0], uploadToken, function (data) {
 
+      console.log(block.size);
       // 分块之后不再做分片处理，每块就是一片
-      that.makeBlock(block, uploadToken, function (data) {
+      that.makeBlock(block, function (data) {
         // 记录ctx
         that.ctx = that.ctx ?  ',' + data.ctx : data.ctx;
         that.uploadHost = data.host;
@@ -55,25 +56,23 @@ $(function () {
       });
     }
 
-    this.makeBlock = function (firstChunk, uploadToken, callback) {
+    this.makeBlock = function (firstChunk, callback) {
       var size = firstChunk.size,
-          authorization = 'UpToken ' + uploadToken;
-      console.log(uploadToken);
+          authorization = 'UpToken ' + that.uploadToken;
       var reader = new FileReader();
       reader.onload = function (event) {
         var chunkBinary = event.target.result;
-        $.ajax({
+
+        uploadAjax = $.ajax({
           url: 'http://upload.qiniu.com/mkblk/4194304',
           method: 'post',
           data: {data: chunkBinary},
           beforeSend: function (xhr) {
             xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-            //xhr.setRequestHeader('Content-Length', size);
             xhr.setRequestHeader('Authorization', authorization);
           }
         })
         .done(function (data) {
-          console.log(data);
           if(!data.error) {
             callback(data);
           }
@@ -82,7 +81,8 @@ $(function () {
           console.log(errors);
         });
       }
-      reader.readAsBinaryString(firstChunk);
+      var fileBlock = firstChunk.slice(0, 1024 * 1024);
+      reader.readAsBinaryString(fileBlock);
     }
 
     this.postChunk = function (chunk, uploadHost, uplaodToken, ctx, chunkOffset) {
@@ -145,7 +145,8 @@ $(function () {
       console.log(fileBlockArr);
       getUploadToken('rngz95q4', 'test', function (token) {
         that.uploadToken = token;
-        that.postBlock(fileBlockArr[blockIndex], uploadToken);
+        console.log(that.uploadToken);
+        that.postBlock(fileBlockArr[blockIndex])
       });
       //while(blockIndex < blockLen) {
         //console.log(blockIndex);

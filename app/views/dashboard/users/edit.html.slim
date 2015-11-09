@@ -51,12 +51,18 @@
     .birthday 生日： #{DateTime.parse(@infor.birthday).strftime("%F")}
     .birthplace 出生地： #{@infor.birthplace}
     .livingplace 居住地： #{@infor.livingplace}
-    .device 设备： #{@infor.device.join("， ")}
+    - if @infor.device
+      .device 设备： #{@infor.device.join("， ")}
+    - else
+      .device 设备：暂无填写
     .emotional_status 情感状态： #{@infor.emotional_status}
     .sex_orientation 性取向： #{@infor.sex_orientation}
     .education 教育程度： #{@infor.education}
     .profession 职业： #{@infor.profession}
     .income 收入： #{@infor.income} 万
-    .interest 兴趣爱好： #{@infor.interest.join('， ')}
+    - if @infor.interest
+      .interest 兴趣爱好：#{@infor.interest.join('， ')}
+    - else
+      .interest 兴趣爱好：全部包括
   - else
     | 用户暂无填写

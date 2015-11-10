@@ -46,7 +46,14 @@ $(function () {
       return segmentArr;
     }
 
-    this.postBlock = function (block, blockIndex) {
+    this.postBlock = function (blockIndex) {
+      console.log('start post block');
+      var blockSize = 4 << 20,
+          start = blockIndex * blockSize,
+          end = Math.min(start + blockSize, that.fileSize);
+          block = that.file.slice(start, end);
+      console.log(start, end);
+
       var chunkSize = 2 << 20,
           chunkArr = that.segmentFile(block, chunkSize),
           chunkLen = chunkArr.length,
@@ -117,7 +124,7 @@ $(function () {
 
     this.postChunkQueue = function (chunkArr, chunkIndex, uploadHost, ctx, offset, blockIndex) {
       var chunkLen = chunkArr.length;
-
+      console.log(chunkLen, chunkIndex);
       var xhrIndex = blockIndex % 5;
       that.postChunk(chunkArr[chunkIndex], uploadHost, ctx, offset, xhrIndex, function (data) {
         if(chunkIndex === chunkLen - 1) {
@@ -125,7 +132,7 @@ $(function () {
           that.httpCount = that.httpCount - 1;
           if(that.blockIndex < that.blockLen) {
             that.httpCount = that.httpCount + 1;
-            that.postBlock(that.fileBlockArr[that.blockIndex], that.blockIndex);
+            that.postBlock(that.blockIndex);
             that.blockIndex = that.blockIndex + 1;
           }
 
@@ -199,6 +206,8 @@ $(function () {
         url: uploadHost + '/mkfile/' + fileSize,
         method: 'post',
         data: that.ctx.join(','),
+        tryCount: 0,
+        retryLimit: 3,
         success: function (data) {
           showUploadProgress(100);
           if(data.status === 0) {
@@ -224,6 +233,14 @@ $(function () {
           if(textStatus === 'abort') {
             return false;
           }
+          this.tryCount = this.tryCount + 1;
+          if(this.tryCount < this.retryLimit) {
+            $.ajax(this);
+            return;
+          } else {
+            that.fail();
+            return;
+          }
         },
         beforeSend: function (xhr){
           xhr.setRequestHeader('Content-Type', 'application/octet-stream');
@@ -235,11 +252,15 @@ $(function () {
 
     this.upload = function (assignmentId, file, callback, errorHandle) {
 
+      var blockSize = 4 << 20;
+      that.file = file;
       that.fileSize = file.size;
+      that.blockLen = Math.ceil(that.fileSize / blockSize);
+      console.log(that.blockLen);
+
       that.fileLoaded = 0;
       that.progressPercent = 0;
-      that.fileBlockArr = that.segmentFile (file, 4 << 20);
-      that.blockLen = that.fileBlockArr.length;
+
       that.blockIndex = 0;
       that.httpCount = 0;
       that.ctxCount = 0;
@@ -256,7 +277,7 @@ $(function () {
         that.uploadToken = token;
         while(that.blockIndex < 5) {
           that.httpCount = that.httpCount + 1;
-          that.postBlock(that.fileBlockArr[that.blockIndex], that.blockIndex);
+          that.postBlock(that.blockIndex);
           that.blockIndex = that.blockIndex + 1;
         }
       });

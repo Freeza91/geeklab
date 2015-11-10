@@ -54,7 +54,19 @@ $(function () {
       that.makeBlock(chunkArr[chunkIndex], block.size, function (data) {
 
         chunkIndex = chunkIndex + 1;
-        that.postChunkQueue(chunkArr, chunkIndex, data.host, data.ctx, data.offset, blockIndex)
+        if(chunkIndex < chunkLen) {
+          // block中含有多个chunk
+          that.postChunkQueue(chunkArr, chunkIndex, data.host, data.ctx, data.offset, blockIndex)
+        } else {
+          // block只有一个chunk, 记录ctx
+          that.ctx = that.ctx || [];
+          that.ctx[blockIndex] = data.ctx;
+          that.ctxCount = that.ctxCount + 1;
+          // 所有块上传完成之后makefile
+          if(that.ctxCount === that.blockLen) {
+            that.makeFile(that.fileSize, that.ctx, data.host);
+          }
+        }
       });
     }
 
@@ -78,7 +90,6 @@ $(function () {
       })
       .done(function (data) {
         if(!data.error) {
-          console.log(that.fileSize, firstChunk.size, that.fileLoaded, that.progressPercent);
           that.fileLoaded = that.fileLoaded + firstChunk.size;
           that.progressPercent = Math.floor((that.fileLoaded / that.fileSize) * 95);
           showUploadProgress(that.progressPercent);
@@ -107,12 +118,9 @@ $(function () {
           that.ctx = that.ctx || [];
           that.ctx[blockIndex] = data.ctx;
           that.ctxCount = that.ctxCount + 1;
-          console.log(blockIndex, that.ctx);
           // 所有块上传完成之后makefile
           if(that.ctxCount === that.blockLen) {
-            that.makeFile(that.fileSize, that.ctx, data.host, function (data) {
-
-            });
+            that.makeFile(that.fileSize, that.ctx, data.host);
           }
         } else {
           // 上传下一片
@@ -141,7 +149,6 @@ $(function () {
       })
       .done(function (data){
         if(!data.error) {
-          console.log(that.fileSize, chunk.size, that.fileLoaded, that.progressPercent);
           that.fileLoaded = that.fileLoaded + chunk.size;
           that.progressPercent = Math.floor((that.fileLoaded / that.fileSize) * 95)
           showUploadProgress(that.progressPercent);
@@ -154,7 +161,7 @@ $(function () {
       that.xhrArr.push(xhr);
     }
 
-    this.makeFile = function (fileSize, ctx, uploadHost, callback) {
+    this.makeFile = function (fileSize, ctx, uploadHost) {
 
       var authorization = 'UpToken ' + that.uploadToken;
 
@@ -169,7 +176,6 @@ $(function () {
         }
       })
       .done(function (data){
-        console.log(data);
         showUploadProgress(100);
         if(data.status === 0) {
           switch(data.code) {

@@ -83,21 +83,31 @@ $(function () {
         cache: false,
         processData: false, //Dont't process the file
         contentType: false,
+        tryCount: 0,
+        retryLimit: 3,
+        success: function (data) {
+          if(!data.error) {
+            that.fileLoaded = that.fileLoaded + firstChunk.size;
+            that.progressPercent = Math.floor((that.fileLoaded / that.fileSize) * 95);
+            showUploadProgress(that.progressPercent);
+            callback(data);
+          }
+        },
+        error: function (xhr, status, errors) {
+          console.log(errors);
+          this.tryCount = this.tryCount + 1;
+          console.log(this.tryCount, this.retryLimit);
+          if(this.tryCount < this.retryLimit) {
+            $.ajax(this);
+            console.log('retry');
+            return;
+
+          }
+        },
         beforeSend: function (xhr) {
           xhr.setRequestHeader('Content-Type', 'application/octet-stream');
           xhr.setRequestHeader('Authorization', authorization);
         }
-      })
-      .done(function (data) {
-        if(!data.error) {
-          that.fileLoaded = that.fileLoaded + firstChunk.size;
-          that.progressPercent = Math.floor((that.fileLoaded / that.fileSize) * 95);
-          showUploadProgress(that.progressPercent);
-          callback(data);
-        }
-      })
-      .fail(function (xhr, status, errors) {
-        console.log(errors);
       });
       that.xhrArr.push(xhr);
     }
@@ -142,21 +152,36 @@ $(function () {
         cache: false,
         processData: false, //Dont't process the file
         contentType: false,
+        tryCount: 0,
+        retryLimit: 3,
+        success: function (data) {
+          if(!data.error) {
+            that.fileLoaded = that.fileLoaded + chunk.size;
+            that.progressPercent = Math.floor((that.fileLoaded / that.fileSize) * 95)
+            showUploadProgress(that.progressPercent);
+            callback(data);
+          }
+        },
+        error: function (xhr, textStatus, errors) {
+          this.tryCount = this.tryCount + 1;
+          console.log(this.tryCount, this.retryLimit);
+          if(this.tryCount < this.retryLimit) {
+            $.ajax(this);
+            console.log('retry');
+            return;
+          }
+          //}
+          if(xhr.status === 500) {
+            // error handle
+          } else {
+            // error handle
+          }
+          console.log(errors);
+        },
         beforeSend: function (xhr){
           xhr.setRequestHeader('Content-Type', 'application/octet-stream');
           xhr.setRequestHeader('Authorization', authorization);
         }
-      })
-      .done(function (data){
-        if(!data.error) {
-          that.fileLoaded = that.fileLoaded + chunk.size;
-          that.progressPercent = Math.floor((that.fileLoaded / that.fileSize) * 95)
-          showUploadProgress(that.progressPercent);
-          callback(data);
-        }
-      })
-      .fail(function (xhr, status, errors) {
-        console.log(errors);
       });
       that.xhrArr.push(xhr);
     }
@@ -170,34 +195,34 @@ $(function () {
         url: uploadHost + '/mkfile/' + fileSize,
         method: 'post',
         data: that.ctx.join(','),
+        success: function (data) {
+          showUploadProgress(100);
+          if(data.status === 0) {
+            switch(data.code) {
+              case 0:
+                $card.find('.operator.uploading').hide();
+                $card.find('.operator.upload-failed').fadeIn();
+                // 恢复上传进度圆环
+                $card.find('.progressCircle .inner').css({
+                  'transform': 'rotate(0)',
+                  '-o-transform': 'rotate(0)',
+                  '-moz-transform': 'rotate(0)',
+                  '-webkit-transform': 'rotate(0)'
+                });
+              break;
+              case 1:
+                that.callback(data);
+              break;
+            }
+          }
+        },
+        error: function (xhr, status, errors) {
+          console.log(errors);
+        },
         beforeSend: function (xhr){
           xhr.setRequestHeader('Content-Type', 'application/octet-stream');
           xhr.setRequestHeader('Authorization', authorization);
         }
-      })
-      .done(function (data){
-        showUploadProgress(100);
-        if(data.status === 0) {
-          switch(data.code) {
-            case 0:
-              $card.find('.operator.uploading').hide();
-              $card.find('.operator.upload-failed').fadeIn();
-              // 恢复上传进度圆环
-              $card.find('.progressCircle .inner').css({
-                'transform': 'rotate(0)',
-                '-o-transform': 'rotate(0)',
-                '-moz-transform': 'rotate(0)',
-                '-webkit-transform': 'rotate(0)'
-              });
-            break;
-            case 1:
-              that.callback(data);
-            break;
-          }
-        }
-      })
-      .fail(function (xhr, status, errors) {
-        console.log(errors);
       });
       that.xhrArr.push(xhr);
     }
@@ -236,7 +261,6 @@ $(function () {
     }
 
   }
-
 
   var uploader = new QiniuChunkUpload();
 

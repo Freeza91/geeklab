@@ -94,14 +94,13 @@ $(function () {
           }
         },
         error: function (xhr, status, errors) {
-          console.log(errors);
           this.tryCount = this.tryCount + 1;
-          console.log(this.tryCount, this.retryLimit);
           if(this.tryCount < this.retryLimit) {
             $.ajax(this);
-            console.log('retry');
             return;
-
+          } else {
+            that.fail();
+            return;
           }
         },
         beforeSend: function (xhr) {
@@ -164,19 +163,18 @@ $(function () {
         },
         error: function (xhr, textStatus, errors) {
           this.tryCount = this.tryCount + 1;
-          console.log(this.tryCount, this.retryLimit);
           if(this.tryCount < this.retryLimit) {
             $.ajax(this);
-            console.log('retry');
+            return;
+          } else {
+            that.fail();
             return;
           }
-          //}
           if(xhr.status === 500) {
             // error handle
           } else {
             // error handle
           }
-          console.log(errors);
         },
         beforeSend: function (xhr){
           xhr.setRequestHeader('Content-Type', 'application/octet-stream');
@@ -227,7 +225,7 @@ $(function () {
       that.xhrArr.push(xhr);
     }
 
-    this.upload = function (assignmentId, file, callback) {
+    this.upload = function (assignmentId, file, callback, errorHandle) {
 
       that.fileSize = file.size;
       that.fileLoaded = 0;
@@ -239,6 +237,7 @@ $(function () {
       that.ctxCount = 0;
 
       that.callback = callback;
+      that.errorHandle = errorHandle;
 
       getUploadToken(assignmentId, file.name, function (token) {
         // card ui 操作
@@ -258,6 +257,11 @@ $(function () {
       for(var i = 0, len = that.xhrArr.length; i < len; i++) {
         that.xhrArr[i].abort();
       }
+    }
+
+    this.fail = function () {
+      this.abort();
+      this.errorHandle();
     }
 
   }
@@ -425,6 +429,17 @@ $(function () {
           if(location.pathname.split('/').pop() === 'assignments') {
             location.href = '/assignments/join';
           }
+        }, function () {
+          // 上传出错
+          $card.find('.operator.uploading').hide();
+          $card.find('.operator.upload-failed').fadeIn();
+          // 恢复上传进度圆环
+          $card.find('.progressCircle .inner').css({
+            'transform': 'rotate(0)',
+            '-o-transform': 'rotate(0)',
+            '-moz-transform': 'rotate(0)',
+            '-webkit-transform': 'rotate(0)'
+          });
         });
       } else {
         $form.find('.help-block').text('只能上传视频');

@@ -14,6 +14,232 @@ $(function () {
     // 瀑布流加载
     // 任务引导的vue model
 
+  // 七牛分片上传
+  function QiniuChunkUpload () {
+    var that = this,
+        fileBlockArr = [],
+        blockLen = 0,
+        blockIndex = 0,
+        httpCount = 0,
+        ctxCount = 0, // 记录ctx数量, 调用makeFile的标志
+        uploadToken = '',
+        // 计算上传进度所需数据
+        fileSize = 0,
+        fileLoaded = 0,
+        progressPercent = 0,
+        // 存储xhr
+        xhrArr = [];
+
+
+    this.segmentFile = function (file, segmentSize) {
+      var segmentSize = segmentSize,
+          fileSize = file.size,
+          segmentLen = Math.ceil(fileSize / segmentSize),
+          segmentArr = [],
+          start = 0,
+          end = 0;
+      for(var i = 0; i < segmentLen; i++) {
+        start = i * segmentSize;
+        end = Math.min(start + segmentSize, fileSize);
+        segmentArr[i] = file.slice(start, end);
+      }
+      return segmentArr;
+    }
+
+    this.postBlock = function (block, blockIndex) {
+      var chunkSize = 2 << 20,
+          chunkArr = that.segmentFile(block, chunkSize),
+          chunkLen = chunkArr.length,
+          chunkIndex = 0;
+      that.makeBlock(chunkArr[chunkIndex], block.size, function (data) {
+
+        chunkIndex = chunkIndex + 1;
+        if(chunkIndex < chunkLen) {
+          // block中含有多个chunk
+          that.postChunkQueue(chunkArr, chunkIndex, data.host, data.ctx, data.offset, blockIndex)
+        } else {
+          // block只有一个chunk, 记录ctx
+          that.ctx = that.ctx || [];
+          that.ctx[blockIndex] = data.ctx;
+          that.ctxCount = that.ctxCount + 1;
+          // 所有块上传完成之后makefile
+          if(that.ctxCount === that.blockLen) {
+            that.makeFile(that.fileSize, that.ctx, data.host);
+          }
+        }
+      });
+    }
+
+    this.makeBlock = function (firstChunk, blockSize, callback) {
+      var size = firstChunk.size,
+          authorization = 'UpToken ' + that.uploadToken;
+
+      that.xhrArr = that.xhrArr || [];
+
+      var xhr = $.ajax({
+        url: 'http://upload.qiniu.com/mkblk/' + blockSize,
+        method: 'post',
+        data: firstChunk,
+        cache: false,
+        processData: false, //Dont't process the file
+        contentType: false,
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+          xhr.setRequestHeader('Authorization', authorization);
+        }
+      })
+      .done(function (data) {
+        if(!data.error) {
+          that.fileLoaded = that.fileLoaded + firstChunk.size;
+          that.progressPercent = Math.floor((that.fileLoaded / that.fileSize) * 95);
+          showUploadProgress(that.progressPercent);
+          callback(data);
+        }
+      })
+      .fail(function (xhr, status, errors) {
+        console.log(errors);
+      });
+      that.xhrArr.push(xhr);
+    }
+
+    this.postChunkQueue = function (chunkArr, chunkIndex, uploadHost, ctx, offset, blockIndex) {
+      var chunkLen = chunkArr.length;
+      that.postChunk(chunkArr[chunkIndex], uploadHost, ctx, offset, function (data) {
+        if(chunkIndex === chunkLen - 1) {
+          // 开始一个新的postBlock
+          that.httpCount = that.httpCount - 1;
+          if(that.blockIndex < that.blockLen) {
+            that.httpCount = that.httpCount + 1;
+            that.postBlock(that.fileBlockArr[that.blockIndex], that.blockIndex);
+            that.blockIndex = that.blockIndex + 1;
+          }
+
+          // 记录最后一片的ctx
+          that.ctx = that.ctx || [];
+          that.ctx[blockIndex] = data.ctx;
+          that.ctxCount = that.ctxCount + 1;
+          // 所有块上传完成之后makefile
+          if(that.ctxCount === that.blockLen) {
+            that.makeFile(that.fileSize, that.ctx, data.host);
+          }
+        } else {
+          // 上传下一片
+          chunkIndex = chunkIndex + 1;
+          that.postChunkQueue(chunkArr, chunkIndex, data.host, data.ctx, data.offset, blockIndex)
+        }
+      });
+    }
+
+    this.postChunk = function (chunk, uploadHost, ctx, chunkOffset, callback) {
+
+      var authorization = 'UpToken ' + that.uploadToken;
+
+      that.xhrArr = that.xhrArr || [];
+      var xhr = $.ajax({
+        url: uploadHost + '/bput/' + ctx + '/' + chunkOffset,
+        method: 'post',
+        data: chunk,
+        cache: false,
+        processData: false, //Dont't process the file
+        contentType: false,
+        beforeSend: function (xhr){
+          xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+          xhr.setRequestHeader('Authorization', authorization);
+        }
+      })
+      .done(function (data){
+        if(!data.error) {
+          that.fileLoaded = that.fileLoaded + chunk.size;
+          that.progressPercent = Math.floor((that.fileLoaded / that.fileSize) * 95)
+          showUploadProgress(that.progressPercent);
+          callback(data);
+        }
+      })
+      .fail(function (xhr, status, errors) {
+        console.log(errors);
+      });
+      that.xhrArr.push(xhr);
+    }
+
+    this.makeFile = function (fileSize, ctx, uploadHost) {
+
+      var authorization = 'UpToken ' + that.uploadToken;
+
+      that.xhrArr = that.xhrArr || [];
+      var xhr = $.ajax({
+        url: uploadHost + '/mkfile/' + fileSize,
+        method: 'post',
+        data: that.ctx.join(','),
+        beforeSend: function (xhr){
+          xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+          xhr.setRequestHeader('Authorization', authorization);
+        }
+      })
+      .done(function (data){
+        showUploadProgress(100);
+        if(data.status === 0) {
+          switch(data.code) {
+            case 0:
+              $card.find('.operator.uploading').hide();
+              $card.find('.operator.upload-failed').fadeIn();
+              // 恢复上传进度圆环
+              $card.find('.progressCircle .inner').css({
+                'transform': 'rotate(0)',
+                '-o-transform': 'rotate(0)',
+                '-moz-transform': 'rotate(0)',
+                '-webkit-transform': 'rotate(0)'
+              });
+            break;
+            case 1:
+              that.callback(data);
+            break;
+          }
+        }
+      })
+      .fail(function (xhr, status, errors) {
+        console.log(errors);
+      });
+      that.xhrArr.push(xhr);
+    }
+
+    this.upload = function (assignmentId, file, callback) {
+
+      that.fileSize = file.size;
+      that.fileLoaded = 0;
+      that.progressPercent = 0;
+      that.fileBlockArr = that.segmentFile (file, 4 << 20);
+      that.blockLen = that.fileBlockArr.length;
+      that.blockIndex = 0;
+      that.httpCount = 0;
+      that.ctxCount = 0;
+
+      that.callback = callback;
+
+      getUploadToken(assignmentId, file.name, function (token) {
+        // card ui 操作
+        $card.find('.status').hide();
+        $card.find('.content img').hide();
+
+        that.uploadToken = token;
+        while(that.blockIndex < 5) {
+          that.httpCount = that.httpCount + 1;
+          that.postBlock(that.fileBlockArr[that.blockIndex], that.blockIndex);
+          that.blockIndex = that.blockIndex + 1;
+        }
+      });
+    }
+
+    this.abort = function () {
+      for(var i = 0, len = that.xhrArr.length; i < len; i++) {
+        that.xhrArr[i].abort();
+      }
+    }
+
+  }
+
+
+  var uploader = new QiniuChunkUpload();
+
   // 保存testId
   var testerId = $('.assignments-list').data('testerId');
   var assignmentId = 0; // 当前执行操作的任务id
@@ -51,6 +277,7 @@ $(function () {
       });
     }
   });
+
   $('.load-more').on('click', 'button', function () {
     page++;
     getAssignmentPaging(page, function (data) {
@@ -94,8 +321,18 @@ $(function () {
 
   // 取消上传
   $('.assignments-wrp').on('click', '.js-upload-cancel', function () {
-    uploadAjax.abort();
+    //uploadAjax.abort();
+    uploader.abort();
     $card.find('.operator.uploading').hide();
+
+    // 恢复上传进度圆环
+    $card.find('.progressCircle .inner').css({
+      'transform': 'rotate(0)',
+      '-o-transform': 'rotate(0)',
+      '-moz-transform': 'rotate(0)',
+      '-webkit-transform': 'rotate(0)'
+    });
+
     var $image = $card.find('.content img');
     if($image.attr('src')) {
       $image.fadeIn();
@@ -104,7 +341,6 @@ $(function () {
     }
     $card.find('.operator.wait-upload').fadeIn();
   });
-
 
   // 上传失败取消
   $('.assignments-wrp').on('click', '.js-reupload-cancel', function () {
@@ -124,6 +360,8 @@ $(function () {
     $('#close').click();
     var file = $(this)[0].files[0];
     if(file) {
+      // 测试qiniuChunkUpload
+
       // 判断所选文件的类型是否为video
       if(file.type.split('/')[0] === 'video') {
         // 切换operator
@@ -132,38 +370,36 @@ $(function () {
         // 隐藏视频截图
         $card.find('img').fadeOut();
 
-        var filename = file.name
-
         // 清空input的value, 使再次选中同一视频时还能触发change事件
         $(this).val('');
 
-        getUploadToken(testerId, assignmentId, filename, function (token) {
-          if(token) {
-            $card.find('.status').hide();
-            $card.find('.content img').hide();
-            uploadVideo(file, token, function (data) {
-              // 上传成功后的回调
-              var imageUrl = data.video + '?vframe/png/offset/0/w/480/h/200'
-              $card.find('.content img').attr('src', imageUrl).show();
-              // 切换operator
-              $card.find('.operator.wait-check').fadeIn();
-              $card.find('.operator.uploading').fadeOut();
-              // 显示状态，并将状态置为wait_check
-              $card.find('.status').fadeIn().removeClass().addClass('status status_wait_check').find('p').text('等待审核');
-              // 恢复上传进度圆环
-              $card.find('.progressCircle .inner').css({
-                'transform': 'rotate(0)',
-                '-o-transform': 'rotate(0)',
-                '-moz-transform': 'rotate(0)',
-                '-webkit-transform': 'rotate(0)'
-              });
+        uploader.upload(assignmentId, file, function (data) {
+        //getUploadToken(assignmentId, filename, function (token) {
+          //if(token) {
+            //$card.find('.status').hide();
+            //$card.find('.content img').hide();
+            //uploadVideo(file, token, function (data) {
+
+          // 上传成功后的回调
+          var imageUrl = data.video + '?vframe/png/offset/0/w/480/h/200'
+          $card.find('.content img').attr('src', imageUrl).show();
+          // 切换operator
+          $card.find('.operator.wait-check').fadeIn();
+          $card.find('.operator.uploading').fadeOut();
+          // 显示状态，并将状态置为wait_check
+          $card.find('.status').fadeIn().removeClass().addClass('status status_wait_check').find('p').text('等待审核');
+          // 恢复上传进度圆环
+          $card.find('.progressCircle .inner').css({
+            'transform': 'rotate(0)',
+            '-o-transform': 'rotate(0)',
+            '-moz-transform': 'rotate(0)',
+            '-webkit-transform': 'rotate(0)'
+          });
               // 清除上传input框的值
-              delete $(this)[0].files;
-              // 上传成功后跳转至正在进行中的任务页面
-              if(location.pathname.split('/').pop() === 'assignments') {
-                location.href = '/assignments/join';
-              }
-            });
+          delete $('#video')[0].files;
+          // 上传成功后跳转至正在进行中的任务页面
+          if(location.pathname.split('/').pop() === 'assignments') {
+            location.href = '/assignments/join';
           }
         });
       } else {
@@ -234,6 +470,7 @@ $(function () {
     formData.append('token', token);
     formData.append('file', file);
     formData.append('accept', 'application/json');
+
     // ajax上传
     uploadAjax = $.ajax({
       url: 'http://upload.qiniu.com',
@@ -286,7 +523,7 @@ $(function () {
   }
 
   // 获取上传视屏的token
-  function getUploadToken(userId, assignmentId, filename, callback) {
+  function getUploadToken(assignmentId, filename, callback) {
     var url = '/assignments/upload_token/';
     $.ajax({
       url: url,
@@ -895,5 +1132,5 @@ $(function () {
     }
     return map[platform + device];
   }
-});
 
+});

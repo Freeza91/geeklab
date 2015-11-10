@@ -51,7 +51,10 @@ $(function () {
           chunkArr = that.segmentFile(block, chunkSize),
           chunkLen = chunkArr.length,
           chunkIndex = 0;
-      that.makeBlock(chunkArr[chunkIndex], block.size, function (data) {
+
+      // 存储xhr, 取消上传时调用
+      var xhrIndex = blockIndex % 5;
+      that.makeBlock(chunkArr[chunkIndex], block.size, xhrIndex, function (data) {
 
         chunkIndex = chunkIndex + 1;
         if(chunkIndex < chunkLen) {
@@ -70,13 +73,11 @@ $(function () {
       });
     }
 
-    this.makeBlock = function (firstChunk, blockSize, callback) {
+    this.makeBlock = function (firstChunk, blockSize, xhrIndex, callback) {
       var size = firstChunk.size,
           authorization = 'UpToken ' + that.uploadToken;
 
-      that.xhrArr = that.xhrArr || [];
-
-      var xhr = $.ajax({
+      $.ajax({
         url: 'http://upload.qiniu.com/mkblk/' + blockSize,
         method: 'post',
         data: firstChunk,
@@ -93,7 +94,10 @@ $(function () {
             callback(data);
           }
         },
-        error: function (xhr, status, errors) {
+        error: function (xhr, textStatus, errors) {
+          if(textStatus === 'abort') {
+            return false;
+          }
           this.tryCount = this.tryCount + 1;
           if(this.tryCount < this.retryLimit) {
             $.ajax(this);
@@ -106,14 +110,16 @@ $(function () {
         beforeSend: function (xhr) {
           xhr.setRequestHeader('Content-Type', 'application/octet-stream');
           xhr.setRequestHeader('Authorization', authorization);
+          that.xhrArr[xhrIndex] = xhr;
         }
       });
-      that.xhrArr.push(xhr);
     }
 
     this.postChunkQueue = function (chunkArr, chunkIndex, uploadHost, ctx, offset, blockIndex) {
       var chunkLen = chunkArr.length;
-      that.postChunk(chunkArr[chunkIndex], uploadHost, ctx, offset, function (data) {
+
+      var xhrIndex = blockIndex % 5;
+      that.postChunk(chunkArr[chunkIndex], uploadHost, ctx, offset, xhrIndex, function (data) {
         if(chunkIndex === chunkLen - 1) {
           // 开始一个新的postBlock
           that.httpCount = that.httpCount - 1;
@@ -139,12 +145,11 @@ $(function () {
       });
     }
 
-    this.postChunk = function (chunk, uploadHost, ctx, chunkOffset, callback) {
+    this.postChunk = function (chunk, uploadHost, ctx, chunkOffset, xhrIndex, callback) {
 
       var authorization = 'UpToken ' + that.uploadToken;
 
-      that.xhrArr = that.xhrArr || [];
-      var xhr = $.ajax({
+      $.ajax({
         url: uploadHost + '/bput/' + ctx + '/' + chunkOffset,
         method: 'post',
         data: chunk,
@@ -162,6 +167,9 @@ $(function () {
           }
         },
         error: function (xhr, textStatus, errors) {
+          if(textStatus === 'abort') {
+            return false;
+          }
           this.tryCount = this.tryCount + 1;
           if(this.tryCount < this.retryLimit) {
             $.ajax(this);
@@ -179,17 +187,15 @@ $(function () {
         beforeSend: function (xhr){
           xhr.setRequestHeader('Content-Type', 'application/octet-stream');
           xhr.setRequestHeader('Authorization', authorization);
+          that.xhrArr[xhrIndex] = xhr;
         }
       });
-      that.xhrArr.push(xhr);
     }
 
     this.makeFile = function (fileSize, ctx, uploadHost) {
 
       var authorization = 'UpToken ' + that.uploadToken;
-
-      that.xhrArr = that.xhrArr || [];
-      var xhr = $.ajax({
+      $.ajax({
         url: uploadHost + '/mkfile/' + fileSize,
         method: 'post',
         data: that.ctx.join(','),
@@ -214,15 +220,17 @@ $(function () {
             }
           }
         },
-        error: function (xhr, status, errors) {
-          console.log(errors);
+        error: function (xhr, textStatus, errors) {
+          if(textStatus === 'abort') {
+            return false;
+          }
         },
         beforeSend: function (xhr){
           xhr.setRequestHeader('Content-Type', 'application/octet-stream');
           xhr.setRequestHeader('Authorization', authorization);
+          that.xhrArr[5] = xhr;
         }
       });
-      that.xhrArr.push(xhr);
     }
 
     this.upload = function (assignmentId, file, callback, errorHandle) {
@@ -235,6 +243,7 @@ $(function () {
       that.blockIndex = 0;
       that.httpCount = 0;
       that.ctxCount = 0;
+      that.xhrArr = that.xhrArr || [];
 
       that.callback = callback;
       that.errorHandle = errorHandle;

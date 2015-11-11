@@ -53,7 +53,8 @@ main role="main"
                   input type="text" v-model="projectId" value="#{@project.to_params}" style="display: none"
                   .button.btn.btn-blue v-show="!submited" v-on="click: submit($event)"
                     | 提交
-          - if @assignment.tester.tester_infor.already_finish
+
+          - if @assignment.tester && @assignment.tester.tester_infor.already_finish
             p
               | 用户信息
             table.table.table-1

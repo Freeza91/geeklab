@@ -85,6 +85,7 @@ class Project < ActiveRecord::Base
       assignments: self.assignments.done
                        .show_pm.order("updated_at desc")
                        .limit(demand)
+                       .map{|a| {id: a.to_params, video: a.video, is_read: a.is_read}}
     }
   end
 

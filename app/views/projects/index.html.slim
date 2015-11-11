@@ -1,67 +1,196 @@
 main role="main"
   section.projects-list data-pm-id="#{@current_user.to_params}"
-    .container
-      = render partial: 'projects/shared/add'
-      .projects-wrp.clear-fix
-        - if @projects
-          - @projects.each_with_index do |project, index|
-            .card data-project-id="#{project.to_params}"
-              .inner
-                header
-                  h1.title
-                    a href=("/projects/" + "#{project.to_params}") target="_blank"
-                      = project.name
-                    p.status class=("status_" + "#{project.status}")
-                      i.fa.fa-exclamation-circle
-                      = get_project_status_info(project.get_status)
-                    - if project.status == "not_accept" && project.reasons && project.reasons.size > 0
-                      ol.comment
-                        - project.reasons.each do |reason|
-                          li
-                            = reason
-                    - if project.status != "underway"
-                      span.close.delete-project
-                        | &times
-                .content
-                  .videos
+    = render partial: 'projects/shared/add'
+    #project-list.project-list.clear-fix
+      .project-item v-repeat="project: projects"
+        .item-header.clearfix
+          .title
+            .fa.fa-mobile v-if="project.device !== 'web'"
+            .fa.fa-desktop v-if="project.device === 'web'"
+            span v-text="project.name"
+            //| 测试任务
+          .right-operation
+            .timer v-if="canShowCountDown(project)"
+              | 距离任务结束:
+              span.day v-text="project.deadline[0]"
+                | 3
+              | 天
+              span.hour v-text="project.deadline[1]"
+                | 10
+              | 时
+              span.minute v-text="project.deadline[2]"
+                | 13
+              | 分
+            .operation
+              .fa.fa-trash-o v-on="click: showDeleteConfirm($index)" v-if="canBeDeleted(project.status)"
+              a v-attr="href: '/projects/' + project.id + '/edit'" target="_blank" v-if="isEditable(project.status)"
+                .fa.fa-edit
+            .project-status v-class="project.status"
+              span v-text="getStatusMap(project.status)"
+                | 正在审核
+              .fa.fa-question.comment-reminder
+              .project-comment
+                ol
+                  li
+                    | comment1jmdshfh
+                  li
+                    | comment2
+                  li
+                    | comment3
+                .triangle
+        .item-body v-show="$index === 0"
+          .nav-subtabs
+            ul role="tablist" v-on="click: toggleItemBodyContent($event)"
+              li
+                a.active data-target=".project-video-list"
+                  | 体验视频
+              li
+                a data-target=".project-detail"
+                  | 任务详情
+          .project-video-list.clearfix.active
+            .progress-num
+              span.done v-text="project.assignments.length"
+                | 0
+              span
+                | /
+              span.total v-text="project.demand"
+                | 5
+              span
+                | 个视频
+            .video-item v-repeat="assignment: project.assignments"
+              a href="javascript: void(0)"
+                img v-attr="src: assignment.video + '?vframe/png/offset/0/w/480/h/200'"
+              span.read-mark v-if="!assignment.is_read"
+            .video-item v-repeat="project.demand - project.assignments.length"
+              a href="javascript: void(0)"
+                .fa.fa-file-video-o
+          .project-detail
+            table.table.table-with-name-highlight
+              colgroup
+                col width="15%"
+                col width="85%"
+              tbody
+                tr v-if="project.device === 'web'"
+                  td.name
+                    | 网站地址
+                  td v-text="project.platform"
+                    | ios
+                tr v-if="project.device !== 'web'"
+                  td.name
+                    | 平台
+                  td v-text="project.platform"
+                    | ios
+                tr v-if="project.device !== 'web'"
+                  td.name
+                    | 测试设备
+                  td v-text="project.device"
+                    | phone
+                tr v-if="project.device !== 'web'"
+                  td.name
+                    | 系统要求
+                  td v-text="project.requirement"
+                    | 7.0及以上
+                tr
+                  td.name
+                    | 产品简介
+                  td v-text="project.profile"
+                    | 没有介绍
+            table.table.table-with-name-highlight
+              colgroup
+                col width="15%"
+                col width="35%"
+                col width="15%"
+                col width="35%"
+              tbody
+                tr
+                  td.name
+                    | 年龄范围
+                  td v-text="project.user_feature.age + '岁'"
+                    | 20 -30岁
+                  td.name
+                    | 教育程度
+                  td v-text="project.user_feature.education"
+                    | 本科以上
+                tr
+                  td.name
+                    | 年收入
+                  td v-text="project.user_feature.income + '万'"
+                    | 10
+                    | 万
+                  td.name
+                    | 情感状态
+                  td v-text="project.user_feature.emotional_status"
+                    | 单身
+                tr
+                  td.name
+                    | 性别
+                  td v-text="project.user_feature.sex"
+                    | 男，女
+                  td.name
+                    | 性取向
+                  td v-text="project.user_feature.sex_orientation"
+                    | all
+                tr
+                  td.name
+                    | 城市级别
+                  td v-text="getCityMap(project.user_feature.city_level)"
+                    | 北上广
+                  td.name
+                    | 兴趣标签
+                  td v-text="project.user_feature.interest"
+                    | 无
+            table.table.table-with-name-highlight
+              colgroup
+                col width="15%"
+                col width="85%"
+              tbody
+                tr
+                  td.name
+                    | 测试场景
+                  td v-text="project.desc"
+                    | situation
+                tr
+                  td.name
+                    | 任务详情
+                  td
                     ul
-                      - if @assignments[index].try(:size) > 0
-                        - @assignments[index].each do |assignment|
-                          li.col-md-4
-                            img src=("#{assignment.video}" + "?vframe/png/offset/0/w/480/h/200")
-                            a.available href=("/projects/" + "#{project.to_params}" + "/video/" + "#{assignment.to_params}") target="_blank"
-                              i.fa.fa-play-circle.fa-4x
-                            - if !assignment.is_read
-                              span.read-mark
-                      - (project.demand - @assignments[index].size).times
-                        li.col-md-4
-                          a href="javascript: void(0)"
-                            i.fa.fa-play-circle.fa-4x
-                  .progress-num
-                    span.done
-                      = @assignments[index].size
-                    span.total
-                      | /
-                      = project.demand
-                  - if project.get_status != 'finish'
-                    .count-down data-deadline="#{project.expired_at}"
-                      i.fa.fa-clock-o
-                      - if project.get_status == "failed"
-                        | 任务过期
-                      - else
-                        span.day
-                        | 天
-                        span.hour
-                        | 时
-                        span.minute
-                        | 分
-      .load-more
-        - if @projects.try(:size) < 10
-          p
-            | 没有更多了
-        - else
-          button.btn.btn-blue
-            | 加载更多
+                      li v-repeat="task: project.tasks"
+                        img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
+                        span v-text="task.content"
+                          | task
+            table.table.table-with-name-highlight
+              colgroup
+                col width="15%"
+                col width="35%"
+                col width="15%"
+                col width="35%"
+              tbody
+                tr
+                  td.name
+                    | 昵称
+                  td v-text="project.contact_name"
+                    | wangxiao
+                  td.name
+                    | 联系邮箱
+                  td v-text="project.email"
+                    | wangxiao@geekpark.net
+                tr
+                  td.name
+                    | 手机号
+                  td v-text="project.phone"
+                    | 17090026516
+                  td.name
+                    | 公司名称
+                  td v-text="project.company"
+                    | geekpark
+        .item-footer
+          .switch
+            .fa.fa-angle-down v-on="click: showProjectBody($event)" v-show="$index !== 0"
+            .fa.fa-angle-up v-on="click: hideProjectBody($event)" v-show="$index === 0"
+
+      .load-more v-show="!isAll"
+        button.btn.btn-flat.yellow.btn-full
+          | 加载更多
 
 = render 'shared/confirm_modal'
 = render 'projects/shared/add_modal'

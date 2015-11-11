@@ -4,7 +4,7 @@ class Dashboard::UsersController < Dashboard::BaseController
 
   def index
     @users = User.order('id desc').page(params[:page]).per(10)
-    @q = User.ransack(params[:q])
+    @q = User.order('id desc').ransack(params[:q])
   end
 
   def edit
@@ -31,9 +31,9 @@ class Dashboard::UsersController < Dashboard::BaseController
   end
 
   def search
-    @users = User.ransack(params[:q])
+    @users = User.order('id desc').ransack(params[:q])
                  .result.page(params[:page]).per(10)
-    @q = User.ransack(params[:q])
+    @q = User.order('id desc').ransack(params[:q])
     render :index
   end
 

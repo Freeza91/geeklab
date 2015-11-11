@@ -4,7 +4,7 @@ class Dashboard::AssignmentsController < Dashboard::BaseController
 
   def index
     @assignments = Assignment.order('id desc').page(params[:page]).per(10)
-    @q = Assignment.ransack(params[:q])
+    @q = Assignment.order('id desc').ransack(params[:q])
   end
 
   def edit
@@ -50,7 +50,7 @@ class Dashboard::AssignmentsController < Dashboard::BaseController
 
   def search
     @q = Assignment.ransack(params[:q])
-    @assignments = Assignment.ransack(params[:q])
+    @assignments = Assignment.order('id desc').ransack(params[:q])
                              .result.page(params[:page]).per(10)
     render :index
   end

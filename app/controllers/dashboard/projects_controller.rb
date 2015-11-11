@@ -4,7 +4,7 @@ class Dashboard::ProjectsController < Dashboard::BaseController
 
   def index
     @projects = Project.order('id desc').page(params[:page]).per(10)
-    @q = Project.ransack(params[:q])
+    @q = Project.order('id desc').ransack(params[:q])
   end
 
   def edit
@@ -89,9 +89,9 @@ class Dashboard::ProjectsController < Dashboard::BaseController
   end
 
   def search
-    @projects = Project.ransack(params[:q])
+    @projects = Project.order('id desc').ransack(params[:q])
                        .result.page(params[:page]).per(10)
-    @q = Project.ransack(params[:q])
+    @q = Project.order('id desc').ransack(params[:q])
 
     render :index
   end

@@ -3,8 +3,8 @@ class Dashboard::OrdersController  < Dashboard::BaseController
   load_and_authorize_resource
 
   def index
-    @orders = Order.includes(:good).page(params[:page]).per(10)
-    @q = Order.ransack(params[:q])
+    @orders = Order.order('updated_at desc').includes(:good).page(params[:page]).per(10)
+    @q = Order.order('updated_at desc').ransack(params[:q])
   end
 
   def edit
@@ -26,9 +26,9 @@ class Dashboard::OrdersController  < Dashboard::BaseController
   end
 
   def search
-    @orders = Order.ransack(params[:q])
+    @orders = Order.order('updated_at desc').ransack(params[:q])
                    .result.page(params[:page]).per(10)
-    @q = Order.ransack(params[:q])
+    @q = Order.order('updated_at desc').ransack(params[:q])
 
     render :index
   end

@@ -53,45 +53,46 @@ main role="main"
                   input type="text" v-model="projectId" value="#{@project.to_params}" style="display: none"
                   .button.btn.btn-blue v-show="!submited" v-on="click: submit($event)"
                     | 提交
-          p
-            | 用户信息
-          table.table.table-1
-            tbody
-              tr
-                td
-                  | 性别
-                td
-                  = @assignment.tester.tester_infor.sex
-              tr
-                td
-                  | 年龄
-                td
-                  = @assignment.tester.tester_infor.age
-              tr
-                td
-                  | 居住地
-                td
-                  = @assignment.tester.tester_infor.livingplace
-              tr
-                td
-                  | 情感状况
-                td
-                  = @assignment.tester.tester_infor.emotional_status
-              tr
-                td
-                  | 教育程度
-                td
-                  = @assignment.tester.tester_infor.education
-              tr
-                td
-                  | 职业信息
-                td
-                  = @assignment.tester.tester_infor.profession
-              tr
-                td
-                  | 兴趣爱好
-                td
-                  = @assignment.tester.tester_infor.interest.join(', ')
+          - if @assignment.tester.tester_infor.already_finish
+            p
+              | 用户信息
+            table.table.table-1
+              tbody
+                tr
+                  td
+                    | 性别
+                  td
+                    = @assignment.tester.tester_infor.sex
+                tr
+                  td
+                    | 年龄
+                  td
+                    = @assignment.tester.tester_infor.age
+                tr
+                  td
+                    | 居住地
+                  td
+                    = @assignment.tester.tester_infor.livingplace
+                tr
+                  td
+                    | 情感状况
+                  td
+                    = @assignment.tester.tester_infor.emotional_status
+                tr
+                  td
+                    | 教育程度
+                  td
+                    = @assignment.tester.tester_infor.education
+                tr
+                  td
+                    | 职业信息
+                  td
+                    = @assignment.tester.tester_infor.profession
+                tr
+                  td
+                    | 兴趣爱好
+                  td
+                    = @assignment.tester.tester_infor.interest.join(', ')
         .col-md-3
           p
             | 测试视频

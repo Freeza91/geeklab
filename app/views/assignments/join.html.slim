@@ -70,7 +70,7 @@ main role="main" class="#{isAssignmentEmpty(@assignments_ing)}"
                         = showBonus(assignment.try(:credit_record))
                         = render partial: "assignments/shared/extra_score", locals: {credit_record: assignment.try(:credit_record), bonus: assignment.project.basic_bonus}
       .load-more
-        - if @assignments_ing.try(:size) == 10
+        - if @assignments_ing.try(:size) == 1
           button.btn.btn-base.yellow.btn-full
             | 加载更多
       - if @assignments_ing.try(:size) == 0

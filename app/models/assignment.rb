@@ -51,6 +51,7 @@ class Assignment < ActiveRecord::Base
       id: self.to_params,
       name: self.project.name,
       deadline: self.project.expired_at,
+      bonus: project.basic_bonus,
       credit_record: credit_record
     }
   end

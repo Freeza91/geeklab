@@ -8,51 +8,7 @@ main role="main"
             = @project.try(:name)
           .video-player
             video controls="controls" style="width: 100%; height: 100%"
-              /source src="http://7xjcsq.com2.z0.glb.qiniucdn.com/copy-1434955521wScCUpQT.mp4"
-              source src=@assignment.try(:video);
-          p
-            | 视频评价
-            - if @assignment.comment
-              .evaluate
-                .col-md-6
-                  p
-                    | 你觉得视频是否合格?
-                  p
-                    = @assignment.comment.qualified ? "yes" : "no"
-                .col-md-6
-                  p
-                    | 你觉得TA是你的目标用户吗?
-                  p
-                    = @assignment.comment.target_user ? "yes" : "no"
-            - else
-              .evaluate
-                form
-                  .col-md-6
-                    p
-                      | 你觉得视频是否合格?
-                    .radio v-show="!submited"
-                      label.radio-inline
-                        input type="radio" name="quality" value="yes" v-model="quality"
-                        span YES
-                      label.radio-inline
-                        input type="radio" name="quality" value="no" v-model="quality"
-                        span NO
-                    p v-text="quality" v-show="submited"
-                  .col-md-6
-                    p
-                      | 你觉得TA是你的目标用户吗?
-                    .radio v-show="!submited"
-                      label.radio-inline
-                        input type="radio" name="user" value="yes" v-model="user"
-                        span YES
-                      label.radio-inline
-                        input type="radio" name="user" value="no" v-model="user"
-                        span NO
-                    p v-text="user" v-show="submited"
-                  input type="text" v-model="assignmentId" value="#{@assignment.to_params}" style="display:none"
-                  input type="text" v-model="projectId" value="#{@project.to_params}" style="display: none"
-                  .button.btn.btn-blue v-show="!submited" v-on="click: submit($event)"
-                    | 提交
+              source src="{#@assignment.try(:video)" type="video/mp4"
 
           - if @assignment.tester && @assignment.tester.tester_infor.already_finish
             p

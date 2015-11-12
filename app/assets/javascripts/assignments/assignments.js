@@ -343,7 +343,6 @@ $(function () {
     });
   });
 
-
   // 点击任务标题显示任务说明
   $('.assignments-wrp').on('click', '.js-assignment-start', function () {
     Geeklab.showLoading();
@@ -854,7 +853,6 @@ $(function () {
   assignmentTimeCountDownInit();
 
   function getAssignmentPaging (page, callback) {
-    //var url = '/assignments?page=' + page;
     var url = location.pathname;
     if(location.hash) {
       var hash = location.hash.substr(1),
@@ -862,7 +860,6 @@ $(function () {
       pathArr.pop();
       url = pathArr.join('/') + '/' + hash;
     }
-
     $.ajax({
       url: url,
       data: {page: page},
@@ -870,26 +867,37 @@ $(function () {
     })
     .done(function (data, status) {
       if(data.status === 0 && data.code === 1) {
-        if(data.assignments.length !== 0) {
-          callback(data);
-        }
-        if(data.assignments.length < 10) {
-          $(window).unbind('scroll');
-          $('.load-more').unbind('click').find('button').hide();
-          $('.load-more').append('<p>没有更多了</p>');
-        }
+        callback(data);
       }
     })
     .error(function (errors, status) {
       console.log(errors);
     })
   }
-  setTimeout(getAssignmentPaging(2), function (data) {
-    console.log(data);
-  }, 5000);
 
   function appendAssignments (assignments) {
-    var $assignmentsWrp = $('.assignments-wrp');
+    if(assignments.length === 0) {
+      return false;
+    }
+
+    var $assignmentsWrp,
+        $loadmore;
+    if(location.hash) {
+      var hash = location.hash.substr(1);
+          selector = '#assignments-' + hash;
+      $assignmentsWrp = $(selector);
+      $loadmore = $assignmentsWrp.find('.load-more');
+    } else {
+      $assignmentsWrp = $('.assignments-wrp');
+      $loadmore = $('.load-more');
+    }
+
+    if(assignments.length < 10) {
+      $(window).unbind('scroll');
+      $loadmore.unbind('click').find('button').hide();
+      $loadmore.append('<p>没有更多了</p>');
+    }
+
     // 复制一个card作为模板
     var $assignmentCard = $('.card:last').clone();
     var cards = [];
@@ -954,11 +962,7 @@ $(function () {
         '-webkit-transform': transform
       });
     }
-    $progressCircle.find('.progressCount').text(progressPercent + '%');
-  }
-
-  function initOperators () {
-    var $cards = $('.card');
+    $progressCircle.find('.progressCount').text(progressPercent + '%'); } function initOperators () { var $cards = $('.card');
     $cards.each(function (index, card) {
       var $card = $(card);
       var status = $card.data('status');

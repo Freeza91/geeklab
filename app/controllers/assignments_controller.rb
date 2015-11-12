@@ -10,9 +10,9 @@ class AssignmentsController < ApplicationController
     end
     assignments = tester.assignments
     if tester.approved
-      @assignments = assignments.new_tasks.order("id desc").page(params[:page]).per(1)
+      @assignments = assignments.new_tasks.order("id desc").page(params[:page]).per(10)
     else
-      @assignments = assignments.test_task.order("id desc").page(params[:page]).per(1)
+      @assignments = assignments.test_task.order("id desc").page(params[:page]).per(10)
     end
 
     respond_to do |format|

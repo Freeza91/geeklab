@@ -885,7 +885,7 @@ $(function () {
     if(location.hash) {
       var hash = location.hash.substr(1);
           selector = '#assignments-' + hash;
-      $assignmentsWrp = $(selector);
+      $assignmentsWrp = $(selector).find('.inner');
       $loadmore = $assignmentsWrp.find('.load-more');
     } else {
       $assignmentsWrp = $('.assignments-wrp');

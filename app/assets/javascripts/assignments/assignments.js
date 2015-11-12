@@ -799,7 +799,7 @@ $(function () {
       //countDownInterval[index] = setInterval(assignmentTimeCountDown(deadline, $ele));
       var $ele = $(item),
           // 兼容safari Date对象
-          deadline = $ele.data('deadline').replace(/-/g, '/');
+          deadline = $ele.attr('data-deadline').replace(/-/g, '/');
           now = new Date();
 
       assignmentDeadline[index] = new Date(deadline);
@@ -904,13 +904,13 @@ $(function () {
     assignments.forEach(function(assignment, index) {
       console.log(assignment);
       // name
-      $assignmentCard.find('.title span:first').text(assignment.name);;
+      $assignmentCard.find('.title span:first').text(assignment.project.name);;
       // 清除图片src
       $assignmentCard.find('.content img').removeAttr('src');
       // deadline
-      $assignmentCard.find('.time').data('deadline', assignment.expired_at);
+      $assignmentCard.find('.time').attr('data-deadline', assignment.project.expired_at);
       // 将每个任务的html暂存在数组中
-      cards.push('<div class="card">' + $assignmentCard.html() + '</div>');
+      cards.push('<div class="card" data-assignment-id="' + assignment.id +'">' + $assignmentCard.html() + '</div>');
     });
     $assignmentsWrp.append(cards.join(''));
 

@@ -58,7 +58,7 @@ main role="main"
               span
                 | 个视频
             .video-item v-repeat="assignment: project.assignments"
-              a href="javascript: void(0)"
+              a v-attr="href: '/projects/' + project.id + '/video/' + assignment.id" target="_blank"
                 img v-attr="src: assignment.video + '?vframe/png/offset/0/w/480/h/200'"
               span.read-mark v-if="!assignment.is_read"
             .video-item v-repeat="project.demand - project.assignments.length"

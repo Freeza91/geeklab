@@ -79,12 +79,12 @@ class Project < ActiveRecord::Base
       phone: phone,
       email: email,
       company: company,
-      expired_at: self.expired_at,
       user_feature: self.user_feature,
       tasks: self.tasks,
       assignments: self.assignments.done
                        .show_pm.order("updated_at desc")
                        .limit(demand)
+                       .map{|a| {id: a.to_params, video: a.video, is_read: a.is_read}}
     }
   end
 

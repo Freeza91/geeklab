@@ -177,6 +177,7 @@ $(function () {
       'checking': '正在审核',
       'not_accept': '审核未通过',
       'success': '审核成功',
+      'finish': '任务成功',
       'failed': '任务过期'
     };
     return statusMap[status];

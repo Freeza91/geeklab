@@ -27,7 +27,7 @@ class ProjectsController < ApplicationController
                            .find_by(id: params[:id])
 
     if @project
-      @assignment = @projects.assignments.includes(:feedbacks)
+      @assignment = @project.assignments.includes(:feedbacks)
                              .find_by(id: params[:assignment_id])
       @assignment.update_attribute(:is_read, true) if @assignment
     end

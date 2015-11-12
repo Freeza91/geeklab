@@ -91,9 +91,9 @@ class AssignmentsController < ApplicationController
     tester = current_user.to_tester
     assignments = tester.assignments
     assignments_ing =  assignments.take_part_ing.order("id desc").page(params[:page]).per(10)
-    json = {status: 0, code: 1, assignments_ing: [] }
+    json = {status: 0, code: 1, assignments: [] }
     assignments_ing.each do |a|
-      json[:assignments_ing] << a.to_json_with_project
+      json[:assignments] << a.to_json_with_project
     end
 
     render json: json
@@ -104,9 +104,9 @@ class AssignmentsController < ApplicationController
     assignments = tester.assignments.order("id desc")
 
     assignments_done = Kaminari.paginate_array(assignments.take_part_expired + assignments.done).page(params[:page]).per(10)
-    json = {status: 0, code: 1, assignments_done: [] }
+    json = {status: 0, code: 1, assignments: [] }
     assignments_done.each do |a|
-      json[:assignments_done] << a.to_json_with_project
+      json[:assignments] << a.to_json_with_project
     end
     render json: json
   end

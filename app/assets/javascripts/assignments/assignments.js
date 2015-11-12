@@ -854,10 +854,18 @@ $(function () {
   assignmentTimeCountDownInit();
 
   function getAssignmentPaging (page, callback) {
-    var url = '/assignments?page=' + page;
+    //var url = '/assignments?page=' + page;
+    var url = location.pathname;
+    if(location.hash) {
+      var hash = location.hash.substr(1),
+          pathArr = url.split('/');
+      pathArr.pop();
+      url = pathArr.join('/') + '/' + hash;
+    }
 
     $.ajax({
       url: url,
+      data: {page: page},
       dataType: 'json'
     })
     .done(function (data, status) {
@@ -876,6 +884,9 @@ $(function () {
       console.log(errors);
     })
   }
+  setTimeout(getAssignmentPaging(2), function (data) {
+    console.log(data);
+  }, 5000);
 
   function appendAssignments (assignments) {
     var $assignmentsWrp = $('.assignments-wrp');
@@ -1044,6 +1055,8 @@ $(function () {
       $('[data-hash="done"]').click();
       var isEmpty = ($('#assignments-done .card').length === 0);
       toggleEmpty(isEmpty);
+    } else {
+      location.hash = 'ing';
     }
   }
 

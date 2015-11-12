@@ -885,7 +885,7 @@ $(function () {
     if(location.hash) {
       var hash = location.hash.substr(1);
           selector = '#assignments-' + hash;
-      $assignmentsWrp = $(selector).find('.inner');
+      $assignmentsWrp = $(selector).children('.inner');
       $loadmore = $assignmentsWrp.find('.load-more');
     } else {
       $assignmentsWrp = $('.assignments-wrp');
@@ -899,16 +899,22 @@ $(function () {
     }
 
     // 复制一个card作为模板
-    var $assignmentCard = $('.card:last').clone();
+    var $assignmentCard = $assignmentsWrp.find('.card:last').clone();
+    console.log($assignmentCard);
     var cards = [];
     assignments.forEach(function(assignment, index) {
-      console.log(assignment);
       // name
-      $assignmentCard.find('.title span:first').text(assignment.project.name);;
-      // 清除图片src
+      $assignmentCard.find('.title span:first').text(assignment.name);;
+      // 更新截图
       $assignmentCard.find('.content img').removeAttr('src');
+      if(assignment.video) {
+        $assignmentCard.find('.content img').attr('src', assignment.video + '?vframe/png/offset/0/w/480/h/200');
+      }
+      // update operator
+      $assignmentCard.find('.operator').hide();
+      updateOperator(assignment.status, $assignmentCard);
       // deadline
-      $assignmentCard.find('.time').attr('data-deadline', assignment.project.expired_at);
+      $assignmentCard.find('.time').attr('data-deadline', assignment.deadline);
       // 将每个任务的html暂存在数组中
       cards.push('<div class="card" data-assignment-id="' + assignment.id +'">' + $assignmentCard.html() + '</div>');
     });
@@ -962,7 +968,10 @@ $(function () {
         '-webkit-transform': transform
       });
     }
-    $progressCircle.find('.progressCount').text(progressPercent + '%'); } function initOperators () { var $cards = $('.card');
+    $progressCircle.find('.progressCount').text(progressPercent + '%');
+  }
+  function initOperators () {
+    var $cards = $('.card');
     $cards.each(function (index, card) {
       var $card = $(card);
       var status = $card.data('status');
@@ -989,7 +998,24 @@ $(function () {
       break;
     }
   }
-
+  function updateOperator (status, $card) {
+    switch(status) {
+      case 'upload_failed':
+        $card.find('.operator.upload-failed').show();
+      case 'wait_check':
+        $card.find('.operator.wait-check').show();
+      break;
+      case 'checking':
+        $card.find('.operator.wait-check').show().find('.button-wrp').hide();
+      break;
+      case 'not_accept':
+        $card.find('.operator.wait-check').show();
+      break;
+      case 'delete':
+        $card.find('.operator.wait-upload').show();
+      break;
+    }
+  }
 
   // 计算comment的位置
   function caculateCommentPosition () {

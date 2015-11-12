@@ -49,7 +49,9 @@ class Assignment < ActiveRecord::Base
       status: status,
       video: video,
       id: self.to_params,
-      project: self.project
+      name: self.project.name,
+      deadline: self.project.expired_at,
+      credit_record: credit_record
     }
   end
 

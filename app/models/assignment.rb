@@ -48,7 +48,7 @@ class Assignment < ActiveRecord::Base
     {
       status: status,
       video: video,
-      id: id,
+      id: self.to_params,
       project: self.project
     }
   end

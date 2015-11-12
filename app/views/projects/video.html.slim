@@ -1,68 +1,65 @@
 main role="main"
   section.content-box
     .container
-      - if @project
-        .col-md-9
-          p.title
-            i.fa.fa-mobile.fa-2x
-            = @project.try(:name)
-          .video-player
-            video controls="controls" style="width: 100%; height: 100%"
-              source src="{#@assignment.try(:video)" type="video/mp4"
+      //- if @project
+      .col-md-9
+        p.title
+          i.fa.fa-mobile.fa-2x
+          = @project.try(:name)
+        .video-player
+          video#video controls="controls" style="width: 100%; height: 100%"
+            //source src="{#@assignment.try(:video)" type="video/mp4"
+            source src="http://7xjd7d.com2.z0.glb.qiniucdn.com/copy-1446604255Ykw4bljU.mp4#t=30,120" type="video/mp4"
+        .controls
+          .btn.btn-flat.yellow.btn-s.dark-blue#play
+            | 播放
+          .btn.btn-flat.yellow.btn-s#pause
+            | 暂停
+          .btn.btn-flat.yellow.btn-s#turnup
+            | volume+
+          .btn.btn-flat.yellow.btn-s#turndown
+            | volume-
+          input#currenttime type="text"
+          .btn.btn-flat.yellow.btn-s#set-currenttime
+            | 跳到该时间点
 
-          - if @assignment.tester && @assignment.tester.tester_infor.already_finish
-            p
-              | 用户信息
-            table.table.table-1
-              tbody
-                tr
-                  td
-                    | 性别
-                  td
-                    = @assignment.tester.tester_infor.sex
-                tr
-                  td
-                    | 年龄
-                  td
-                    = @assignment.tester.tester_infor.age
-                tr
-                  td
-                    | 居住地
-                  td
-                    = @assignment.tester.tester_infor.livingplace
-                tr
-                  td
-                    | 情感状况
-                  td
-                    = @assignment.tester.tester_infor.emotional_status
-                tr
-                  td
-                    | 教育程度
-                  td
-                    = @assignment.tester.tester_infor.education
-                tr
-                  td
-                    | 职业信息
-                  td
-                    = @assignment.tester.tester_infor.profession
-                tr
-                  td
-                    | 兴趣爱好
-                  td
-                    = @assignment.tester.tester_infor.interest.join(', ')
-        .col-md-3
-          p
-            | 测试视频
-          .video-list
-            ul
-              - if @other_assignments && @other_assignments.try(:size) > 0
-                - @other_assignments.each do |assignment|
-                  li.available
-                    a href=("/projects/" + "#{@project.to_params}" + "/video/" + "#{assignment.to_params}")
-                      img src=("#{assignment.video}" + "?vframe/png/offset/0/w/480/h/200")
-                    i.fa.fa-play-circle.fa-4x
-              /- else
-                /li
-                  /a href="javascript: void(0)"
-                    /img
-                  /i.fa.fa-play-circle.fa-4x
+          //- if @assignment.tester && @assignment.tester.tester_infor.already_finish
+            //p
+              //| 用户信息
+            //table.table.table-1
+              //tbody
+                //tr
+                  //td
+                    //| 性别
+                  //td
+                    //= @assignment.tester.tester_infor.sex
+                //tr
+                  //td
+                    //| 年龄
+                  //td
+                    //= @assignment.tester.tester_infor.age
+                //tr
+                  //td
+                    //| 居住地
+                  //td
+                    //= @assignment.tester.tester_infor.livingplace
+                //tr
+                  //td
+                    //| 情感状况
+                  //td
+                    //= @assignment.tester.tester_infor.emotional_status
+                //tr
+                  //td
+                    //| 教育程度
+                  //td
+                    //= @assignment.tester.tester_infor.education
+                //tr
+                  //td
+                    //| 职业信息
+                  //td
+                    //= @assignment.tester.tester_infor.profession
+                //tr
+                  //td
+                    //| 兴趣爱好
+                  //td
+                    //= @assignment.tester.tester_infor.interest.join(', ')

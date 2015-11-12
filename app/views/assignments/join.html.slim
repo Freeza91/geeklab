@@ -16,7 +16,7 @@ main role="main" class="#{isAssignmentEmpty(@assignments_ing)}"
           a href="javascript: void(0)" data-target="#assignments-done" data-hash="done"
             | 已完成
     .assignments-wrp.active#assignments-ing
-      .clearfix
+      .clearfix.inner
         - if @assignments_ing
           -  @assignments_ing.each do |assignment|
             .card data-assignment-id="#{assignment.to_params}" data-status="#{assignment.status}" data-video="#{assignment.video}"
@@ -70,14 +70,14 @@ main role="main" class="#{isAssignmentEmpty(@assignments_ing)}"
                         = showBonus(assignment.try(:credit_record))
                         = render partial: "assignments/shared/extra_score", locals: {credit_record: assignment.try(:credit_record), bonus: assignment.project.basic_bonus}
       .load-more
-        - if @assignments_ing.try(:size) == 10
+        - if @assignments_ing.try(:size) == 1
           button.btn.btn-base.yellow.btn-full
             | 加载更多
       - if @assignments_ing.try(:size) == 0
           p.no-assignment-hint
             | 没有正在进行中的任务，快去做任务吧
     .assignments-wrp#assignments-done
-      .clearfix
+      .clearfix.inner
         - if @assignments_done
           - @assignments_done.each do |assignment|
             .card data-assignment-id="#{assignment.to_params}" data-status="#{assignment.status}"

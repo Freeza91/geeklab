@@ -885,7 +885,7 @@ $(function () {
     if(location.hash) {
       var hash = location.hash.substr(1);
           selector = '#assignments-' + hash;
-      $assignmentsWrp = $(selector);
+      $assignmentsWrp = $(selector).children('.inner');
       $loadmore = $assignmentsWrp.find('.load-more');
     } else {
       $assignmentsWrp = $('.assignments-wrp');
@@ -899,16 +899,68 @@ $(function () {
     }
 
     // 复制一个card作为模板
-    var $assignmentCard = $('.card:last').clone();
+    var $assignmentCard = $assignmentsWrp.find('.card:last').clone();
+    console.log($assignmentCard);
     var cards = [];
     assignments.forEach(function(assignment, index) {
-      console.log(assignment);
       // name
-      $assignmentCard.find('.title span:first').text(assignment.project.name);;
-      // 清除图片src
+      $assignmentCard.find('.title span:first').text(assignment.name);;
+      // 更新截图
       $assignmentCard.find('.content img').removeAttr('src');
+      if(assignment.video) {
+        $assignmentCard.find('.content img').attr('src', assignment.video + '?vframe/png/offset/0/w/480/h/200');
+      }
+      // update operator
+      $assignmentCard.find('.operator').hide();
+      updateOperator(assignment.status, $assignmentCard);
       // deadline
       $assignmentCard.find('.time').attr('data-deadline', assignment.project.expired_at);
+      $assignmentCard.find('.time').attr('data-deadline', assignment.deadline);
+
+      // extra bonus
+      var $extra = $assignmentCard.find('extra-score');
+      var extraHtml = '';
+      if($extra.length > 0) {
+        if(assignment.credit_record) {
+          extraHtml += '<p>评分'
+          for(var i = 0; i < assignment.credit_record.rating; i++) {
+            extraHtml +='<div class=".fa .fa-star"></div>';
+          }
+          for(var i = 0; i < 5 - assignment.credit_record.rating; i++) {
+            extraHtml +='<div class=".fa .fa-star" style="color: #fff"></div>';
+          }
+          extraHtml +='</p>';
+          extraHtml +='<p>';
+          extraHtml += assignment.credit_record.bonus_credits * assignment.credit_record.rating;
+          extraHtml += '&nbsp=&nbsp';
+          extraHtml += '<span class="icon-img icon-outer-18" style="margin: 0 5px -5px">';
+          extraHtml += '<i class="icon icon-score-old"></i>';
+          extraHtml += '</span>';
+          extraHtml += assignment.bonus;
+          extraHtml += '&nbsp*&nbsp';
+          extraHtml += assignment.credit_record.rating;
+          extraHtml += '&nbsp星';
+
+        } else {
+          extraHtml = '<p>产品经理会对上传的视频进行评分, 评分星级为1-5星</p>'
+                    + '<p>(请谨慎录制, 审核通过的视频将无法修改)</p>'
+                    + '<p>评分奖励 ='
+                    + '<span class="icon-img icon-outer-18" style="margin: 0 5px -5px">'
+                    + '<i class="icon-inner icon-score-old"></i>'
+                    + '</span>'
+                    + '<span style="padding: 0 3px">'
+                    + assignment.bonus
+                    + ' * 星</span>';
+
+        }
+        extraHtml += '<p style="padding-top: 15px">';
+        extraHtml += '<a href="" target="_blank"></a>';
+        extraHtml += '如何获得5星好评';
+        extraHtml += '</p>';
+        extraHtml += '<div class="extra-score-triangle"></div>';
+        $extra.html(extraHtml);
+      }
+
       // 将每个任务的html暂存在数组中
       cards.push('<div class="card" data-assignment-id="' + assignment.id +'">' + $assignmentCard.html() + '</div>');
     });
@@ -962,7 +1014,10 @@ $(function () {
         '-webkit-transform': transform
       });
     }
-    $progressCircle.find('.progressCount').text(progressPercent + '%'); } function initOperators () { var $cards = $('.card');
+    $progressCircle.find('.progressCount').text(progressPercent + '%');
+  }
+  function initOperators () {
+    var $cards = $('.card');
     $cards.each(function (index, card) {
       var $card = $(card);
       var status = $card.data('status');
@@ -989,7 +1044,24 @@ $(function () {
       break;
     }
   }
-
+  function updateOperator (status, $card) {
+    switch(status) {
+      case 'upload_failed':
+        $card.find('.operator.upload-failed').show();
+      case 'wait_check':
+        $card.find('.operator.wait-check').show();
+      break;
+      case 'checking':
+        $card.find('.operator.wait-check').show().find('.button-wrp').hide();
+      break;
+      case 'not_accept':
+        $card.find('.operator.wait-check').show();
+      break;
+      case 'delete':
+        $card.find('.operator.wait-upload').show();
+      break;
+    }
+  }
 
   // 计算comment的位置
   function caculateCommentPosition () {

@@ -65,44 +65,44 @@ main role="main"
                 td
                   | 性别
                 td
-                  | xxx
+                  = @tester_info.sex
               tr
                 td
                   | 年龄
                 td
-                  | xxx
+                  = @tester_info.age
               tr
                 td
                   | 出生地
                 td
-                  | xxx
+                  = @tester_info.birthplace
               tr
                 td
                   | 居住地
                 td
-                  | xxx
+                  = @tester_info.livingplace
               tr
                 td
                   | 感情状况
                 td
-                  | xxx
+                  = @tester_info.emotional_status
               tr
                 td
                   | 性取向
                 td
-                  | xxx
+                  = @tester_info.sex_orientation
               tr
                 td
                   | 教育程度
                 td
-                  | xxx
+                  = @tester_info.education
               tr
                 td
                   | 职业信息
                 td
-                  | xxx
+                  = @tester_info.profession
               tr
                 td
                   | 兴趣爱好
                 td
-                  | xxx
+                  = @tester_info.interest.join(', ')

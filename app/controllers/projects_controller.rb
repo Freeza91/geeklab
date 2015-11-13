@@ -26,11 +26,14 @@ class ProjectsController < ApplicationController
                            #.show.includes(:user_feature)
                            #.find_by(id: params[:id])
 
-    #if @project
+    @project = current_user.to_pm.projects.last
+    if @project
       #@assignment = @project.assignments.includes(:feedbacks)
                              #.find_by(id: params[:assignment_id])
+      @tester_info = current_user.to_tester.tester_infor
+      p @tester_info
       #@assignment.update_attribute(:is_read, true) if @assignment
-    #end
+    end
 
   end
 

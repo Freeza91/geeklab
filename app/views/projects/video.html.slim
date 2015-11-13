@@ -1,65 +1,83 @@
 main role="main"
-  section.content-box
-    .container
-      //- if @project
-      .col-md-9
-        p.title
-          i.fa.fa-mobile.fa-2x
-          = @project.try(:name)
-        .video-player
-          video#video controls="controls" style="width: 100%; height: 100%"
-            //source src="{#@assignment.try(:video)" type="video/mp4"
-            source src="http://7xjd7d.com2.z0.glb.qiniucdn.com/copy-1446604255Ykw4bljU.mp4#t=30,120" type="video/mp4"
-        .controls
-          .btn.btn-flat.yellow.btn-s.dark-blue#play
-            | 播放
-          .btn.btn-flat.yellow.btn-s#pause
-            | 暂停
-          .btn.btn-flat.yellow.btn-s#turnup
-            | volume+
-          .btn.btn-flat.yellow.btn-s#turndown
-            | volume-
-          input#currenttime type="text"
-          .btn.btn-flat.yellow.btn-s#set-currenttime
-            | 跳到该时间点
+  //- if @project
+  .video-area
+    p.title
+      i.fa.fa-mobile.fa-2x
+      = @project.try(:name)
+    .video-player
+      video#video controls="controls"
+        //source src="{#@assignment.try(:video)" type="video/mp4"
+        source src="http://7xjd7d.com2.z0.glb.qiniucdn.com/copy-1446604255Ykw4bljU.mp4#t=30,120" type="video/mp4"
+    .controls
+      .btn.btn-flat.yellow.btn-s.dark-blue#play
+        | 播放
+      .btn.btn-flat.yellow.btn-s#pause
+        | 暂停
+      .btn.btn-flat.yellow.btn-s#turnup
+        | volume+
+      .btn.btn-flat.yellow.btn-s#turndown
+        | volume-
+      input#currenttime type="text"
+      .btn.btn-flat.yellow.btn-s#set-currenttime
+        | 跳到该时间点
+  .video-info-area
+    .video-info-header
+    .video-info-content
+      .nav-subtabs.dark-blue
+        ul role="tablist"
+          li
+            a.active data-target=".project-video-list"
+              | 注释
+          li
+            a data-target=".project-detail"
+              | 任务
+          li
+            a data-target=".project-detail"
+              | 用户
+      #comment
+        | 这里是注释部分
+      #task
+        | 这里是任务
+      #user-info
+        | 这里是用户信息
 
-          //- if @assignment.tester && @assignment.tester.tester_infor.already_finish
-            //p
-              //| 用户信息
-            //table.table.table-1
-              //tbody
-                //tr
-                  //td
-                    //| 性别
-                  //td
-                    //= @assignment.tester.tester_infor.sex
-                //tr
-                  //td
-                    //| 年龄
-                  //td
-                    //= @assignment.tester.tester_infor.age
-                //tr
-                  //td
-                    //| 居住地
-                  //td
-                    //= @assignment.tester.tester_infor.livingplace
-                //tr
-                  //td
-                    //| 情感状况
-                  //td
-                    //= @assignment.tester.tester_infor.emotional_status
-                //tr
-                  //td
-                    //| 教育程度
-                  //td
-                    //= @assignment.tester.tester_infor.education
-                //tr
-                  //td
-                    //| 职业信息
-                  //td
-                    //= @assignment.tester.tester_infor.profession
-                //tr
-                  //td
-                    //| 兴趣爱好
-                  //td
-                    //= @assignment.tester.tester_infor.interest.join(', ')
+      //- if @assignment.tester && @assignment.tester.tester_infor.already_finish
+        //p
+          //| 用户信息
+        //table.table.table-1
+          //tbody
+            //tr
+              //td
+                //| 性别
+              //td
+                //= @assignment.tester.tester_infor.sex
+            //tr
+              //td
+                //| 年龄
+              //td
+                //= @assignment.tester.tester_infor.age
+            //tr
+              //td
+                //| 居住地
+              //td
+                //= @assignment.tester.tester_infor.livingplace
+            //tr
+              //td
+                //| 情感状况
+              //td
+                //= @assignment.tester.tester_infor.emotional_status
+            //tr
+              //td
+                //| 教育程度
+              //td
+                //= @assignment.tester.tester_infor.education
+            //tr
+              //td
+                //| 职业信息
+              //td
+                //= @assignment.tester.tester_infor.profession
+            //tr
+              //td
+                //| 兴趣爱好
+              //td
+                //= @assignment.tester.tester_infor.interest.join(', ')

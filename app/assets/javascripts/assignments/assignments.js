@@ -886,7 +886,7 @@ $(function () {
       var hash = location.hash.substr(1);
           selector = '#assignments-' + hash;
       $assignmentsWrp = $(selector).children('.inner');
-      $loadmore = $assignmentsWrp.find('.load-more');
+      $loadmore = $(selector).children('.load-more');
     } else {
       $assignmentsWrp = $('.assignments-wrp');
       $loadmore = $('.load-more');
@@ -895,6 +895,7 @@ $(function () {
     if(assignments.length < 10) {
       $(window).unbind('scroll');
       $loadmore.unbind('click').find('button').hide();
+      console.log($loadmore.find('button'));
       $loadmore.append('<p>没有更多了</p>');
     }
 

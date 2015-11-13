@@ -1,150 +1,110 @@
 main role="main"
-  //- if @project
-  .video-area
-    p.title
-      i.fa.fa-mobile.fa-2x
-      = @project.try(:name)
-    .video-player
-      video#video controls="controls"
-        //source src="{#@assignment.try(:video)" type="video/mp4"
-        source src="http://7xjd7d.com2.z0.glb.qiniucdn.com/copy-1446604255Ykw4bljU.mp4#t=30,120" type="video/mp4"
-    .controls
-      .btn.btn-flat.yellow.btn-s.dark-blue#play
-        | 播放
-      .btn.btn-flat.yellow.btn-s#pause
-        | 暂停
-      .btn.btn-flat.yellow.btn-s#turnup
-        | volume+
-      .btn.btn-flat.yellow.btn-s#turndown
-        | volume-
-      input#currenttime type="text"
-      .btn.btn-flat.yellow.btn-s#set-currenttime
-        | 跳到该时间点
-  .video-info-area
-    .video-info-header
-    .video-info-content
-      .nav-subtabs.dark-blue
-        ul role="tablist"
-          li
-            a.active data-target="#comment"
-              | 注释
-          li
-            a data-target="task"
-              | 任务
-          li
-            a data-target="#tester-info"
-              | 用户
-      #comment
-        | 这里是注释部分
-      #task
-        | 这里是任务
-        .task-item
-          img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
-          span
-            | 这是是每一条任务说明
-        .task-item
-          img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
-          span
-            | 这是是每一条任务说明
-        .task-item
-          img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
-          span
-            | 这是是每一条任务说明
-        .task-item
-          img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
-          span
-            | 这是是每一条任务说明
-      #tester-info
-        | 这里是用户信息
-        table.table.zebra
-          colgroup
-            col width="25%"
-            col width="75%"
-          tbody
-            tr
-              td
-                | 性别
-              td
-                | xxx
-            tr
-              td
-                | 年龄
-              td
-                | xxx
-            tr
-              td
-                | 出生地
-              td
-                | xxx
-            tr
-              td
-                | 居住地
-              td
-                | xxx
-            tr
-              td
-                | 感情状况
-              td
-                | xxx
-            tr
-              td
-                | 性取向
-              td
-                | xxx
-            tr
-              td
-                | 教育程度
-              td
-                | xxx
-            tr
-              td
-                | 职业信息
-              td
-                | xxx
-            tr
-              td
-                | 兴趣爱好
-              td
-                | xxx
-
-
-      //- if @assignment.tester && @assignment.tester.tester_infor.already_finish
-        //p
-          //| 用户信息
-        //table.table.table-1
-          //tbody
-            //tr
-              //td
-                //| 性别
-              //td
-                //= @assignment.tester.tester_infor.sex
-            //tr
-              //td
-                //| 年龄
-              //td
-                //= @assignment.tester.tester_infor.age
-            //tr
-              //td
-                //| 居住地
-              //td
-                //= @assignment.tester.tester_infor.livingplace
-            //tr
-              //td
-                //| 情感状况
-              //td
-                //= @assignment.tester.tester_infor.emotional_status
-            //tr
-              //td
-                //| 教育程度
-              //td
-                //= @assignment.tester.tester_infor.education
-            //tr
-              //td
-                //| 职业信息
-              //td
-                //= @assignment.tester.tester_infor.profession
-            //tr
-              //td
-                //| 兴趣爱好
-              //td
-                //= @assignment.tester.tester_infor.interest.join(', ')
+  .inner-wrp.clearfix
+    .video-area
+      .video-player
+        video#video controls="controls" width="400px"
+          //source src="{#@assignment.try(:video)" type="video/mp4"
+          source src="http://7xjd7d.com2.z0.glb.qiniucdn.com/copy-1446604255Ykw4bljU.mp4" type="video/mp4"
+      .video-player
+        video controls="controls"
+          //source src="{#@assignment.try(:video)" type="video/mp4"
+          source src="http://7xjd7d.com2.z0.glb.qiniucdn.com/copy-1447147539WN9BtXZh.mp4"
+      .controls
+        .btn.btn-flat.yellow.btn-s.dark-blue#play
+          | 播放
+        .btn.btn-flat.yellow.btn-s#pause
+          | 暂停
+        .btn.btn-flat.yellow.btn-s#turnup
+          | volume+
+        .btn.btn-flat.yellow.btn-s#turndown
+          | volume-
+        input#currenttime type="text"
+        .btn.btn-flat.yellow.btn-s#set-currenttime
+          | 跳到该时间点
+    .video-info-area
+      .video-info-header
+        | 这里是标题
+      .video-info-content
+        .nav-subtabs.dark-blue
+          ul role="tablist"
+            li
+              a.active data-target="#comment"
+                | 注释
+            li
+              a data-target="task"
+                | 任务
+            li
+              a data-target="#tester-info"
+                | 用户
+        #comment
+          | 这里是注释部分
+        #task
+          | 这里是任务
+          .task-item
+            img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
+            span
+              | 这是是每一条任务说明
+          .task-item
+            img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
+            span
+              | 这是是每一条任务说明
+          .task-item
+            img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
+            span
+              | 这是是每一条任务说明
+          .task-item
+            img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
+            span
+              | 这是是每一条任务说明
+        #tester-info
+          | 这里是用户信息
+          table.table.zebra
+            colgroup
+              col width="25%"
+              col width="75%"
+            tbody
+              tr
+                td
+                  | 性别
+                td
+                  | xxx
+              tr
+                td
+                  | 年龄
+                td
+                  | xxx
+              tr
+                td
+                  | 出生地
+                td
+                  | xxx
+              tr
+                td
+                  | 居住地
+                td
+                  | xxx
+              tr
+                td
+                  | 感情状况
+                td
+                  | xxx
+              tr
+                td
+                  | 性取向
+                td
+                  | xxx
+              tr
+                td
+                  | 教育程度
+                td
+                  | xxx
+              tr
+                td
+                  | 职业信息
+                td
+                  | xxx
+              tr
+                td
+                  | 兴趣爱好
+                td
+                  | xxx

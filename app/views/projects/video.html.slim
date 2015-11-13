@@ -4,10 +4,7 @@ main role="main"
       .video-player
         video#video controls="controls" width="400px"
           //source src="{#@assignment.try(:video)" type="video/mp4"
-          source src="http://7xjd7d.com2.z0.glb.qiniucdn.com/copy-1446604255Ykw4bljU.mp4" type="video/mp4"
-      .video-player
-        video controls="controls"
-          //source src="{#@assignment.try(:video)" type="video/mp4"
+          //source src="http://7xjd7d.com2.z0.glb.qiniucdn.com/copy-1446604255Ykw4bljU.mp4" type="video/mp4"
           source src="http://7xjd7d.com2.z0.glb.qiniucdn.com/copy-1447147539WN9BtXZh.mp4"
       .controls
         .btn.btn-flat.yellow.btn-s.dark-blue#play
@@ -23,6 +20,7 @@ main role="main"
           | 跳到该时间点
     .video-info-area
       .video-info-header
+        .fa.fa-mobile
         | 这里是标题
       .video-info-content
         .nav-subtabs.dark-blue

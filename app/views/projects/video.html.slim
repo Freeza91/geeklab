@@ -26,20 +26,71 @@ main role="main"
       .nav-subtabs.dark-blue
         ul role="tablist"
           li
-            a.active data-target=".project-video-list"
+            a.active data-target="#comment"
               | 注释
           li
-            a data-target=".project-detail"
+            a data-target="task"
               | 任务
           li
-            a data-target=".project-detail"
+            a data-target="#tester-info"
               | 用户
       #comment
         | 这里是注释部分
       #task
         | 这里是任务
-      #user-info
+      #tester-info
         | 这里是用户信息
+        table.table.zebra
+          colgroup
+            col width="25%"
+            col width="75%"
+          tbody
+            tr
+              td
+                | 性别
+              td
+                | xxx
+            tr
+              td
+                | 年龄
+              td
+                | xxx
+            tr
+              td
+                | 出生地
+              td
+                | xxx
+            tr
+              td
+                | 居住地
+              td
+                | xxx
+            tr
+              td
+                | 感情状况
+              td
+                | xxx
+            tr
+              td
+                | 性取向
+              td
+                | xxx
+            tr
+              td
+                | 教育程度
+              td
+                | xxx
+            tr
+              td
+                | 职业信息
+              td
+                | xxx
+            tr
+              td
+                | 兴趣爱好
+              td
+                | xxx
+
 
       //- if @assignment.tester && @assignment.tester.tester_infor.already_finish
         //p

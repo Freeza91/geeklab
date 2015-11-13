@@ -914,7 +914,6 @@ $(function () {
       $assignmentCard.find('.operator').hide();
       updateOperator(assignment.status, $assignmentCard);
       // deadline
-      $assignmentCard.find('.time').attr('data-deadline', assignment.project.expired_at);
       $assignmentCard.find('.time').attr('data-deadline', assignment.deadline);
 
       // extra bonus

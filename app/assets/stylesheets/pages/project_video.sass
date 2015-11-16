@@ -34,6 +34,38 @@
     font-size: 1.2rem
     vertical-align: middle
 
+.comment-editor
+  margin-bottom: 20px
+  background: $light-yellow
+  .inputarea
+    border-width: 2px
+    border-color: $dark-blue
+  .inputarea:focus
+    outline: none
+    border-color: $blue
+.comment-list
+  .comment-item
+    padding: 10px
+    background: $light-yellow
+  .comment-item + .comment-item
+    margin-top: 10px
+  .timepoint
+    padding-right: 20px
+    color: $blue
+    cursor: pointer
+  .timepoint:hover
+    color: $dark-blue
+  .comment-content
+    color: $dark-blue
+  .comment-content:focus
+    padding: 10px
+    outline: none
+    border: 1px solid $blue
+    background: #fff
+  .comment-operation
+    float: right
+    font-size: 1.4rem
+
 #task
   .task-item
     margin-bottom: 10px

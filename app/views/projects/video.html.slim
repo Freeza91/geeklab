@@ -40,6 +40,28 @@ main role="main"
                 | 用户
         .video-info-section.active#comment
           | 这里是注释部分
+          .comment-editor
+            span.realtime
+              | 0:00
+            textarea.inputarea placeholder="输入记录"
+            .fa.fa-circle-o-notch
+          .comment-list
+            .comment-item
+              span.timepoint data-timepoint="30"
+                | 00:30
+              span.comment-content contentEditable="true"
+                | 注释内容
+              .comment-operation
+                .fa.fa-check
+                .fa.fa-trash
+            .comment-item
+              span.timepoint data-timepoint="90"
+                | 01:30
+              span.comment-content contentEditable="true"
+                | 注释内容
+              .comment-operation
+                .fa.fa-check
+                .fa.fa-trash
         .video-info-section#task
           | 这里是任务
           - @project.tasks.each do |task|

@@ -25,7 +25,17 @@ $(function () {
   });
   $('#set-currenttime').on('click', function () {
     player.currentTime = $('#currenttime').val();
-  })
+  });
+
+  $('.timepoint').on('click', function () {
+    var timepoint = $(this).data('timepoint');
+    player.currentTime = timepoint;
+  });
+
+  //$('.comment-content').on('click', function (event) {
+    //var target = event.target;
+    //$(this).attr('contentEditable', true);
+  //});
 
   function toggleItemBodyContent (event) {
     var $target = $(event.target),

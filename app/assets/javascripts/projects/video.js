@@ -16,15 +16,25 @@ $(function () {
     player.pause();
   });
   $('#turnup').on('click', function () {
+    player.volume += 0.1;
     console.log(player.volume);
-    //player.volume += 0.1;
   });
   $('#turndown').on('click', function () {
+    player.volume -= 0.1;
     console.log(player.volume);
-    //player.volume -= 0.1;
   });
   $('#set-currenttime').on('click', function () {
     player.currentTime = $('#currenttime').val();
   })
+
+  function toggleItemBodyContent (event) {
+    var $target = $(event.target),
+        selector = $target.data('target');
+    $target.parents('ul').find('a.active').removeClass('active');
+    $target.addClass('active');
+    $('.video-info-section.active').hide().removeClass('active');
+    $(selector).fadeIn().addClass('active');
+  }
+  $('[role="tablist"] a').on('click', toggleItemBodyContent);
 
 });

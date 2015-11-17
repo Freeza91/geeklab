@@ -17,6 +17,10 @@
       end
     end
 
+    ['geekpark'].each do |provider|
+      get "/authorize/#{provider}/callback", to: "omniauth_callbacks##{provider}"
+    end
+
     resources :passwords, only: [:edit, :update] do
       collection do
         get 'reset'

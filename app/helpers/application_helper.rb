@@ -11,4 +11,9 @@ module ApplicationHelper
     true
 
   end
+
+  def user_omniauth_authorize_path(provider)
+    "/users/authorize/#{provider}/"
+  end
+
 end

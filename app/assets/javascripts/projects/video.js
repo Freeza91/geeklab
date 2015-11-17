@@ -4,13 +4,8 @@ $(function () {
   }
 
   var player = $('#video')[0];
-
   var isRating = $('#is-rating').val();
 
-  //$('.comment-content').on('click', function (event) {
-    //var target = event.target;
-    //$(this).attr('contentEditable', true);
-  //});
 
   $('.rating-star').on('click', function () {
     if(isRating === 'true' || isRating === true) {
@@ -19,9 +14,9 @@ $(function () {
     var rating = 5 - $(this).data('rating'),
         projectId = $('#project-id').val(),
         assignmentId = $('#assignment-id').val();
-    sendRatingRequest(projectId, assignmentId, rating, function (data) {
-      isRating = true;
-    });
+    //sendRatingRequest(projectId, assignmentId, rating, function (data) {
+      //isRating = true;
+    //});
     console.log(rating);
   });
 
@@ -56,5 +51,62 @@ $(function () {
 
   }
   $('[role="tablist"] a').on('click', toggleItemBodyContent);
+
+  // 添加注释相关函数
+  function transformTimepoint (timepoint) {
+    var seconds = timepoint % 60,
+        minutes = (timepoint - seconds) / 60;
+    seconds = seconds > 10 ? seconds : '0' + seconds;
+    return minutes + ':' + seconds;
+  }
+
+  function setVideoTime (timepoint) {
+    var videoDuration = player.seekable.end(0);
+    console.log(videoDuration);
+    if(timepoint <= videoDuration) {
+      player.currentTime = timepoint;
+    }
+  }
+  function addComment () {
+
+  }
+
+  function editComment () {
+
+  }
+
+  function deleteComment () {
+
+  }
+
+  var commentVm = new Vue ({
+    el: '#comment',
+    data: {
+      comments: [
+        {
+          id: 0,
+          timeline: 30,
+          desc: '这是一条注释'
+        },
+        {
+          id: 1,
+          timeline: 100,
+          desc: '这是另一条注释'
+        },
+        {
+          id: 2,
+          timeline: 160,
+          desc: 'this is an comment too'
+        }
+      ]
+    },
+    methods: {
+      transformTimepoint: transformTimepoint,
+      addComment: addComment,
+      editComment: editComment,
+      deleteComment: deleteComment,
+      setVideoTime: setVideoTime
+    }
+  });
 
 });

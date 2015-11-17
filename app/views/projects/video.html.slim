@@ -54,19 +54,9 @@ main role="main"
               .fa.fa-check
               .fa.fa-circle-o-notch
           .comment-list
-            .comment-item
-              span.timepoint data-timepoint="30"
-                | 00:30
-              span.comment-content contentEditable="true"
-                | 注释内容
-              .comment-operation
-                .fa.fa-check
-                .fa.fa-trash
-            .comment-item
-              span.timepoint data-timepoint="90"
-                | 01:30
-              span.comment-content contentEditable="true"
-                | 注释内容
+            .comment-item v-repeat="comment: comments"
+              span.timepoint v-on="click: setVideoTime(comment.timeline)" v-text="transformTimepoint(comment.timeline)"
+              span.comment-content contentEditable="true" v-text="comment.desc"
               .comment-operation
                 .fa.fa-check
                 .fa.fa-trash

@@ -36,13 +36,44 @@
 
 .comment-editor
   margin-bottom: 20px
+  padding: 10px
   background: $light-yellow
+  .realtime,
   .inputarea
-    border-width: 2px
-    border-color: $dark-blue
-  .inputarea:focus
-    outline: none
-    border-color: $blue
+    float: left
+  .realtime
+    padding-right: 20px
+  .inputarea
+    width: calc(100% - 100px)
+    textarea
+      width: 100%
+      padding: 10px
+      border-color: $dark-blue
+    textarea:focus
+      outline: none
+      border-color: $blue
+  .editor-operation
+    float: right
+    width: 30px
+    font-size: 1.4rem
+    text-align: center
+#pause
+  position: relative
+  top: 3px
+  display: inline-block
+  width: 16px
+  height: 17px
+  background: image_url("testers/checkbox.png") no-repeat
+  background-position: 0 0
+  cursor: pointer
+  [type="checkbox"]
+    opacity: 0
+#pause-me.checked
+  background-position: -17px 0
+[for="pause"]
+  font-weight: normal
+  color: $dark-blue
+
 .comment-list
   .comment-item
     padding: 10px

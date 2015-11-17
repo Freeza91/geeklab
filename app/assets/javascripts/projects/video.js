@@ -82,6 +82,7 @@ $(function () {
 
   function initFreshComment (vm) {
     vm.freshComment.$set('timepoint', Math.floor(player.currentTime));
+    vm.freshComment.$set('editing', true);
     if(vm.pause) {
       player.pause();
     }
@@ -102,6 +103,12 @@ $(function () {
       // 注释内容不能为空
       return false;
     }
+  }
+
+  function cancelAddComment (vm) {
+    vm.freshComment.$set('timepoint', 0);
+    vm.freshComment.$set('desc', '');
+    vm.freshComment.$set('editing', false);
   }
 
   function makeCommentEditable (vm, commentIndex) {
@@ -135,7 +142,8 @@ $(function () {
       pause: true,
       freshComment: {
         timepoint: 0,
-        desc: ''
+        desc: '',
+        editing: false
       },
       comments: [
         {
@@ -163,6 +171,7 @@ $(function () {
       makeCommentEditable: makeCommentEditable,
       cancelEditComment: cancelEditComment,
       addComment: addComment,
+      cancelAddComment: cancelAddComment,
       updateComment: updateComment,
       deleteComment: deleteComment,
     }

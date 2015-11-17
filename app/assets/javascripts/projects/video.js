@@ -79,13 +79,13 @@ $(function () {
     console.log(commentIndex);
   }
 
-  function cancelEditComment (vm, commentIndex) {
-    console.log(vm.editable[commentIndex]);
+  function cancelEditComment (vm, commentIndex, event) {
     vm.editable.$set(commentIndex, false);
+    var $textarea = $(event.target).parents('.comment-item').find('textarea');
+    $textarea.val(vm.comments[commentIndex].desc);
   }
 
   function deleteComment () {
-
   }
 
   var commentVm = new Vue ({

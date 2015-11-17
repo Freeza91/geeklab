@@ -80,8 +80,28 @@ $(function () {
 
   }
 
-  function addComment () {
+  function initFreshComment (vm) {
+    vm.freshComment.$set('timepoint', Math.floor(player.currentTime));
+    if(vm.pause) {
+      player.pause();
+    }
+  }
 
+  function addComment (vm) {
+    var freshComment = vm.freshComment;
+    console.log(freshComment.desc);
+    if(freshComment.desc) {
+      // Todo 发送新建comment的请求给后台，然后在成功后的回调中进行下面的操作
+      vm.comments.push({
+        timeline: freshComment.timepoint,
+        desc: freshComment.desc
+      });
+      vm.freshComment.$set('timepoint', 0);
+      vm.freshComment.$set('desc', '');
+    } else {
+      // 注释内容不能为空
+      return false;
+    }
   }
 
   function makeCommentEditable (vm, commentIndex) {
@@ -112,6 +132,11 @@ $(function () {
   var commentVm = new Vue ({
     el: '#comment',
     data: {
+      pause: true,
+      freshComment: {
+        timepoint: 0,
+        desc: ''
+      },
       comments: [
         {
           id: 0,
@@ -134,6 +159,7 @@ $(function () {
     methods: {
       transformTimepoint: transformTimepoint,
       setVideoTime: setVideoTime,
+      initFreshComment: initFreshComment,
       makeCommentEditable: makeCommentEditable,
       cancelEditComment: cancelEditComment,
       addComment: addComment,

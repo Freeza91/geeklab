@@ -42,17 +42,16 @@ main role="main"
         .video-info-section.active#comment
           | 这里是注释部分
           .comment-editor.clearfix
-            .realtime
-              | 0:00
+            .realtime v-text="transformTimepoint(freshComment.timepoint)"
             .inputarea
-              textarea rows="5"
+              textarea rows="5" v-model="freshComment.desc" v-on="focus: initFreshComment(this)"
               #pause
-                input#pause-checkbox type="checkbox"
+                input#pause-checkbox type="checkbox" v-model="pause"
                 .checkbox-icon
                 label for="pause-checkbox"
                   | 注释时暂停视频
             .comment-operation
-              .fa.fa-check
+              .fa.fa-check v-on="click: addComment(this)"
               .fa.fa-circle-o-notch
           .comment-list
             .comment-item.clearfix v-repeat="comment: comments"

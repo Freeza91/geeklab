@@ -129,6 +129,7 @@ $(function () {
       });
       vm.freshComment.$set('timepoint', 0);
       vm.freshComment.$set('desc', '');
+      vm.freshComment.$set('editing', false);
     } else {
       // 注释内容不能为空
       return false;

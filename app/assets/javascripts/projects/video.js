@@ -71,10 +71,17 @@ $(function () {
 
   }
 
-  function editComment () {
-
+  function makeCommentEditable (vm, commentIndex) {
+    vm.editable.$set(commentIndex, true);
   }
 
+  function updateComment (commentIndex) {
+    console.log(commentIndex);
+  }
+
+  function cancelEditComment (commentIndex) {
+
+  }
   function deleteComment () {
 
   }
@@ -98,14 +105,16 @@ $(function () {
           timeline: 160,
           desc: 'this is an comment too'
         }
-      ]
+      ],
+      editable: [false, false, false]
     },
     methods: {
       transformTimepoint: transformTimepoint,
+      setVideoTime: setVideoTime,
+      makeCommentEditable: makeCommentEditable,
       addComment: addComment,
-      editComment: editComment,
+      updateComment: updateComment,
       deleteComment: deleteComment,
-      setVideoTime: setVideoTime
     }
   });
 

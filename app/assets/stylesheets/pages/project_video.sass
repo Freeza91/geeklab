@@ -76,42 +76,60 @@
   margin-bottom: 20px
   padding: 10px
   background: $light-yellow
-  .realtime,
-  .inputarea
-    float: left
-  .realtime
-    padding-right: 20px
-  .inputarea
-    width: calc(100% - 100px)
-    textarea
-      width: 100%
-      padding: 10px
-      border-color: $dark-blue
-    textarea:focus
-      outline: none
-      border-color: $blue
-  .editor-operation
-    float: right
-    width: 30px
-    font-size: 1.4rem
-    text-align: center
+.realtime,
+.timepoint,
+.inputarea
+  float: left
+.realtime,
+.timepoint
+  padding-right: 20px
+.inputarea
+  width: calc(100% - 100px)
+  textarea
+    width: 100%
+    padding: 10px
+    border-color: $dark-blue
+  textarea:focus
+    outline: none
+    border-color: $blue
+.comment-operation
+  float: right
+  width: 30px
+  font-size: 1.4rem
+  text-align: center
+  .fa-check,
+  .fa-remove,
+  .fa-trash
+    cursor: pointer
+  .fa-check:hover,
+  .fa-remove:hover,
+  .fa-trash:hover
+    color: $blue
+
 #pause
   position: relative
-  top: 3px
-  display: inline-block
-  width: 16px
-  height: 17px
-  background: image_url("testers/checkbox.png") no-repeat
-  background-position: 0 0
-  cursor: pointer
+  .checkbox-icon
+    position: relative
+    top: 3px
+    display: inline-block
+    width: 16px
+    height: 17px
+    background: image_url("testers/checkbox.png") no-repeat
+    background-position: 0 0
+    cursor: pointer
   [type="checkbox"]
     opacity: 0
-#pause-me.checked
+    position: absolute
+    top: 4px
+    left: 2px
+    z-index: 10
+#pause-checkbox:checked + .checkbox-icon
   background-position: -17px 0
-[for="pause"]
+[for="pause-checkbox"]
   font-weight: normal
   color: $dark-blue
 
+//#pause.checked
 .comment-list
   .comment-item
     padding: 10px
@@ -126,14 +144,6 @@
     color: $dark-blue
   .comment-content
     color: $dark-blue
-  .comment-content:focus
-    padding: 10px
-    outline: none
-    border: 1px solid $blue
-    background: #fff
-  .comment-operation
-    float: right
-    font-size: 1.4rem
 
 #task
   .task-item

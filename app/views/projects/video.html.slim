@@ -14,7 +14,7 @@ main role="main"
             | (请在任务过期前给出评价, 客观的评分能帮助进一步的提高视频质量)
         .stars
           - 5.times do |index|
-            input id=("rating-" + "#{index}") type="radio"
+            input id=("rating-" + "#{index}") type="radio" name="rating"
             label.rating-star for=("rating-" + "#{index}") data-rating="#{index}"
               .fa.fa-star
               .fa.fa-star-o
@@ -45,21 +45,27 @@ main role="main"
             .realtime
               | 0:00
             .inputarea
-              textarea rows="5" placeholder="输入记录"
+              textarea rows="5"
               #pause
-                input type="checkbox"
-              label for="pause"
-                | 注释时暂停视频
-            .editor-operation
+                input#pause-checkbox type="checkbox"
+                .checkbox-icon
+                label for="pause-checkbox"
+                  | 注释时暂停视频
+            .comment-operation
               .fa.fa-check
               .fa.fa-circle-o-notch
           .comment-list
-            .comment-item v-repeat="comment: comments"
-              span.timepoint v-on="click: setVideoTime(comment.timeline)" v-text="transformTimepoint(comment.timeline)"
-              span.comment-content contentEditable="true" v-text="comment.desc"
-              .comment-operation
-                .fa.fa-check
-                .fa.fa-trash
+            .comment-item.clearfix v-repeat="comment: comments"
+              .timepoint v-on="click: setVideoTime(comment.timeline)" v-text="transformTimepoint(comment.timeline)"
+              .inputarea
+                span.comment-content v-text="comment.desc" v-show="!editable[$index]" v-on="click: makeCommentEditable(this,$index)"
+                textarea rows="3" autofocus="autofocus" v-attr="value: comment.desc" v-show="editable[$index]"
+              .comment-operation.edit-operation v-show="editable[$index]"
+                .fa.fa-check v-on="click: updateComment($index)"
+                .fa.fa-circle-o-notch
+                .fa.fa-remove v-om="click: deleteComment($index)"
+              .comment-operation.delete-operation v-show="!editable[$index]"
+                .fa.fa-trash v-on="click: deleteComment($index)"
         .video-info-section#task
           | 这里是任务
           - @project.tasks.each do |task|

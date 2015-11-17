@@ -84,7 +84,8 @@ class AssignmentsController < ApplicationController
     assignments = tester.assignments
     tester.update_column(:last_view_time, Time.now)
     @assignments_ing =  assignments.take_part_ing.order("id desc").page(params[:page]).per(10)
-    @assignments_done = Kaminari.paginate_array(assignments.take_part_expired + assignments.done).page(params[:page]).per(10)
+    assignments_done_sort = (assignments.take_part_expired + assignments.done).sort_by { |a| -1 * a.id }
+    @assignments_done = Kaminari.paginate_array(assignments_done_sort).page(params[:page]).per(10)
   end
 
   def ing
@@ -102,8 +103,8 @@ class AssignmentsController < ApplicationController
   def done
     tester = current_user.to_tester
     assignments = tester.assignments.order("id desc")
-
-    assignments_done = Kaminari.paginate_array(assignments.take_part_expired + assignments.done).page(params[:page]).per(10)
+    assignments_done_sort = (assignments.take_part_expired + assignments.done).sort_by { |a| -1 * a.id }
+    assignments_done = Kaminari.paginate_array(assignments_done_sort).page(params[:page]).per(10)
     json = {status: 0, code: 1, assignments: [] }
     assignments_done.each do |a|
       json[:assignments] << a.to_json_with_project

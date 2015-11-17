@@ -5,37 +5,15 @@ $(function () {
 
   var player = $('#video')[0];
 
-  $('#play').on('click', function () {
-    player.play();
-    // 视频起止
-    console.log(player.seekable.start(0), player.seekable.end(0));
-    // 视频已经播放的时间
-    console.log(player.played.end(0));
-  });
-  $('#pause').on('click', function () {
-    player.pause();
-  });
-  $('#turnup').on('click', function () {
-    player.volume += 0.1;
-    console.log(player.volume);
-  });
-  $('#turndown').on('click', function () {
-    player.volume -= 0.1;
-    console.log(player.volume);
-  });
-  $('#set-currenttime').on('click', function () {
-    player.currentTime = $('#currenttime').val();
-  });
-
-  $('.timepoint').on('click', function () {
-    var timepoint = $(this).data('timepoint');
-    player.currentTime = timepoint;
-  });
-
   //$('.comment-content').on('click', function (event) {
     //var target = event.target;
     //$(this).attr('contentEditable', true);
   //});
+
+  $('.rating-star').on('click', function () {
+    var rating = 5 - $(this).data('rating');
+    console.log(rating);
+  });
 
   function toggleItemBodyContent (event) {
     var $target = $(event.target),

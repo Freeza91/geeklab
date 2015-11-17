@@ -3,12 +3,45 @@
 .projects_video
   .inner-wrp
     padding: 20px
+
 .video-area,
 .video-info-area
   float: left
 .video-area
   width: 65%
   padding-right: 20px
+
+.score-editor
+  margin-top: 10px
+  padding: 10px
+  p
+    color: $light-yellow
+  .stars
+    text-align: left
+    direction: rtl
+  .rating-star
+    position: relative
+    display: inline-block
+  .fa-star,
+  .fa-star-o
+    color: $light-yellow
+    font-size: 1.4rem
+  .fa-star
+    position: absolute
+    left: 0
+    top: 0
+    opacity: 0
+  .rating-star:hover .fa-star,
+  .rating-star:hover ~ .rating-star .fa-star,
+  [type="radio"]:checked ~ .rating-star .fa-star
+    opacity: 1
+  .rating-star:hover .fa-star-o,
+  .rating-star:hover ~ .rating-star .fa-star-o,
+  [type="radio"]:checked ~ .rating-star .fa-star-o
+    opacity: 0
+  [type="radio"]
+    display: none
+
 .video-info-area
   width: 35%
 .video-info-header

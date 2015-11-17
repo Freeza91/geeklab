@@ -6,16 +6,18 @@ main role="main"
           //source src="{#@assignment.try(:video)" type="video/mp4"
           source src="http://7xjd7d.com2.z0.glb.qiniucdn.com/copy-1446604255Ykw4bljU.mp4" type="video/mp4"
           //source src="http://7xjd7d.com2.z0.glb.qiniucdn.com/copy-1447147539WN9BtXZh.mp4"
-      .controls
-        .btn.btn-flat.yellow.btn-s.dark-blue#play
-          | 播放
-        .btn.btn-flat.yellow.btn-s#turnup
-          | volume+
-        .btn.btn-flat.yellow.btn-s#turndown
-          | volume-
-        input#currenttime type="text"
-        .btn.btn-flat.yellow.btn-s#set-currenttime
-          | 跳到该时间点
+      .score-editor
+        p
+          span
+            | 评分
+          span
+            | (请在任务过期前给出评价, 客观的评分能帮助进一步的提高视频质量)
+        .stars
+          - 5.times do |index|
+            input id=("rating-" + "#{index}") type="radio"
+            label.rating-star for=("rating-" + "#{index}") data-rating="#{index}"
+              .fa.fa-star
+              .fa.fa-star-o
     .video-info-area
       .video-info-header
         - if @project.device == 'web'

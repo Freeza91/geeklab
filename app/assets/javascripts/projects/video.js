@@ -29,6 +29,36 @@ $(function () {
     $(selector).fadeIn().addClass('active');
   }
 
+  // confirm modal 相关操作
+  function showConfirmModal (options) {
+    var $modal = $('#confirm-modal');
+    $modal.data('eventName', options.eventName);
+    $modal.find('.content').text(options.content);
+    $('body').append('<div class="main-mask"></div>');
+    $modal.addClass('show');
+  }
+
+  function confirmClose() {
+    $('#confirm-modal').removeClass('show');
+    $('body .main-mask').remove();
+  }
+
+  function eventConfirm(eventName) {
+    switch (eventName) {
+      case 'deleteComment':
+        // 删除注释
+        // 这是发送删除comment的请求，下面的操作在回调中进行
+        commentVm.comments.$remove(commentVm.currCommentIndex);
+        confirmClose();
+      break;
+    }
+  }
+  $('#confirm').on('click', function () {
+    var eventName = $('#confirm-modal').data('event-name');
+    eventConfirm(eventName);
+  });
+  $('#confirm-modal .js-operate-cancel').on('click', confirmClose);
+
   function sendRatingRequest (projectId, assignmentId, rating, callback) {
     var url = '/assignments/' + assignmentId + '/rating';
     $.ajax({
@@ -133,13 +163,20 @@ $(function () {
     $textarea.val(vm.comments[commentIndex].desc);
   }
 
-  function deleteComment () {
+  function deleteComment (vm, commentIndex) {
+    var comment = vm.comments[commentIndex].desc.substr(0, 10);
+    showConfirmModal({
+      eventName: 'deleteComment',
+      content: '确定要删除注释"' + comment + '"'
+    });
+    vm.currCommentIndex = commentIndex;
   }
 
   var commentVm = new Vue ({
     el: '#comment',
     data: {
       pause: true,
+      currCommentIndex: 0,
       freshComment: {
         timepoint: 0,
         desc: '',

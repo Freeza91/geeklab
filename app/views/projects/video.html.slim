@@ -65,7 +65,7 @@ main role="main"
                 .fa.fa-circle-o-notch
                 .fa.fa-remove v-on="click: cancelEditComment(this, $index, $event)"
               .comment-operation.delete-operation v-show="!editable[$index]"
-                .fa.fa-trash v-on="click: deleteComment($index)"
+                .fa.fa-trash v-on="click: deleteComment(this, $index)"
         .video-info-section#task
           | 这里是任务
           - @project.tasks.each do |task|
@@ -128,3 +128,5 @@ main role="main"
     .video-value
       input#project-id type="hidden" value="#{@project.to_params}"
       input#assignment-id type="hidden" value="#{@assignment.to_params}"
+
+= render 'shared/confirm_modal'

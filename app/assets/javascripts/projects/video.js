@@ -67,6 +67,19 @@ $(function () {
       player.currentTime = timepoint;
     }
   }
+
+  function sendCreateCommentRequest (comment, callback) {
+
+  }
+
+  function sendUpdateCommentRequest (comment, callback) {
+
+  }
+
+  function sendDeleteCommentRequest (comment, callback) {
+
+  }
+
   function addComment () {
 
   }
@@ -75,8 +88,16 @@ $(function () {
     vm.editable.$set(commentIndex, true);
   }
 
-  function updateComment (commentIndex) {
-    console.log(commentIndex);
+  function updateComment (vm, commentIndex, event) {
+    var $textarea = $(event.target).parents('.comment-item').find('textarea'),
+        newComment = $textarea.val();
+    if(newComment) {
+      vm.comments[commentIndex].$set('desc', newComment);
+      vm.editable.$set(commentIndex, false);
+    } else {
+      // 注释不能为空
+      return false;
+    }
   }
 
   function cancelEditComment (vm, commentIndex, event) {

@@ -61,7 +61,7 @@ main role="main"
                 span.comment-content v-text="comment.desc" v-show="!editable[$index]" v-on="click: makeCommentEditable(this,$index)"
                 textarea rows="3" autofocus="autofocus" v-attr="value: comment.desc" v-show="editable[$index]"
               .comment-operation.edit-operation v-show="editable[$index]"
-                .fa.fa-check v-on="click: updateComment($index)"
+                .fa.fa-check v-on="click: updateComment(this, $index, $event)"
                 .fa.fa-circle-o-notch
                 .fa.fa-remove v-on="click: cancelEditComment(this, $index, $event)"
               .comment-operation.delete-operation v-show="!editable[$index]"

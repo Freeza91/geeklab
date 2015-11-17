@@ -63,7 +63,7 @@ main role="main"
               .comment-operation.edit-operation v-show="editable[$index]"
                 .fa.fa-check v-on="click: updateComment($index)"
                 .fa.fa-circle-o-notch
-                .fa.fa-remove v-om="click: deleteComment($index)"
+                .fa.fa-remove v-on="click: cancelEditComment(this, $index)"
               .comment-operation.delete-operation v-show="!editable[$index]"
                 .fa.fa-trash v-on="click: deleteComment($index)"
         .video-info-section#task

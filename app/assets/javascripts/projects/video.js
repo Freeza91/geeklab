@@ -79,9 +79,11 @@ $(function () {
     console.log(commentIndex);
   }
 
-  function cancelEditComment (commentIndex) {
-
+  function cancelEditComment (vm, commentIndex) {
+    console.log(vm.editable[commentIndex]);
+    vm.editable.$set(commentIndex, false);
   }
+
   function deleteComment () {
 
   }
@@ -112,6 +114,7 @@ $(function () {
       transformTimepoint: transformTimepoint,
       setVideoTime: setVideoTime,
       makeCommentEditable: makeCommentEditable,
+      cancelEditComment: cancelEditComment,
       addComment: addComment,
       updateComment: updateComment,
       deleteComment: deleteComment,

@@ -18,6 +18,7 @@ main role="main"
             label.rating-star for=("rating-" + "#{index}") data-rating="#{index}"
               .fa.fa-star
               .fa.fa-star-o
+        input#is-rating type="hidden" value="false"
     .video-info-area
       .video-info-header
         - if @project.device == 'web'
@@ -128,3 +129,6 @@ main role="main"
                   | 兴趣爱好
                 td
                   = @tester_info.interest.join(', ')
+    .video-value
+      input#project-id type="hidden" value="#{@project.to_params}"
+      input#assignment-id type="hidden" value="#{@assignment.to_params}"

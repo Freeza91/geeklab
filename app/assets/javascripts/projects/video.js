@@ -3,20 +3,23 @@ $(function () {
     return false;
   }
 
-  var player = $('#video')[0];
-  var isRating = $('#is-rating').val();
-
+  var player = $('#video')[0],
+      isRating = $('#is-rating').val(),
+      projectId = $('#project-id').val(),
+      assignmentId = $('assignment-id').val(),
+      commentVm;
 
   $('.rating-star').on('click', function () {
     if(isRating === 'true' || isRating === true) {
       return false;
     }
-    var rating = 5 - $(this).data('rating'),
-        projectId = $('#project-id').val(),
-        assignmentId = $('#assignment-id').val();
+    var rating = 5 - $(this).data('rating');
+        //projectId = $('#project-id').val(),
+        //assignmentId = $('#assignment-id').val();
     //sendRatingRequest(projectId, assignmentId, rating, function (data) {
       //isRating = true;
     //});
+
     console.log(rating);
   });
 
@@ -53,6 +56,7 @@ $(function () {
       break;
     }
   }
+
   $('#confirm').on('click', function () {
     var eventName = $('#confirm-modal').data('event-name');
     eventConfirm(eventName);
@@ -96,6 +100,22 @@ $(function () {
     if(timepoint <= videoDuration) {
       player.currentTime = timepoint;
     }
+  }
+
+  function getFeedbacks (assignmentId, callback) {
+    var url = '/assignments/' + assignmentId + '/feedbacks'
+    $.ajax({
+      url: url,
+      success: function (data) {
+        console.log(data)
+          if(data.status === 0 && data.code === 1) {
+            callback(data.feedbacks)
+          }
+      },
+      error: function (xhr, textStatus, errors) {
+        console.log(errors);
+      }
+    });
   }
 
   function sendCreateCommentRequest (comment, callback) {
@@ -173,9 +193,9 @@ $(function () {
     vm.currCommentIndex = commentIndex;
   }
 
-  var commentVm = new Vue ({
-    el: '#comment',
-    data: {
+  // 初始化comment Vue 对象
+  getFeedbacks(assignmentId, function (feedbacks) {
+    var commentVmData = {
       pause: true,
       currCommentIndex: 0,
       freshComment: {
@@ -183,36 +203,30 @@ $(function () {
         desc: '',
         editing: false
       },
-      comments: [
-        {
-          id: 0,
-          timeline: 30,
-          desc: '这是一条注释'
-        },
-        {
-          id: 1,
-          timeline: 100,
-          desc: '这是另一条注释'
-        },
-        {
-          id: 2,
-          timeline: 160,
-          desc: 'this is an comment too'
-        }
-      ],
-      editable: [false, false, false]
-    },
-    methods: {
-      transformTimepoint: transformTimepoint,
-      setVideoTime: setVideoTime,
-      initFreshComment: initFreshComment,
-      makeCommentEditable: makeCommentEditable,
-      cancelEditComment: cancelEditComment,
-      addComment: addComment,
-      cancelAddComment: cancelAddComment,
-      updateComment: updateComment,
-      deleteComment: deleteComment,
+      comments: feedbacks,
+      editable: []
     }
+
+    for (var i = 0, len = feedbacks.length; i < len; i++) {
+      commentVmData.editable.push(false);
+    }
+
+    commentVm = new Vue ({
+      el: '#comment',
+      data: commentVmData,
+      methods: {
+        transformTimepoint: transformTimepoint,
+        setVideoTime: setVideoTime,
+        initFreshComment: initFreshComment,
+        makeCommentEditable: makeCommentEditable,
+        cancelEditComment: cancelEditComment,
+        addComment: addComment,
+        cancelAddComment: cancelAddComment,
+        updateComment: updateComment,
+        deleteComment: deleteComment,
+      }
+    });
+
   });
 
 });

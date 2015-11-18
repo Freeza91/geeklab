@@ -15,8 +15,9 @@ gem "nested_form"
 gem 'simditor-rails'
 gem 'semantic-ui-sass'
 
-gem 'omniauth'
-gem 'omniauth-geekpark', git: 'https://github.com/GeekPark/omniauth-geekpark.git'
+gem 'omniauth', '~> 1.2'
+gem 'omniauth-oauth2', '~> 1.3.0'
+gem 'omniauth-geekpark'
 
 gem 'cancancan'
 gem 'chart-js-rails'

@@ -54,11 +54,13 @@ class FeedbacksController < ApplicationController
   def update
     json = { status: 0, code: 1, msg: 'success' }
 
-    feedback = @assignment.find_by(id: params[:id])
+    #feedback = @assignment.find_by(id: params[:id])
+    #feedback = Feedback.find_by(id: params[:id])
 
-    unless feedback && feedback.update_attributes(feedback_params)
-      json[:code], json[:msg] = 0, 'failed'
-    end
+    #unless feedback && feedback.update_attributes(feedback_params)
+      #json[:code], json[:msg] = 0, 'failed'
+    #end
+    p params
 
     render json: json
   end

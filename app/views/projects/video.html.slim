@@ -58,13 +58,13 @@ main role="main"
             .comment-item.clearfix v-repeat="comment: comments"
               .timepoint v-on="click: setVideoTime(comment.timeline)" v-text="transformTimepoint(comment.timeline)"
               .inputarea
-                span.comment-content v-text="comment.desc" v-show="!editable[$index]" v-on="click: makeCommentEditable(this,$index)"
-                textarea rows="3" autofocus="autofocus" v-attr="value: comment.desc" v-show="editable[$index]"
-              .comment-operation.edit-operation v-show="editable[$index]"
+                span.comment-content v-text="comment.desc" v-show="!editing[$index]" v-on="click: makeCommentEditable(this,$index)"
+                textarea rows="3" autofocus="autofocus" v-attr="value: comment.desc" v-show="editing[$index]"
+              .comment-operation.edit-operation v-show="editing[$index]"
                 .fa.fa-check v-on="click: updateComment(this, $index, $event)"
-                .fa.fa-circle-o-notch
+                .fa.fa-circle-o-notch.fa-spin v-show="saving[$index]"
                 .fa.fa-remove v-on="click: cancelEditComment(this, $index, $event)"
-              .comment-operation.delete-operation v-show="!editable[$index]"
+              .comment-operation.delete-operation v-show="!editing[$index]"
                 .fa.fa-trash v-on="click: deleteComment(this, $index)"
         .video-info-section#task
           | 这里是任务

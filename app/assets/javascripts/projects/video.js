@@ -139,7 +139,23 @@ $(function () {
   }
 
   function sendUpdateCommentRequest (comment, callback) {
-
+    var url = '/assignments/' + assignmentId + '/feedbacks/' + comment.id;
+    $.ajax({
+      url: url,
+      method: 'put',
+      data: {
+        feedback: comment
+      },
+      success: function (data) {
+        console.log(data);
+        if(data.status === 0 && data.code === 1) {
+          callback();
+        }
+      },
+      error: function (xhr, textStatus, errors) {
+        console.log(errors);
+      }
+    });
   }
 
   function sendDeleteCommentRequest (comment, callback) {
@@ -181,15 +197,27 @@ $(function () {
   }
 
   function makeCommentEditable (vm, commentIndex) {
-    vm.editable.$set(commentIndex, true);
+    vm.editing.$set(commentIndex, true);
   }
 
   function updateComment (vm, commentIndex, event) {
+    // 设置comment的saving状态为true
+    vm.saving.$set(commentIndex, true)
+
     var $textarea = $(event.target).parents('.comment-item').find('textarea'),
-        newComment = $textarea.val();
-    if(newComment) {
-      vm.comments[commentIndex].$set('desc', newComment);
-      vm.editable.$set(commentIndex, false);
+        newCommentDesc = $textarea.val(),
+        comment = vm.comments[commentIndex];
+    if(newCommentDesc) {
+      var newComment = {
+        id: comment.id,
+        timeline: comment.timeline,
+        desc: comment.desc
+      };
+      sendUpdateCommentRequest(newComment, function () {
+        comment.$set('desc', newCommentDesc);
+        vm.saving.$set(commentIndex, false)
+        vm.editing.$set(commentIndex, false);
+      });
     } else {
       // 注释不能为空
       return false;
@@ -197,7 +225,7 @@ $(function () {
   }
 
   function cancelEditComment (vm, commentIndex, event) {
-    vm.editable.$set(commentIndex, false);
+    vm.editing.$set(commentIndex, false);
     var $textarea = $(event.target).parents('.comment-item').find('textarea');
     $textarea.val(vm.comments[commentIndex].desc);
   }
@@ -223,11 +251,13 @@ $(function () {
         saving: false
       },
       comments: feedbacks,
-      editable: []
+      editing: [],
+      saving: []
     }
 
     for (var i = 0, len = feedbacks.length; i < len; i++) {
-      commentVmData.editable.push(false);
+      commentVmData.editing.push(false);
+      commentVmData.saving.push(false);
     }
 
     commentVm = new Vue ({

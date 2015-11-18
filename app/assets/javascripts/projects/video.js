@@ -84,13 +84,11 @@ $(function () {
         rating: rating
       },
       success: function (data) {
-        console.log(data);
         if(data.status === 0 && data.code === 1) {
           callback(data);
         }
       },
       error: function (xhr, textStatus, errors) {
-        console.log(data);
         showInfoModal('评分失败，请稍后重试');
       }
     });
@@ -108,7 +106,6 @@ $(function () {
 
   function setVideoTime (timepoint) {
     var videoDuration = player.seekable.end(0);
-    console.log(videoDuration);
     if(timepoint <= videoDuration) {
       player.currentTime = timepoint;
     }
@@ -119,13 +116,11 @@ $(function () {
     $.ajax({
       url: url,
       success: function (data) {
-        console.log(data)
           if(data.status === 0 && data.code === 1) {
             callback(data.feedbacks)
           }
       },
       error: function (xhr, textStatus, errors) {
-        console.log(errors);
         showInfoModal('获取注释失败');
       }
     });
@@ -140,13 +135,11 @@ $(function () {
         feedbacks: comment
       },
       success: function (data) {
-        console.log(data);
         if(data.status === 0 && data.code === 1) {
           callback(data.feedback);
         }
       },
       error: function (xhr, textStatus, errors) {
-        console.log(errors);
         showInfoModal('创建失败,请稍后重试');
       }
     });
@@ -161,13 +154,11 @@ $(function () {
         feedback: comment
       },
       success: function (data) {
-        console.log(data);
         if(data.status === 0 && data.code === 1) {
           callback();
         }
       },
       error: function (xhr, textStatus, errors) {
-        console.log(errors);
         showInfoModal('更新失败, 请稍后重试');
       }
     });
@@ -179,7 +170,6 @@ $(function () {
       url: url,
       method: 'delete',
       success: function (data) {
-        console.log(data);
         if(data.status === 0 && data.code === 1) {
           callback();
         }
@@ -269,7 +259,6 @@ $(function () {
 
   function deleteComment () {
     var commentId = commentVm.comments[commentVm.currCommentIndex].id;
-    console.log(commentId);
     sendDeleteCommentRequest (commentId, function () {
       commentVm.comments.$remove(commentVm.currCommentIndex);
       confirmClose();

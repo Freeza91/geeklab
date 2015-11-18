@@ -40,7 +40,6 @@ main role="main"
               a data-target="#video-tester-info"
                 | 用户
         .video-info-section.active#comment
-          | 这里是注释部分
           .comment-editor.clearfix
             .realtime v-text="transformTimepoint(freshComment.timepoint)"
             .inputarea
@@ -67,14 +66,12 @@ main role="main"
               .comment-operation.delete-operation v-show="!editing[$index]"
                 .fa.fa-trash v-on="click: showDeleteConfirm(this, $index)"
         .video-info-section#task
-          | 这里是任务
           - @project.tasks.each do |task|
             .task-item
               img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
               span
                 = task.content
         .video-info-section#video-tester-info
-          | 这里是用户信息
           table.table.zebra
             colgroup
               col width="25%"

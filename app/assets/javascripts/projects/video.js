@@ -90,7 +90,7 @@ $(function () {
   function transformTimepoint (timepoint) {
     var seconds = timepoint % 60,
         minutes = (timepoint - seconds) / 60;
-    seconds = seconds > 10 ? seconds : '0' + seconds;
+    seconds = seconds >= 10 ? seconds : '0' + seconds;
     return minutes + ':' + seconds;
   }
 
@@ -119,7 +119,23 @@ $(function () {
   }
 
   function sendCreateCommentRequest (comment, callback) {
-
+    var url = '/assignments/' + assignmentId + '/feedbacks';
+    $.ajax({
+      url: url,
+      method: 'post',
+      data: {
+        feedbacks: comment
+      },
+      success: function (data) {
+        console.log(data);
+        if(data.status === 0 && data.code === 1) {
+          callback(data.feedback);
+        }
+      },
+      error: function (xhr, textStatus, errors) {
+        console.log(errors);
+      }
+    });
   }
 
   function sendUpdateCommentRequest (comment, callback) {
@@ -139,17 +155,19 @@ $(function () {
   }
 
   function addComment (vm) {
-    var freshComment = vm.freshComment;
-    console.log(freshComment.desc);
-    if(freshComment.desc) {
-      // Todo 发送新建comment的请求给后台，然后在成功后的回调中进行下面的操作
-      vm.comments.push({
-        timeline: freshComment.timepoint,
-        desc: freshComment.desc
+    vm.freshComment.saving = true;
+    var freshComment = {
+      timeline: vm.freshComment.timepoint,
+      desc: vm.freshComment.desc
+    };
+    if(vm.freshComment.desc) {
+      sendCreateCommentRequest(freshComment, function (feedback) {
+        vm.comments.push(feedback);
+        vm.freshComment.$set('saving', false);
+        vm.freshComment.$set('editing', false);
+        vm.freshComment.$set('timepoint', 0);
+        vm.freshComment.$set('desc', '');
       });
-      vm.freshComment.$set('timepoint', 0);
-      vm.freshComment.$set('desc', '');
-      vm.freshComment.$set('editing', false);
     } else {
       // 注释内容不能为空
       return false;
@@ -201,7 +219,8 @@ $(function () {
       freshComment: {
         timepoint: 0,
         desc: '',
-        editing: false
+        editing: false,
+        saving: false
       },
       comments: feedbacks,
       editable: []

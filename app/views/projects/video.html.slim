@@ -52,8 +52,8 @@ main role="main"
                   | 注释时暂停视频
             .comment-operation
               .fa.fa-check v-on="click: addComment(this)"
-              .fa.fa-circle-o-notch
-              .fa.fa-remove v-show="freshComment.editing"v-on="click: cancelAddComment(this)"
+              .fa.fa-circle-o-notch.fa-spin v-show="freshComment.saving"
+              .fa.fa-remove v-show="freshComment.editing" v-on="click: cancelAddComment(this)"
           .comment-list
             .comment-item.clearfix v-repeat="comment: comments"
               .timepoint v-on="click: setVideoTime(comment.timeline)" v-text="transformTimepoint(comment.timeline)"

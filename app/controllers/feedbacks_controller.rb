@@ -33,9 +33,20 @@ class FeedbacksController < ApplicationController
 
   def create
     json = { status: 0, code: 1, msg: 'success' }
-    @assignment.feedbacks.build(feedback_params)
+    #feedback = @assignment.feedbacks.build(feedback_params)
 
-    json[:code], json[:msg] = 0, 'failed' unless @assignment.save
+    #if feedback.save
+      #json[:feedback] = feedback.to_json_for_video
+    #else
+      #json[:code], json[:msg] = 0, 'failed'
+    #end
+
+    # 测试数据
+    json[:feedback] = {
+      id: 'ljhfsd',
+      timeline: 310,
+      desc: '测试'
+    }
 
     render json: json
   end

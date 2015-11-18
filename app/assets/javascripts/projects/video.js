@@ -50,9 +50,7 @@ $(function () {
     switch (eventName) {
       case 'deleteComment':
         // 删除注释
-        // 这是发送删除comment的请求，下面的操作在回调中进行
-        commentVm.comments.$remove(commentVm.currCommentIndex);
-        confirmClose();
+        deleteComment();
       break;
     }
   }
@@ -158,8 +156,21 @@ $(function () {
     });
   }
 
-  function sendDeleteCommentRequest (comment, callback) {
-
+  function sendDeleteCommentRequest (commentId, callback) {
+    var url = '/assignments/' + assignmentId + '/feedbacks/' + commentId;
+    $.ajax({
+      url: url,
+      method: 'delete',
+      success: function (data) {
+        console.log(data);
+        if(data.status === 0 && data.code === 1) {
+          callback();
+        }
+      },
+      error: function (xhr, textStatus, errors) {
+        console.log(errors);
+      }
+    });
   }
 
   function initFreshComment (vm) {
@@ -230,13 +241,22 @@ $(function () {
     $textarea.val(vm.comments[commentIndex].desc);
   }
 
-  function deleteComment (vm, commentIndex) {
+  function showDeleteConfirm (vm, commentIndex) {
     var comment = vm.comments[commentIndex].desc.substr(0, 10);
     showConfirmModal({
       eventName: 'deleteComment',
       content: '确定要删除注释"' + comment + '"'
     });
     vm.currCommentIndex = commentIndex;
+  }
+
+  function deleteComment () {
+    var commentId = commentVm.comments[commentVm.currCommentIndex].id;
+    console.log(commentId);
+    sendDeleteCommentRequest (commentId, function () {
+      commentVm.comments.$remove(commentVm.currCommentIndex);
+      confirmClose();
+    });
   }
 
   // 初始化comment Vue 对象
@@ -272,7 +292,7 @@ $(function () {
         addComment: addComment,
         cancelAddComment: cancelAddComment,
         updateComment: updateComment,
-        deleteComment: deleteComment,
+        showDeleteConfirm: showDeleteConfirm
       }
     });
 

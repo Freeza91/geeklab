@@ -65,7 +65,7 @@ main role="main"
                 .fa.fa-circle-o-notch.fa-spin v-show="saving[$index]"
                 .fa.fa-remove v-on="click: cancelEditComment(this, $index, $event)"
               .comment-operation.delete-operation v-show="!editing[$index]"
-                .fa.fa-trash v-on="click: deleteComment(this, $index)"
+                .fa.fa-trash v-on="click: showDeleteConfirm(this, $index)"
         .video-info-section#task
           | 这里是任务
           - @project.tasks.each do |task|

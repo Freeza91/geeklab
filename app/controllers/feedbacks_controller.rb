@@ -67,7 +67,9 @@ class FeedbacksController < ApplicationController
 
   def destroy
     json = { status: 0, code: 1, msg: 'success' }
-    @assignment.destroy
+
+    #feedback = Feedback.find_by(id: params[:id])
+    #feedback.destroy
 
     render json: json
   end

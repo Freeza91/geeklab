@@ -45,6 +45,17 @@ $(function () {
     $('#confirm-modal').removeClass('show');
     $('body .main-mask').remove();
   }
+  $('.js-operate-cancel').on('click', function () {
+    $(this).parents('.operate').removeClass('show');
+    $('body .main-mask').remove();
+  });
+
+  function showInfoModal (infoContent) {
+    var $modal = $('#info-modal');
+    $modal.find('.content').text(infoContent);
+    $('body').append('<div class="main-mask"></div>');
+    $modal.addClass('show');
+  }
 
   function eventConfirm(eventName) {
     switch (eventName) {
@@ -59,7 +70,6 @@ $(function () {
     var eventName = $('#confirm-modal').data('event-name');
     eventConfirm(eventName);
   });
-  $('#confirm-modal .js-operate-cancel').on('click', confirmClose);
 
   function sendRatingRequest (projectId, assignmentId, rating, callback) {
     var url = '/assignments/' + assignmentId + '/rating';
@@ -78,6 +88,7 @@ $(function () {
       },
       error: function (xhr, textStatus, errors) {
         console.log(data);
+        showInfoModal('评分失败，请稍后重试');
       }
     });
 
@@ -112,6 +123,7 @@ $(function () {
       },
       error: function (xhr, textStatus, errors) {
         console.log(errors);
+        showInfoModal('获取注释失败');
       }
     });
   }
@@ -132,6 +144,7 @@ $(function () {
       },
       error: function (xhr, textStatus, errors) {
         console.log(errors);
+        showInfoModal('创建失败,请稍后重试');
       }
     });
   }
@@ -152,6 +165,7 @@ $(function () {
       },
       error: function (xhr, textStatus, errors) {
         console.log(errors);
+        showInfoModal('更新失败, 请稍后重试');
       }
     });
   }

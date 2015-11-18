@@ -18,7 +18,7 @@ $(function () {
       connect: 'upper',
       format: {
         to: function (value) {
-          return androidMap[value]; 
+          return androidMap[value];
         },
         from: function (value) {
           return value;
@@ -72,10 +72,10 @@ $(function () {
   }
 
   $('#slider-user').noUiSlider({
-    start: 3,
+    start: 10,
     range: {
       min: 1,
-      max: 5
+      max: 15
     },
     step: 1,
     format:  {

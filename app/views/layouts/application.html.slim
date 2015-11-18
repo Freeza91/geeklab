@@ -4,7 +4,7 @@ html lang=session[:locale]
     title 极客实验室
     meta charset="utf-8"
     meta name="render" content="webkit"
-    /meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+    //meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
     meta name="application-name" content="极客实验室"
     meta name="description" content="可用性测试平台"
     meta name="keywords" content="极客实验室, 极客,测试,可用性"
@@ -15,7 +15,7 @@ html lang=session[:locale]
     link rel="shortcut icon" href="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
     = stylesheet_link_tag 'application', media: 'all'
     = csrf_meta_tags
-    / <!-- 最后加载js文件 -->
+    <!-- 最后加载js文件 -->
     = javascript_include_tag 'application'
 
   body class=(controller_name + ' ' + controller_name + '_' + action_name + ' ' + locale.to_s)

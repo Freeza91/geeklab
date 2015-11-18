@@ -50,7 +50,7 @@ main role="main"
                 .checkbox-icon
                 label for="pause-checkbox"
                   | 注释时暂停视频
-            .comment-operation
+            .comment-operation.edit-operation
               .fa.fa-check v-on="click: addComment(this)"
               .fa.fa-circle-o-notch.fa-spin v-show="freshComment.saving"
               .fa.fa-remove v-show="freshComment.editing" v-on="click: cancelAddComment(this)"

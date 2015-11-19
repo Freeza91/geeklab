@@ -311,15 +311,7 @@ $(function () {
         editing: false,
         saving: false
       },
-      //comments: feedbacks || [],
-      comments: [
-        {
-          id: 'sdkjfh',
-          timeline: 130,
-          desc: 'ceshiyong'
-
-        }
-      ],
+      comments: feedbacks,
       editing: [],
       saving: []
     }

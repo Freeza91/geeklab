@@ -137,9 +137,7 @@ $(function () {
     $.ajax({
       url: url,
       success: function (data) {
-        if(data.status === 0 && data.code === 1) {
-          callback(data.feedbacks)
-        }
+        callback(data)
       },
       error: function (xhr, textStatus, errors) {
         callback();
@@ -301,7 +299,7 @@ $(function () {
   }
 
   // 初始化comment Vue 对象
-  getFeedbacks(assignmentId, function (feedbacks) {
+  getFeedbacks(assignmentId, function (data) {
     var commentVmData = {
       pause: true,
       currCommentIndex: 0,
@@ -311,7 +309,7 @@ $(function () {
         editing: false,
         saving: false
       },
-      comments: feedbacks,
+      comments: data.feedbacks || [],
       editing: [],
       saving: []
     }

@@ -152,7 +152,7 @@ $(function () {
       url: url,
       method: 'post',
       data: {
-        feedbacks: comment
+        feedback: comment
       },
       success: function (data) {
         if(data.status === 0 && data.code === 1) {

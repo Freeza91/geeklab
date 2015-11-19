@@ -1,3 +1,4 @@
+@import ../helpers/variables
 // custome bootstrap
 // dialog垂直居中
 // 利用inline元素的vertical-align:middle属性
@@ -44,6 +45,15 @@
     font-size: 1rem
     color: $dark-blue
     margin-bottom: 40px
+  .error-hint,
+  .loading
+    display: none
+  .error-hint
+    color: $warn-red
+  .loading
+    .fa
+      font-size: 1.2rem
+      color: $blue
   .tools
     .btn + .btn
       margin-left: 50px

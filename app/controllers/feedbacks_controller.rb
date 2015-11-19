@@ -3,11 +3,25 @@ class FeedbacksController < ApplicationController
   before_action :require_login?
   before_action :auth
 
+  def index
+    json = {status: 0, code: 1, msg: 'success', feedbacks: []}
+
+    @assignment.feedbacks.each do |f|
+      json[:feedbacks] << f.to_json_for_video
+    end
+
+    render json: json
+  end
+
   def create
     json = { status: 0, code: 1, msg: 'success' }
-    @assignment.feedbacks.build(feedback_params)
 
-    json[:code], json[:msg] = 0, 'failed' unless @assignment.save
+    feedback = @assignment.feedbacks.build(feedback_params)
+    if feedback.save
+      json[:feedback] = feedback.to_json_for_video
+    else
+      json[:code], json[:msg] = 0, 'failed'
+    end
 
     render json: json
   end
@@ -15,8 +29,8 @@ class FeedbacksController < ApplicationController
   def update
     json = { status: 0, code: 1, msg: 'success' }
 
-    feedback = @assignment.find_by(id: params[:id])
-
+    #feedback = @assignment.find_by(id: params[:id])
+    feedback = Feedback.find_by(id: params[:id])
     unless feedback && feedback.update_attributes(feedback_params)
       json[:code], json[:msg] = 0, 'failed'
     end
@@ -26,7 +40,12 @@ class FeedbacksController < ApplicationController
 
   def destroy
     json = { status: 0, code: 1, msg: 'success' }
-    @assignment.destroy
+
+    feedback = Feedback.find_by(id: params[:id])
+    #feedback.destroy
+    unless feedback && feedback.destroy
+      json[:code], json[:msg] = 0, 'failed'
+    end
 
     render json: json
   end

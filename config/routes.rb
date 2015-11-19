@@ -56,6 +56,8 @@
   end
 
   resources :assignments do
+    resources :feedbacks
+
     collection do
       get 'miss'
       get 'join'
@@ -76,6 +78,7 @@
     end
 
   end
+
 
   namespace :stores do
     root to: "base#index"

@@ -5,20 +5,26 @@ main role="main"
         video#video controls="controls" width="400px"
           //source src="{#@assignment.try(:video)" type="video/mp4"
           source src="http://7xjd7d.com2.z0.glb.qiniucdn.com/copy-1446604255Ykw4bljU.mp4" type="video/mp4"
-          //source src="http://7xjd7d.com2.z0.glb.qiniucdn.com/copy-1447147539WN9BtXZh.mp4"
       .score-editor
         p
           span
             | 评分
           span
             | (请在任务过期前给出评价, 客观的评分能帮助进一步的提高视频质量)
-        .stars
-          - 5.times do |index|
-            input id=("rating-" + "#{index}") type="radio" name="rating"
-            label.rating-star for=("rating-" + "#{index}") data-rating="#{index}"
+        - if @assignment.rating_from_pm
+          .stars
+            - @assignment.rating_from_pm.times
               .fa.fa-star
+            - (5 - @assignment.rating_from_pm).times
               .fa.fa-star-o
-        input#is-rating type="hidden" value="false"
+        - else
+          .stars.un-rating
+            - 5.times do |index|
+              input id=("rating-" + "#{index}") type="radio" name="rating"
+              label.rating-star for=("rating-" + "#{index}") data-rating="#{index}"
+                .fa.fa-star
+                .fa.fa-star-o
+          input#is-rating type="hidden" value="false"
     .video-info-area
       .video-info-header
         - if @project.device == 'web'

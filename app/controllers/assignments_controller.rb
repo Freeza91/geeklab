@@ -142,11 +142,12 @@ class AssignmentsController < ApplicationController
   end
 
   def rating
-    json = { msg: 'success', code: 1 }
+    json = { status: 0, msg: 'success', code: 1 }
 
     assignment = Assignment.find_by(id: params[:id])
 
-    if assignment && assignment.tester_id == current_user.id
+    #if assignment && assignment.tester_id == current_user.id
+    if assignment && assignment.project.pm_id == current_user.id
       record = CreditRecord.find_by(project_id: params[:project_id],
                                     assignment_id: assignment.id)
       unless record

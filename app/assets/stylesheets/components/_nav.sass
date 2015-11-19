@@ -49,3 +49,19 @@
         text-decoration: none
       > a:focus
         text-decoration: none
+
+.nav-subtabs.dark-blue
+  ul
+    border-color: $dark-blue
+    > li
+      > a
+        background: #fff
+        color: $dark-blue
+      > a:hover
+        color: $blue
+      > a.active
+        background: $dark-blue
+        color: $blue
+    > li + li
+      > a
+        border-left: 1px solid $dark-blue

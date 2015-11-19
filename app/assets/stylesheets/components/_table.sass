@@ -26,3 +26,19 @@
       padding: 0
       .fa
         margin-right: 8px
+
+.table.zebra
+  border: none
+  > tbody
+    > tr
+      border: none
+      > td
+        border: none
+        color: $dark-blue
+        font-size: 1rem
+    > tr:nth-child(odd)
+      > td
+        background: $light-yellow
+    > tr:nth-child(even)
+      > td
+        background: #fff

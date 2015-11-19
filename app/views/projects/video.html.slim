@@ -1,107 +1,135 @@
 main role="main"
-  section.content-box
-    .container
-      - if @project
-        .col-md-9
-          p.title
-            i.fa.fa-mobile.fa-2x
-            = @project.try(:name)
-          .video-player style="background: #000"
-            video controls="controls" style="width: 100%; max-height: 500px"
-              //source src="http://7xjd7d.com2.z0.glb.qiniucdn.com/copy-1447147539WN9BtXZh.mp4"
-              source src=@assignment.try(:video);
-          p
-            | 视频评价
-            - if @assignment.comment
-              .evaluate
-                .col-md-6
-                  p
-                    | 你觉得视频是否合格?
-                  p
-                    = @assignment.comment.qualified ? "yes" : "no"
-                .col-md-6
-                  p
-                    | 你觉得TA是你的目标用户吗?
-                  p
-                    = @assignment.comment.target_user ? "yes" : "no"
-            - else
-              .evaluate
-                form
-                  .col-md-6
-                    p
-                      | 你觉得视频是否合格?
-                    .radio v-show="!submited"
-                      label.radio-inline
-                        input type="radio" name="quality" value="yes" v-model="quality"
-                        span YES
-                      label.radio-inline
-                        input type="radio" name="quality" value="no" v-model="quality"
-                        span NO
-                    p v-text="quality" v-show="submited"
-                  .col-md-6
-                    p
-                      | 你觉得TA是你的目标用户吗?
-                    .radio v-show="!submited"
-                      label.radio-inline
-                        input type="radio" name="user" value="yes" v-model="user"
-                        span YES
-                      label.radio-inline
-                        input type="radio" name="user" value="no" v-model="user"
-                        span NO
-                    p v-text="user" v-show="submited"
-                  input type="text" v-model="assignmentId" value="#{@assignment.to_params}" style="display:none"
-                  input type="text" v-model="projectId" value="#{@project.to_params}" style="display: none"
-                  .button.btn.btn-blue v-show="!submited" v-on="click: submit($event)"
-                    | 提交
+  .inner-wrp.clearfix
+    .video-area
+      .video-player
+        video#video controls="controls"
+          source src="#{@assignment.try(:video)}" type="video/mp4"
+          //source src="http://7xjd7d.com2.z0.glb.qiniucdn.com/copy-1446604255Ykw4bljU.mp4" type="video/mp4"
+      .score-editor
+        p
+          span
+            | 评分
+          span
+            | (请在任务过期前给出评价, 客观的评分能帮助进一步的提高视频质量)
+        - if @assignment.rating_from_pm
+          .stars
+            - @assignment.rating_from_pm.times
+              .fa.fa-star
+            - (5 - @assignment.rating_from_pm).times
+              .fa.fa-star-o
+        - else
+          .stars.un-rating
+            - 5.times do |index|
+              input id=("rating-" + "#{index}") type="radio" name="rating"
+              label.rating-star for=("rating-" + "#{index}") data-rating="#{index}"
+                .fa.fa-star
+                .fa.fa-star-o
+          input#is-rating type="hidden" value="false"
+    .video-info-area
+      .video-info-header
+        - if @project.device == 'web'
+          .fa.fa-desktop
+        - else
+          .fa.fa-mobile
+        span
+          = @project.name
+      .video-info-content
+        .nav-subtabs.dark-blue
+          ul role="tablist"
+            li
+              a.active data-target="#comment"
+                | 注释
+            li
+              a data-target="#task"
+                | 任务
+            li
+              a data-target="#video-tester-info"
+                | 用户
+        .video-info-section.active#comment
+          .comment-editor.clearfix
+            .realtime v-text="transformTimepoint(freshComment.timepoint)"
+            .inputarea
+              textarea rows="5" v-model="freshComment.desc" v-on="focus: initFreshComment(this)"
+              #pause
+                input#pause-checkbox type="checkbox" v-model="pause"
+                .checkbox-icon
+                label for="pause-checkbox"
+                  | 注释时暂停视频
+            .comment-operation.edit-operation
+              .fa.fa-check v-on="click: addComment(this)"
+              .fa.fa-circle-o-notch.fa-spin v-show="freshComment.saving"
+              .fa.fa-remove v-show="freshComment.editing" v-on="click: cancelAddComment(this)"
+          .comment-list
+            .comment-item.clearfix v-repeat="comment: comments"
+              .timepoint v-on="click: setVideoTime(comment.timeline)" v-text="transformTimepoint(comment.timeline)"
+              .inputarea
+                span.comment-content v-text="comment.desc" v-show="!editing[$index]" v-on="click: makeCommentEditable(this,$index)"
+                textarea rows="3" autofocus="autofocus" v-attr="value: comment.desc" v-show="editing[$index]"
+              .comment-operation.edit-operation v-show="editing[$index]"
+                .fa.fa-check v-on="click: updateComment(this, $index, $event)"
+                .fa.fa-circle-o-notch.fa-spin v-show="saving[$index]"
+                .fa.fa-remove v-on="click: cancelEditComment(this, $index, $event)"
+              .comment-operation.delete-operation v-show="!editing[$index]"
+                .fa.fa-trash v-on="click: showDeleteConfirm(this, $index)"
+        .video-info-section#task
+          - @project.tasks.each do |task|
+            .task-item
+              img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
+              span
+                = task.content
+        .video-info-section#video-tester-info
+          table.table.zebra
+            colgroup
+              col width="25%"
+              col width="75%"
+            tbody
+              tr
+                td
+                  | 性别
+                td
+                  = @tester_info.sex
+              tr
+                td
+                  | 年龄
+                td
+                  = @tester_info.age
+              tr
+                td
+                  | 出生地
+                td
+                  = @tester_info.birthplace
+              tr
+                td
+                  | 居住地
+                td
+                  = @tester_info.livingplace
+              tr
+                td
+                  | 感情状况
+                td
+                  = @tester_info.emotional_status
+              tr
+                td
+                  | 性取向
+                td
+                  = @tester_info.sex_orientation
+              tr
+                td
+                  | 教育程度
+                td
+                  = @tester_info.education
+              tr
+                td
+                  | 职业信息
+                td
+                  = @tester_info.profession
+              tr
+                td
+                  | 兴趣爱好
+                td
+                  = @tester_info.interest.join(', ')
+    .video-value
+      input#project-id type="hidden" value="#{@project.to_params}"
+      input#assignment-id type="hidden" value="#{@assignment.to_params}"
 
-          - if @assignment.tester && @assignment.tester.tester_infor.already_finish
-            p
-              | 用户信息
-            table.table.table-1
-              tbody
-                tr
-                  td
-                    | 性别
-                  td
-                    = @assignment.tester.tester_infor.sex
-                tr
-                  td
-                    | 年龄
-                  td
-                    = @assignment.tester.tester_infor.age
-                tr
-                  td
-                    | 居住地
-                  td
-                    = @assignment.tester.tester_infor.livingplace
-                tr
-                  td
-                    | 情感状况
-                  td
-                    = @assignment.tester.tester_infor.emotional_status
-                tr
-                  td
-                    | 教育程度
-                  td
-                    = @assignment.tester.tester_infor.education
-                tr
-                  td
-                    | 职业信息
-                  td
-                    = @assignment.tester.tester_infor.profession
-                tr
-                  td
-                    | 兴趣爱好
-                  td
-                    = @assignment.tester.tester_infor.interest.join(', ')
-        .col-md-3
-          p
-            | 测试视频
-          .video-list
-            ul
-              - if @other_assignments && @other_assignments.try(:size) > 0
-                - @other_assignments.each do |assignment|
-                  li.available
-                    a href=("/projects/" + "#{@project.to_params}" + "/video/" + "#{assignment.to_params}")
-                      img src=("#{assignment.video}" + "?vframe/png/offset/0/w/480/h/200")
-                    i.fa.fa-play-circle.fa-4x
+= render partial: "projects/shared/confirm_with_hint"

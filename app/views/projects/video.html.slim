@@ -126,4 +126,4 @@ main role="main"
       input#project-id type="hidden" value="#{@project.to_params}"
       input#assignment-id type="hidden" value="#{@assignment.to_params}"
 
-= render 'shared/confirm_modal'
+= render "projects/shared/confirm_with_hint"

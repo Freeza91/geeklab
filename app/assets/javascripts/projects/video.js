@@ -21,6 +21,14 @@ $(function () {
     });
   });
 
+  function sendRating () {
+    sendRatingRequest(projectId, assignmentId, rating, function (data) {
+      isRating = true;
+    }, function () {
+      showOpError('评分失败, 请稍后重试');
+    });
+  }
+
   function toggleItemBodyContent (event) {
     var $target = $(event.target),
         selector = $target.data('target');
@@ -32,7 +40,7 @@ $(function () {
 
   // confirm modal 相关操作
   function showConfirmModal (options) {
-    var $modal = $('#confirm-modal');
+    var $modal = $('#video-op-confirm');
     $modal.data('eventName', options.eventName);
     $modal.find('.content').text(options.content);
     $('body').append('<div class="main-mask"></div>');
@@ -40,13 +48,16 @@ $(function () {
   }
 
   function confirmClose() {
-    $('#confirm-modal').removeClass('show');
+    $('#video-op-confirm').removeClass('show');
+    $('#video-op-confirm .error-hint').hide().text('')
     $('body .main-mask').remove();
   }
-  $('.js-operate-cancel').on('click', function () {
-    $(this).parents('.operate').removeClass('show');
-    $('body .main-mask').remove();
-  });
+
+  function showOpError(error) {
+    var $modal = $('#video-op-confirm');
+    $modal.find('.loading').hide();
+    $modal.find('.error-hint').text(error).show();
+  }
 
   function showInfoModal (infoContent) {
     var $modal = $('#info-modal');
@@ -56,25 +67,33 @@ $(function () {
   }
 
   function eventConfirm(eventName) {
+    // 显示loading图标
+    $('#video-op-confirm .loading').show();
     switch (eventName) {
       case 'deleteComment':
         // 删除注释
         deleteComment();
       break;
       case 'rating':
-        sendRatingRequest(projectId, assignmentId, rating, function (data) {
-          isRating = true;
-        });
+        sendRating();
       break;
     }
   }
 
-  $('#confirm').on('click', function () {
-    var eventName = $('#confirm-modal').data('event-name');
+  $('.js-operate-confirm').on('click', function () {
+    var eventName = $(this).parents('.operate').data('event-name');
     eventConfirm(eventName);
   });
 
-  function sendRatingRequest (projectId, assignmentId, rating, callback) {
+  $('#video-op-confirm .js-operate-cancel').on('click', function () {
+    confirmClose();
+  });
+  $('#info-modal .js-operate-cancel').on('click', function () {
+    $(this).parents('.operate').removeClass('show');
+    $('body .main-mask').remove();
+  });
+
+  function sendRatingRequest (projectId, assignmentId, rating, callback, errorHandle) {
     var url = '/assignments/' + assignmentId + '/rating';
     $.ajax({
       url: url,
@@ -86,6 +105,8 @@ $(function () {
       success: function (data) {
         if(data.status === 0 && data.code === 1) {
           callback(data);
+        } else {
+          errorHandle();
         }
       },
       error: function (xhr, textStatus, errors) {
@@ -167,7 +188,7 @@ $(function () {
     });
   }
 
-  function sendDeleteCommentRequest (commentId, callback) {
+  function sendDeleteCommentRequest (commentId, callback, errorHandle) {
     var url = '/assignments/' + assignmentId + '/feedbacks/' + commentId;
     $.ajax({
       url: url,
@@ -175,10 +196,13 @@ $(function () {
       success: function (data) {
         if(data.status === 0 && data.code === 1) {
           callback();
+        } else {
+          errorHandle();
         }
       },
       error: function (xhr, textStatus, errors) {
         console.log(errors);
+        errorHandle();
       }
     });
   }
@@ -210,7 +234,6 @@ $(function () {
         vm.freshComment.$set('saving', false);
       });
     } else {
-      // 注释内容不能为空
       showInfoModal('注释内容不能为空');
       return false;
     }
@@ -272,6 +295,8 @@ $(function () {
     sendDeleteCommentRequest (commentId, function () {
       commentVm.comments.$remove(commentVm.currCommentIndex);
       confirmClose();
+    }, function () {
+      showOpError('删除失败, 请稍后重试');
     });
   }
 

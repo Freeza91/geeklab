@@ -3,7 +3,7 @@ main role="main"
     .video-area
       .video-player
         video#video controls="controls"
-          source src="{#@assignment.try(:video)}" type="video/mp4"
+          source src="#{@assignment.try(:video)}" type="video/mp4"
           //source src="http://7xjd7d.com2.z0.glb.qiniucdn.com/copy-1446604255Ykw4bljU.mp4" type="video/mp4"
       .score-editor
         p

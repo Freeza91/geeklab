@@ -116,11 +116,12 @@ $(function () {
     $.ajax({
       url: url,
       success: function (data) {
-          if(data.status === 0 && data.code === 1) {
-            callback(data.feedbacks)
-          }
+        if(data.status === 0 && data.code === 1) {
+          callback(data.feedbacks)
+        }
       },
       error: function (xhr, textStatus, errors) {
+        callback();
         showInfoModal('获取注释失败');
       }
     });
@@ -276,12 +277,12 @@ $(function () {
         editing: false,
         saving: false
       },
-      comments: feedbacks,
+      comments: feedbacks || [],
       editing: [],
       saving: []
     }
 
-    for (var i = 0, len = feedbacks.length; i < len; i++) {
+    for (var i = 0, len = commentVmData.comments.length; i < len; i++) {
       commentVmData.editing.push(false);
       commentVmData.saving.push(false);
     }

@@ -6,7 +6,7 @@ $(function () {
   var player = $('#video')[0],
       isRating = $('#is-rating').val(),
       projectId = $('#project-id').val(),
-      assignmentId = $('assignment-id').val(),
+      assignmentId = $('#assignment-id').val(),
       rating = 0,
       commentVm;
 
@@ -127,7 +127,7 @@ $(function () {
     });
   }
 
-  function sendCreateCommentRequest (comment, callback) {
+  function sendCreateCommentRequest (comment, callback, errorHandle) {
     var url = '/assignments/' + assignmentId + '/feedbacks';
     $.ajax({
       url: url,
@@ -142,11 +142,12 @@ $(function () {
       },
       error: function (xhr, textStatus, errors) {
         showInfoModal('创建失败,请稍后重试');
+        errorHandle();
       }
     });
   }
 
-  function sendUpdateCommentRequest (comment, callback) {
+  function sendUpdateCommentRequest (comment, callback, errorHandle) {
     var url = '/assignments/' + assignmentId + '/feedbacks/' + comment.id;
     $.ajax({
       url: url,
@@ -161,6 +162,7 @@ $(function () {
       },
       error: function (xhr, textStatus, errors) {
         showInfoModal('更新失败, 请稍后重试');
+        errorHandle();
       }
     });
   }
@@ -190,7 +192,7 @@ $(function () {
   }
 
   function addComment (vm) {
-    vm.freshComment.saving = true;
+    vm.freshComment.$set('saving', true);
     var freshComment = {
       timeline: vm.freshComment.timepoint,
       desc: vm.freshComment.desc
@@ -202,6 +204,8 @@ $(function () {
         vm.freshComment.$set('editing', false);
         vm.freshComment.$set('timepoint', 0);
         vm.freshComment.$set('desc', '');
+      }, function () {
+        vm.freshComment.$set('saving', false);
       });
     } else {
       // 注释内容不能为空
@@ -236,6 +240,8 @@ $(function () {
         comment.$set('desc', newCommentDesc);
         vm.saving.$set(commentIndex, false)
         vm.editing.$set(commentIndex, false);
+      }, function () {
+        vm.saving.$set(commentIndex, false)
       });
     } else {
       // 注释不能为空
@@ -277,7 +283,15 @@ $(function () {
         editing: false,
         saving: false
       },
-      comments: feedbacks || [],
+      //comments: feedbacks || [],
+      comments: [
+        {
+          id: 'sdkjfh',
+          timeline: 130,
+          desc: 'ceshiyong'
+
+        }
+      ],
       editing: [],
       saving: []
     }

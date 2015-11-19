@@ -200,6 +200,8 @@ $(function () {
     if(vm.freshComment.desc) {
       sendCreateCommentRequest(freshComment, function (feedback) {
         vm.comments.push(feedback);
+        vm.editing.push(false);
+        vm.saving.push(false);
         vm.freshComment.$set('saving', false);
         vm.freshComment.$set('editing', false);
         vm.freshComment.$set('timepoint', 0);

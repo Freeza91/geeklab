@@ -1,10 +1,10 @@
 class FeedbacksController < ApplicationController
 
   before_action :require_login?
-  #before_action :auth
+  before_action :auth
 
   def index
-    json = {status: 0, code: 1, msg: 'success'}
+    json = {status: 0, code: 1, msg: 'success', feedbacks: []}
 
     @assignment.feedbacks.each do |f|
       json[:feedbacks] << f.to_json_for_video

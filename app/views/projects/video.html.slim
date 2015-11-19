@@ -2,8 +2,8 @@ main role="main"
   .inner-wrp.clearfix
     .video-area
       .video-player
-        video#video controls="controls" width="400px"
-          source src="{#@assignment.try(:video)" type="video/mp4"
+        video#video controls="controls"
+          source src="{#@assignment.try(:video)}" type="video/mp4"
           //source src="http://7xjd7d.com2.z0.glb.qiniucdn.com/copy-1446604255Ykw4bljU.mp4" type="video/mp4"
       .score-editor
         p
@@ -132,4 +132,4 @@ main role="main"
       input#project-id type="hidden" value="#{@project.to_params}"
       input#assignment-id type="hidden" value="#{@assignment.to_params}"
 
-= render "projects/shared/confirm_with_hint"
+= render partial: "projects/shared/confirm_with_hint"

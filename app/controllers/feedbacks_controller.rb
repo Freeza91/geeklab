@@ -56,7 +56,7 @@ private
     json = { status: 0, code: 0, msg: 'failed' }
 
     @assignment = Assignment.find_by(id: params[:assignment_id])
-    unless @assignment && @assignment.tester_id == current_user.id
+    unless @assignment && @assignment.project.pm_id == current_user.id
       return render json: json
     end
 

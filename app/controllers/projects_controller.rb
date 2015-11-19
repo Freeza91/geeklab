@@ -22,17 +22,12 @@ class ProjectsController < ApplicationController
   end
 
   def video
-    #@project = current_user.to_pm.projects
-                           #.show.includes(:user_feature)
-                           #.find_by(id: params[:id])
+    @project = current_user.to_pm.projects.find_by(id: params[:id])
 
-    @project = current_user.to_pm.projects.last
     if @project
-      #@assignment = @project.assignments.includes(:feedbacks)
-                             #.find_by(id: params[:assignment_id])
-      @tester_info = current_user.to_tester.tester_infor
-      p @tester_info
-      #@assignment.update_attribute(:is_read, true) if @assignment
+      @assignment = @project.assignments.find_by(id: params[:assignment_id])
+      @tester_info = @assignment.tester.tester_infor
+      @assignment.update_attribute(:is_read, true) if @assignment
     end
 
   end

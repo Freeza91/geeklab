@@ -192,12 +192,12 @@ $(function () {
   }
 
   function addComment (vm) {
-    vm.freshComment.$set('saving', true);
     var freshComment = {
       timeline: vm.freshComment.timepoint,
       desc: vm.freshComment.desc
     };
     if(vm.freshComment.desc) {
+      vm.freshComment.$set('saving', true);
       sendCreateCommentRequest(freshComment, function (feedback) {
         vm.comments.push(feedback);
         vm.editing.push(false);
@@ -211,6 +211,7 @@ $(function () {
       });
     } else {
       // 注释内容不能为空
+      showInfoModal('注释内容不能为空');
       return false;
     }
   }

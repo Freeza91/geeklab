@@ -60,7 +60,7 @@ main role="main"
               .fa.fa-circle-o-notch.fa-spin v-show="freshComment.saving"
               .fa.fa-remove v-show="freshComment.editing" v-on="click: cancelAddComment(this)"
           .comment-list
-            .comment-item.clearfix v-repeat="comment: comments"
+            .comment-item.clearfix v-repeat="comment: comments | orderBy 'timeline'"
               .timepoint v-on="click: setVideoTime(comment.timeline)" v-text="transformTimepoint(comment.timeline)"
               .inputarea
                 span.comment-content v-text="comment.desc" v-show="!editing[$index]" v-on="click: makeCommentEditable(this,$index)"

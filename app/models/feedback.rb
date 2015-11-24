@@ -5,7 +5,7 @@ class Feedback < ActiveRecord::Base
   def to_json_for_video
     {
       id: self.to_params,
-      timeline: timeline,
+      timeline: timeline.to_i,
       desc: desc
     }
   end

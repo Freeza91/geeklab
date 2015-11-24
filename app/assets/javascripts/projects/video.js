@@ -49,8 +49,10 @@ $(function () {
   }
 
   function confirmClose() {
-    $('#video-op-confirm').removeClass('show');
-    $('#video-op-confirm .error-hint').hide().text('')
+    var $modal = $('#video-op-confirm');
+    $modal.removeClass('show');
+    $modal.find('.error-hint').hide().text('')
+    $modal.find('.loading').hide();
     $('body .main-mask').remove();
   }
 

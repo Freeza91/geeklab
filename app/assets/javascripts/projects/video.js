@@ -130,6 +130,7 @@ $(function () {
     var videoDuration = player.seekable.end(0);
     if(timepoint <= videoDuration) {
       player.currentTime = timepoint;
+      player.play();
     }
   }
 

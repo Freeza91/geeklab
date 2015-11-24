@@ -81,6 +81,7 @@ class Project < ActiveRecord::Base
       company: company,
       user_feature: self.user_feature,
       tasks: self.tasks,
+      reasons: reasons,
       assignments: self.assignments.done
                        .show_pm.order("updated_at desc")
                        .limit(demand)

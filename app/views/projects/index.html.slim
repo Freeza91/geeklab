@@ -28,16 +28,15 @@ main role="main"
             .project-status v-class="project.status"
               span v-text="getStatusMap(project.status)"
                 | 正在审核
-              //.fa.fa-question.comment-reminder
-              //.project-comment
-                //ol
-                  //li
-                    //| comment1
-                  //li
-                    //| comment2
-                  //li
-                    //| comment3
-                //.triangle
+              .fa.fa-question.comment-reminder v-if="project.status === 'not_accept' && project.reasons.length !== 0"
+              .project-comment v-if="project.status === 'not_accept' && project.reasons.length !== 0"
+                ol
+                  li v-repeat="reason: project.reasons" v-text="reason"
+                  li
+                    | comment2
+                  li
+                    | comment3
+                .triangle
         .item-body v-show="$index === 0"
           .nav-subtabs.dark-blue
             ul role="tablist" v-on="click: toggleItemBodyContent($event)"

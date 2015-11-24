@@ -96,6 +96,16 @@ $(function () {
     $('body .main-mask').remove();
   });
 
+  function syncPlayerCurrentTime () {
+    currentTimeInterval = setInterval(function () {
+      commentVm.freshComment.timepoint = Math.round(player.currentTime);
+    }, 1000);
+  }
+
+  function clearSyncPlayerCurrentTime () {
+    clearInterval(currentTimeInterval);
+  }
+
   function sendRatingRequest (projectId, assignmentId, rating, callback, errorHandle) {
     var url = '/assignments/' + assignmentId + '/rating';
     $.ajax({
@@ -210,6 +220,8 @@ $(function () {
   }
 
   function initFreshComment (vm) {
+    clearSyncPlayerCurrentTime();
+
     vm.freshComment.$set('timepoint', Math.floor(player.currentTime));
     vm.freshComment.$set('editing', true);
     if(vm.pause) {
@@ -234,6 +246,8 @@ $(function () {
         // 保存注释后自动开始播放视频
         if(player.paused) {
           player.play();
+        } else {
+          syncPlayerCurrentTime();
         }
       }, function () {
         vm.freshComment.$set('saving', false);
@@ -247,6 +261,7 @@ $(function () {
   function cancelAddComment (vm) {
     vm.freshComment.$set('desc', '');
     vm.freshComment.$set('editing', false);
+    syncPlayerCurrentTime();
   }
 
   function makeCommentEditable (vm, commentIndex) {
@@ -343,13 +358,11 @@ $(function () {
 
     // 在添加注释的时间点上实时显示视频的播放时间
     $(player).on('play', function () {
-      currentTimeInterval = setInterval(function () {
-        commentVm.freshComment.timepoint = Math.round(player.currentTime);
-      }, 1000);
+      syncPlayerCurrentTime();
     });
 
     $(player).on('pause', function () {
-      clearInterval(currentTimeInterval);
+      clearSyncPlayerCurrentTime();
     });
 
   });

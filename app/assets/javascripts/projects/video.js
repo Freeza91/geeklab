@@ -229,6 +229,10 @@ $(function () {
         vm.freshComment.$set('saving', false);
         vm.freshComment.$set('editing', false);
         vm.freshComment.$set('desc', '');
+        // 保存注释后自动开始播放视频
+        if(player.paused) {
+          player.play();
+        }
       }, function () {
         vm.freshComment.$set('saving', false);
       });

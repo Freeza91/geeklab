@@ -8,7 +8,8 @@ $(function () {
       projectId = $('#project-id').val(),
       assignmentId = $('#assignment-id').val(),
       rating = 0,
-      commentVm;
+      commentVm,
+      currentTimeInterval;
 
   $('.rating-star').on('click', function () {
     if(isRating === 'true' || isRating === true) {
@@ -226,7 +227,6 @@ $(function () {
         vm.saving.push(false);
         vm.freshComment.$set('saving', false);
         vm.freshComment.$set('editing', false);
-        vm.freshComment.$set('timepoint', 0);
         vm.freshComment.$set('desc', '');
       }, function () {
         vm.freshComment.$set('saving', false);
@@ -238,7 +238,6 @@ $(function () {
   }
 
   function cancelAddComment (vm) {
-    vm.freshComment.$set('timepoint', 0);
     vm.freshComment.$set('desc', '');
     vm.freshComment.$set('editing', false);
   }
@@ -333,6 +332,17 @@ $(function () {
         updateComment: updateComment,
         showDeleteConfirm: showDeleteConfirm
       }
+    });
+
+    // 在添加注释的时间点上实时显示视频的播放时间
+    $(player).on('play', function () {
+      currentTimeInterval = setInterval(function () {
+        commentVm.freshComment.timepoint = Math.round(player.currentTime);
+      }, 1000);
+    });
+
+    $(player).on('pause', function () {
+      clearInterval(currentTimeInterval);
     });
 
   });

@@ -301,7 +301,7 @@ $(function () {
   // 初始化comment Vue 对象
   getFeedbacks(assignmentId, function (data) {
     var commentVmData = {
-      pause: true,
+      pause: false,
       currCommentIndex: 0,
       freshComment: {
         timepoint: 0,

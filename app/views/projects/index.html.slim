@@ -73,27 +73,22 @@ main role="main"
                   td.name
                     | 网站地址
                   td v-text="project.platform"
-                    | ios
                 tr v-if="project.device !== 'web'"
                   td.name
                     | 平台
                   td v-text="project.platform"
-                    | ios
                 tr v-if="project.device !== 'web'"
                   td.name
                     | 测试设备
                   td v-text="project.device"
-                    | phone
                 tr v-if="project.device !== 'web'"
                   td.name
                     | 系统要求
                   td v-text="project.requirement"
-                    | 7.0及以上
                 tr
                   td.name
                     | 产品简介
                   td v-text="project.profile"
-                    | 没有介绍
             table.table.zebra
               colgroup
                 col width="15%"
@@ -105,39 +100,30 @@ main role="main"
                   td.name
                     | 年龄范围
                   td v-text="project.user_feature.age + '岁'"
-                    | 20 -30岁
                   td.name
                     | 教育程度
                   td v-text="project.user_feature.education"
-                    | 本科以上
                 tr
                   td.name
                     | 年收入
                   td v-text="project.user_feature.income + '万'"
-                    | 10
-                    | 万
                   td.name
                     | 情感状态
                   td v-text="project.user_feature.emotional_status"
-                    | 单身
                 tr
                   td.name
                     | 性别
                   td v-text="project.user_feature.sex"
-                    | 男，女
                   td.name
                     | 性取向
                   td v-text="project.user_feature.sex_orientation"
-                    | all
                 tr
                   td.name
                     | 城市级别
                   td v-text="getCityMap(project.user_feature.city_level)"
-                    | 北上广
                   td.name
                     | 兴趣标签
                   td v-text="project.user_feature.interest"
-                    | 无
             table.table.zebra
               colgroup
                 col width="15%"
@@ -147,7 +133,6 @@ main role="main"
                   td.name
                     | 测试场景
                   td v-text="project.desc"
-                    | situation
                 tr
                   td.name
                     | 任务详情
@@ -156,7 +141,6 @@ main role="main"
                       li v-repeat="task: project.tasks"
                         img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
                         span v-text="task.content"
-                          | task
             table.table.zebra
               colgroup
                 col width="15%"
@@ -168,20 +152,18 @@ main role="main"
                   td.name
                     | 昵称
                   td v-text="project.contact_name"
-                    | wangxiao
                   td.name
                     | 联系邮箱
                   td v-text="project.email"
-                    | wangxiao@geekpark.net
                 tr
                   td.name
                     | 手机号
                   td v-text="project.phone"
-                    | 17090026516
                   td.name
                     | 公司名称
                   td v-text="project.company"
-                    | geekpark
+            .project-qrcode v-if="project.device !== 'web'"
+              img v-attr="src: project.qr_code"
         .item-footer
           .switch
             .fa.fa-angle-down v-on="click: showProjectBody($event)" v-show="$index !== 0"

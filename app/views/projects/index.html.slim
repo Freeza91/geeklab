@@ -58,14 +58,14 @@ main role="main"
               span
                 | 个视频
             .video-item v-repeat="assignment: project.assignments"
-              a v-attr="href: '/projects/' + project.id + '/video/' + assignment.id" target="_blank"
+              a v-attr="href: '/projects/' + project.id + '/video/' + assignment.id" target="_blank" v-on="click: assignment.is_read = false"
                 img v-attr="src: assignment.video + '?vframe/png/offset/0/w/480/h/200'"
               span.read-mark v-if="!assignment.is_read"
             .video-item v-repeat="project.demand - project.assignments.length"
               a href="javascript: void(0)"
                 .fa.fa-file-video-o
           .project-detail
-            table.table.table-with-name-highlight
+            table.table.zebra
               colgroup
                 col width="15%"
                 col width="85%"
@@ -95,7 +95,7 @@ main role="main"
                     | 产品简介
                   td v-text="project.profile"
                     | 没有介绍
-            table.table.table-with-name-highlight
+            table.table.zebra
               colgroup
                 col width="15%"
                 col width="35%"
@@ -139,7 +139,7 @@ main role="main"
                     | 兴趣标签
                   td v-text="project.user_feature.interest"
                     | 无
-            table.table.table-with-name-highlight
+            table.table.zebra
               colgroup
                 col width="15%"
                 col width="85%"
@@ -158,7 +158,7 @@ main role="main"
                         img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
                         span v-text="task.content"
                           | task
-            table.table.table-with-name-highlight
+            table.table.zebra
               colgroup
                 col width="15%"
                 col width="35%"

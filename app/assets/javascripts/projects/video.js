@@ -8,7 +8,8 @@ $(function () {
       projectId = $('#project-id').val(),
       assignmentId = $('#assignment-id').val(),
       rating = 0,
-      commentVm;
+      commentVm,
+      currentTimeInterval;
 
   $('.rating-star').on('click', function () {
     if(isRating === 'true' || isRating === true) {
@@ -48,8 +49,10 @@ $(function () {
   }
 
   function confirmClose() {
-    $('#video-op-confirm').removeClass('show');
-    $('#video-op-confirm .error-hint').hide().text('')
+    var $modal = $('#video-op-confirm');
+    $modal.removeClass('show');
+    $modal.find('.error-hint').hide().text('')
+    $modal.find('.loading').hide();
     $('body .main-mask').remove();
   }
 
@@ -93,6 +96,16 @@ $(function () {
     $('body .main-mask').remove();
   });
 
+  function syncPlayerCurrentTime () {
+    currentTimeInterval = setInterval(function () {
+      commentVm.freshComment.timepoint = Math.round(player.currentTime);
+    }, 1000);
+  }
+
+  function clearSyncPlayerCurrentTime () {
+    clearInterval(currentTimeInterval);
+  }
+
   function sendRatingRequest (projectId, assignmentId, rating, callback, errorHandle) {
     var url = '/assignments/' + assignmentId + '/rating';
     $.ajax({
@@ -129,6 +142,7 @@ $(function () {
     var videoDuration = player.seekable.end(0);
     if(timepoint <= videoDuration) {
       player.currentTime = timepoint;
+      player.play();
     }
   }
 
@@ -206,6 +220,8 @@ $(function () {
   }
 
   function initFreshComment (vm) {
+    clearSyncPlayerCurrentTime();
+
     vm.freshComment.$set('timepoint', Math.floor(player.currentTime));
     vm.freshComment.$set('editing', true);
     if(vm.pause) {
@@ -226,8 +242,13 @@ $(function () {
         vm.saving.push(false);
         vm.freshComment.$set('saving', false);
         vm.freshComment.$set('editing', false);
-        vm.freshComment.$set('timepoint', 0);
         vm.freshComment.$set('desc', '');
+        // 保存注释后自动开始播放视频
+        if(player.paused) {
+          player.play();
+        } else {
+          syncPlayerCurrentTime();
+        }
       }, function () {
         vm.freshComment.$set('saving', false);
       });
@@ -238,9 +259,9 @@ $(function () {
   }
 
   function cancelAddComment (vm) {
-    vm.freshComment.$set('timepoint', 0);
     vm.freshComment.$set('desc', '');
     vm.freshComment.$set('editing', false);
+    syncPlayerCurrentTime();
   }
 
   function makeCommentEditable (vm, commentIndex) {
@@ -301,7 +322,7 @@ $(function () {
   // 初始化comment Vue 对象
   getFeedbacks(assignmentId, function (data) {
     var commentVmData = {
-      pause: true,
+      pause: false,
       currCommentIndex: 0,
       freshComment: {
         timepoint: 0,
@@ -333,6 +354,15 @@ $(function () {
         updateComment: updateComment,
         showDeleteConfirm: showDeleteConfirm
       }
+    });
+
+    // 在添加注释的时间点上实时显示视频的播放时间
+    $(player).on('play', function () {
+      syncPlayerCurrentTime();
+    });
+
+    $(player).on('pause', function () {
+      clearSyncPlayerCurrentTime();
     });
 
   });

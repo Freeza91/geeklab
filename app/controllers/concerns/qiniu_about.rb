@@ -187,7 +187,7 @@ private
       fsizeMin: 524288,
       fsizeLimit: 3221225472,
       persistentOps: "avthumb/mp4/stripmeta/1/rotate/auto/vb/512k/s/800x480/autoscale/1/wmImage/" +
-                      qiniu_encode("#{Settings.water_picture}") + "/wmGravity/SouthWest" + "|saveas/" +
+                      qiniu_encode("#{Settings.water_picture}") + "/wmGravity/NorthWest" + "|saveas/" +
                       qiniu_encode("#{Settings.qiniu_bucket}:copy-#{key_name}") ,
       persistentNotifyUrl: persistentNotifyUrl
     }

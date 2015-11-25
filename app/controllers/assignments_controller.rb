@@ -152,14 +152,15 @@ class AssignmentsController < ApplicationController
                                     assignment_id: assignment.id)
       unless record
 
-        rating = params[:rating] || 5
+        rating = (params[:rating] || 5).to_i
         assignment.update_column(:rating_from_pm, rating)
         project = assignment.project
         basic_bonus = project.basic_bonus || 0
         bonus = rating * basic_bonus
         origin_credis = current_user.credits || 0
+        tester = assignment.tester
 
-        record = CreditRecord.new(tester_id: current_user.id,
+        record = CreditRecord.new(tester_id: assignment.tester_id,
                                   project_id: project.id,
                                   assignment_id: assignment.id,
                                   credits: project.credit || 0,
@@ -168,7 +169,7 @@ class AssignmentsController < ApplicationController
                                   rating_type: 'pm',
                                   rating: rating)
 
-        record.save && tester.update_column(credits: bonus + origin_credis)
+        record.save && tester.update_column(:credits, bonus + origin_credis)
       end
     else
       json[:code], json[:msg] = 0, '没有找到资源'

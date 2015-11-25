@@ -15,7 +15,7 @@ $(function () {
     if(isRating === 'true' || isRating === true) {
       return false;
     }
-    var rating = 5 - $(this).data('rating');
+    rating = 5 - $(this).data('rating');
     showConfirmModal({
       eventName: 'rating',
       content: '确定评分为"' + rating + '星"? 提交后无法修改'
@@ -25,6 +25,7 @@ $(function () {
   function sendRating () {
     sendRatingRequest(projectId, assignmentId, rating, function (data) {
       isRating = true;
+      confirmClose();
     }, function () {
       showOpError('评分失败, 请稍后重试');
     });

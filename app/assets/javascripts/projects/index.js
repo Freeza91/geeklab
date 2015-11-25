@@ -205,7 +205,7 @@ $(function () {
       isAll         : false
     },
     methods: {
-      editable: isProjectEditable,
+      isEditable: isProjectEditable,
       canBeDeleted: canBeDeleted,
       canShowCountDown: canShowCountDown,
       getStatusMap: getStatusMap,

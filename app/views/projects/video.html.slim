@@ -73,7 +73,7 @@ main role="main"
                 .fa.fa-trash v-on="click: showDeleteConfirm(this, $index)"
         .video-info-section#task
           - @project.tasks.each do |task|
-            .task-item
+            .task-item.clearfix
               .task-item-icon
                 img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
               .task-item-content

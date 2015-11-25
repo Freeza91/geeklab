@@ -25,6 +25,7 @@ $(function () {
   function sendRating () {
     sendRatingRequest(projectId, assignmentId, rating, function (data) {
       isRating = true;
+      confirmClose();
     }, function () {
       showOpError('评分失败, 请稍后重试');
     });

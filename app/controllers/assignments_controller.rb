@@ -161,7 +161,7 @@ class AssignmentsController < ApplicationController
         tester = assignment.tester
         p tester
 
-        record = CreditRecord.new(tester_id: assignment.tester_id
+        record = CreditRecord.new(tester_id: assignment.tester_id,
                                   project_id: project.id,
                                   assignment_id: assignment.id,
                                   credits: project.credit || 0,

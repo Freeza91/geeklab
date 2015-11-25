@@ -169,7 +169,7 @@ class AssignmentsController < ApplicationController
                                   rating_type: 'pm',
                                   rating: rating)
 
-        record.save && tester.update_column(credits: bonus + origin_credis)
+        record.save && tester.update_column(:credits, bonus + origin_credis)
       end
     else
       json[:code], json[:msg] = 0, '没有找到资源'

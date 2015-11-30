@@ -17,7 +17,6 @@ class Dashboard::ProjectsController < Dashboard::BaseController
         if @project
           json[:project] = {
             id: @project.id,
-            expired_at: @project.expired_at ? @project.expired_at.strftime('%F %T') : nil,
             credit: @project.credit,
             status: @project.status,
             reasons: @project.reasons || [],
@@ -99,8 +98,7 @@ class Dashboard::ProjectsController < Dashboard::BaseController
 private
 
   def project_params
-    params.require(:project).permit(:expired_at, :credit, :beginner,
-                                    :basic_bonus, :status, reasons: [])
+    params.require(:project).permit(:credit, :beginner, :basic_bonus, :status, reasons: [])
   end
 
   def load_info_from_redis(project)

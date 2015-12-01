@@ -27,6 +27,17 @@ class Project < ActiveRecord::Base
   scope :success,           -> { where(status: 'success') }
   scope :collect_beigning,  -> { order("updated_at desc").where(beginner: true) }
 
+  def to_json_for_admin_edit
+    {
+      id: id,
+      credit: credit,
+      status: status,
+      reasons: reasons || [],
+      basic_bonus: basic_bonus,
+      beginner: beginner
+    }
+  end
+
   def to_json_with_tasks
     {
       name: name,

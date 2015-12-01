@@ -15,14 +15,7 @@ class Dashboard::ProjectsController < Dashboard::BaseController
         @project = Project.includes(:tasks).includes(:user_feature).find(params[:id])
 
         if @project
-          json[:project] = {
-            id: @project.id,
-            credit: @project.credit,
-            status: @project.status,
-            reasons: @project.reasons || [],
-            basic_bonus: @project.basic_bonus,
-            beginner: @project.beginner
-          }
+          json[:project] = @project.to_json_for_admin_edit
         end
 
         render json: json

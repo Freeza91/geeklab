@@ -40,12 +40,33 @@ class AssignmentsController < ApplicationController
 
   end
 
+  def got_it
+    json = { status: 0, code: 1, msg: '成功抢到' }
+
+    @assignment = Assignment.find_by(id: params[:id])
+    if @assignment && @assignment.tester_id == current_user.id
+      @project = @assignment.project
+      if @project.available? && @assignment.status == 'new'
+        set_assignment
+        NotitySubscribe.set(wait_until: @t).perform_later(@assignment.id)
+      else
+        json[:code], json[:msg] = -1, '已经被抢光'
+      end
+    else
+      json[:code], json[:msg] = 0, '项目为空'
+    end
+
+    render json: json
+  end
+
   def show
-    assignment = Assignment.find_by(id: params[:id])
     json = { status: 0, code: 1 }
-    if assignment && assignment.tester_id == current_user.id
-      project = assignment.project
-      json[:project] = project.to_json_with_tasks
+
+    @assignment = Assignment.find_by(id: params[:id])
+
+    if @assignment && @assignment.tester_id == current_user.id
+      @project = @assignment.project
+      json[:project] = @project.to_json_with_tasks
     else
       json[:code], json[:msg] = 0, '项目为空'
     end
@@ -73,10 +94,7 @@ class AssignmentsController < ApplicationController
   end
 
   def join
-
-    tester = current_user.to_tester
-    tester.update_column(:last_view_time, Time.now)
-
+    current_user..update_column(:last_view_time, Time.now)
   end
 
   def get_ing_task

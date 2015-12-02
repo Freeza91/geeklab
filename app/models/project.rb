@@ -107,6 +107,10 @@ class Project < ActiveRecord::Base
     value
   end
 
+  def available?
+    available >= demand : false : true
+  end
+
   def get_status
 
     return status unless status == 'underway'

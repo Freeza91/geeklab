@@ -12,3 +12,4 @@ production: # work model
   - [start_assign, 10]
   - [inc_good_stock, 5]
   - [add_bonus_credit]
+  - [notity_subscribe, 3]

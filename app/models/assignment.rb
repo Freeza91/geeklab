@@ -1,7 +1,7 @@
 class Assignment < ActiveRecord::Base
 
-  scope :expired,      -> { joins(:project).where("projects.expired_at < ?", Time.now - 1.minutes) }
-  scope :not_expired,  -> { joins(:project).where("projects.expired_at > ?", Time.now + 1.minutes) }
+  scope :expired,      -> { joins(:project).where("assignments.expired_at < ?", Time.now - 1.minutes) }
+  scope :not_expired,  -> { joins(:project).where("assignments.expired_at > ?", Time.now + 1.minutes) }
   scope :test,         -> { where("assignments.status = ?", 'test') }
   scope :not_take_part,-> { where("assignments.status = ?",  "new") }
   scope :ing,          -> { where('assignments.status in (?)', ['wait_check', 'checking', 'not_accept', 'delete']) }
@@ -50,7 +50,7 @@ class Assignment < ActiveRecord::Base
       video: video,
       id: self.to_params,
       name: self.project.name,
-      deadline: self.project.expired_at,
+      deadline: self.expired_at,
       bonus: project.basic_bonus,
       credit_record: credit_record
     }
@@ -131,7 +131,7 @@ class Assignment < ActiveRecord::Base
               # 累加基础分
               tester.update_column(:credits, credits)
               # 设置过期自动评分
-              AddBonusCreditJob.set(wait_until: project.expired_at || Time.now).perform_later(id, tester.id)
+              AddBonusCreditJob.set(wait_until: expired_at || Time.now).perform_later(id, tester.id)
             end
           end
         end

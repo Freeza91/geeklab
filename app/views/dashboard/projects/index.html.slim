@@ -12,7 +12,6 @@ div
         th 产品经理邮箱
         th 要求数
         th 任务状态
-        th 提交时间
         th 操作
     tbody
       - @projects.each do |project|
@@ -30,11 +29,6 @@ div
               | #{project.demand}
             td
               = get_project_status_info(project.status)
-            td
-              - if project.expired_at
-                | #{project.expired_at.strftime("%F %T")}
-              - else
-                | 暂无
             td
               = link_to("审核", edit_dashboard_project_path(project))
               span |

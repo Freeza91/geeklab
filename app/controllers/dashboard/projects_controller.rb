@@ -15,15 +15,7 @@ class Dashboard::ProjectsController < Dashboard::BaseController
         @project = Project.includes(:tasks).includes(:user_feature).find(params[:id])
 
         if @project
-          json[:project] = {
-            id: @project.id,
-            expired_at: @project.expired_at ? @project.expired_at.strftime('%F %T') : nil,
-            credit: @project.credit,
-            status: @project.status,
-            reasons: @project.reasons || [],
-            basic_bonus: @project.basic_bonus,
-            beginner: @project.beginner
-          }
+          json[:project] = @project.to_json_for_admin_edit
         end
 
         render json: json
@@ -99,8 +91,7 @@ class Dashboard::ProjectsController < Dashboard::BaseController
 private
 
   def project_params
-    params.require(:project).permit(:expired_at, :credit, :beginner,
-                                    :basic_bonus, :status, reasons: [])
+    params.require(:project).permit(:credit, :beginner, :basic_bonus, :status, reasons: [])
   end
 
   def load_info_from_redis(project)

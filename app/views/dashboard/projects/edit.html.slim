@@ -125,10 +125,6 @@
         | 否
     .item
       span.name
-        | 截止时间:
-      input#time-picker type="text" v-model="project.expired_at" required="required"
-    .item
-      span.name
         | 任务积分:
       input type="text" v-model="project.credit" required="required"
     .item
@@ -156,12 +152,6 @@
 
 javascript:
   $(function() {
-
-    // init time picker
-    $('#time-picker').datetimepicker({
-      formatDate: 'Y-m-d',
-      minDate: '0'
-    });
 
     $.ajax({
       url: location.href,
@@ -192,7 +182,6 @@ javascript:
     }
 
     function addComment (vm) {
-      console.log(vm.$data.project);
       vm.project.reasons.push('');
     }
 
@@ -206,7 +195,6 @@ javascript:
       var data = {};
       data.status = project.status;
       data.credit = project.credit;
-      data.expired_at = project.expired_at;
       data.basic_bonus = project.basic_bonus;
       data.reasons = [];
       if(project.beginner === 'true') {
@@ -219,13 +207,12 @@ javascript:
           data.reasons.push(reason);
         }
       });
-      console.log(data);
 
       var url = '/admin/projects/' + vm.project.id;
       $.ajax({
         url: url,
         method: 'put',
-        data: {project: data}
+        data: {project: data},
       })
       .done(function (data) {
         if(data.status === 0 && data.code === 1) {

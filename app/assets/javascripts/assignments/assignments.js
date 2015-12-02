@@ -788,69 +788,69 @@ $(function () {
   }
 
   // 任务过期时间倒计时
-  var countDownInterval = []; // 倒计时interval id list
-  var assignmentDeadline = []; // 任务截止事时间
+  //var countDownInterval = []; // 倒计时interval id list
+  //var assignmentDeadline = []; // 任务截止事时间
   // 处理新加载任务的倒计时
   // 每次新加载时候清理之前所有的倒计时，重新初始化
   // 处理方式太暴力了，以后优化
-  function assignmentTimeCountDownInit () {
-    var max_times = 1000 * 60 * 60 * 24 * 100;
-    $('.time').each(function (index, item) {
-      //countDownInterval[index] = setInterval(assignmentTimeCountDown(deadline, $ele));
-      var $ele = $(item),
-          // 兼容safari Date对象
-          deadline = $ele.attr('data-deadline').replace(/-/g, '/');
-          now = new Date();
+  //function assignmentTimeCountDownInit () {
+    //var max_times = 1000 * 60 * 60 * 24 * 100;
+    //$('.time').each(function (index, item) {
+      ////countDownInterval[index] = setInterval(assignmentTimeCountDown(deadline, $ele));
+      //var $ele = $(item),
+          //// 兼容safari Date对象
+          //deadline = $ele.attr('data-deadline').replace(/-/g, '/');
+          //now = new Date();
 
-      assignmentDeadline[index] = new Date(deadline);
-      var times = assignmentDeadline[index] - now;
-      if(times <= 0 || times > max_times) {
-        return false;
-      }
+      //assignmentDeadline[index] = new Date(deadline);
+      //var times = assignmentDeadline[index] - now;
+      //if(times <= 0 || times > max_times) {
+        //return false;
+      //}
 
-      assignmentTimeCountDown(times, $ele);
+      //assignmentTimeCountDown(times, $ele);
 
-      // 周期执行倒计时函数，周期为1s
-      countDownInterval[index] = setInterval(function () {
-        var deadline = assignmentDeadline[index],
-            now = new Date(),
-            times = deadline - now;
-        if(times <= 0) {
-          clearInterval(countDownInterval[index]);
-          return false;
-        }
-        assignmentTimeCountDown(times, $ele);
-      }, 1000);
-    });
-  }
+      //// 周期执行倒计时函数，周期为1s
+      //countDownInterval[index] = setInterval(function () {
+        //var deadline = assignmentDeadline[index],
+            //now = new Date(),
+            //times = deadline - now;
+        //if(times <= 0) {
+          //clearInterval(countDownInterval[index]);
+          //return false;
+        //}
+        //assignmentTimeCountDown(times, $ele);
+      //}, 1000);
+    //});
+  //}
 
-  function assignmentTimeCountDown(count, $ele) {
-    var timeArr = [];
-    if(count > 24 * 60 * 60 * 1000) {
-      var days = ~~ (count / (24 * 60 * 60 * 1000));
-      days = days < 10 ? '0' + days : days;
-      timeArr.push(days + '天');
-    }
-    if(count > 60 * 60 * 1000) {
-      var hours = ~~ ((count / (60 * 60 * 1000)) % 24);
-      hours = hours < 10 ? '0' + hours : hours;
-      timeArr.push(hours + '时');
-    }
-    if(count > 60 * 1000) {
-      var minutes = ~~ ((count / (60 * 1000)) % 60);
-      minutes = minutes < 10 ? '0' + minutes : minutes;
-      timeArr.push( minutes + '分');
-    }
-    if(count > 1000) {
-      var seconds = ~~ ((count / 1000) % 60);
-      seconds = seconds < 10 ? '0' + seconds : seconds
-      timeArr.push(seconds + '秒');
-    }
-    $ele.text(timeArr.join(''));
-  }
+  //function assignmentTimeCountDown(count, $ele) {
+    //var timeArr = [];
+    //if(count > 24 * 60 * 60 * 1000) {
+      //var days = ~~ (count / (24 * 60 * 60 * 1000));
+      //days = days < 10 ? '0' + days : days;
+      //timeArr.push(days + '天');
+    //}
+    //if(count > 60 * 60 * 1000) {
+      //var hours = ~~ ((count / (60 * 60 * 1000)) % 24);
+      //hours = hours < 10 ? '0' + hours : hours;
+      //timeArr.push(hours + '时');
+    //}
+    //if(count > 60 * 1000) {
+      //var minutes = ~~ ((count / (60 * 1000)) % 60);
+      //minutes = minutes < 10 ? '0' + minutes : minutes;
+      //timeArr.push( minutes + '分');
+    //}
+    //if(count > 1000) {
+      //var seconds = ~~ ((count / 1000) % 60);
+      //seconds = seconds < 10 ? '0' + seconds : seconds
+      //timeArr.push(seconds + '秒');
+    //}
+    //$ele.text(timeArr.join(''));
+  //}
 
   // 倒计时初始化
-  assignmentTimeCountDownInit();
+  //assignmentTimeCountDownInit();
 
   function getAssignmentPaging (page, callback) {
     var url = location.pathname;
@@ -915,7 +915,7 @@ $(function () {
       $assignmentCard.find('.operator').hide();
       updateOperator(assignment.status, $assignmentCard);
       // deadline
-      $assignmentCard.find('.time').attr('data-deadline', assignment.deadline);
+      //$assignmentCard.find('.time').attr('data-deadline', assignment.deadline);
 
       // extra bonus
       var $extra = $assignmentCard.find('extra-score');
@@ -967,10 +967,10 @@ $(function () {
     $assignmentsWrp.append(cards.join(''));
 
     // 重新初始化倒计时
-    countDownInterval.forEach(function (id, index) {
-      clearInterval(id);
-    })
-    assignmentTimeCountDownInit();
+    //countDownInterval.forEach(function (id, index) {
+      //clearInterval(id);
+    //})
+    //assignmentTimeCountDownInit();
   }
 
   // 自定义xhr对象获取上传进度

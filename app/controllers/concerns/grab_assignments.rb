@@ -1,6 +1,6 @@
 require 'active_support/concern'
 
-module QiniuAbout
+module GrabAssignments
   extend ActiveSupport::Concern
 
   included do

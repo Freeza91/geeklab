@@ -4,6 +4,7 @@ class AssignmentsController < ApplicationController
   before_action :get_resoures, only: [:get_new_task, :get_finish_project,
                                       :get_ing_task, :get_done_task]
   include QiniuAbout
+  include GrabAssignments
 
   def index
     tester = current_user.to_tester

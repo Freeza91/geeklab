@@ -59,9 +59,6 @@
     resources :feedbacks
 
     collection do
-      get 'got_it'
-      get 'subscribe'
-      get 'unsubscribe'
       get 'get_new_task'
       get 'get_finish_project'
       get 'join'
@@ -79,6 +76,10 @@
       post 'callback_from_qiniu_transfer'
       post 'callback_from_qiniu_video_images'
       post 'rating'
+
+      get 'got_it'
+      get 'subscribe'
+      get 'unsubscribe'
     end
 
   end

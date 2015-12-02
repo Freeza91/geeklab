@@ -3,65 +3,99 @@ main role="main" class="#{isAssignmentEmpty(@assignments)}"
     ul.nav.nav-tabs role="tablist"
       li.active
         a href="#{assignments_path}"
-          | 新任务
+          | 未参与
       li
         a href="#{join_assignments_path}"
-          | 我参与的
-    .assignments-wrp.clearfix
-      - if @assignments
-        - @assignments.each do |assignment|
-          .card data-assignment-id="#{assignment.to_params}"
-            .inner
-              header
-                h1.title
-                  i.fa.fa-mobile
-                  span action="getAssignmentDetail"
-                    = assignment.project.name
-                  - if current_user.approved
-                    span.close.assignment-del
-                      | &times
-                p.describle
-                  = assignment.project.profile
-              .content
-                img
-                = render partial: 'assignments/operators/wait_upload'
-                = render partial: 'assignments/operators/uploading'
-                = render partial: 'assignments/operators/upload_failed'
-              footer
+          | 已参与
+    nav.nav-subtabs
+      ul
+        li
+          a.active href="javascript: void(0)" data-target="#assignments-fresh" data-hash="ing"
+            | 进行中
+        li
+          a href="javascript: void(0)" data-target="#assignments-miss" data-hash="done"
+            | 已结束
+    #assignments-fresh.assignments-wrp.clearfix
+      .assignment-item
+        .item-header
+          .title
+            //.fa.fa-mobile
+            .fa.fa-desktop
+            span
+              | 测试
+          .describle
+            | 这是一个测试任务
+        .item-body
+          img
+          = render partial: 'assignments/operators/wait_upload'
+          = render partial: 'assignments/operators/uploading'
+          = render partial: 'assignments/operators/upload_failed'
+        .item-footer
+          .score
+            span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"
+              i.icon-inner.icon-score-old
+            span.number
+              | 100
+              //= assignment.project.credit
+            //- if !assignment.project.beginner && !is_old_assignment(assignment.project.created_at)
+            span
+              | &nbsp+&nbsp
+            span.extra
+              | 评分奖励
+              = render partial: "assignments/shared/extra_score", locals: {credit_record: nil, bonus: 20}
                 //.timer
                    //- if Time.now + 50.years > assignment.project.expired_at
                     //p
                       //| 距离任务结束
                       //span.time data-deadline="#{assignment.project.expired_at}"
                         //| 00:00:00
-                .score
-                  span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"
-                    i.icon-inner.icon-score-old
-                  span.number
-                    = assignment.project.credit
-                  - if !assignment.project.beginner && !is_old_assignment(assignment.project.created_at)
-                    span
-                      | &nbsp+&nbsp
-                    span.extra
-                      | 评分奖励
-                      = render partial: "assignments/shared/extra_score", locals: {credit_record: nil, bonus: assignment.project.basic_bonus}
-    .load-more
-      - if @assignments.try(:size) == 10
-        button.btn.btn-base.yellow.btn-full
+      .load-more v-show="isAll"
+        button.btn.btn-flat.yellow.btn-full
           | 加载更多
-    - if @assignments.try(:size) == 0
-        p.no-assignment-hint
-          | 目前没有新任务，过段时间再来查看吧
+      //- if @assignments.try(:size) == 0
+          //p.no-assignment-hint
+            //| 目前没有新任务，过段时间再来查看吧
+    #assignments-miss.assignments-wrp.clearfix
+      .assignment-item
+        .item-header
+          .title
+            //.fa.fa-mobile
+            .fa.fa-desktop
+            span
+              | 测试
+          .describle
+            | 这是一个测试任务
+        .item-body
+          img
+          = render partial: 'assignments/operators/wait_upload'
+          = render partial: 'assignments/operators/uploading'
+          = render partial: 'assignments/operators/upload_failed'
+        .item-footer
+          .score
+            span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"
+              i.icon-inner.icon-score-old
+            span.number
+              | 100
+              //= assignment.project.credit
+            //- if !assignment.project.beginner && !is_old_assignment(assignment.project.created_at)
+            span
+              | &nbsp+&nbsp
+            span.extra
+              | 评分奖励
+              = render partial: "assignments/shared/extra_score", locals: {credit_record: nil, bonus: 20}
+                //.timer
+                   //- if Time.now + 50.years > assignment.project.expired_at
+                    //p
+                      //| 距离任务结束
+                      //span.time data-deadline="#{assignment.project.expired_at}"
+                        //| 00:00:00
+      .load-more v-show="isAll"
+        button.btn.btn-flat.yellow.btn-full
+          | 加载更多
 
   <!-- 上传视频文件选择-->
   input type="file" id="video" accept="video/mp4,video/x-m4v,video/*" style="display:none"
   <!-- 上传视频文件选择-->
-
-  //= render partial: 'assignments/shared/miss_assignments_reminder'
-  <!-- 过期任务入口 -->
-  .assignments-reminder
-   a href="#{miss_assignments_path}" target="_blank"
-    | 过期任务
 
 - if !current_user.to_tester.tester_infor.try(:already_finish) && current_user.approved
   <!-- 完成个人信息的提示 -->

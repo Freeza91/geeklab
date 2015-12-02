@@ -59,10 +59,11 @@
     resources :feedbacks
 
     collection do
-      get 'miss'
+      get 'get_new_task'
+      get 'get_finish_project'
       get 'join'
-      get 'ing'
-      get 'done'
+      get 'get_ing_task'
+      get 'get_done_task'
       get 'upload'
       get 'qr_token'
       get 'upload_token'

@@ -1,6 +1,8 @@
 class AssignmentsController < ApplicationController
 
   before_action :require_login?
+  before_action :get_resoures, only: [:get_new_task, :get_finish_project,
+                                      :get_ing_task, :get_done_task]
   include QiniuAbout
 
   def index
@@ -8,29 +10,40 @@ class AssignmentsController < ApplicationController
     unless tester.tester_infor
       return redirect_to choose_device_testers_path
     end
-    assignments = tester.assignments
-    if tester.approved
-      @assignments = assignments.new_tasks.order("id desc").page(params[:page]).per(10)
+  end
+
+  def get_new_task
+    json = { status: 0, code: 1, assignments: [] }
+
+    if @tester.approved
+      @assignments = @assignments.new_tasks.order("id desc").page(params[:page]).per(10)
     else
-      @assignments = assignments.test_task.order("id desc").page(params[:page]).per(10)
+      @assignments = @assignments.test_task.order("id desc").page(params[:page]).per(10)
     end
 
-    respond_to do |format|
-      format.html
-      format.json do
-        json = {status: 0, code: 1, assignments: [] }
-        @assignments.each do |a|
-          json[:assignments] << a.to_json_with_project
-        end
-        render json: json
-      end
+    @assignments.each do |a|
+      json[:assignments] << a.to_json_for_project_index
     end
+
+    render json: json
+  end
+
+  def get_finish_project
+    json = { status: 0, code: 1, assignments: [] }
+
+    @assignments = @assignments.finish_project.order("id desc").page(params[:page]).per(10)
+    @assignments.each do |a|
+      json[:assignments] << a.to_json_for_project_index
+    end
+
+    render json: json
+
   end
 
   def show
     assignment = Assignment.find_by(id: params[:id])
     json = { status: 0, code: 1 }
-    if assignment
+    if assignment && assignment.tester_id == current_user.id
       project = assignment.project
       json[:project] = project.to_json_with_tasks
     else
@@ -59,56 +72,33 @@ class AssignmentsController < ApplicationController
     render json:json
   end
 
-  def miss
-    tester = current_user.to_tester
-    assignments = tester.assignments
-    @assignments =  assignments.missing.order("id desc").page(params[:page]).per(10)
-
-    respond_to do |format|
-      format.html do
-        tester.update_column(:last_view_time, Time.now)
-      end
-      format.json do
-        json = {status: 0, code: 1, assignments: [] }
-        @assignments.each do |a|
-          json[:assignments] << a.to_json_with_project
-        end
-        render json: json
-      end
-    end
-
-  end
-
   def join
+
     tester = current_user.to_tester
-    assignments = tester.assignments
     tester.update_column(:last_view_time, Time.now)
-    @assignments_ing =  assignments.take_part_ing.order("id desc").page(params[:page]).per(10)
-    assignments_done_sort = (assignments.take_part_expired + assignments.done).sort_by { |a| -1 * a.id }
-    @assignments_done = Kaminari.paginate_array(assignments_done_sort).page(params[:page]).per(10)
+
   end
 
-  def ing
-    tester = current_user.to_tester
-    assignments = tester.assignments
-    assignments_ing =  assignments.take_part_ing.order("id desc").page(params[:page]).per(10)
+  def get_ing_task
     json = {status: 0, code: 1, assignments: [] }
-    assignments_ing.each do |a|
+
+    @assignments = @assignments.take_part_ing.order("id desc").page(params[:page]).per(10)
+    @assignments.each do |a|
       json[:assignments] << a.to_json_with_project
     end
 
     render json: json
   end
 
-  def done
-    tester = current_user.to_tester
-    assignments = tester.assignments.order("id desc")
-    assignments_done_sort = (assignments.take_part_expired + assignments.done).sort_by { |a| -1 * a.id }
-    assignments_done = Kaminari.paginate_array(assignments_done_sort).page(params[:page]).per(10)
+  def get_done_task
     json = {status: 0, code: 1, assignments: [] }
-    assignments_done.each do |a|
+
+    @assignments = @assignments.finish_task.sort_by { |a| -1 * a.id }.uniq
+    @assignments = Kaminari.paginate_array(@assignments).page(params[:page]).per(10)
+    @assignments.each do |a|
       json[:assignments] << a.to_json_with_project
     end
+
     render json: json
   end
 
@@ -120,8 +110,7 @@ class AssignmentsController < ApplicationController
       return render json: json
     end
 
-    # unless assignment && delete_video_at_qiniu(assignment, {}) && assignment.destroy
-    unless assignment && assignment.update_attribute(:status, 'never_show')
+    unless assignment && delete_video_at_qiniu(assignment, {}) && assignment.destroy
       json[:code], json[:msg] = 0, '没有权限删除这个任务或者此任务已经不存在'
     end
 
@@ -146,7 +135,6 @@ class AssignmentsController < ApplicationController
 
     assignment = Assignment.find_by(id: params[:id])
 
-    #if assignment && assignment.tester_id == current_user.id
     if assignment && assignment.project.pm_id == current_user.id
       record = CreditRecord.find_by(project_id: params[:project_id],
                                     assignment_id: assignment.id)
@@ -180,15 +168,22 @@ class AssignmentsController < ApplicationController
 
 private
 
+  def get_resoures
+    @tester = current_user.to_tester
+    @assignments = @tester.assignments
+  end
+
   def delete_video_at_qiniu(assignment, json)
 
-    code, result, response_headers = Qiniu::Storage.delete(
-        Settings.qiniu_bucket,
-        URI.parse(assignment.try(:video).to_s).path.to_s[1..-1].to_s
-    )
-
-    json[:code], json[:msg] = 0, '没有找到资源' unless code == 200
-    assignment.update_attributes(status: "delete", video: '') if !json.size.zero?
+    begin
+      code, result, response_headers = Qiniu::Storage.delete(
+          Settings.qiniu_bucket,
+          URI.parse(assignment.try(:video).to_s).path.to_s[1..-1].to_s
+      )
+      puts '没有找到资源' unless code == 200
+    rescue
+      puts "网络异常"
+    end
 
     true
   end

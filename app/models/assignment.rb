@@ -1,10 +1,16 @@
 class Assignment < ActiveRecord::Base
 
-  scope :expired,      -> { joins(:project).where("assignments.expired_at < ?", Time.now - 1.minutes) }
-  scope :not_expired,  -> { joins(:project).where("assignments.expired_at > ?", Time.now + 1.minutes) }
-  scope :test,         -> { where("assignments.status = ?", 'test') }
+  scope :expired,      -> { where("assignments.expired_at < ?", Time.now - 1.minutes) }
+  scope :not_expired,  -> { where("assignments.expired_at > ?", Time.now + 1.minutes) }
+
+  scope :test,         -> { where("assignments.status = ?", 'test') } # 新手测试任务
   scope :not_take_part,-> { where("assignments.status = ?",  "new") }
-  scope :ing,          -> { where('assignments.status in (?)', ['wait_check', 'checking', 'not_accept', 'delete']) }
+  scope :assigned,     -> { where(flag: true) }
+  scope :not_assigned, -> { where(flag: false) }
+  scope :finish,       -> { joins(:project).where("projects.status = ?", 'finish') }
+  scope :not_finish,   -> { joins(:project).where("projects.status != ?", 'finish') }
+
+  scope :ing,          -> { where('assignments.status in (?)', ['wait_check', 'checking', 'not_accept']) }
   scope :done,         -> { where("assignments.status = ?", "success") }
   scope :show_pm,      -> { where("public = ?", true) }
 
@@ -22,45 +28,52 @@ class Assignment < ActiveRecord::Base
 
   class << self
 
-    def take_part_ing
-      not_expired.ing
-    end
-
-    def take_part_expired
-      ing.expired
+    def test_task
+      test
     end
 
     def new_tasks
-      not_expired.not_take_part
+      not_assigned.not_finish
     end
 
-    def missing
-      expired.not_take_part
+    def finish_project
+      not_assigned.finish
     end
 
-    def test_task
-      test
+    def take_part_ing
+      assigned.not_finish
+      # assigned.not_expired.ing + assigned.not_finish.expired
+    end
+
+    def finish_task
+      assigned.finish + done
     end
 
   end
 
   def to_json_with_project
+    relation_project = self.project
     {
       status: status,
       video: video,
       id: self.to_params,
-      name: self.project.name,
-      deadline: self.expired_at,
-      bonus: project.basic_bonus,
+      name: relation_project.name,
+      credit: relation_project.credit,
+      bonus: relation_project.basic_bonus,
+      available: relation_project.available,
       credit_record: credit_record
     }
   end
 
   def to_json_for_project_index
+    relation_project = self.project
     {
-      id: id,
-      video: video,
-      is_read: is_read
+      status: status,
+      id: self.to_params,
+      name: relation_project.name,
+      credit: relation_project.credit,
+      available: relation_project.available,
+      bonus: relation_project.basic_bonus
     }
   end
 

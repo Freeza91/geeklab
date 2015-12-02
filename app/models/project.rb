@@ -97,6 +97,16 @@ class Project < ActiveRecord::Base
     }
   end
 
+  def available
+    value = $redis.get("available-#{id}")
+    unless value
+      value = demand - self.assignments.done.show_pm.try(:size).to_i
+      $redis.set("available-#{id}", value)
+    end
+
+    value
+  end
+
   def get_status
 
     return status unless status == 'underway'

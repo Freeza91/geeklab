@@ -1,5 +1,5 @@
 class AddFlagToAssignment < ActiveRecord::Migration
   def change
-    add_column :assignments, :assigned, :boolean, default: false
+    add_column :assignments, :flag, :boolean, default: false
   end
 end

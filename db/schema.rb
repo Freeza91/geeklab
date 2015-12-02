@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(version: 20151202025121) do
     t.integer  "rating_from_pm"
     t.integer  "rating_from_admin"
     t.datetime "expired_at",        default: '2015-03-02 00:00:00'
-    t.boolean  "assigned",          default: false
+    t.boolean  "flag",              default: false
   end
 
   create_table "comments", force: :cascade do |t|

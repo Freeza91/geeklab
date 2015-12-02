@@ -26,10 +26,10 @@ main role="main" class="#{isAssignmentEmpty(@assignments)}"
           .describle
             | 这是一个测试任务
         .item-body
-          img
-          = render partial: 'assignments/operators/wait_upload'
-          = render partial: 'assignments/operators/uploading'
-          = render partial: 'assignments/operators/upload_failed'
+          .operators
+            = render partial: 'assignments/operators/wait_upload'
+            = render partial: 'assignments/operators/uploading'
+            = render partial: 'assignments/operators/upload_failed'
         .item-footer
           .score
             span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"
@@ -49,7 +49,7 @@ main role="main" class="#{isAssignmentEmpty(@assignments)}"
                       //| 距离任务结束
                       //span.time data-deadline="#{assignment.project.expired_at}"
                         //| 00:00:00
-      .load-more v-show="isAll"
+      .load-more
         button.btn.btn-flat.yellow.btn-full
           | 加载更多
       //- if @assignments.try(:size) == 0
@@ -66,10 +66,7 @@ main role="main" class="#{isAssignmentEmpty(@assignments)}"
           .describle
             | 这是一个测试任务
         .item-body
-          img
-          = render partial: 'assignments/operators/wait_upload'
-          = render partial: 'assignments/operators/uploading'
-          = render partial: 'assignments/operators/upload_failed'
+            | 任务已结束
         .item-footer
           .score
             span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"

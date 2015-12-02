@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151130081646) do
+ActiveRecord::Schema.define(version: 20151202025121) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 20151130081646) do
     t.integer  "rating_from_pm"
     t.integer  "rating_from_admin"
     t.datetime "expired_at",        default: '2015-03-02 00:00:00'
+    t.boolean  "assigned",          default: false
   end
 
   create_table "comments", force: :cascade do |t|
@@ -79,14 +80,15 @@ ActiveRecord::Schema.define(version: 20151130081646) do
     t.string   "name"
     t.text     "describle"
     t.float    "cost"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
     t.string   "status"
-    t.boolean  "is_publish", default: false
-    t.boolean  "is_limit",   default: false
-    t.integer  "stock",      default: 0
-    t.integer  "used_num",   default: 0
+    t.boolean  "is_publish",   default: false
+    t.boolean  "is_limit",     default: false
+    t.integer  "stock",        default: 0
+    t.integer  "used_num",     default: 0
     t.string   "label"
+    t.integer  "lock_version"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -204,7 +206,7 @@ ActiveRecord::Schema.define(version: 20151130081646) do
     t.datetime "updated_at"
     t.datetime "last_view_time",         default: '2015-05-21 11:37:35'
     t.integer  "credits",                default: 0
-    t.datetime "approved_time",          default: '2015-07-31 11:54:50'
+    t.datetime "approved_time",          default: '2015-07-28 18:03:00'
     t.integer  "admin",                  default: 0
     t.datetime "last_login"
     t.boolean  "limit_user",             default: false

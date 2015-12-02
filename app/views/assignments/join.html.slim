@@ -3,10 +3,10 @@ main role="main" class="#{isAssignmentEmpty(@assignments_ing)}"
     ul.nav.nav-tabs role="tablist"
       li
         a href="#{assignments_path}"
-          | 新任务
+          | 未参与
       li.active
         a href="#{join_assignments_path}"
-          | 我参与的
+          | 已参与
     nav.nav-subtabs
       ul
         li
@@ -14,128 +14,98 @@ main role="main" class="#{isAssignmentEmpty(@assignments_ing)}"
             | 进行中
         li
           a href="javascript: void(0)" data-target="#assignments-done" data-hash="done"
-            | 已完成
-    .assignments-wrp.active#assignments-ing
-      .clearfix.inner
-        - if @assignments_ing
-          -  @assignments_ing.each do |assignment|
-            .card data-assignment-id="#{assignment.to_params}" data-status="#{assignment.status}" data-video="#{assignment.video}"
-              .inner
-                header
-                  h1.title
-                    i.fa.fa-mobile
-                    span action="getAssignmentDetail"
-                      = assignment.project.name
-                    - if current_user.approved
-                      span.close.assignment-del
-                        | &times
-                  p.describle
-                    = assignment.project.profile
-                .content
-                  - if assignment.status != "delete"
-                    img src=("#{assignment.video}" + "?vframe/png/offset/0/w/480/h/200")
-                  - else
-                    img
-                  = render partial: 'assignments/operators/wait_upload'
-                  = render partial: 'assignments/operators/uploading'
-                  = render partial: 'assignments/operators/upload_failed'
-                  = render partial: 'assignments/operators/wait_check'
-                  .status class=("status_" + "#{assignment.status}")
-                    p
-                      = get_assignment_status_info(assignment.status)
-                      - if assignment.status == "not_accept"
-                        i.fa.fa-question-circle
-                    - if assignment.status == "not_accept" && assignment.reasons && assignment.reasons.size > 0
-                      ol.comment
-                        - assignment.reasons.each do |reason|
-                          li
-                            = reason
-                footer
-                  //.timer
-                     //- if Time.now + 50.years > assignment.project.expired_at
-                      //p
-                        //| 距离任务结束
-                        //span.time data-deadline="#{assignment.project.expired_at}"
-                          //| 00:00:00
-                  .score
-                    span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"
-                      i.icon-inner.icon-score-old
-                    span.number
-                      = assignment.project.credit
-                    //- unless assignment.project.beginner
-                    - if !assignment.project.beginner && !is_old_assignment(assignment.project.created_at)
-                      span
-                        | &nbsp+&nbsp
-                      span.extra
-                        = showBonus(assignment.try(:credit_record))
-                        = render partial: "assignments/shared/extra_score", locals: {credit_record: assignment.try(:credit_record), bonus: assignment.project.basic_bonus}
+            | 已结束
+    #assignments-ing.assignments-wrp.clearfix.active
+      | 进行中
+      .assignment-item
+        .item-header
+          .title
+            //.fa.fa-mobile
+            .fa.fa-desktop
+            span
+              | 测试
+          .describle
+            | 这是一个测试任务
+        .item-body
+          img
+          = render partial: 'assignments/operators/wait_upload'
+          = render partial: 'assignments/operators/uploading'
+          = render partial: 'assignments/operators/upload_failed'
+          = render partial: 'assignments/operators/wait_check'
+          .status
+            p
+              | 等待审核
+              //- if assignment.status == "not_accept"
+                //i.fa.fa-question-circle
+            //- if assignment.status == "not_accept" && assignment.reasons && assignment.reasons.size > 0
+              //ol.comment
+                //- assignment.reasons.each do |reason|
+                  //li
+                    //= reason
+        .item-footer
+          .score
+            span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"
+              i.icon-inner.icon-score-old
+            span.number
+              | 100
+              //= assignment.project.credit
+            //- if !assignment.project.beginner && !is_old_assignment(assignment.project.created_at)
+            span
+              | &nbsp+&nbsp
+            span.extra
+              | 评分奖励
+              = render partial: "assignments/shared/extra_score", locals: {credit_record: nil, bonus: 20}
       .load-more
-        - if @assignments_ing.try(:size) == 10
-          button.btn.btn-base.yellow.btn-full
-            | 加载更多
-      - if @assignments_ing.try(:size) == 0
-          p.no-assignment-hint
-            | 没有正在进行中的任务，快去做任务吧
-    .assignments-wrp#assignments-done
-      .clearfix.inner
-        - if @assignments_done
-          - @assignments_done.each do |assignment|
-            .card data-assignment-id="#{assignment.to_params}" data-status="#{assignment.status}"
-              .inner
-                header
-                  h1.title
-                    i.fa.fa-mobile
-                    span action="getAssignmentDetail"
-                      = assignment.project.name
-                    span.close.assignment-del
-                      | &times
-                  p.describle
-                    = assignment.project.profile
-                .content
-                  - if assignment.status != "delete"
-                    img src=("#{assignment.video}" + "?vframe/png/offset/0/w/480/h/200")
-                  - else
-                    img
-                  - if assignment.video
-                    = render partial: 'assignments/operators/play'
-                  .status class=("status_" + "#{assignment.status}")
-                    p
-                      - if assignment.status == "success"
-                        | 任务成功
-                      - else
-                        | 任务已过期
-                        i.fa.fa-question-circle
-                    - if assignment.status != "success" && assignment.reasons && assignment.reasons.size > 0
-                      ol.comment
-                        - assignment.reasons.each do |reason|
-                          li
-                            = reason
-                footer
-                  //.timer
-                     //- if Time.now + 50.years > assignment.project.expired_at
-                      //p
-                        //| 距离任务结束
-                        //span.time data-deadline="#{assignment.project.expired_at}"
-                          //| 00:00:00
-                  .score
-                    span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"
-                      i.icon-inner.icon-score-old
-                    span.number
-                      = assignment.project.credit
-                    //- unless assignment.project.beginner
-                    - if !assignment.project.beginner && !is_old_assignment(assignment.project.created_at)
-                      span
-                        | &nbsp+&nbsp
-                      span.extra
-                        = showBonus(assignment.try(:credit_record))
-                        = render partial: "assignments/shared/extra_score", locals: {credit_record: assignment.try(:credit_record), bonus: assignment.project.basic_bonus}
+        button.btn.btn-flat.yellow.btn-full
+          | 加载更多
+      //- if @assignments_ing.try(:size) == 0
+          //p.no-assignment-hint
+            //| 没有正在进行中的任务，快去做任务吧
+    #assignments-done.assignments-wrp.clearfix
+      | 已结束
+      .assignment-item
+        .item-header
+          .title
+            //.fa.fa-mobile
+            .fa.fa-desktop
+            span
+              | 测试
+          .describle
+            | 这是一个测试任务
+        .item-body
+          = render partial: 'assignments/operators/play'
+          .status
+            p
+              | 任务成功
+              //- if assignment.status == "success"
+                //| 任务成功
+              //- else
+                //| 任务已过期
+                //i.fa.fa-question-circle
+            //- if assignment.status != "success" && assignment.reasons && assignment.reasons.size > 0
+              //ol.comment
+                //- assignment.reasons.each do |reason|
+                  //li
+                    //= reason
+        .item-footer
+          .score
+            span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"
+              i.icon-inner.icon-score-old
+            span.number
+              | 100
+              //= assignment.project.credit
+            //- if !assignment.project.beginner && !is_old_assignment(assignment.project.created_at)
+            span
+              | &nbsp+&nbsp
+            span.extra
+              | 评分奖励
+              = render partial: "assignments/shared/extra_score", locals: {credit_record: nil, bonus: 20}
       .load-more
-        - if @assignments_done.try(:size) == 10
-          button.btn.btn-base.yellow.btn-full
-            | 加载更多
-      - if @assignments_done.try(:size) == 0
-          p.no-assignment-hint
-            | 还没有完成的任务噢
+        button.btn.btn-flat.yellow.btn-full
+          | 加载更多
+      //- if @assignments_done.try(:size) == 0
+          //p.no-assignment-hint
+            //| 还没有完成的任务噢
 
   <!-- 上传视频文件选择-->
   input type="file" id="video" accept="video/mp4,video/x-m4v,video/*" style="display:none"

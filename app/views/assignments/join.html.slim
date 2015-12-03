@@ -53,29 +53,9 @@ main role="main"
             .extra v-if="showBonus(assignment)"
               span
                 | &nbsp+&nbsp
-              span v-text="bonusText(assignment)"
-              .extra-score v-if="showRating(assignment)"
-                p
-                  | 评分
-                  .fa.fa-star v-repeat="assignment.credit_record.rating"
-                  .fa.fa-star style="color: #fff" v-repeat="5 - assignment.credit_record.rating"
-                p
-                  span v-text="assignment.credit_record.bonus_credits * assignment.credit_record.rating"
-                  span
-                    | &nbsp=&nbsp
-                  span.icon-img.icon-outer-18 style="margin: 0 5px -5px"
-                    i.icon-inner.icon-score-old
-                  span v-text="assignment.credit_record.bonus_credits"
-                  span
-                    | &nbsp*&nbsp
-                  span v-text="assignment.credit_record.rating"
-                  span
-                    | &nbsp星
-                p style="padding-top: 15px"
-                  a href="#{how_to_get_five_star_testers_path}" target="_blank"
-                    | 如何获得5星好评
-                .extra-score-triangle
-              .extra-score v-if="!showRating(assignment)"
+              span
+                | 评分奖励
+              .extra-score
                 p
                   | 产品经理会对上传的视频进行评分, 评分星级为1-5星
                 p

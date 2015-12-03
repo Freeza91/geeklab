@@ -44,8 +44,6 @@ $(function () {
     },
     methods: {
       showBonus: showBonus,
-      showRating: showRating,
-      bonusText: bonusText
     }
   });
 

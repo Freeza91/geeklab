@@ -98,6 +98,15 @@ class Assignment < ActiveRecord::Base
   end
 
   def to_json_for_join
+    if credit_record
+      cur_credit_record = {
+        bonus_credits: credit_record.bonus_credits,
+        rating: credit_record.rating
+      }
+    else
+      cur_credit_record = credit_record
+    end
+
     {
       id: self.to_params,
       name: project.name,
@@ -107,7 +116,7 @@ class Assignment < ActiveRecord::Base
       extra_status: extra_status,
       credit: project.credit,
       bonus: project.basic_bonus,
-      credit_record: credit_record,
+      credit_record: cur_credit_record,
       beginner: project.beginner,
       available_count: project.available,
       available: project.available?,

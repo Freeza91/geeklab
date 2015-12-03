@@ -95,7 +95,7 @@ class AssignmentsController < ApplicationController
     @assignments = @assignments.finish_task.sort_by { |a| -1 * a.id }.uniq
     @assignments = Kaminari.paginate_array(@assignments).page(params[:page]).per(10)
     @assignments.each do |a|
-      json[:assignments] << a.to_json_with_project
+      json[:assignments] << a.to_json_for_join
     end
 
     render json: json

@@ -54,7 +54,6 @@ main role="main"
               span
                 | &nbsp+&nbsp
               span v-text="bonusText(assignment)"
-                | 评分奖励
               .extra-score v-if="showRating(assignment)"
                 p
                   | 评分
@@ -99,16 +98,13 @@ main role="main"
           //p.no-assignment-hint
             //| 没有正在进行中的任务，快去做任务吧
     #assignments-done.assignments-wrp.clearfix
-      | 已结束
-      .assignment-item
+      .assignment-item v-repeat="assignment: assignments"
         .item-header
           .title
-            //.fa.fa-mobile
-            .fa.fa-desktop
-            span
-              | 测试
-          .describle
-            | 这是一个测试任务
+            .fa.fa-mobile v-if="assignment.type === 'mobile'"
+            .fa.fa-desktop v-if="assignment.type === 'web'"
+            span v-text="assignment.name"
+          .describle v-text="assignment.profile"
         .item-body
           = render partial: 'assignments/operators/play'
           .status
@@ -128,15 +124,48 @@ main role="main"
           .score
             span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"
               i.icon-inner.icon-score-old
-            span.number
-              | 100
-              //= assignment.project.credit
-            //- if !assignment.project.beginner && !is_old_assignment(assignment.project.created_at)
-            span
-              | &nbsp+&nbsp
-            span.extra
-              | 评分奖励
-              = render partial: "assignments/shared/extra_score", locals: {credit_record: nil, bonus: 20}
+            span.number v-text="assignment.credit"
+            .extra v-if="showBonus(assignment)"
+              span
+                | &nbsp+&nbsp
+              span v-text="bonusText(assignment)"
+              .extra-score v-if="showRating(assignment)"
+                p
+                  | 评分
+                  .fa.fa-star v-repeat="assignment.credit_record.rating"
+                  .fa.fa-star style="color: #fff" v-repeat="5 - assignment.credit_record.rating"
+                p
+                  span v-text="assignment.credit_record.bonus_credits * assignment.credit_record.rating"
+                  span
+                    | &nbsp=&nbsp
+                  span.icon-img.icon-outer-18 style="margin: 0 5px -5px"
+                    i.icon-inner.icon-score-old
+                  span v-text="assignment.credit_record.bonus_credits"
+                  span
+                    | &nbsp*&nbsp
+                  span v-text="assignment.credit_record.rating"
+                  span
+                    | &nbsp星
+                p style="padding-top: 15px"
+                  a href="#{how_to_get_five_star_testers_path}" target="_blank"
+                    | 如何获得5星好评
+                .extra-score-triangle
+              .extra-score v-if="!showRating(assignment)"
+                p
+                  | 产品经理会对上传的视频进行评分, 评分星级为1-5星
+                p
+                  | (请谨慎录制, 审核通过的视频将无法修改)
+                p
+                  | 评分奖励 =
+                  span.icon-img.icon-outer-18 style="margin: 0 5px -5px"
+                    i.icon-inner.icon-score-old
+                  span style="padding: 0 3px" v-text="assignment.bonus"
+                  span
+                    | * 星
+                p style="padding-top: 15px"
+                  a href="#{how_to_get_five_star_testers_path}" target="_blank"
+                    | 如何获得5星好评
+                .extra-score-triangle
       .load-more
         button.btn.btn-flat.yellow.btn-full
           | 加载更多

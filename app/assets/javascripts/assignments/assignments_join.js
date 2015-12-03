@@ -36,7 +36,7 @@ $(function () {
     }
   }
 
-  var assignmentsIng = new Vue ({
+  var assignmentsIng = new Vue({
     el: '#assignments-ing',
     data: {
       page: 1,
@@ -48,8 +48,25 @@ $(function () {
       bonusText: bonusText
     }
   });
+
+  var assignmentsDone = new Vue({
+    el: '#assignments-done',
+    data: {
+      page: 1,
+      assignments: []
+    },
+    methods: {
+      showBonus: showBonus,
+      showRating: showRating,
+      bonusText: bonusText
+    }
+  });
+
   getAssignmentPaging('ing', 1, function (assignments) {
     assignmentsIng.assignments = assignments;
+  });
+  getAssignmentPaging('done', 1, function (assignments) {
+    assignmentsDone.assignments = assignments;
   });
 
 });

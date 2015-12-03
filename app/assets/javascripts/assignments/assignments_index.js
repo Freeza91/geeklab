@@ -35,7 +35,7 @@ $(function () {
   }
 
   // assignemnt-fresh vue modal
-  var assignmentFresh = new Vue ({
+  var assignmentsFresh = new Vue ({
     el: '#assignments-fresh',
     data: {
       page: 1,
@@ -48,8 +48,19 @@ $(function () {
     }
   });
 
+  var assignmentsFinish = new Vue({
+    el: '#assignments-finish',
+    data: {
+      page: 1,
+      assignments: []
+    }
+  });
+
   getAssignmentPaging('fresh', 1, function (assignments) {
-    assignmentFresh.assignments = assignments;
+    assignmentsFresh.assignments = assignments;
+  });
+  getAssignmentPaging('finish', 1, function (assignments) {
+    assignmentsFinish.assignments = assignments;
   });
 
 

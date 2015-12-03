@@ -34,18 +34,7 @@ class AssignmentsController < ApplicationController
 
     @assignments = @assignments.finish_project.order("id desc").page(params[:page]).per(10)
     @assignments.each do |a|
-      json[:assignments] << a.to_json_for_project_index
-    end
-    respond_to do |format|
-      format.html
-      format.json do
-        json = {status: 0, code: 1, assignments: [] }
-        @assignments.each do |a|
-          json[:assignments] << a.to_json_for_index
-        end
-        render json: json
-      end
-      json[:code], json[:msg] = 0, '项目为空'
+      json[:assignments] << a.to_json_for_index
     end
 
     render json: json

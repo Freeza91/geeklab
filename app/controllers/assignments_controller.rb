@@ -75,7 +75,7 @@ class AssignmentsController < ApplicationController
   end
 
   def join
-    current_user..update_column(:last_view_time, Time.now)
+    current_user.update_column(:last_view_time, Time.now)
   end
 
   def ing
@@ -83,7 +83,7 @@ class AssignmentsController < ApplicationController
 
     @assignments = @assignments.take_part_ing.order("id desc").page(params[:page]).per(10)
     @assignments.each do |a|
-      json[:assignments] << a.to_json_with_project
+      json[:assignments] << a.to_json_for_join
     end
 
     render json: json

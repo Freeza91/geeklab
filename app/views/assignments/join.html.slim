@@ -16,24 +16,27 @@ main role="main"
           a href="javascript: void(0)" data-target="#assignments-done" data-hash="done"
             | 已结束
     #assignments-ing.assignments-wrp.clearfix.active
-      | 进行中
-      .assignment-item
+      .assignment-item v-repeat="assignment:assignments"
         .item-header
           .title
-            //.fa.fa-mobile
-            .fa.fa-desktop
-            span
-              | 测试
-          .describle
-            | 这是一个测试任务
+            .fa.fa-mobile v-if="assignment.type === 'mobile'"
+            .fa.fa-desktop v-if="assignment.type === 'web'"
+            span v-text="assignment.name"
+          .describle v-text="assignment.profile"
         .item-body
-          img
-          = render partial: 'assignments/operators/wait_upload'
-          = render partial: 'assignments/operators/uploading'
-          = render partial: 'assignments/operators/upload_failed'
-          = render partial: 'assignments/operators/wait_check'
+          .operators
+            .operator.wait-upload
+              .content-wrp
+                .icon.icon-file
+              .button-wrp.button-center
+                button.btn.btn-flat.blue.btn-rounded.btn-s.js-assignment-start
+                  | 开始体验
+            = render partial: 'assignments/operators/wait_upload'
+            = render partial: 'assignments/operators/uploading'
+            = render partial: 'assignments/operators/upload_failed'
+            = render partial: 'assignments/operators/wait_check'
           .status
-            p
+            p v-text="assignment.status"
               | 等待审核
               //- if assignment.status == "not_accept"
                 //i.fa.fa-question-circle
@@ -46,14 +49,12 @@ main role="main"
           .score
             span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"
               i.icon-inner.icon-score-old
-            span.number
-              | 100
-              //= assignment.project.credit
+            span.number v-text="assignment.credit"
             //- if !assignment.project.beginner && !is_old_assignment(assignment.project.created_at)
             span
               | &nbsp+&nbsp
-            span.extra
-              | 评分奖励
+            .extra
+              sapn v-text="'评分奖励'"
               = render partial: "assignments/shared/extra_score", locals: {credit_record: nil, bonus: 20}
       .load-more
         button.btn.btn-flat.yellow.btn-full

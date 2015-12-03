@@ -37,7 +37,8 @@ class Assignment < ActiveRecord::Base
     end
 
     def take_part_ing
-      assigned.not_finish
+      test #测试用数据
+      #assigned.not_finish #真实数据逻辑
       # assigned.not_expired.ing + assigned.not_finish.expired
     end
 
@@ -59,13 +60,29 @@ class Assignment < ActiveRecord::Base
     assigned && !expired?
   end
 
-  def to_json_for_index
+  def type
     type = ''
     if(project.device == 'web')
       type = 'web'
     else
       type = 'mobile'
     end
+  end
+
+  def extra_status
+    extra_status = ''
+    if expired?
+      if project.available?
+        extra_status = 'can_get'
+      else
+        extra_status ='can_subscribe'
+      end
+    else
+      extra_status = 'normal'
+    end
+  end
+
+  def to_json_for_index
     {
       id: self.to_params,
       name: project.name,
@@ -73,6 +90,24 @@ class Assignment < ActiveRecord::Base
       profile: project.profile,
       credit: project.credit,
       bonus: project.basic_bonus,
+      beginner: project.beginner,
+      available_count: project.available,
+      available: project.available?,
+      subscribe: subscribe?
+    }
+  end
+
+  def to_json_for_join
+    {
+      id: self.to_params,
+      name: project.name,
+      type: type,
+      profile: project.profile,
+      status: status,
+      extra_status: extra_status,
+      credit: project.credit,
+      bonus: project.basic_bonus,
+      credit_record: credit_record,
       beginner: project.beginner,
       available_count: project.available,
       available: project.available?,

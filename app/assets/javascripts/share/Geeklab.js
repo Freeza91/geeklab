@@ -92,7 +92,22 @@ $(function () {
   Geeklab.removeLoading = function () {
     $('body .jar').remove();
     Geeklab.removeMak();
-  }
+  };
+
+  Geeklab.getAssignmentPaging  = function (type, page, callback) {
+    var url = '/assignments/' + type;
+    $.ajax({
+      url: url,
+      data: {page: page},
+      dataType: 'json',
+      success: function (data, status) {
+        callback(data.assignments);
+      },
+      errror: function (xhr, textStatus, errors) {
+        console.log(errors);
+      }
+    });
+  };
 
   window.Geeklab = Geeklab;
 });

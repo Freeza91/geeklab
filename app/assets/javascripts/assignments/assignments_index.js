@@ -6,22 +6,6 @@ $(function () {
   // 抢任务
   // 订阅提醒
 
-  // 分页
-  function getAssignmentPaging (type, page, callback) {
-    var url = '/assignments/' + type;
-    $.ajax({
-      url: url,
-      data: {page: page},
-      dataType: 'json',
-      success: function (data, status) {
-        callback(data.assignments);
-      },
-      errror: function (xhr, textStatus, errors) {
-        console.log(errors);
-      }
-    });
-  }
-
   function showOrderOperator (assignment) {
     return !assignment.beginner && assignment.available;
   }
@@ -32,6 +16,22 @@ $(function () {
 
   function showBonus (assignment) {
     return !assignment.beginner && (assignment.bonus !== 0);
+  }
+
+  // 获取assgnment分页数据
+  function getAssignmentPaging (type, page, callback) {
+    var url = '/assignments/' + type;
+    $.ajax({
+      url: url,
+      data: {page: page},
+      datatype: 'json',
+      success: function (data, status) {
+        callback(data.assignments);
+      },
+      errror: function (xhr, textstatus, errors) {
+        console.log(errors);
+      }
+    });
   }
 
   // assignemnt-fresh vue modal

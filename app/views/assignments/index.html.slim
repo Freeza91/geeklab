@@ -30,6 +30,8 @@ main role="main" class="#{isAssignmentEmpty(@assignments)}"
             = render partial: 'assignments/operators/wait_upload'
             = render partial: 'assignments/operators/uploading'
             = render partial: 'assignments/operators/upload_failed'
+            = render partial: 'assignments/operators/wait_check'
+            = render partial: 'assignments/operators/play'
         .item-footer
           .score
             span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"

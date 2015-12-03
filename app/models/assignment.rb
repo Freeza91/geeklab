@@ -124,6 +124,15 @@ class Assignment < ActiveRecord::Base
 
       UserMailer.video_check_failed(email_to, name, task_url + "#ing").deliver_later if status == "not_accept"
       UserMailer.video_check_success(email_to, name, task_url + "#done").deliver_later if status == "success"
+
+      # 让时间暂停结束
+      # 重新设置过期时间
+      if stop_time
+        new_expired_at = Time.now - stop_time_at + expired_at
+        update_columns(stop_time: false, expired_at: new_expired_at)
+        NotitySubscribeJob.set(wait_until: (new_expired_at + 3.minutes)).perform_later(id)
+      end
+
     end
   end
 

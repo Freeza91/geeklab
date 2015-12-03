@@ -4,21 +4,18 @@ class NotitySubscribeJob < ActiveJob::Base
   def perform(assignment_id)
     assignment = Assignment.where(id: assignment_id).first
 
-    if assignment
-      if assignment.expired_at >= Time.now # 如果过期时间延长, 即：未过期
-        # pass
-      else # 已经过期
-        # 检测是否任务结束
-        project = assignment.project
-        if project.available? # 可以继续做，重新可以抢
-          assignment.update_column(:status, 'new') # 新任务重新可以抢
-          $redis.incr("available-#{project.id}")   # 总量增加
-          send_notity_email(project.id, assignment)
-        else # 任务已经结束
-          free_redis_data(project.id)
-        end
+    if assignment.expired? # 过期
+      # 检测是否任务结束
+      project = assignment.project
+      if project.available? # 可以继续做，重新可以抢
+        assignment.update_column(:status, 'new') # 新任务重新可以抢
+        $redis.incr("available-#{project.id}")   # 总量增加
+        send_notity_email(project.id, assignment)
+      else # 任务已经结束
+        free_redis_data(project.id)
       end
     end
+
   end
 
   def send_notity_email(project_id)

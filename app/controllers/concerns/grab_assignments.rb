@@ -10,13 +10,12 @@ module GrabAssignments
   def got_it
     json = { status: 0, code: 1, msg: '成功抢到' }
 
-    @project = @assignment.project
     if @project.available? && @assignment.status == 'new'
       $redis.decr("available-#{@project.id}")
       set_assignment
-      NotitySubscribe.set(wait_until: (@t + 3.minutes)).perform_later(@assignment.id)
+      NotitySubscribeJob.set(wait_until: (@t + 3.minutes)).perform_later(@assignment.id)
     else
-      json[:code], json[:msg] = -1, '已经被抢光'
+      json[:code], json[:msg] = -1, '被抢光或者任务结束'
     end
 
     render json: json
@@ -25,8 +24,12 @@ module GrabAssignments
   def subscribe
     json = { status: 0, code: 1, msg: '订阅成功' }
 
-    unless $redis.sadd("subscribe-#{@assignment.project_id}", current_user.id)
-      json[:code], json[:msg] = 0, '已经订阅了！'
+    if @project.available?
+      unless $redis.sadd("subscribe-#{@assignment.project_id}", current_user.id)
+        json[:code], json[:msg] = 0, '已经订阅了！'
+      end
+    else
+      json[:code], json[:msg] = 0, '任务已经结束'
     end
 
     render json: json
@@ -58,6 +61,7 @@ private
         msg: '项目为空',
         status: 0
       }
+      @project = @assignment.project
     end
   end
 

@@ -87,6 +87,11 @@ module QiniuAbout
         json[:code] = 1
         json[:video] = video
         json[:msg] = '上传文件成功'
+
+        # 时间暂停
+        project = assignment.project
+        assignment.update_columns(stop_time: true, stop_time_at: Time.now ) unless project.beginner # 不是新手任务
+
       end
     end
 

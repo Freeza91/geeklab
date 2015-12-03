@@ -110,18 +110,20 @@ class Project < ActiveRecord::Base
   end
 
   def available?
-    return false if status == 'finish'
+    return false if get_status == 'finish'
     available > 0 ? true : false
   end
 
   def get_status
 
     return status unless status == 'underway'
+    return status if status == 'finish'
 
     num = self.assignments.done.show_pm.try(:size)
     if num >= demand
       self.update_column(:status, 'finish')
     end
+
     status
   end
 

@@ -105,12 +105,12 @@ class Project < ActiveRecord::Base
       $redis.set("available-#{id}", value)
     end
 
-    value
+    value.to_i
   end
 
   def available?
     return false if status == 'finish'
-    available >= demand ? false : true
+    available > 0 ? true : false
   end
 
   def get_status

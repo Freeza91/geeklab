@@ -47,6 +47,10 @@ class Assignment < ActiveRecord::Base
 
   end
 
+  def subscribe?
+    $redis.smembers("subscribe-#{project_id}").include?(tester_id)
+  end
+
   def to_json_for_index
     type = ''
     if(project.device == 'web')
@@ -62,9 +66,12 @@ class Assignment < ActiveRecord::Base
       credit: project.credit,
       bonus: project.basic_bonus,
       beginner: project.beginner,
-      #avaliable_count: project.avaliable
+      available_count: project.available,
+      available: project.available?,
+      subscribe: subscribe?
     }
   end
+
   def to_json_with_project
     relation_project = self.project
     {

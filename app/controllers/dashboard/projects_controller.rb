@@ -91,7 +91,7 @@ class Dashboard::ProjectsController < Dashboard::BaseController
 private
 
   def project_params
-    params.require(:project).permit(:credit, :beginner, :basic_bonus, :status, reasons: [])
+    params.require(:project).permit(:credit, :beginner, :basic_bonus, :status, :duration ,reasons: [])
   end
 
   def load_info_from_redis(project)

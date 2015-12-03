@@ -1,15 +1,11 @@
 class Assignment < ActiveRecord::Base
 
-  scope :expired,      -> { where("assignments.expired_at < ?", Time.now - 1.minutes) }
-  scope :not_expired,  -> { where("assignments.expired_at > ?", Time.now + 1.minutes) }
-
   scope :test,         -> { where("assignments.status = ?", 'test') } # 新手测试任务
   scope :not_take_part,-> { where("assignments.status = ?",  "new") }
   scope :assigned,     -> { where(flag: true) }
   scope :not_assigned, -> { where(flag: false) }
   scope :finish,       -> { joins(:project).where("projects.status = ?", 'finish') }
   scope :not_finish,   -> { joins(:project).where("projects.status != ?", 'finish') }
-
   scope :ing,          -> { where('assignments.status in (?)', ['wait_check', 'checking', 'not_accept']) }
   scope :done,         -> { where("assignments.status = ?", "success") }
   scope :show_pm,      -> { where("public = ?", true) }

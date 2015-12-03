@@ -34,7 +34,8 @@ class Project < ActiveRecord::Base
       status: status,
       reasons: reasons || [],
       basic_bonus: basic_bonus,
-      beginner: beginner
+      beginner: beginner,
+      duration: duration
     }
   end
 
@@ -109,7 +110,7 @@ class Project < ActiveRecord::Base
 
   def available?
     return false if status == 'finish'
-    available >= demand : false : true
+    available >= demand ? false : true
   end
 
   def get_status

@@ -133,6 +133,10 @@
       input type="text" v-model="project.basic_bonus" required="required"
     .item
       span.name
+        | 做任务的时长：
+      input type="text" v-model="project.duration" required="required"
+    .item
+      span.name
         | 任务状态
       select v-model="project.status"
         option value="wait_check"
@@ -196,6 +200,7 @@ javascript:
       data.status = project.status;
       data.credit = project.credit;
       data.basic_bonus = project.basic_bonus;
+      data.duration = project.duration;
       data.reasons = [];
       if(project.beginner === 'true') {
         data.beginner = true;

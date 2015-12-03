@@ -47,8 +47,16 @@ class Assignment < ActiveRecord::Base
 
   end
 
+  def expired?
+    Time.now >= expired_at
+  end
+
   def subscribe?
     $redis.smembers("subscribe-#{project_id}").include?(tester_id)
+  end
+
+  def can_do?
+    assigned && !expired?
   end
 
   def to_json_for_index

@@ -59,11 +59,11 @@
     resources :feedbacks
 
     collection do
-      get 'get_new_task'
-      get 'get_finish_project'
+      get 'fresh'
+      get 'finish'
       get 'join'
-      get 'get_ing_task'
-      get 'get_done_task'
+      get 'ing'
+      get 'done'
       get 'upload'
       get 'qr_token'
       get 'upload_token'

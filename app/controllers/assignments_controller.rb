@@ -1,8 +1,8 @@
 class AssignmentsController < ApplicationController
 
   before_action :require_login?
-  before_action :get_resoures, only: [:get_new_task, :get_finish_project,
-                                      :get_ing_task, :get_done_task]
+  before_action :get_resoures, only: [:fresh, :finish,
+                                      :ing, :done]
   include QiniuAbout
   include GrabAssignments
 
@@ -13,7 +13,7 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  def get_new_task
+  def fresh
     json = { status: 0, code: 1, assignments: [] }
 
     if @tester.approved
@@ -23,37 +23,28 @@ class AssignmentsController < ApplicationController
     end
 
     @assignments.each do |a|
-      json[:assignments] << a.to_json_for_project_index
+      json[:assignments] << a.to_json_for_index
     end
 
     render json: json
   end
 
-  def get_finish_project
+  def finish
     json = { status: 0, code: 1, assignments: [] }
 
     @assignments = @assignments.finish_project.order("id desc").page(params[:page]).per(10)
     @assignments.each do |a|
       json[:assignments] << a.to_json_for_project_index
     end
-
-    render json: json
-
-  end
-
-  def got_it
-    json = { status: 0, code: 1, msg: '成功抢到' }
-
-    @assignment = Assignment.find_by(id: params[:id])
-    if @assignment && @assignment.tester_id == current_user.id
-      @project = @assignment.project
-      if @project.available? && @assignment.status == 'new'
-        set_assignment
-        NotitySubscribe.set(wait_until: @t).perform_later(@assignment.id)
-      else
-        json[:code], json[:msg] = -1, '已经被抢光'
+    respond_to do |format|
+      format.html
+      format.json do
+        json = {status: 0, code: 1, assignments: [] }
+        @assignments.each do |a|
+          json[:assignments] << a.to_json_for_index
+        end
+        render json: json
       end
-    else
       json[:code], json[:msg] = 0, '项目为空'
     end
 
@@ -98,7 +89,7 @@ class AssignmentsController < ApplicationController
     current_user..update_column(:last_view_time, Time.now)
   end
 
-  def get_ing_task
+  def ing
     json = {status: 0, code: 1, assignments: [] }
 
     @assignments = @assignments.take_part_ing.order("id desc").page(params[:page]).per(10)
@@ -109,7 +100,7 @@ class AssignmentsController < ApplicationController
     render json: json
   end
 
-  def get_done_task
+  def done
     json = {status: 0, code: 1, assignments: [] }
 
     @assignments = @assignments.finish_task.sort_by { |a| -1 * a.id }.uniq

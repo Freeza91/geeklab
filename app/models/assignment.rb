@@ -47,6 +47,24 @@ class Assignment < ActiveRecord::Base
 
   end
 
+  def to_json_for_index
+    type = ''
+    if(project.device == 'web')
+      type = 'web'
+    else
+      type = 'mobile'
+    end
+    {
+      id: self.to_params,
+      name: project.name,
+      type: type,
+      profile: project.profile,
+      credit: project.credit,
+      bonus: project.basic_bonus,
+      beginner: project.beginner,
+      #avaliable_count: project.avaliable
+    }
+  end
   def to_json_with_project
     relation_project = self.project
     {

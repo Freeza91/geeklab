@@ -1,4 +1,4 @@
-main role="main" class="#{isAssignmentEmpty(@assignments)}"
+main role="main"
   section.assignments-list data-tester-id="#{@current_user.to_tester.to_params}"
     ul.nav.nav-tabs role="tablist"
       li.active
@@ -13,48 +13,74 @@ main role="main" class="#{isAssignmentEmpty(@assignments)}"
           a.active href="javascript: void(0)" data-target="#assignments-fresh" data-hash="fresh"
             | 进行中
         li
-          a href="javascript: void(0)" data-target="#assignments-miss" data-hash="miss"
+          a href="javascript: void(0)" data-target="#assignments-miss" data-hash="finish"
             | 已结束
     #assignments-fresh.assignments-wrp.clearfix.active
-      .assignment-item
+      .assignment-item v-repeat="assignment:assignments"
         .item-header
           .title
-            //.fa.fa-mobile
-            .fa.fa-desktop
-            span
-              | 测试
-          .describle
-            | 这是一个测试任务
+            .fa.fa-mobile v-if="assignment.type === 'mobile'"
+            .fa.fa-desktop v-if="assignment.type === 'web'"
+            span v-text="assignment.name"
+          .describle v-text="assignment.profile"
         .item-body
           .operators
-            = render partial: 'assignments/operators/order'
-            //= render partial: 'assignments/operators/subcrible'
+            .operator.order
+              .content-wrp.vertical-center
+                .vertical-item
+                  p
+                    | 仅剩5个名额
+                  p.sub-hint
+                    | 已订阅提醒
+                    a href="javascript: void(0)"
+                      | 取消订阅
+              .button-wrp.button-center
+                button.btn.btn-flat.blue.btn-rounded.btn-s.js-assignment-order
+                  | 抢任务
+            .operator.subcrible
+              .content-wrp.vertical-center
+                .vertical-item
+                  p
+                    | 名额已抢光
+                  p.sub-hint
+                    | 订阅提醒后有空出的名额会邮件通知你
+              .button-wrp.button-center
+                button.btn.btn-flat.blue.btn-rounded.btn-s.js-subcrible
+                  | 订阅提醒
+                button.btn.btn-flat.blue.btn-rounded.btn-s.js-subcrible-cancle
+                  | 取消订阅
         .item-footer
           .score
             span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"
               i.icon-inner.icon-score-old
-            span.number
-              | 100
-              //= assignment.project.credit
-            //- if !assignment.project.beginner && !is_old_assignment(assignment.project.created_at)
-            span
+            span.number v-text="assignment.credit"
+            span v-if="showBonus(assignment)"
               | &nbsp+&nbsp
-            span.extra
+            span.extra v-if="showBonus(assignment)"
               | 评分奖励
-              = render partial: "assignments/shared/extra_score", locals: {credit_record: nil, bonus: 20}
-                //.timer
-                   //- if Time.now + 50.years > assignment.project.expired_at
-                    //p
-                      //| 距离任务结束
-                      //span.time data-deadline="#{assignment.project.expired_at}"
-                        //| 00:00:00
+              .extra-score
+                p
+                  | 产品经理会对上传的视频进行评分, 评分星级为1-5星
+                p
+                  | (请谨慎录制, 审核通过的视频将无法修改)
+                p
+                  | 评分奖励 =
+                  span.icon-img.icon-outer-18 style="margin: 0 5px -5px"
+                    i.icon-inner.icon-score-old
+                  span style="padding: 0 3px" v-text="assignment.bonus"
+                  span
+                    | * 星
+                p style="padding-top: 15px"
+                  a href="#{how_to_get_five_star_testers_path}" target="_blank"
+                    | 如何获得5星好评
+                .extra-score-triangle
       .load-more
         button.btn.btn-flat.yellow.btn-full
           | 加载更多
       //- if @assignments.try(:size) == 0
           //p.no-assignment-hint
             //| 目前没有新任务，过段时间再来查看吧
-    #assignments-miss.assignments-wrp.clearfix
+    #assignments-finish.assignments-wrp.clearfix
       .assignment-item
         .item-header
           .title

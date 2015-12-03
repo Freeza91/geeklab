@@ -12,6 +12,7 @@ module GrabAssignments
 
     @project = @assignment.project
     if @project.available? && @assignment.status == 'new'
+      $redis.decr("available-#{@project.id}")
       set_assignment
       NotitySubscribe.set(wait_until: (@t + 3.minutes)).perform_later(@assignment.id)
     else

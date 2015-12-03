@@ -12,6 +12,7 @@ class NotitySubscribeJob < ActiveJob::Base
         project = assignment.project
         if project.available? # 可以继续做，重新可以抢
           assignment.update_column(:status, 'new') # 新任务重新可以抢
+          $redis.incr("available-#{project.id}")   # 总量增加
           send_notity_email(project.id, assignment)
         else # 任务已经结束
           free_redis_data(project.id)

@@ -102,6 +102,7 @@ class Project < ActiveRecord::Base
     value = $redis.get("available-#{id}")
     unless value
       value = demand - self.assignments.done.show_pm.try(:size).to_i
+      value > 0 ? value : 0
       $redis.set("available-#{id}", value)
     end
 

@@ -10,12 +10,12 @@ main role="main" class="#{isAssignmentEmpty(@assignments)}"
     nav.nav-subtabs
       ul
         li
-          a.active href="javascript: void(0)" data-target="#assignments-fresh" data-hash="ing"
+          a.active href="javascript: void(0)" data-target="#assignments-fresh" data-hash="fresh"
             | 进行中
         li
-          a href="javascript: void(0)" data-target="#assignments-miss" data-hash="done"
+          a href="javascript: void(0)" data-target="#assignments-miss" data-hash="miss"
             | 已结束
-    #assignments-fresh.assignments-wrp.clearfix
+    #assignments-fresh.assignments-wrp.clearfix.active
       .assignment-item
         .item-header
           .title
@@ -27,11 +27,8 @@ main role="main" class="#{isAssignmentEmpty(@assignments)}"
             | 这是一个测试任务
         .item-body
           .operators
-            = render partial: 'assignments/operators/wait_upload'
-            = render partial: 'assignments/operators/uploading'
-            = render partial: 'assignments/operators/upload_failed'
-            = render partial: 'assignments/operators/wait_check'
-            = render partial: 'assignments/operators/play'
+            = render partial: 'assignments/operators/order'
+            //= render partial: 'assignments/operators/subcrible'
         .item-footer
           .score
             span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"

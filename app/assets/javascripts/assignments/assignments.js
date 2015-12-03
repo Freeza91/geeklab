@@ -30,7 +30,6 @@ $(function () {
         // 存储xhr
         xhrArr = [];
 
-
     this.segmentFile = function (file, segmentSize) {
       var segmentSize = segmentSize,
           fileSize = file.size,
@@ -1106,31 +1105,34 @@ $(function () {
     .error(function (errors) {
       console.log('获取qrtoken失败');
     });
-
   }
 
-  if($('body').hasClass('assignments_join')) {
-    initOperators();
+  // 二级导航初始化
+  $('.nav-subtabs a').on('click', function () {
+    var $this = $(this);
+    var target = $this.data('target'),
+        hash = $this.data('hash');
+    $this.parents('ul').find('.active').removeClass('active');
+    $this.addClass('active');
+    $('.assignments-wrp.active').removeClass('active').hide();
+    var isEmpty = $(target).find('.card').length === 0;
+    toggleEmpty(isEmpty);
+    $(target).fadeIn().addClass('active');
+    location.hash = hash;
+  });
 
-    // 二级导航
-    $('.nav-subtabs a').on('click', function () {
-      var $this = $(this);
-      var target = $this.data('target'),
-          hash = $this.data('hash');
-      $this.parents('ul').find('.active').removeClass('active');
-      $this.addClass('active');
-      $('.assignments-wrp.active').removeClass('active').hide();
-      var isEmpty = $(target).find('.card').length === 0;
-      toggleEmpty(isEmpty);
-      $(target).fadeIn().addClass('active');
-      location.hash = hash;
-    });
+  var hash = location.hash.substr(1),
+      $subTab = $('[data-hash="]' + hash  + '"]'),
+      $assignmentsWrp = $('#assignments-' + hash),
+      isEmpty = ($assignmentsWrp.find('.assignment-item').length === 0);
 
-    var hash = location.hash.substr(1);
+  toggleEmpty(isEmpty);
+  if(location.pathname === '/assignments') {
+    location.hash = 'fresh';
+  } else {
     if(hash === 'done') {
+      location.hash = 'done';
       $('[data-hash="done"]').click();
-      var isEmpty = ($('#assignments-done .card').length === 0);
-      toggleEmpty(isEmpty);
     } else {
       location.hash = 'ing';
     }

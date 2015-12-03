@@ -162,7 +162,7 @@
     padding-top: 30px
     text-align: center
     p
-      color: #313131
+      color: $dark-blue
       font-size: 1rem
       letter-spacing: .1rem
     .sub-hint
@@ -184,6 +184,13 @@
     .btn:last-child
       float: right
 
+.operator.order
+  .available-count
+    color: $dark-gray
+    padding-left: 3px
+    padding-right: 3px
+    font-size: 1.4rem
+
 // 不同状态洗的operator 切换
 .assignments_index
   .operator.uploading,
@@ -194,7 +201,7 @@
 #assignments-ing
   .operator
     display: none
-#assignments-miss,
+#assignments-finish,
 #assignments-done
   display: none
 

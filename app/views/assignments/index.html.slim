@@ -25,19 +25,21 @@ main role="main"
           .describle v-text="assignment.profile"
         .item-body
           .operators
-            .operator.order
+            .operator.order v-show="showOrderOperator(assignment)"
               .content-wrp.vertical-center
                 .vertical-item
                   p
-                    | 仅剩5个名额
-                  p.sub-hint
+                    | 仅剩
+                    span.available-count v-text="assignment.available_count"
+                    |个名额
+                  p.sub-hint v-if="assignment.subscribe"
                     | 已订阅提醒
                     a href="javascript: void(0)"
                       | 取消订阅
               .button-wrp.button-center
                 button.btn.btn-flat.blue.btn-rounded.btn-s.js-assignment-order
                   | 抢任务
-            .operator.subcrible
+            .operator.subscribe v-show="showSubscribeOperator(assignment)"
               .content-wrp.vertical-center
                 .vertical-item
                   p
@@ -45,10 +47,16 @@ main role="main"
                   p.sub-hint
                     | 订阅提醒后有空出的名额会邮件通知你
               .button-wrp.button-center
-                button.btn.btn-flat.blue.btn-rounded.btn-s.js-subcrible
+                button.btn.btn-flat.blue.btn-rounded.btn-s v-if="!assignment.subscribe"
                   | 订阅提醒
-                button.btn.btn-flat.blue.btn-rounded.btn-s.js-subcrible-cancle
+                button.btn.btn-flat.blue.btn-rounded.btn-s v-if="assignment.subscribe"
                   | 取消订阅
+            .operator.wait-upload v-if="assignment.beginner"
+              .content-wrp
+                .icon.icon-file
+              .button-wrp.button-center
+                button.btn.btn-flat.blue.btn-rounded.btn-s.js-assignment-start
+                  | 开始体验
         .item-footer
           .score
             span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"

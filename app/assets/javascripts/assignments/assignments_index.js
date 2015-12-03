@@ -22,6 +22,14 @@ $(function () {
     });
   }
 
+  function showOrderOperator (assignment) {
+    return !assignment.beginner && assignment.available;
+  }
+
+  function showSubscribeOperator (assignment) {
+    return !assignment.beginner && !assignment.available;
+  }
+
   function showBonus (assignment) {
     return !assignment.beginner && (assignment.bonus !== 0);
   }
@@ -34,7 +42,9 @@ $(function () {
       assignments: [],
     },
     methods: {
-      showBonus: showBonus
+      showOrderOperator: showOrderOperator,
+      showSubscribeOperator: showSubscribeOperator,
+      showBonus: showBonus,
     }
   });
 

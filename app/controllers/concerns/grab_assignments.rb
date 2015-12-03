@@ -23,12 +23,22 @@ module GrabAssignments
 
   def subscribe
     json = { status: 0, code: 1, msg: '订阅成功' }
-    # redis.sadd # 添加一个数值
+
+    unless $redis.sadd("subscribe-#{@assignment.project_id}", current_user.id)
+      json[:code], json[:msg] = 0, '已经订阅了！'
+    end
+
+    render json: json
   end
 
   def unsubscribe
     json = { status: 0, code: 1, msg: '取消订阅成功' }
-     # redis.srem # 删除单个key
+
+    unless $redis.srem("subscribe-#{@assignment.project_id}", current_user.id)
+      json[:code], json[:msg] = 0, '已经取消订阅了！'
+    end
+
+    render json: json
   end
 
 

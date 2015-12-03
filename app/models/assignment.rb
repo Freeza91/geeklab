@@ -67,12 +67,13 @@ class Assignment < ActiveRecord::Base
 
   def to_json_for_project_index
     relation_project = self.project
+    available_num = relation_project.available? ? relation_project.available : 0
     {
       status: status,
       id: self.to_params,
       name: relation_project.name,
       credit: relation_project.credit,
-      available: relation_project.available,
+      available: available_num,
       bonus: relation_project.basic_bonus
     }
   end

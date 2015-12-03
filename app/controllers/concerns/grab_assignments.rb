@@ -13,7 +13,7 @@ module GrabAssignments
     @project = @assignment.project
     if @project.available? && @assignment.status == 'new'
       set_assignment
-      NotitySubscribe.set(wait_until: @t).perform_later(@assignment.id)
+      NotitySubscribe.set(wait_until: (@t + 3.minutes)).perform_later(@assignment.id)
     else
       json[:code], json[:msg] = -1, '已经被抢光'
     end
@@ -23,10 +23,12 @@ module GrabAssignments
 
   def subscribe
     json = { status: 0, code: 1, msg: '订阅成功' }
+    # redis.sadd # 添加一个数值
   end
 
   def unsubscribe
     json = { status: 0, code: 1, msg: '取消订阅成功' }
+     # redis.srem # 删除单个key
   end
 
 

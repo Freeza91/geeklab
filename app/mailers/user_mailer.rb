@@ -49,4 +49,14 @@ class UserMailer < ApplicationMailer
     render 'user_mailer/video_check_success', layout: false
   end
 
+  def subscribe_notify(email, name, task_url)
+    @email = email
+    @name = name
+    @task_url = task_url
+
+    sendgrid_category "subscribe_notify"
+    mail to: mail, subject: '你有新任务可以做啦'
+    render 'user_mailer/subscribe_notify'
+  end
+
 end

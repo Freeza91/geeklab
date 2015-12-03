@@ -108,6 +108,7 @@ class Project < ActiveRecord::Base
   end
 
   def available?
+    return false if status == 'finish'
     available >= demand : false : true
   end
 

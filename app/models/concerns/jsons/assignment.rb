@@ -32,7 +32,7 @@ module JSONS
         video: video,
         credit: project.credit,
         bonus: project.basic_bonus,
-        credit_record: credit_record.try(to_json),
+        credit_record: credit_record.try(:to_json),
         beginner: project.beginner,
         available_count: project.available,
         available: project.available?,
@@ -51,7 +51,7 @@ module JSONS
         video: video,
         credit: project.credit,
         bonus: project.basic_bonus,
-        credit_record: credit_record.try(to_json),
+        credit_record: credit_record.try(:to_json),
         beginner: project.beginner,
       }
     end

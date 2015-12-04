@@ -416,8 +416,6 @@ $(function () {
     $('#close').click();
     var file = $(this)[0].files[0];
     if(file) {
-      // 测试qiniuChunkUpload
-
       // 判断所选文件的类型是否为video
       if(file.type.split('/')[0] === 'video') {
         // 切换operator
@@ -430,12 +428,6 @@ $(function () {
         $(this).val('');
 
         uploader.upload(assignmentId, file, function (data) {
-        //getUploadToken(assignmentId, filename, function (token) {
-          //if(token) {
-            //$card.find('.status').hide();
-            //$card.find('.content img').hide();
-            //uploadVideo(file, token, function (data) {
-
           // 上传成功后的回调
           var imageUrl = data.video + '?vframe/png/offset/0/w/480/h/200'
           $card.find('.content img').attr('src', imageUrl).show();
@@ -530,64 +522,6 @@ $(function () {
   $('#video-player [data-dismiss="modal"]').on('click', function () {
     $curVideo.pause();
   });
-  // 上传视频
-  function uploadVideo(file, token, callback) {
-    // 构造formData
-    var formData = new FormData();
-    formData.append('token', token);
-    formData.append('file', file);
-    formData.append('accept', 'application/json');
-
-    // ajax上传
-    uploadAjax = $.ajax({
-      url: 'http://upload.qiniu.com',
-      method: 'post',
-      data: formData,
-      cache: false,
-      processData: false, //Dont't process the file
-      contentType: false,
-      // Set content type to false as jQuery will tell the server its a query string request.
-      // 不太懂是什么意思，先写着
-      xhr: customeXhr
-    })
-    .done(function(data, status) {
-      if(data.status === 0) {
-        switch(data.code) {
-          case 0:
-            $card.find('.operator.uploading').hide();
-            $card.find('.operator.upload-failed').fadeIn();
-            // 恢复上传进度圆环
-            $card.find('.progressCircle .inner').css({
-              'transform': 'rotate(0)',
-              '-o-transform': 'rotate(0)',
-              '-moz-transform': 'rotate(0)',
-              '-webkit-transform': 'rotate(0)'
-            });
-          break;
-          case 1:
-            callback(data);
-          break;
-        }
-      }
-    })
-    .error(function(errors, status) {
-      // 上传取消时，不显示上传失败
-      if(status === 'abort') {
-        return false;
-      } else {
-        // 上传出错
-        $card.find('.operator.uploading').hide();
-        $card.find('.operator.upload-failed').fadeIn();
-        // 恢复上传进度圆环
-        $card.find('.progressCircle .inner').css({
-          'transform': 'rotate(0)',
-          '-o-transform': 'rotate(0)',
-          '-moz-transform': 'rotate(0)',
-          '-webkit-transform': 'rotate(0)'
-        });
-      }
-    });
-  }
 
   // 获取上传视屏的token
   function getUploadToken(assignmentId, filename, callback) {
@@ -851,35 +785,6 @@ $(function () {
   // 倒计时初始化
   //assignmentTimeCountDownInit();
 
-  // 获取assgnment分页数据
-  function getAssignmentPaging (type, page, callback) {
-    var url = '/assignments/' + type;
-    $.ajax({
-      url: url,
-      data: {page: page},
-      datatype: 'json',
-      success: function (data, status) {
-        callback(data.assignments);
-      },
-      errror: function (xhr, textstatus, errors) {
-        console.log(errors);
-      }
-    });
-  }
-
-  // 自定义xhr对象获取上传进度
-  function customeXhr () {
-    var xhr = $.ajaxSettings.xhr();
-    // 监听上传进度
-    xhr.upload.addEventListener('progress', function (event) {
-      if(event.lengthComputable) {
-        var progressPercent = Math.floor((event.loaded / event.total) * 100);
-        showUploadProgress(progressPercent);
-      }
-    }, false);
-    return xhr;
-  }
-
   // 显示上传进度
   function showUploadProgress (progressPercent) {
     var deg = progressPercent * 3.6;
@@ -910,70 +815,6 @@ $(function () {
     }
     $progressCircle.find('.progressCount').text(progressPercent + '%');
   }
-  function initOperators () {
-    var $cards = $('.card');
-    $cards.each(function (index, card) {
-      var $card = $(card);
-      var status = $card.data('status');
-      showOperator(status, $card);
-    });
-  }
-
-  // 我参与的任务中，根据状态显示不同的operator
-  function showOperator (status, $card) {
-    switch(status) {
-      case 'upload_failed':
-        $card.find('.operator.upload-failed').fadeIn();
-      case 'wait_check':
-        $card.find('.operator.wait-check').fadeIn();
-      break;
-      case 'checking':
-        $card.find('.operator.wait-check').fadeIn().find('.button-wrp').hide();
-      break;
-      case 'not_accept':
-        $card.find('.operator.wait-check').fadeIn();
-      break;
-      case 'delete':
-        $card.find('.operator.wait-upload').fadeIn();
-      break;
-    }
-  }
-  function updateOperator (status, $card) {
-    switch(status) {
-      case 'upload_failed':
-        $card.find('.operator.upload-failed').show();
-      case 'wait_check':
-        $card.find('.operator.wait-check').show();
-      break;
-      case 'checking':
-        $card.find('.operator.wait-check').show().find('.button-wrp').hide();
-      break;
-      case 'not_accept':
-        $card.find('.operator.wait-check').show();
-      break;
-      case 'delete':
-        $card.find('.operator.wait-upload').show();
-      break;
-    }
-  }
-
-  // 计算comment的位置
-  //function caculateReasonPosition () {
-    //var reasons = $('.reasons');
-    //reasons.each(function (index, reason) {
-      //var $reason = $(reason),
-          //$fa = $reason.parents('.status').find('.fa');
-      //var faPosition = $fa.position();
-      //var left = faPosition.left + 14 + 10 + 8,
-          //topPosition = ($reason.height() / 2) - faPosition.top - 7;
-      //$reason.css({
-        //'top': '-' + topPosition + 'px',
-        //'left': left + 'px'
-      //});
-    //});
-  //}
-
-  //caculateReasonPosition();
 
   // 显示reasons, 当鼠标移到状态栏图标上时
   $('.assignments-wrp').on('mouseenter', '.status span', function (){
@@ -1022,6 +863,7 @@ $(function () {
       isEmpty = ($assignmentsWrp.find('.assignment-item').length === 0);
 
   toggleEmpty(isEmpty);
+
   if(location.pathname === '/assignments') {
     location.hash = 'fresh';
   } else {
@@ -1040,6 +882,7 @@ $(function () {
       $('main').removeClass('empty');
     }
   }
+
   var assignmentDetailVm = new Vue({
     el: '#assignment-detail',
     data: {
@@ -1138,13 +981,6 @@ $(function () {
 
   function close(vm) {
     $('#assignment-detail').modal('hide');
-    //vm.progress = 'requirement';
-    //vm.curStepContent = '';
-    //vm.curStepIndex = 1;
-    //vm.stepLen = 0;
-    //vm.taskLen = 0;
-    //vm.project = {};
-    //vm.nextStepText = '好的';
   }
 
   function refreshQrImage (event) {

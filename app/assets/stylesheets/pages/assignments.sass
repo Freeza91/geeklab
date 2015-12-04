@@ -60,6 +60,39 @@
     background-color: rgba(160, 160, 160, .8)
   .status.success
     background-color: rgba(50, 177, 108, .8)
+  .status.not_accept span,
+  .status.failed span
+    cursor: pointer
+
+  // 审核不通过的理由
+  .reasons
+    display: none
+    position: absolute
+    left: 50%
+    bottom: 30px
+    margin-left: -70px
+    width: 200px
+    padding-top: 10px
+    padding-bottom: 10px
+    background: $light-yellow
+    +box-shadow(0 0 5px #ccc)
+    z-index: 10
+    > li
+      padding: 2px
+      color: $warn-red
+      text-align: left
+  .reasons::before
+    position: absolute
+    left: 50%
+    top: 100%
+    margin-left: -6px
+    content: ''
+    display: block
+    width: 0
+    height: 0
+    border-left: 10px solid transparent
+    border-top: 10px solid $light-yellow
+    border-right: 10px solid transparent
 
 
 // 加载更多

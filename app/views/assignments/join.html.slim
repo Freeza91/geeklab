@@ -35,10 +35,11 @@ main role="main"
             = render partial: 'assignments/operators/uploading'
             = render partial: 'assignments/operators/upload_failed'
             = render partial: 'assignments/operators/wait_check'
-          .status v-class="assignment.status" v-text="mapStatus(assignment.status)" v-if="showStatus(assignment)"
-            i.fa.fa-question-circle v-if="showReasons(assignment)"
-            ol.comment v-repeat="reasons: assignment.reasons" v-if="showReasons(assignment)"
-              li v-text="reason"
+          .status v-class="assignment.status" v-if="showStatus(assignment)"
+            span v-text="mapStatus(assignment.status)"
+            .fa.fa-question-circle v-if="showReasons(assignment)"
+            ol.reasons v-if="showReasons(assignment)"
+              li v-repeat="reason: assignment.reasons" v-text="reason"
         .item-footer
           .score
             span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"
@@ -81,9 +82,10 @@ main role="main"
           .describle v-text="assignment.profile"
         .item-body
           = render partial: 'assignments/operators/play'
-          .status v-class="assignment.status" v-text="mapStatus(assignment.status)"
-            i.fa.fa-question-circle v-if="showReasons(assignment)"
-            ol.comment v-if="showReasons(assignment)"
+          .status v-class="assignment.status"
+            span v-text="mapStatus(assignment.status)"
+            .fa.fa-question-circle v-if="showReasons(assignment)"
+            ol.reasons v-if="showReasons(assignment)"
               li v-repeat="reason: assignment.reasons" v-text="reason"
         .item-footer
           .score

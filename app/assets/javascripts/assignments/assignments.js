@@ -957,30 +957,30 @@ $(function () {
     }
   }
 
-  //// 计算comment的位置
-  //function caculateCommentPosition () {
-    //var comments = $('.comment');
-    //comments.each(function (index, comment) {
-      //var $comment = $(comment),
-          //$fa = $comment.parents('.status').find('.fa');
+  // 计算comment的位置
+  //function caculateReasonPosition () {
+    //var reasons = $('.reasons');
+    //reasons.each(function (index, reason) {
+      //var $reason = $(reason),
+          //$fa = $reason.parents('.status').find('.fa');
       //var faPosition = $fa.position();
       //var left = faPosition.left + 14 + 10 + 8,
-          //topPosition = ($comment.height() / 2) - faPosition.top - 7;
-      //$comment.css({
+          //topPosition = ($reason.height() / 2) - faPosition.top - 7;
+      //$reason.css({
         //'top': '-' + topPosition + 'px',
         //'left': left + 'px'
       //});
     //});
   //}
 
-  //caculateCommentPosition();
+  //caculateReasonPosition();
 
-  // 显示comment, 当鼠标移到状态栏图标上时
-  $('.assignments-wrp').on('mouseenter', '.status p', function (){
-    $(this).parents('.status').find('.comment').fadeIn();
+  // 显示reasons, 当鼠标移到状态栏图标上时
+  $('.assignments-wrp').on('mouseenter', '.status span', function (){
+    $(this).parents('.status').find('.reasons').fadeIn();
   });
-  $('.assignments-wrp').on('mouseout', '.status p', function (){
-    $(this).parents('.status').find('.comment').fadeOut();
+  $('.assignments-wrp').on('mouseout', '.status span', function (){
+    $(this).parents('.status').find('.reasons').fadeOut();
   });
 
   // 获取生成二维码所需token

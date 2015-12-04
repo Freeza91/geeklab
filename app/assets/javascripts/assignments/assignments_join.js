@@ -22,9 +22,8 @@ $(function () {
   function showStatus (assignment) {
     if(assignment.beginner) {
       return assignment.status !== 'test';
-    } else {
-      return (assignment.extra_status === 'normal') && (assignment.status !== 'new');
     }
+    return (assignment.extra_status === 'normal') && (assignment.status !== 'new');
   }
 
   function mapStatus (assignmentStatus) {

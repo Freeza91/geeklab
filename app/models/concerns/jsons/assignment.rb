@@ -38,6 +38,7 @@ module JSONS
         profile: project.profile,
         status: status,
         extra_status: extra_status,
+        reasons: reasons,
         credit: project.credit,
         bonus: project.basic_bonus,
         credit_record: cur_credit_record,

@@ -116,8 +116,7 @@ class Project < ActiveRecord::Base
 
   def get_status
 
-    return status unless status == 'underway'
-    return status if status == 'finish'
+    return status unless status == 'underway' # 审核流程：success -> underway(进行中)
 
     num = self.assignments.done.show_pm.try(:size)
     if num >= demand

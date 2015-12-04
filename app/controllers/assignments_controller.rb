@@ -177,7 +177,7 @@ private
     begin
       code, result, response_headers = Qiniu::Storage.delete(
           Settings.qiniu_bucket,
-          URI.parse(assignment.try(:video).to_s).path.to_s[1..-1].to_s
+          URI.parse(assignment.video.to_s).path.to_s[1..-1].to_s
       )
       puts '没有找到资源' unless code == 200
     rescue

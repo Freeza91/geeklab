@@ -9,6 +9,7 @@ class NotitySubscribeJob < ActiveJob::Base
       project = assignment.project
       if project.available? # 可以继续做，重新可以抢
         assignment.update_column(:status, 'new') # 新任务重新可以抢
+        delete_qiniu_resource(assignment) if assignment.status == 'not_accept' # 任务不成功
         $redis.incr("available-#{project.id}")   # 总量增加
         send_notity_email(project.id, assignment)
       else # 任务已经结束
@@ -54,6 +55,18 @@ class NotitySubscribeJob < ActiveJob::Base
   def free_redis_data(project_id)
     $redis.del("available-#{project_id}") # 删除总量标记
     $redis.del("subscribe-#{project_id}") # 删除订阅标记
+  end
+
+  def delete_qiniu_resource(assignment)
+    begin
+      code, result, response_headers = Qiniu::Storage.delete(
+          Settings.qiniu_bucket,
+          URI.parse(assignment.video.to_s).path.to_s[1..-1].to_s
+      )
+      puts '没有找到资源' unless code == 200
+    rescue
+      puts "网络异常"
+    end
   end
 
 end

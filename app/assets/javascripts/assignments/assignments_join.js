@@ -40,6 +40,13 @@ $(function () {
     return statusMap[assignmentStatus];
   }
 
+  function showReasons (assignment) {
+    if(assignment.reasons && assignment.reasons.length > 0) {
+      return assignment.status === 'not_accept' || assignment.status === 'failed';
+    }
+    return false;
+  }
+
   function showBonus (assignment) {
     return !assignment.beginner && (assignment.bonus !== 0);
   }
@@ -66,6 +73,7 @@ $(function () {
     methods: {
       showStatus: showStatus,
       mapStatus: mapStatus,
+      showReasons: showReasons,
       showBonus: showBonus,
     }
   });
@@ -78,6 +86,7 @@ $(function () {
     },
     methods: {
       mapStatus: mapStatus,
+      showReasons: showReasons,
       showBonus: showBonus,
       showRating: showRating,
       bonusText: bonusText

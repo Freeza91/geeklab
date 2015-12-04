@@ -957,23 +957,23 @@ $(function () {
     }
   }
 
-  // 计算comment的位置
-  function caculateCommentPosition () {
-    var comments = $('.comment');
-    comments.each(function (index, comment) {
-      var $comment = $(comment),
-          $fa = $comment.parents('.status').find('.fa');
-      var faPosition = $fa.position();
-      var left = faPosition.left + 14 + 10 + 8,
-          topPosition = ($comment.height() / 2) - faPosition.top - 7;
-      $comment.css({
-        'top': '-' + topPosition + 'px',
-        'left': left + 'px'
-      });
-    });
-  }
+  //// 计算comment的位置
+  //function caculateCommentPosition () {
+    //var comments = $('.comment');
+    //comments.each(function (index, comment) {
+      //var $comment = $(comment),
+          //$fa = $comment.parents('.status').find('.fa');
+      //var faPosition = $fa.position();
+      //var left = faPosition.left + 14 + 10 + 8,
+          //topPosition = ($comment.height() / 2) - faPosition.top - 7;
+      //$comment.css({
+        //'top': '-' + topPosition + 'px',
+        //'left': left + 'px'
+      //});
+    //});
+  //}
 
-  caculateCommentPosition();
+  //caculateCommentPosition();
 
   // 显示comment, 当鼠标移到状态栏图标上时
   $('.assignments-wrp').on('mouseenter', '.status p', function (){

@@ -39,6 +39,7 @@ module JSONS
         status: status,
         extra_status: extra_status,
         reasons: reasons,
+        video: video,
         credit: project.credit,
         bonus: project.basic_bonus,
         credit_record: cur_credit_record,

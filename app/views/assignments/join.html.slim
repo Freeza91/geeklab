@@ -23,7 +23,7 @@ main role="main"
             .fa.fa-desktop v-if="assignment.type === 'web'"
             span v-text="assignment.name"
           .describle v-text="assignment.profile"
-        .item-body
+        .item-body v-style="background-image: videoImage(assignment)"
           .operators
             .operator.wait-upload
               .content-wrp
@@ -80,8 +80,10 @@ main role="main"
             .fa.fa-desktop v-if="assignment.type === 'web'"
             span v-text="assignment.name"
           .describle v-text="assignment.profile"
-        .item-body
-          = render partial: 'assignments/operators/play'
+        .item-body v-style="background-image: videoImage(assignment)"
+          .operator.no-btn.play v-if="assignment.status === 'success'"
+            .content-wrp
+              .icon-play.js-video-play
           .status v-class="assignment.status"
             span v-text="mapStatus(assignment.status)"
             .fa.fa-question-circle v-if="showReasons(assignment)"

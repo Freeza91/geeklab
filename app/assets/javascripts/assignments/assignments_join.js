@@ -63,6 +63,18 @@ $(function () {
     }
   }
 
+  function videoImage(assignment) {
+    var imageUrl = '';
+    if(assignment.status === 'success') {
+      imageUrl =  'url(' + assignment.video + '?vframe/png/offset/0)';
+    } else {
+      if(assignment.extra_status === 'normal' && assignment.video) {
+        imageUrl =  'url(' + assignment.video + '?vframe/png/offset/0)';
+      }
+    }
+    return imageUrl;
+  }
+
   var assignmentsIng = new Vue({
     el: '#assignments-ing',
     data: {
@@ -74,6 +86,7 @@ $(function () {
       mapStatus: mapStatus,
       showReasons: showReasons,
       showBonus: showBonus,
+      videoImage: videoImage
     }
   });
 
@@ -88,7 +101,8 @@ $(function () {
       showReasons: showReasons,
       showBonus: showBonus,
       showRating: showRating,
-      bonusText: bonusText
+      bonusText: bonusText,
+      videoImage: videoImage
     }
   });
 

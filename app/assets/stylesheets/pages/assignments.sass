@@ -21,6 +21,7 @@
     padding: 8px 15px
     background: $white
   .item-body
+    position: relative
     height: 230px
     background-color: $light-yellow
     background-size: cover
@@ -38,6 +39,27 @@
     position: absolute
     top: 10px
     right: 10px
+
+  // assignment状态显示
+  .status
+    position: absolute
+    bottom: 0
+    width: 100%
+    padding-top: 7px
+    padding-bottom: 7px
+    color: $white
+    text-align: center
+    background-color: rgba(23, 160, 198, .8)
+  .status.wait_check
+    background-color: rgba(23, 160, 198, .8)
+  .status.checking
+    background-color: rgba(255, 241, 0, .8)
+  .status.not_accept
+    background-color: rgba(255, 0, 0, .8)
+  .status.failed
+    background-color: rgba(160, 160, 160, .8)
+  .status.success
+    background-color: rgba(50, 177, 108, .8)
 
 
 // 加载更多

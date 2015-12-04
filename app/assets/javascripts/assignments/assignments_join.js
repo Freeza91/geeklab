@@ -19,6 +19,27 @@ $(function () {
     });
   }
 
+  function showStatus (assignment) {
+    if(assignment.beginner) {
+      return assignment.status !== 'test';
+    } else {
+      return (assignment.extra_status === 'normal') && (assignment.status !== 'new');
+    }
+  }
+
+  function mapStatus (assignmentStatus) {
+    var statusMap = {
+      'test': '新手任务',
+      'new': '新任务',
+      'wait_check': '等待审核',
+      'checking': '审核中',
+      'not_accept': '审核未通过',
+      'success': '任务成功',
+      'failed': '任务失败'
+    };
+    return statusMap[assignmentStatus];
+  }
+
   function showBonus (assignment) {
     return !assignment.beginner && (assignment.bonus !== 0);
   }
@@ -43,6 +64,8 @@ $(function () {
       assignments: [],
     },
     methods: {
+      showStatus: showStatus,
+      mapStatus: mapStatus,
       showBonus: showBonus,
     }
   });
@@ -54,6 +77,7 @@ $(function () {
       assignments: []
     },
     methods: {
+      mapStatus: mapStatus,
       showBonus: showBonus,
       showRating: showRating,
       bonusText: bonusText

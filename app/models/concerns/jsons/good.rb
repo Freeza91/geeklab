@@ -2,7 +2,7 @@ require 'active_support/concern'
 
 module JSONS
 
-  module GoodJsons
+  module Good
     extend ActiveSupport::Concern
 
     def to_json_with_pictures

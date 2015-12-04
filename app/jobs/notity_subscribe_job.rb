@@ -2,20 +2,26 @@ class NotitySubscribeJob < ActiveJob::Base
   queue_as :notity_subscribe
 
   def perform(assignment_id)
-    assignment = Assignment.where(id: assignment_id).first
 
-    if assignment.expired? # 过期
-      # 检测是否任务结束
-      project = assignment.project
-      if project.available? # 可以继续做，重新可以抢
-        assignment.update_column(:status, 'new') # 新任务重新可以抢
-        delete_qiniu_resource(assignment) if assignment.status == 'not_accept' # 任务不成功
-        $redis.incr("available-#{project.id}")   # 总量增加
-        send_notity_email(project.id, assignment)
-      else # 任务已经结束
-        free_redis_data(project.id)
+    assignment = Assignment.where(id: assignment_id).first
+    project = assignment.project
+
+    unless assignment.status == 'success' # 自己的任务没完成
+
+      if assignment.expired?  # 已经过期
+        if project.available? # 可以继续做，重新可以抢
+          delete_qiniu_resource(assignment) if assignment.status == 'not_accept' # 任务不成功
+          assignment.update_column(:status, 'new') # 新任务重新可以抢
+          $redis.incr("available-#{project.id}")   # 总量增加
+          send_notity_email(project.id, assignment)
+        end
+      else # 还在进行中
+        # pass 没有操作
       end
+
     end
+
+    free_redis_data(project.id) unless project.available? # 任务结束释放
 
   end
 

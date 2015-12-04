@@ -19,6 +19,16 @@ $(function () {
     });
   }
 
+  function isWaitUpload (vm, assignment, index) {
+    if(assignment.extra_status === 'normal') {
+      var isFresh = (assignment.status === 'new') || (assignment.status === 'test'),
+          isUploading = vm.uploading[index] || vm.uploadFailed[index];
+      console.log(isFresh, isUploading);
+      return isFresh && !isUploading;
+    }
+    return false;
+  }
+
   function showStatus (assignment) {
     if(assignment.beginner) {
       return assignment.status !== 'test';
@@ -80,8 +90,12 @@ $(function () {
     data: {
       page: 1,
       assignments: [],
+      uploading: [],
+      uploadFailed: []
     },
     methods: {
+      // operator切换相关函数
+      isWaitUpload: isWaitUpload,
       showStatus: showStatus,
       mapStatus: mapStatus,
       showReasons: showReasons,
@@ -107,6 +121,10 @@ $(function () {
   });
 
   getAssignmentPaging('ing', 1, function (assignments) {
+    for(var i = 0, len = assignments.length; i < len; i++) {
+      assignmentsIng.uploading.push(false);
+      assignmentsIng.uploadFailed.push(false);
+    }
     assignmentsIng.assignments = assignments;
   });
   getAssignmentPaging('done', 1, function (assignments) {

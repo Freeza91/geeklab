@@ -25,16 +25,68 @@ main role="main"
           .describle v-text="assignment.profile"
         .item-body v-style="background-image: videoImage(assignment)"
           .operators
-            .operator.wait-upload
+            .operator.wait-upload v-show="isWaitUpload(this, assignment, $index)"
               .content-wrp
                 .icon.icon-file
               .button-wrp.button-center
                 button.btn.btn-flat.blue.btn-rounded.btn-s.js-assignment-start
                   | 开始体验
-            = render partial: 'assignments/operators/wait_upload'
-            = render partial: 'assignments/operators/uploading'
-            = render partial: 'assignments/operators/upload_failed'
-            = render partial: 'assignments/operators/wait_check'
+            .operator.uploading v-show="uploading[$index]"
+              .content-wrp
+                .progressCircle
+                  .left
+                    .inner
+                  .right
+                    .inner
+                  .mask
+                    span.progressCount
+                      | 0%
+              .button-wrp.button-center
+                button.btn.btn-flat.blue.btn-rounded.btn-s.js-upload-cancel
+                  | 取消
+            .operator.upload-failed v-show="uploadFailed[$index]"
+              .content-wrp.vertical-center
+                p.vertical-item
+                  | 上传失败
+              .button-wrp.button-center
+                button.btn.btn-flat.blue.btn-rounded.btn-s.js-video-reupload
+                  | 重新上传
+                button.btn.btn-flat.blue.btn-rounded.btn-s.js-reupload-cancel
+                  | 取消
+            .operator.wait-check v-show="assignment.status === 'wait_check' || assignment.status === 'not_accept'"
+              .button-wrp
+                button.btn.btn-flat.blue.btn-rounded.btn-s.js-assignment-start
+                  | 重新体验
+                button.btn.btn-flat.blue.btn-rounded.btn-s.js-video-del
+                  | 删除视频
+              .content-wrp
+                .icon-play.js-video-play
+            .operator.order v-show="assignment.extra_status === 'can_get'"
+              .content-wrp.vertical-center
+                .vertical-item
+                  p
+                    | 仅剩
+                    span.available-count v-text="assignment.available_count"
+                    |个名额
+                  p.sub-hint v-if="assignment.subscribe"
+                    | 已订阅提醒
+                    a href="javascript: void(0)"
+                      | 取消订阅
+              .button-wrp.button-center
+                button.btn.btn-flat.blue.btn-rounded.btn-s.js-assignment-order
+                  | 抢任务
+              .operator.subscribe v-show="assignment.extra_status === 'can_subscribe'"
+                .content-wrp.vertical-center
+                  .vertical-item
+                    p
+                      | 名额已抢光
+                    p.sub-hint
+                      | 订阅提醒后有空出的名额会邮件通知你
+                .button-wrp.button-center
+                  button.btn.btn-flat.blue.btn-rounded.btn-s v-if="!assignment.subscribe"
+                    | 订阅提醒
+                  button.btn.btn-flat.blue.btn-rounded.btn-s v-if="assignment.subscribe"
+                    | 取消订阅
           .status v-class="assignment.status" v-if="showStatus(assignment)"
             span v-text="mapStatus(assignment.status)"
             .fa.fa-question-circle v-if="showReasons(assignment)"

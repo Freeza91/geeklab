@@ -20,17 +20,7 @@ module JSONS
       }
     end
 
-    def to_json_for_join
-
-      if credit_record
-        cur_credit_record = {
-          bonus_credits: credit_record.bonus_credits,
-          rating: credit_record.rating
-        }
-      else
-        cur_credit_record = credit_record
-      end
-
+    def to_json_for_ing
       {
         id: self.to_params,
         name: project.name,
@@ -42,11 +32,27 @@ module JSONS
         video: video,
         credit: project.credit,
         bonus: project.basic_bonus,
-        credit_record: cur_credit_record,
+        credit_record: credit_record.try(to_json),
         beginner: project.beginner,
         available_count: project.available,
         available: project.available?,
         subscribe: subscribe?
+      }
+    end
+
+    def to_json_for_done
+      {
+        id: self.to_params,
+        name: project.name,
+        type: type,
+        profile: project.profile,
+        status: status,
+        reasons: reasons,
+        video: video,
+        credit: project.credit,
+        bonus: project.basic_bonus,
+        credit_record: credit_record.try(to_json),
+        beginner: project.beginner,
       }
     end
 

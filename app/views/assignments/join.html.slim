@@ -1,5 +1,5 @@
 main role="main"
-  section.assignments-list data-tester-id="#{@current_user.to_tester.to_params}"
+  section.assignments-list
     ul.nav.nav-tabs role="tablist"
       li
         a href="#{assignments_path}"
@@ -29,7 +29,7 @@ main role="main"
               .content-wrp
                 .icon.icon-file
               .button-wrp.button-center
-                button.btn.btn-flat.blue.btn-rounded.btn-s.js-assignment-start
+                button.btn.btn-flat.blue.btn-rounded.btn-s v-on="click: startAssignment(this, assignment, $index)"
                   | 开始体验
             .operator.uploading v-show="uploading[$index]"
               .content-wrp
@@ -216,3 +216,5 @@ main role="main"
 = render partial: 'shared/confirm_modal'
 = render partial: 'assignments/shared/assignment_detail'
 = render partial: 'assignments/shared/video_player'
+.user-info
+  input#tester-id type="hidden" value="#{@current_user.to_tester.id}"

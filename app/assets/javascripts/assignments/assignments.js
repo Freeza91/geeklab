@@ -303,14 +303,6 @@ $(function () {
   var $card; // 当前执行操作的任务卡片
   var page = 1 //分页获取任务列表
   var $curVideo; // 当前正在播放的video
-  var uploadAjax; //正在进行上传视频的ajax对象
-
-  //生成一个qrcode实例
-  var qrcode = new QRCode($('#upload-qrcode')[0], {
-    text: 'http://www.geeklab.cc',
-    width: 120,
-    height: 120,
-  });
 
   // 瀑布流加载，监听window滚动事件
   $(window).on('scroll', function () {
@@ -342,32 +334,6 @@ $(function () {
     });
   });
 
-  // 点击任务标题显示任务说明
-  $('.assignments-wrp').on('click', '.js-assignment-start', function () {
-    Geeklab.showLoading();
-    var $this = $(this);
-    $card = $this.parents('.card');
-    assignmentId = $card.data('assignmentId');
-    getAssignmentDetail(testerId, assignmentId, function (project) {
-      setTimeout(function () {
-        Geeklab.removeLoading();
-        showAssignmentDetail(project);
-      }, 1500);
-      // 任务为手机应用时生成二维码
-      if(project.device !== 'web') {
-        getQrcodeToken(assignmentId, function (token) {
-          var uploadUrl = location.origin
-                        + "/assignments/upload?"
-                        + "auth_token="
-                        + token
-                        + "&id="
-                        + assignmentId;
-          qrcode.makeCode(uploadUrl);
-        });
-      }
-    });
-  });
-
 
   // 上传视频按钮的click事件处理函数
   $('.js-video-upload').on('click', function () {
@@ -377,7 +343,6 @@ $(function () {
 
   // 取消上传
   $('.assignments-wrp').on('click', '.js-upload-cancel', function () {
-    //uploadAjax.abort();
     uploader.abort();
     $card.find('.operator.uploading').hide();
 
@@ -600,100 +565,6 @@ $(function () {
     $('body .main-mask').remove();
   }
 
-  // 获取视频url
-  function getAssignmentVideoUrl (testerId, assignmentId, callback) {
-    Geeklab.showLoading();
-
-    var url = '/assignments/get_video';
-
-    $.ajax({
-      url: url,
-      data: {
-        assignment_id: assignmentId
-      }
-    })
-    .done(function (data, status) {
-      if(data.status === 0) {
-        setTimeout(function () {
-          Geeklab.removeLoading();
-          switch(data.code) {
-            case 0:
-              console.log(data.msg);
-            break;
-            case 1:
-              callback(data.video);
-            break;
-            case 2:
-              // 视频正在转码
-              var $modal = $('#info-modal');
-              $modal.find('.content').text('视频正在处理中，请稍候');
-              $('body').append('<div class="main-mask"></div>');
-              $modal.addClass('show');
-            break;
-          }
-        }, 1500);
-      }
-    })
-    .error(function (errors, status) {
-      console.log(errors);
-    });
-  }
-
-  // 播放视频
-  function playVideo (video) {
-    var $modal = $('#video-player');
-    // 移除现有的video
-    $modal.find('video').remove();
-    // 创建新的video
-    var $video = document.createElement('video'),
-        $source = document.createElement('source');
-    $video.controls = 'control';
-    $source.src = video;
-    $video.appendChild($source);
-    $curVideo = $video;
-    $modal.find('.modal-body').append($video);
-    $modal.modal();
-  }
-
-  // 向服务器发送删除任务的请求
-  function deleteAssigment (testerId, assignmentId, callback) {
-    if(assignmentId) {
-      var url = '/assignments/' + assignmentId;
-      $.ajax({
-        url: url,
-        method: 'delete'
-      })
-      .done(function (data, status) {
-        if(data.status === 0 && data.code === 1) {
-          callback();
-        }
-      })
-      .error(function (errors, status) {
-        console.log(errors);
-      });
-    }
-  }
-
-  // 删除视频
-  function deleteVideo (testerId, assignmentId, callback) {
-    var url = '/assignments/delete_video';
-    $.ajax({
-      url: url,
-      method: 'delete',
-      data: {
-        assignment_id: assignmentId
-      }
-    })
-    .done(function (data, status) {
-      if(data.status === 0 && data.code === 1) {
-        callback(data);
-      }
-    })
-    .error(function (errors, status) {
-      console.log(errors);
-    });
-  }
-
   function getAssignmentDetail (testerId, assignmentId, callback){
     var url = '/assignments/' + assignmentId;
     $.ajax({
@@ -714,10 +585,6 @@ $(function () {
     assignmentDetailVm.taskLen = assignmentDetail.tasks.length;
     assignmentDetailVm.stepLen = assignmentDetailVm.taskLen + 6;
     $('#assignment-detail').modal();
-  }
-
-  function getInvalidAssignmentCount (testerId) {
-
   }
 
   // 任务过期时间倒计时
@@ -816,13 +683,6 @@ $(function () {
     $progressCircle.find('.progressCount').text(progressPercent + '%');
   }
 
-  // 显示reasons, 当鼠标移到状态栏图标上时
-  $('.assignments-wrp').on('mouseenter', '.status span', function (){
-    $(this).parents('.status').find('.reasons').fadeIn();
-  });
-  $('.assignments-wrp').on('mouseout', '.status span', function (){
-    $(this).parents('.status').find('.reasons').fadeOut();
-  });
 
   // 获取生成二维码所需token
   function getQrcodeToken (assignmentId, callback) {
@@ -881,147 +741,6 @@ $(function () {
     } else {
       $('main').removeClass('empty');
     }
-  }
-
-  var assignmentDetailVm = new Vue({
-    el: '#assignment-detail',
-    data: {
-      progress: 'requirement',
-      curStepContent: '',
-      curStepIndex: 1,
-      stepLen: 0,
-      taskLen: 0,
-      project: {},
-      nextStepText: '好的',
-      uplodging: false
-    },
-    methods: {
-      prev: prevStep,
-      next: nextStep,
-      lastStep: lastStep,
-      refreshQrImage: refreshQrImage,
-      mapDevice: mapDevice,
-      close: close
-    }
-  });
-
-  function prevStep (vm) {
-    vm.curStepIndex -= 1;
-    switch(vm.progress) {
-      case 'prepare':
-        vm.progress = 'requirement';
-        vm.nextStepText = '好的';
-      break;
-      case 'help':
-        vm.progress = 'prepare';
-        vm.nextStepText = '好了';
-      break;
-      case 'hint':
-        vm.progress = 'help';
-        vm.nextStepText = '开始任务';
-      break;
-      case 'situation':
-        vm.progress = 'hint';
-        vm.nextStepText = '接下来 →';
-      break;
-      case 'work-on':
-      if(vm.curStepIndex === 5) {
-        vm.curStepContent = vm.project.desc;
-        vm.progress = 'situation';
-      } else {
-        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 6].content;
-      }
-      break;
-      case 'work-done':
-        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 6].content;
-        vm.progress = 'work-on';
-        vm.nextStepText = '接下来 →';
-      break;
-    }
-  }
-
-  function nextStep (vm) {
-    vm.curStepIndex += 1;
-    switch(vm.progress) {
-      case 'requirement':
-        vm.progress = 'prepare';
-        vm.nextStepText = '好了';
-      break;
-      case 'prepare':
-        vm.progress = 'help';
-        vm.nextStepText = '开始任务';
-      break;
-      case 'help':
-        vm.progress = 'hint';
-        vm.nextStepText = '接下来 →';
-      break;
-      case 'hint':
-        vm.progress = 'situation';
-        vm.curStepContent = vm.project.desc;
-        vm.nextStepText = '接下来 →';
-      break;
-      case 'situation':
-        vm.progress = 'work-on';
-        vm.curStepContent = vm.project.tasks[0].content;
-      break;
-      case 'work-on':
-      if(vm.curStepIndex - 6 === vm.taskLen) {
-        vm.progress = 'work-done';
-      } else {
-        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 6].content;
-      }
-      break;
-    }
-  }
-
-  function lastStep (vm) {
-    vm.progress = 'work-done';
-    vm.curStepIndex = vm.stepLen;
-  }
-
-  function close(vm) {
-    $('#assignment-detail').modal('hide');
-  }
-
-  function refreshQrImage (event) {
-    var $target = $(event.target);
-    if($target.hasClass('disable')) {
-      return false;
-    }
-    $target.addClass('disable');
-    var $qrcode = $('#upload-qrcode');
-    qrcode.clear();
-    $qrcode.find('.fa-refresh').addClass('fa-spin');
-    $qrcode.find('.img-mask').css({
-      display: 'block'
-    });
-    getQrcodeToken(assignmentId, function (token) {
-      var uploadUrl = location.origin
-                    + "/assignments/upload?"
-                    + "auth_token="
-                    + token
-                    + "&id="
-                    + assignmentId;
-      setTimeout(function () {
-        qrcode.makeCode(uploadUrl);
-        $qrcode.find('.fa-refresh').removeClass('fa-spin');
-        $qrcode.find('.img-mask').removeAttr('style');
-        $target.removeClass('disable');
-      }, 1000)
-    });
-  }
-
-  function mapDevice (platform, device) {
-    if(device === 'web') {
-      return '电脑'
-    }
-    var map = {
-      'iospad': 'iPad',
-      'iosphone': 'iPhone',
-      'androidphone': 'Android Phone',
-      'androidpad': 'Android Pad',
-    }
-    return map[platform + device];
   }
 
 });

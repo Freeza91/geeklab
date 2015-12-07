@@ -18,50 +18,9 @@ $(function () {
   //* 删除视频
   //* 删除任务
   //* 获取任务详情
-  // 播放视频
+  //* 播放视频
+  //* 分页加载
 
-
-  //生成一个qrcode实例
-  var qrcode = new QRCode($('#upload-qrcode')[0], {
-    text: 'http://www.geeklab.cc',
-    width: 120,
-    height: 120,
-  });
-
-  // 获取任务详情
-  function fetchAssignmentDetail (testerId, assignmentId, callback) {
-    var url = '/assignments/' + assignmentId;
-    $.ajax({
-      url: url,
-    })
-    .done(function (data, status) {
-      if(data.status === 0 && data.code === 1) {
-        callback(data.project);
-      }
-    })
-    .error(function (errors, status) {
-      console.log(errors);
-    })
-  }
-
-  // 获取生成二维码所需token
-  function fetchQrcodeToken (assignmentId, callback) {
-    var url = "/assignments/qr_token";
-    $.ajax({
-      url: url,
-      data: {
-        assignment_id: assignmentId
-      }
-    })
-    .done(function (data, status) {
-      if(data.status === 0 && data.code === 1) {
-        callback(data.auth_token)
-      }
-    })
-    .error(function (errors) {
-      console.log('获取qrtoken失败');
-    });
-  }
 
   // 发送删除视频的请求
   function sendDeleteVideoRequest (testerId, assignmentId, callback) {
@@ -105,10 +64,8 @@ $(function () {
   function fetchVideoUrl (testerId, assignmentId, callback) {
     Geeklab.showLoading();
 
-    var url = '/assignments/get_video';
-
     $.ajax({
-      url: url,
+      url: '/assignments/get_video',
       data: {
         assignment_id: assignmentId
       }
@@ -139,7 +96,6 @@ $(function () {
       console.log(errors);
     });
   }
-
 
   // 获取assgnment分页数据
   function getAssignmentPaging (type, page, callback) {
@@ -239,10 +195,10 @@ $(function () {
     assignmentDetailVm.id = assignmentId;
     vm.currAssignIndex = index;
     vm.currAssign = $(event.target).parents('.assignment-item');
-    fetchAssignmentDetail(testerId, assignmentId, function (project) {
+    Geeklab.fetchAssignmentDetail(testerId, assignmentId, function (project) {
       // 任务为手机应用时生成二维码
       if(assignment.device !== 'web') {
-        fetchQrcodeToken(assignmentId, function (token) {
+        Geeklab.fetchQrcodeToken(assignmentId, function (token) {
           var uploadUrl = location.origin
                         + "/assignments/upload?"
                         + "auth_token="
@@ -472,7 +428,7 @@ $(function () {
     $qrcode.find('.img-mask').css({
       display: 'block'
     });
-    fetchQrcodeToken(vm.id, function (token) {
+    Geeklab.fetchQrcodeToken(vm.id, function (token) {
       var uploadUrl = location.origin
                     + "/assignments/upload?"
                     + "auth_token="
@@ -554,6 +510,12 @@ $(function () {
       isWaitCheck: isWaitCheck,
       // 是否能删除
       canBeDeleted: canBeDeleted,
+      // 数据显示
+      showStatus: showStatus,
+      mapStatus: mapStatus,
+      showReasons: showReasons,
+      showBonus: showBonus,
+      videoImage: videoImage,
       // 任务相关操作函数
       startAssignment: startAssignment,
       cancelUploading: cancelUploading,
@@ -561,13 +523,7 @@ $(function () {
       showDeleteAssignConfirm: showDeleteAssignConfirm,
       reuploadVideo: reuploadVideo,
       cancelReupload: cancelReupload,
-      playVideo: playVideo,
-      // 数据显示
-      showStatus: showStatus,
-      mapStatus: mapStatus,
-      showReasons: showReasons,
-      showBonus: showBonus,
-      videoImage: videoImage
+      playVideo: playVideo
     }
   });
 

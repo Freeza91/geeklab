@@ -2,15 +2,10 @@ $(function () {
   if(!$('body').hasClass('assignments')) {
     return false;
   }
-  // function list
-    //上传视频
-    //删除视频
-    //覆盖重新上传
-    //删除任务
-    //获取任务详细信息
-    //显示过期任务数
-    //播放视频
-    //任务倒计时
+    // function list
+    // 上传视频
+    // 获取任务详细信息
+    // 任务倒计时
     // 瀑布流加载
     // 任务引导的vue model
 
@@ -283,7 +278,14 @@ $(function () {
   }
 
   window.Geeklab = window.Geeklab || {};
-  window.Geeklab.uploader = new QiniuChunkUpload();
+  Geeklab.uploader = new QiniuChunkUpload();
+
+  //生成一个qrcode实例
+  Geeklab.qrcode = new QRCode($('#upload-qrcode')[0], {
+    text: 'http://www.geeklab.cc',
+    width: 120,
+    height: 120,
+  });
 
   // 瀑布流加载，监听window滚动事件
   $(window).on('scroll', function () {
@@ -321,41 +323,6 @@ $(function () {
     // 选择文件
     $('#video').click();
   });
-
-  // 取消上传
-  $('.assignments-wrp').on('click', '.js-upload-cancel', function () {
-    uploader.abort();
-    $card.find('.operator.uploading').hide();
-
-    // 恢复上传进度圆环
-    $card.find('.progressCircle .inner').css({
-      'transform': 'rotate(0)',
-      '-o-transform': 'rotate(0)',
-      '-moz-transform': 'rotate(0)',
-      '-webkit-transform': 'rotate(0)'
-    });
-
-    var $image = $card.find('.content img');
-    if($image.attr('src')) {
-      $image.fadeIn();
-      $card.find('.operator.wait-check').fadeIn();
-      return false;
-    }
-    $card.find('.operator.wait-upload').fadeIn();
-  });
-
-  // 播放视频 click event
-  //$('.assignments-wrp').on('click', '.js-video-play', function () {
-    //var $this = $(this);
-
-    //$card = $this.parents('.card');
-    //assignmentId = $card.data('assignmentId');
-
-    //getAssignmentVideoUrl(testerId, assignmentId, function(video) {
-      //playVideo(video);
-    //})
-  //});
-
 
   // 获取上传视屏的token
   function getUploadToken(assignmentId, filename, callback) {
@@ -400,36 +367,9 @@ $(function () {
     $(this).parents('.operate').removeClass('show');
     $('body .main-mask').remove();
   });
-  // 点击modal确认按钮时触发的事件
-  function eventConfirm(eventName) {
-    switch (eventName) {
-      case 'reloadVideo':
-        //重新上传
-      break;
-      case 'deleteVideo':
-        // 删除视频
-        deleteVideo(testerId, assignmentId, function (data) {
-          console.log(data);
-          $card.find('.operator.wait-check').fadeOut();
-          $card.find('.operator.wait-upload').fadeIn();
-          $card.find('img').removeAttr('src').hide();
-          $card.find('.status').hide();
-        });
-      break;
-      case 'deleteAssignment':
-        // 删除任务
-        console.log('xxx');
-        deleteAssigment (testerId, assignmentId, function () {
-          // 删除任务后的回调， 将当前卡片重页面上移除
-          $card.remove();
-        });
-      break;
-    }
-    $('#confirm-modal').removeClass('show');
-    $('body .main-mask').remove();
-  }
 
-  function getAssignmentDetail (testerId, assignmentId, callback){
+  // 获取任务详情
+  Geeklab. fetchAssignmentDetail = function (testerId, assignmentId, callback) {
     var url = '/assignments/' + assignmentId;
     $.ajax({
       url: url,
@@ -442,13 +382,25 @@ $(function () {
     .error(function (errors, status) {
       console.log(errors);
     })
-  }
+  };
 
-  function showAssignmentDetail (assignmentDetail) {
-    assignmentDetailVm.project = assignmentDetail;
-    assignmentDetailVm.taskLen = assignmentDetail.tasks.length;
-    assignmentDetailVm.stepLen = assignmentDetailVm.taskLen + 6;
-    $('#assignment-detail').modal();
+  // 获取生成二维码所需token
+  Geeklab. fetchQrcodeToken = function (assignmentId, callback) {
+    var url = "/assignments/qr_token";
+    $.ajax({
+      url: url,
+      data: {
+        assignment_id: assignmentId
+      }
+    })
+    .done(function (data, status) {
+      if(data.status === 0 && data.code === 1) {
+        callback(data.auth_token)
+      }
+    })
+    .error(function (errors) {
+      console.log('获取qrtoken失败');
+    });
   }
 
   // 任务过期时间倒计时
@@ -554,25 +506,6 @@ $(function () {
       '-webkit-transform': 'rotate(0)'
     });
     $progressCircle.find('.progressCount').text('0%');
-  }
-
-  // 获取生成二维码所需token
-  function getQrcodeToken (assignmentId, callback) {
-    var url = "/assignments/qr_token";
-    $.ajax({
-      url: url,
-      data: {
-        assignment_id: assignmentId
-      }
-    })
-    .done(function (data, status) {
-      if(data.status === 0 && data.code === 1) {
-        callback(data.auth_token)
-      }
-    })
-    .error(function (errors) {
-      console.log('获取qrtoken失败');
-    });
   }
 
   // 二级导航初始化

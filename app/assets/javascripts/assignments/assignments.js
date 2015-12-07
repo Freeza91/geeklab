@@ -344,71 +344,18 @@ $(function () {
     $card.find('.operator.wait-upload').fadeIn();
   });
 
-  // 上传失败取消
-  $('.assignments-wrp').on('click', '.js-reupload-cancel', function () {
-    $card.find('.operator.upload-failed').hide();
-    var $image = $card.find('.content img');
-    if($image.attr('src')) {
-      $image.fadeIn();
-      $card.find('.operator.wait-check').fadeIn();
-      return false;
-    }
-    $card.find('.operator.wait-upload').fadeIn();
-  });
-
-  // 删除任务按钮的click事件处理函数
-  $('.assignments-wrp').on('click', '.assignment-del', function () {
-
-    var $this = $(this);
-    $card = $this.parents('.card');
-    assignmentId = $card.data('assignmentId');
-
-    var options = {
-      title: '对任务不感兴趣?',
-      content: '任务删除后将无法查看和恢复，确认删除任务?',
-      eventName: 'deleteAssignment'
-    };
-    showInfoModal(options);
-  });
-
-  // 删除视频 click event
-  $('.assignments-wrp').on('click', '.js-video-del', function () {
-
-    var $this = $(this);
-    $card = $this.parents('.card');
-    assignmentId = $card.data('assignmentId');
-
-    var options = {
-      title: '确认删除视频?',
-      content: '确认删除视频?',
-      eventName: 'deleteVideo'
-    };
-    showInfoModal(options);
-  });
-
-  // 上传失败重新上传 click event
-  $('.assignments-wrp').on('click', '.js-video-reupload', function () {
-    // 显示该任务详情的最后一页
-    $('.task-pagination').click();
-    $('#assignment-detail').modal();
-  });
-
   // 播放视频 click event
-  $('.assignments-wrp').on('click', '.js-video-play', function () {
-    var $this = $(this);
+  //$('.assignments-wrp').on('click', '.js-video-play', function () {
+    //var $this = $(this);
 
-    $card = $this.parents('.card');
-    assignmentId = $card.data('assignmentId');
+    //$card = $this.parents('.card');
+    //assignmentId = $card.data('assignmentId');
 
-    getAssignmentVideoUrl(testerId, assignmentId, function(video) {
-      playVideo(video);
-    })
-  });
+    //getAssignmentVideoUrl(testerId, assignmentId, function(video) {
+      //playVideo(video);
+    //})
+  //});
 
-  // 关闭视频播放modal
-  $('#video-player [data-dismiss="modal"]').on('click', function () {
-    $curVideo.pause();
-  });
 
   // 获取上传视屏的token
   function getUploadToken(assignmentId, filename, callback) {

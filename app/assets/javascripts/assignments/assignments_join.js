@@ -14,7 +14,7 @@ $(function () {
   // 需要的函数
   //* 上传视频
   //* 取消上传
-  // 重新上传
+  //* 重新上传
   //* 删除视频
   //* 删除任务
   //* 获取任务详情
@@ -102,7 +102,7 @@ $(function () {
   }
 
   // 获取视频url
-  function getVideoUrl (testerId, assignmentId, callback) {
+  function fetchVideoUrl (testerId, assignmentId, callback) {
     Geeklab.showLoading();
 
     var url = '/assignments/get_video';
@@ -140,21 +140,6 @@ $(function () {
     });
   }
 
-  // 播放视频
-  function playVideo (video) {
-    var $modal = $('#video-player');
-    // 移除现有的video
-    $modal.find('video').remove();
-    // 创建新的video
-    var $video = document.createElement('video'),
-        $source = document.createElement('source');
-    $video.controls = 'control';
-    $source.src = video;
-    $video.appendChild($source);
-    $curVideo = $video;
-    $modal.find('.modal-body').append($video);
-    $modal.modal();
-  }
 
   // 获取assgnment分页数据
   function getAssignmentPaging (type, page, callback) {
@@ -334,6 +319,27 @@ $(function () {
   function cancelReupload (assignment) {
     assignment.uploadFailed = false;
   }
+
+  // 播放视频
+  function playVideo (assignment) {
+    fetchVideoUrl(testerId, assignment.id, function (video) {
+      var $modal = $('#video-player');
+      // 移除现有的video
+      $modal.find('video').remove();
+      // 创建新的video
+      var $video = document.createElement('video'),
+          $source = document.createElement('source');
+      $video.controls = 'controls';
+      $source.src = video;
+      $video.appendChild($source);
+      $modal.find('.modal-body').append($video);
+      $modal.modal();
+    });
+  }
+  // 关闭视频播放modal是暂停视频
+  $('#video-player [data-dismiss="modal"]').on('click', function () {
+    $('#video-player video')[0].pause();
+  });
 
   // 显示删除视频确认对话框
   function showDeleteVideoConfirm (vm, index) {
@@ -549,17 +555,19 @@ $(function () {
       // 是否能删除
       canBeDeleted: canBeDeleted,
       // 任务相关操作函数
+      startAssignment: startAssignment,
       cancelUploading: cancelUploading,
       showDeleteVideoConfirm: showDeleteVideoConfirm,
       showDeleteAssignConfirm: showDeleteAssignConfirm,
       reuploadVideo: reuploadVideo,
       cancelReupload: cancelReupload,
+      playVideo: playVideo,
+      // 数据显示
       showStatus: showStatus,
       mapStatus: mapStatus,
       showReasons: showReasons,
       showBonus: showBonus,
-      videoImage: videoImage,
-      startAssignment: startAssignment
+      videoImage: videoImage
     }
   });
 

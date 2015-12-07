@@ -62,7 +62,7 @@ main role="main"
                 button.btn.btn-flat.blue.btn-rounded.btn-s v-on="click: showDeleteVideoConfirm(this, $index)"
                   | 删除视频
               .content-wrp
-                .icon-play.js-video-play
+                .icon-play v-on="click: playVideo(assignment)"
             .operator.order v-show="assignment.extra_status === 'can_get'"
               .content-wrp.vertical-center
                 .vertical-item
@@ -137,7 +137,7 @@ main role="main"
         .item-body v-style="background-image: videoImage(assignment)"
           .operator.no-btn.play v-if="assignment.status === 'success'"
             .content-wrp
-              .icon-play.js-video-play
+              .icon-play
           .status v-class="assignment.status"
             span v-text="mapStatus(assignment.status)"
             .fa.fa-question-circle v-if="showReasons(assignment)"

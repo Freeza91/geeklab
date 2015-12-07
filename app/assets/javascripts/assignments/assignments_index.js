@@ -48,6 +48,7 @@ $(function () {
     }
   });
 
+  // assignment-finish vue model
   var assignmentsFinish = new Vue({
     el: '#assignments-finish',
     data: {
@@ -59,6 +60,7 @@ $(function () {
   getAssignmentPaging('fresh', 1, function (assignments) {
     assignmentsFresh.assignments = assignments;
   });
+
   getAssignmentPaging('finish', 1, function (assignments) {
     assignmentsFinish.assignments = assignments;
   });

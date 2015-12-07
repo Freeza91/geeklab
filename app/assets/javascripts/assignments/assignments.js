@@ -360,53 +360,6 @@ $(function () {
     $card.find('.operator.wait-upload').fadeIn();
   });
 
-  // 开始上传视频
-  //$('#video').on('change', function () {
-    //// 清理task-guide
-    //$('#close').click();
-    //var file = $(this)[0].files[0];
-    //if(file) {
-      //// 判断所选文件的类型是否为video
-      //if(file.type.split('/')[0] === 'video') {
-        //// 清空input的value, 使再次选中同一视频时还能触发change事件
-        //$(this).val('');
-
-        //uploader.upload(assignmentId, file, function (data) {
-          //// 上传成功后的回调
-          //// 切换operator
-          //$card.find('.operator.wait-check').fadeIn();
-          //$card.find('.operator.uploading').fadeOut();
-          //// 显示状态，并将状态置为wait_check
-          //$card.find('.status').fadeIn().removeClass().addClass('status status_wait_check').find('p').text('等待审核');
-          //// 恢复上传进度圆环
-          //$card.find('.progressCircle .inner').css({
-            //'transform': 'rotate(0)',
-            //'-o-transform': 'rotate(0)',
-            //'-moz-transform': 'rotate(0)',
-            //'-webkit-transform': 'rotate(0)'
-          //});
-              //// 清除上传input框的值
-          //delete $('#video')[0].files;
-          //// 上传成功后跳转至正在进行中的任务页面
-          //if(location.pathname.split('/').pop() === 'assignments') {
-            //location.href = '/assignments/join';
-          //}
-        //}, function () {
-          //// 上传出错
-          //$card.find('.operator.uploading').hide();
-          //$card.find('.operator.upload-failed').fadeIn();
-          //// 恢复上传进度圆环
-          //$card.find('.progressCircle .inner').css({
-            //'transform': 'rotate(0)',
-            //'-o-transform': 'rotate(0)',
-            //'-moz-transform': 'rotate(0)',
-            //'-webkit-transform': 'rotate(0)'
-          //});
-        //});
-      //}
-    //}
-  //});
-
   // 删除任务按钮的click事件处理函数
   $('.assignments-wrp').on('click', '.assignment-del', function () {
 

@@ -330,6 +330,11 @@ $(function () {
     $('.task-pagination').click();
   }
 
+  // 上传失败后取消
+  function cancelReupload (assignment) {
+    assignment.uploadFailed = false;
+  }
+
   // 显示删除视频确认对话框
   function showDeleteVideoConfirm (vm, index) {
     vm.currAssignIndex = index;
@@ -548,6 +553,7 @@ $(function () {
       showDeleteVideoConfirm: showDeleteVideoConfirm,
       showDeleteAssignConfirm: showDeleteAssignConfirm,
       reuploadVideo: reuploadVideo,
+      cancelReupload: cancelReupload,
       showStatus: showStatus,
       mapStatus: mapStatus,
       showReasons: showReasons,

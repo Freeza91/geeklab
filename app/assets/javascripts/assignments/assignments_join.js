@@ -176,7 +176,6 @@ $(function () {
     if(assignment.extra_status === 'normal') {
       var isFresh = (assignment.status === 'new') || (assignment.status === 'test'),
           isUploading = vm.uploading[index] || vm.uploadFailed[index];
-      console.log(isFresh, isUploading);
       return isFresh && !isUploading;
     }
     return false;
@@ -239,11 +238,11 @@ $(function () {
   }
 
   function startAssignment (vm, assignment, index) {
+    Geeklab.showLoading();
     var assignmentId = assignment.id;
     assignmentDetailVm.id = assignmentId;
     vm.currAssignmentIndex = index;
     fetchAssignmentDetail(testerId, assignmentId, function (project) {
-      console.log(project);
       // 任务为手机应用时生成二维码
       if(assignment.device !== 'web') {
         fetchQrcodeToken(assignmentId, function (token) {
@@ -262,15 +261,11 @@ $(function () {
       assignmentDetailVm.project = project;
       assignmentDetailVm.taskLen = project.tasks.length;
       assignmentDetailVm.stepLen = project.tasks.length + 6;
-      $('#assignment-detail').modal();
+      setTimeout(function () {
+        Geeklab.removeLoading();
+        $('#assignment-detail').modal();
+      }, 1000);
     });
-    //Geeklab.showLoading();
-    //getAssignmentDetail(testerId, assignmentId, function (project) {
-      //setTimeout(function () {
-        //Geeklab.removeLoading();
-        //showAssignmentDetail(project);
-      //}, 1500);
-    //});
   }
   var assignmentDetailVm = new Vue({
     el: '#assignment-detail',

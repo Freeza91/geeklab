@@ -133,11 +133,13 @@ main role="main"
             .fa.fa-mobile v-if="assignment.type === 'mobile'"
             .fa.fa-desktop v-if="assignment.type === 'web'"
             span v-text="assignment.name"
+            span.js-delete-assign v-on="click: showDeleteAssignConfirm(this, $index)"
+              | ×
           .describle v-text="assignment.profile"
         .item-body v-style="background-image: videoImage(assignment)"
           .operator.no-btn.play v-if="assignment.status === 'success'"
             .content-wrp
-              .icon-play
+              .icon-play v-on="click: playVideo(assignment)"
           .status v-class="assignment.status"
             span v-text="mapStatus(assignment.status)"
             .fa.fa-question-circle v-if="showReasons(assignment)"

@@ -472,7 +472,19 @@ $(function () {
 
   function deleteAssignment () {
     sendDeleteAssigmentRequest(testerId, assignment.id, function (data) {
-      assignmentsIng.assignments.$remove(assignmentsIng.currAssignIndex);
+      var hash = location.hash.substr(1),
+          assignmentsVm;
+
+      // 使用hash判断当前显示的任务列表tab
+      switch(hash) {
+        case 'ing':
+          assignmentsVm = assignmentsIng;
+        break;
+        case 'done':
+          assignmentsVm = assignmentsDone;
+        break;
+      }
+      assignmentsVm.assignments.$remove(assignmentsVm.currAssignIndex);
     });
   }
 
@@ -501,8 +513,6 @@ $(function () {
       currAssignIndex: 0,
       currAssign: $('#assignments-ing .assignment-item').first(),
       assignments: [],
-      uploading: [],
-      uploadFailed: []
     },
     methods: {
       // operator切换相关函数
@@ -531,15 +541,20 @@ $(function () {
     el: '#assignments-done',
     data: {
       page: 1,
+      currAssignIndex: 0,
       assignments: []
     },
     methods: {
+      // 数据显示
       mapStatus: mapStatus,
       showReasons: showReasons,
       showBonus: showBonus,
       showRating: showRating,
       bonusText: bonusText,
-      videoImage: videoImage
+      videoImage: videoImage,
+      // 操作
+      showDeleteAssignConfirm: showDeleteAssignConfirm,
+      playVideo: playVideo
     }
   });
 

@@ -22,6 +22,8 @@ main role="main"
             .fa.fa-mobile v-if="assignment.type === 'mobile'"
             .fa.fa-desktop v-if="assignment.type === 'web'"
             span v-text="assignment.name"
+            span.js-delete-assign v-show="canBeDeleted(assignment)"v-on="click: showDeleteAssignConfirm(this, $index)"
+              | ×
           .describle v-text="assignment.profile"
         .item-body v-style="background-image: videoImage(assignment)"
           .operators

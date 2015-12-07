@@ -15,7 +15,7 @@ $(function () {
   //* 上传视频
   //* 取消上传
   // 重新上传
-  // 删除视频
+  // *删除视频
   // 删除任务
   //* 获取任务详情
   // 播放视频
@@ -187,6 +187,10 @@ $(function () {
     return isWaitCheck && !isUploading;
   }
 
+  function canBeDeleted (assignment) {
+    var waitCheck = assignment.extra_status === 'normal' && assignment.status === 'wait_check';
+    return !assignment.beginner && !waitCheck;
+  }
 
   function showStatus (assignment) {
     if(assignment.beginner) {
@@ -325,6 +329,15 @@ $(function () {
     Geeklab.showConfirmModal({
       eventName: 'deleteVideo',
       content: '确认删除视频?'
+    });
+  }
+
+  // 显示删除任务确认对话框
+  function showDeleteAssignConfirm (vm, index) {
+    vm.currAssignIndex = index;
+    Geeklab.showConfirmModal({
+      eventName: 'deleteAssign',
+      content: '任务删除后将无法查看和恢复, 确认删除任务?'
     });
   }
 
@@ -483,9 +496,10 @@ $(function () {
     });
   }
 
-  function deleteAssigment () {
-    assignmentsIng.assignments.$remove(assignmentsIng.currAssignIndex);
-
+  function deleteAssignment () {
+    sendDeleteAssigmentRequest(testerId, assignment.id, function (data) {
+      assignmentsIng.assignments.$remove(assignmentsIng.currAssignIndex);
+    });
   }
 
   $('#confirm').on('click', function () {
@@ -494,6 +508,9 @@ $(function () {
     switch(eventName) {
       case 'deleteVideo':
         deleteVideo(testerId, assignment);
+      break;
+      case 'deleteAssign':
+        deleteAssignment(testerId, assignment);
       break;
     }
     $('#confirm-modal').removeClass('show');
@@ -517,9 +534,12 @@ $(function () {
       // operator切换相关函数
       isWaitUpload: isWaitUpload,
       isWaitCheck: isWaitCheck,
+      // 是否能删除
+      canBeDeleted: canBeDeleted,
       // 任务相关操作函数
       cancelUploading: cancelUploading,
       showDeleteVideoConfirm: showDeleteVideoConfirm,
+      showDeleteAssignConfirm: showDeleteAssignConfirm,
       showStatus: showStatus,
       mapStatus: mapStatus,
       showReasons: showReasons,

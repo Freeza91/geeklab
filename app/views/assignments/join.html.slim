@@ -42,7 +42,7 @@ main role="main"
                     span.progressCount
                       | 0%
               .button-wrp.button-center
-                button.btn.btn-flat.blue.btn-rounded.btn-s.js-upload-cancel
+                button.btn.btn-flat.blue.btn-rounded.btn-s v-on="click: cancelUploading(assignment)"
                   | 取消
             .operator.upload-failed v-show="assignment.uploadFailed"
               .content-wrp.vertical-center

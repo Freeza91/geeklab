@@ -311,6 +311,14 @@ $(function () {
     }
   });
 
+  // 取消正在上传
+  function cancelUploading (assignment) {
+    var $progressCircle = assignmentsIng.currAssign.find('.progressCircle');
+    Geeklab.uploader.abort();
+    assignment.uploading = false;
+    Geeklab.clearUploadProgresss($progressCircle);
+  }
+
   var assignmentDetailVm = new Vue({
     el: '#assignment-detail',
     data: {
@@ -483,6 +491,7 @@ $(function () {
       // operator切换相关函数
       isWaitUpload: isWaitUpload,
       isWaitCheck: isWaitCheck,
+      cancelUploading: cancelUploading,
       showStatus: showStatus,
       mapStatus: mapStatus,
       showReasons: showReasons,

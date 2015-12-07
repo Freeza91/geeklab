@@ -609,6 +609,14 @@ $(function () {
     $progressCircle.find('.progressCount').text(progressPercent + '%');
   }
 
+  Geeklab.clearUploadProgresss = function ($progressCircle) {
+    $progressCircle.find('.inner').css({
+      'transform': 'rotate(0)',
+      '-o-transform': 'rotate(0)',
+      '-moz-transform': 'rotate(0)',
+      '-webkit-transform': 'rotate(0)'
+    });
+  }
 
   // 获取生成二维码所需token
   function getQrcodeToken (assignmentId, callback) {

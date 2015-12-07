@@ -25,13 +25,13 @@ main role="main"
           .describle v-text="assignment.profile"
         .item-body v-style="background-image: videoImage(assignment)"
           .operators
-            .operator.wait-upload v-show="isWaitUpload(this, assignment, $index)"
+            .operator.wait-upload v-show="isWaitUpload(assignment)"
               .content-wrp
                 .icon.icon-file
               .button-wrp.button-center
                 button.btn.btn-flat.blue.btn-rounded.btn-s v-on="click: startAssignment(this, assignment, $event, $index)"
                   | 开始体验
-            .operator.uploading v-show="uploading[$index]"
+            .operator.uploading v-show="assignment.uploading"
               .content-wrp
                 .progressCircle
                   .left
@@ -44,7 +44,7 @@ main role="main"
               .button-wrp.button-center
                 button.btn.btn-flat.blue.btn-rounded.btn-s.js-upload-cancel
                   | 取消
-            .operator.upload-failed v-show="uploadFailed[$index]"
+            .operator.upload-failed v-show="assignment.uploadFailed"
               .content-wrp.vertical-center
                 p.vertical-item
                   | 上传失败
@@ -55,7 +55,7 @@ main role="main"
                   | 取消
             .operator.wait-check v-show="assignment.status === 'wait_check' || assignment.status === 'not_accept'"
               .button-wrp
-                button.btn.btn-flat.blue.btn-rounded.btn-s.js-assignment-start
+                button.btn.btn-flat.blue.btn-rounded.btn-s v-on="click: startAssignment(this, assignment, $event, $index)"
                   | 重新体验
                 button.btn.btn-flat.blue.btn-rounded.btn-s.js-video-del
                   | 删除视频

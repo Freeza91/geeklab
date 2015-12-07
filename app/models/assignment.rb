@@ -39,7 +39,7 @@ class Assignment < ActiveRecord::Base
     end
 
     def take_part_ing
-      test #测试用数据
+      not_finish #测试用数据
       #assigned.not_finish #真实数据逻辑
       # assigned.not_expired.ing + assigned.not_finish.expired
     end

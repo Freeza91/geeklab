@@ -287,12 +287,6 @@ $(function () {
   window.Geeklab = window.Geeklab || {};
   window.Geeklab.uploader = new QiniuChunkUpload();
 
-  // 保存testId
-  var testerId = $('.assignments-list').data('testerId');
-  var assignmentId = 0; // 当前执行操作的任务id
-  var page = 1 //分页获取任务列表
-  var $curVideo; // 当前正在播放的video
-
   // 瀑布流加载，监听window滚动事件
   $(window).on('scroll', function () {
     // 第一页数量小于10

@@ -172,10 +172,10 @@ $(function () {
     });
   }
 
-  function isWaitUpload (vm, assignment, index) {
+  function isWaitUpload (assignment) {
     if(assignment.extra_status === 'normal') {
       var isFresh = (assignment.status === 'new') || (assignment.status === 'test'),
-          isUploading = vm.uploading[index] || vm.uploadFailed[index];
+          isUploading = assignment.uploading || assignment.uploadFailed;
       return isFresh && !isUploading;
     }
     return false;
@@ -276,17 +276,16 @@ $(function () {
     var file = $(this)[0].files[0];
     if(file) {
       if(file.type.split('/')[0] === 'video') {
-        var assignmentId = assignmentsIng.assignments[assignmentsIng.currAssignIndex].id;
+        var assignment = assignmentsIng.assignments[assignmentsIng.currAssignIndex];
         // 清空input的value, 使再次选中同一视频时还能触发change事件
         $(this).val('');
-        Geeklab.uploader.upload(assignmentId, file, function (data) {
-          console.log(data);
+        Geeklab.uploader.upload(assignment.id, file, function (data) {
           console.log('上传成功');
-          console.log(assignmentsIng.currAssign);
-          // todo 上传成功后的回调
+          assignment.video = data.video;
+          assignment.status = 'wait_check';
         }, function () {
           console.log('上传失败');
-          // todo 上传失败后的回调
+          assignment.uploadFailed = true;
         });
       }
     }
@@ -490,8 +489,8 @@ $(function () {
 
   getAssignmentPaging('ing', 1, function (assignments) {
     for(var i = 0, len = assignments.length; i < len; i++) {
-      assignmentsIng.uploading.push(false);
-      assignmentsIng.uploadFailed.push(false);
+      assignments[i].uploading = false;
+      assignments[i].uploadFailed = false;
     }
     assignmentsIng.assignments = assignments;
   });

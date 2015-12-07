@@ -53,7 +53,7 @@ main role="main"
                   | 重新上传
                 button.btn.btn-flat.blue.btn-rounded.btn-s.js-reupload-cancel
                   | 取消
-            .operator.wait-check v-show="assignment.status === 'wait_check' || assignment.status === 'not_accept'"
+            .operator.wait-check v-show="isWaitCheck(assignment)"
               .button-wrp
                 button.btn.btn-flat.blue.btn-rounded.btn-s v-on="click: startAssignment(this, assignment, $event, $index)"
                   | 重新体验

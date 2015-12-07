@@ -181,6 +181,13 @@ $(function () {
     return false;
   }
 
+  function isWaitCheck(assignment) {
+    var isWaitCheck = (assignment.status === 'wait_check') || (assignment.status === 'not_accept'),
+        isUploading = assignment.uploading || assignment.uploadFailed;
+    return isWaitCheck && !isUploading;
+  }
+
+
   function showStatus (assignment) {
     if(assignment.beginner) {
       return assignment.status !== 'test';
@@ -274,17 +281,30 @@ $(function () {
     // 清理task-guide
     $('#close').click();
     var file = $(this)[0].files[0];
+
     if(file) {
       if(file.type.split('/')[0] === 'video') {
         var assignment = assignmentsIng.assignments[assignmentsIng.currAssignIndex];
+            $progressCircle = assignmentsIng.currAssign.find('.progressCircle');
+
         // 清空input的value, 使再次选中同一视频时还能触发change事件
         $(this).val('');
-        Geeklab.uploader.upload(assignment.id, file, function (data) {
+
+        // 显示上传进度
+        assignment.uploading = true;
+        // 调用uploader上传视频
+        Geeklab.uploader.upload(assignment.id, file, function (progressPercent) {
+          // todo 显示上传进度
+          console.log(progressPercent);
+          Geeklab.showUploadProgress(progressPercent, $progressCircle);
+        }, function (data) {
           console.log('上传成功');
           assignment.video = data.video;
+          assignment.uploading = false;
           assignment.status = 'wait_check';
         }, function () {
           console.log('上传失败');
+          assignment.uploading = false;
           assignment.uploadFailed = true;
         });
       }
@@ -454,7 +474,7 @@ $(function () {
     data: {
       page: 1,
       currAssignIndex: 0,
-      $currAssign: $('#assignments-ing .assignment-item').first(),
+      currAssign: $('#assignments-ing .assignment-item').first(),
       assignments: [],
       uploading: [],
       uploadFailed: []
@@ -462,6 +482,7 @@ $(function () {
     methods: {
       // operator切换相关函数
       isWaitUpload: isWaitUpload,
+      isWaitCheck: isWaitCheck,
       showStatus: showStatus,
       mapStatus: mapStatus,
       showReasons: showReasons,

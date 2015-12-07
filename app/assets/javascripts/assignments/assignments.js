@@ -96,7 +96,7 @@ $(function () {
           if(!data.error) {
             that.fileLoaded = that.fileLoaded + firstChunk.size;
             that.progressPercent = Math.floor((that.fileLoaded / that.fileSize) * 95);
-            //showUploadProgress(that.progressPercent);
+            that.onProgress(that.progressPercent);
             callback(data);
           }
         },
@@ -168,7 +168,7 @@ $(function () {
           if(!data.error) {
             that.fileLoaded = that.fileLoaded + chunk.size;
             that.progressPercent = Math.floor((that.fileLoaded / that.fileSize) * 95)
-            //showUploadProgress(that.progressPercent);
+            that.onProgress(that.progressPercent);
             callback(data);
           }
         },
@@ -208,7 +208,6 @@ $(function () {
         tryCount: 0,
         retryLimit: 3,
         success: function (data) {
-          //showUploadProgress(100);
           if(data.status === 0) {
             switch(data.code) {
               case 0:
@@ -217,6 +216,8 @@ $(function () {
               break;
               case 1:
                 // 上传成功
+                that.progressPercent = 100;
+                that.onProgress(that.progressPercent);
                 that.callback(data);
               break;
             }
@@ -243,7 +244,7 @@ $(function () {
       });
     }
 
-    this.upload = function (assignmentId, file, callback, errorHandle) {
+    this.upload = function (assignmentId, file, onProgress, callback, errorHandle) {
 
       var blockSize = 4 << 20;
       that.file = file;
@@ -259,6 +260,7 @@ $(function () {
       that.ctxCount = 0;
       that.xhrArr = that.xhrArr || [];
 
+      that.onProgress = onProgress;
       that.callback = callback;
       that.errorHandle = errorHandle;
 
@@ -624,7 +626,7 @@ $(function () {
   //assignmentTimeCountDownInit();
 
   // 显示上传进度
-  function showUploadProgress (progressPercent) {
+  Geeklab.showUploadProgress = function (progressPercent, $progressCircle) {
     var deg = progressPercent * 3.6;
     //var $progressCircle = $card.find('.progressCircle')
     var transform = '';

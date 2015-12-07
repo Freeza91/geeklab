@@ -46,12 +46,10 @@ $(function () {
     }
 
     this.postBlock = function (blockIndex) {
-      console.log('start post block');
       var blockSize = 4 << 20,
           start = blockIndex * blockSize,
           end = Math.min(start + blockSize, that.fileSize);
           block = that.file.slice(start, end);
-      console.log(start, end);
 
       var chunkSize = 2 << 20,
           chunkArr = that.segmentFile(block, chunkSize),
@@ -123,7 +121,6 @@ $(function () {
 
     this.postChunkQueue = function (chunkArr, chunkIndex, uploadHost, ctx, offset, blockIndex) {
       var chunkLen = chunkArr.length;
-      console.log(chunkLen, chunkIndex);
       var xhrIndex = blockIndex % 5;
       that.postChunk(chunkArr[chunkIndex], uploadHost, ctx, offset, xhrIndex, function (data) {
         if(chunkIndex === chunkLen - 1) {
@@ -250,7 +247,6 @@ $(function () {
       that.file = file;
       that.fileSize = file.size;
       that.blockLen = Math.ceil(that.fileSize / blockSize);
-      console.log(that.blockLen);
 
       that.fileLoaded = 0;
       that.progressPercent = 0;
@@ -610,6 +606,7 @@ $(function () {
       '-moz-transform': 'rotate(0)',
       '-webkit-transform': 'rotate(0)'
     });
+    $progressCircle.find('.progressCount').text('0%');
   }
 
   // 获取生成二维码所需token

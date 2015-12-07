@@ -15,8 +15,8 @@ $(function () {
   //* 上传视频
   //* 取消上传
   // 重新上传
-  // *删除视频
-  // 删除任务
+  //* 删除视频
+  //* 删除任务
   //* 获取任务详情
   // 播放视频
 
@@ -298,18 +298,18 @@ $(function () {
         assignment.uploading = true;
         // 调用uploader上传视频
         Geeklab.uploader.upload(assignment.id, file, function (progressPercent) {
-          // todo 显示上传进度
-          console.log(progressPercent);
           Geeklab.showUploadProgress(progressPercent, $progressCircle);
         }, function (data) {
           console.log('上传成功');
           assignment.video = data.video;
           assignment.uploading = false;
           assignment.status = 'wait_check';
+          Geeklab.clearUploadProgresss($progressCircle);
         }, function () {
           console.log('上传失败');
           assignment.uploading = false;
           assignment.uploadFailed = true;
+          Geeklab.clearUploadProgresss($progressCircle);
         });
       }
     }
@@ -321,6 +321,13 @@ $(function () {
     Geeklab.uploader.abort();
     assignment.uploading = false;
     Geeklab.clearUploadProgresss($progressCircle);
+  }
+
+  // 上传失败后重新上传
+  function reuploadVideo (vm, assignment, event, index) {
+    assignment.uploadFailed = false;
+    startAssignment(vm, assignment, event, index);
+    $('.task-pagination').click();
   }
 
   // 显示删除视频确认对话框
@@ -540,6 +547,7 @@ $(function () {
       cancelUploading: cancelUploading,
       showDeleteVideoConfirm: showDeleteVideoConfirm,
       showDeleteAssignConfirm: showDeleteAssignConfirm,
+      reuploadVideo: reuploadVideo,
       showStatus: showStatus,
       mapStatus: mapStatus,
       showReasons: showReasons,

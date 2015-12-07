@@ -51,7 +51,7 @@ main role="main"
                 p.vertical-item
                   | 上传失败
               .button-wrp.button-center
-                button.btn.btn-flat.blue.btn-rounded.btn-s.js-video-reupload
+                button.btn.btn-flat.blue.btn-rounded.btn-s.js-video-reupload v-on="click: reuploadVideo(this, assignment, $event, $index)"
                   | 重新上传
                 button.btn.btn-flat.blue.btn-rounded.btn-s.js-reupload-cancel
                   | 取消

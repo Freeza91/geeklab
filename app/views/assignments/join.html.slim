@@ -29,7 +29,7 @@ main role="main"
               .content-wrp
                 .icon.icon-file
               .button-wrp.button-center
-                button.btn.btn-flat.blue.btn-rounded.btn-s v-on="click: startAssignment(this, assignment, $index)"
+                button.btn.btn-flat.blue.btn-rounded.btn-s v-on="click: startAssignment(this, assignment, $event, $index)"
                   | 开始体验
             .operator.uploading v-show="uploading[$index]"
               .content-wrp

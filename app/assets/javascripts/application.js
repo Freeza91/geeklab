@@ -37,10 +37,10 @@
 //= require bootstrap.min
 
 
+//= require_tree ./share
+//= require_tree ./users
 //= require_tree ./assignments
 //= require_tree ./projects
-//= require_tree ./share
 //= require_tree ./testers
 //= require_tree ./pms
-//= require_tree ./users
 //= require_self

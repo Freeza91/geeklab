@@ -237,11 +237,12 @@ $(function () {
     return imageUrl;
   }
 
-  function startAssignment (vm, assignment, index) {
+  function startAssignment (vm, assignment, event, index) {
     Geeklab.showLoading();
     var assignmentId = assignment.id;
     assignmentDetailVm.id = assignmentId;
-    vm.currAssignmentIndex = index;
+    vm.currAssignIndex = index;
+    vm.currAssign = $(event.target).parents('.assignment-item');
     fetchAssignmentDetail(testerId, assignmentId, function (project) {
       // 任务为手机应用时生成二维码
       if(assignment.device !== 'web') {
@@ -267,6 +268,30 @@ $(function () {
       }, 1000);
     });
   }
+
+  // 选中视频后触发视频上传
+  $('#video').on('change', function () {
+    // 清理task-guide
+    $('#close').click();
+    var file = $(this)[0].files[0];
+    if(file) {
+      if(file.type.split('/')[0] === 'video') {
+        var assignmentId = assignmentsIng.assignments[assignmentsIng.currAssignIndex].id;
+        // 清空input的value, 使再次选中同一视频时还能触发change事件
+        $(this).val('');
+        Geeklab.uploader.upload(assignmentId, file, function (data) {
+          console.log(data);
+          console.log('上传成功');
+          console.log(assignmentsIng.currAssign);
+          // todo 上传成功后的回调
+        }, function () {
+          console.log('上传失败');
+          // todo 上传失败后的回调
+        });
+      }
+    }
+  });
+
   var assignmentDetailVm = new Vue({
     el: '#assignment-detail',
     data: {
@@ -429,7 +454,8 @@ $(function () {
     el: '#assignments-ing',
     data: {
       page: 1,
-      currAssignmentIndex: 0,
+      currAssignIndex: 0,
+      $currAssign: $('#assignments-ing .assignment-item').first(),
       assignments: [],
       uploading: [],
       uploadFailed: []

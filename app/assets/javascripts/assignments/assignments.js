@@ -96,7 +96,7 @@ $(function () {
           if(!data.error) {
             that.fileLoaded = that.fileLoaded + firstChunk.size;
             that.progressPercent = Math.floor((that.fileLoaded / that.fileSize) * 95);
-            showUploadProgress(that.progressPercent);
+            //showUploadProgress(that.progressPercent);
             callback(data);
           }
         },
@@ -168,7 +168,7 @@ $(function () {
           if(!data.error) {
             that.fileLoaded = that.fileLoaded + chunk.size;
             that.progressPercent = Math.floor((that.fileLoaded / that.fileSize) * 95)
-            showUploadProgress(that.progressPercent);
+            //showUploadProgress(that.progressPercent);
             callback(data);
           }
         },
@@ -208,21 +208,15 @@ $(function () {
         tryCount: 0,
         retryLimit: 3,
         success: function (data) {
-          showUploadProgress(100);
+          //showUploadProgress(100);
           if(data.status === 0) {
             switch(data.code) {
               case 0:
-                $card.find('.operator.uploading').hide();
-                $card.find('.operator.upload-failed').fadeIn();
-                // 恢复上传进度圆环
-                $card.find('.progressCircle .inner').css({
-                  'transform': 'rotate(0)',
-                  '-o-transform': 'rotate(0)',
-                  '-moz-transform': 'rotate(0)',
-                  '-webkit-transform': 'rotate(0)'
-                });
+                // 上传失败
+                that.errorHandle(data);
               break;
               case 1:
+                // 上传成功
                 that.callback(data);
               break;
             }
@@ -269,10 +263,6 @@ $(function () {
       that.errorHandle = errorHandle;
 
       getUploadToken(assignmentId, file.name, function (token) {
-        // card ui 操作
-        $card.find('.status').hide();
-        $card.find('.content img').hide();
-
         that.uploadToken = token;
         while(that.blockIndex < 5) {
           that.httpCount = that.httpCount + 1;
@@ -292,15 +282,14 @@ $(function () {
       this.abort();
       this.errorHandle();
     }
-
   }
 
-  var uploader = new QiniuChunkUpload();
+  window.Geeklab = window.Geeklab || {};
+  window.Geeklab.uploader = new QiniuChunkUpload();
 
   // 保存testId
   var testerId = $('.assignments-list').data('testerId');
   var assignmentId = 0; // 当前执行操作的任务id
-  var $card; // 当前执行操作的任务卡片
   var page = 1 //分页获取任务列表
   var $curVideo; // 当前正在播放的video
 
@@ -376,63 +365,51 @@ $(function () {
   });
 
   // 开始上传视频
-  $('#video').on('change', function () {
-    // 清理task-guide
-    $('#close').click();
-    var file = $(this)[0].files[0];
-    if(file) {
-      // 判断所选文件的类型是否为video
-      if(file.type.split('/')[0] === 'video') {
-        // 切换operator
-        $card.find('.operator').fadeOut();
-        $card.find('.operator.uploading').fadeIn();
-        // 隐藏视频截图
-        $card.find('img').fadeOut();
+  //$('#video').on('change', function () {
+    //// 清理task-guide
+    //$('#close').click();
+    //var file = $(this)[0].files[0];
+    //if(file) {
+      //// 判断所选文件的类型是否为video
+      //if(file.type.split('/')[0] === 'video') {
+        //// 清空input的value, 使再次选中同一视频时还能触发change事件
+        //$(this).val('');
 
-        // 清空input的value, 使再次选中同一视频时还能触发change事件
-        $(this).val('');
-
-        uploader.upload(assignmentId, file, function (data) {
-          // 上传成功后的回调
-          var imageUrl = data.video + '?vframe/png/offset/0/w/480/h/200'
-          $card.find('.content img').attr('src', imageUrl).show();
-          // 切换operator
-          $card.find('.operator.wait-check').fadeIn();
-          $card.find('.operator.uploading').fadeOut();
-          // 显示状态，并将状态置为wait_check
-          $card.find('.status').fadeIn().removeClass().addClass('status status_wait_check').find('p').text('等待审核');
-          // 恢复上传进度圆环
-          $card.find('.progressCircle .inner').css({
-            'transform': 'rotate(0)',
-            '-o-transform': 'rotate(0)',
-            '-moz-transform': 'rotate(0)',
-            '-webkit-transform': 'rotate(0)'
-          });
-              // 清除上传input框的值
-          delete $('#video')[0].files;
-          // 上传成功后跳转至正在进行中的任务页面
-          if(location.pathname.split('/').pop() === 'assignments') {
-            location.href = '/assignments/join';
-          }
-        }, function () {
-          // 上传出错
-          $card.find('.operator.uploading').hide();
-          $card.find('.operator.upload-failed').fadeIn();
-          // 恢复上传进度圆环
-          $card.find('.progressCircle .inner').css({
-            'transform': 'rotate(0)',
-            '-o-transform': 'rotate(0)',
-            '-moz-transform': 'rotate(0)',
-            '-webkit-transform': 'rotate(0)'
-          });
-        });
-      } else {
-        $form.find('.help-block').text('只能上传视频');
-      }
-    } else {
-      $form.find('.help-block').text('请选择要上传的视频');
-    }
-  });
+        //uploader.upload(assignmentId, file, function (data) {
+          //// 上传成功后的回调
+          //// 切换operator
+          //$card.find('.operator.wait-check').fadeIn();
+          //$card.find('.operator.uploading').fadeOut();
+          //// 显示状态，并将状态置为wait_check
+          //$card.find('.status').fadeIn().removeClass().addClass('status status_wait_check').find('p').text('等待审核');
+          //// 恢复上传进度圆环
+          //$card.find('.progressCircle .inner').css({
+            //'transform': 'rotate(0)',
+            //'-o-transform': 'rotate(0)',
+            //'-moz-transform': 'rotate(0)',
+            //'-webkit-transform': 'rotate(0)'
+          //});
+              //// 清除上传input框的值
+          //delete $('#video')[0].files;
+          //// 上传成功后跳转至正在进行中的任务页面
+          //if(location.pathname.split('/').pop() === 'assignments') {
+            //location.href = '/assignments/join';
+          //}
+        //}, function () {
+          //// 上传出错
+          //$card.find('.operator.uploading').hide();
+          //$card.find('.operator.upload-failed').fadeIn();
+          //// 恢复上传进度圆环
+          //$card.find('.progressCircle .inner').css({
+            //'transform': 'rotate(0)',
+            //'-o-transform': 'rotate(0)',
+            //'-moz-transform': 'rotate(0)',
+            //'-webkit-transform': 'rotate(0)'
+          //});
+        //});
+      //}
+    //}
+  //});
 
   // 删除任务按钮的click事件处理函数
   $('.assignments-wrp').on('click', '.assignment-del', function () {
@@ -655,7 +632,7 @@ $(function () {
   // 显示上传进度
   function showUploadProgress (progressPercent) {
     var deg = progressPercent * 3.6;
-    var $progressCircle = $card.find('.progressCircle')
+    //var $progressCircle = $card.find('.progressCircle')
     var transform = '';
     if(deg <= 180) {
       transform = 'rotate(' + deg + 'deg)';

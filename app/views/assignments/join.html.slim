@@ -57,7 +57,7 @@ main role="main"
               .button-wrp
                 button.btn.btn-flat.blue.btn-rounded.btn-s v-on="click: startAssignment(this, assignment, $event, $index)"
                   | 重新体验
-                button.btn.btn-flat.blue.btn-rounded.btn-s.js-video-del
+                button.btn.btn-flat.blue.btn-rounded.btn-s v-on="click: showDeleteVideoConfirm(this, $index)"
                   | 删除视频
               .content-wrp
                 .icon-play.js-video-play

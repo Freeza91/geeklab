@@ -12,13 +12,13 @@ $(function () {
   });
 
   // 需要的函数
-  // 上传视频
-  // 删除视频
+  //* 上传视频
+  //* 取消上传
   // 重新上传
+  // 删除视频
   // 删除任务
-  // 获取任务详情
+  //* 获取任务详情
   // 播放视频
-  // 获取任务详情
 
 
   //生成一个qrcode实例
@@ -319,6 +319,15 @@ $(function () {
     Geeklab.clearUploadProgresss($progressCircle);
   }
 
+  // 显示删除视频确认对话框
+  function showDeleteVideoConfirm (vm, index) {
+    vm.currAssignIndex = index;
+    Geeklab.showConfirmModal({
+      eventName: 'deleteVideo',
+      content: '确认删除视频?'
+    });
+  }
+
   var assignmentDetailVm = new Vue({
     el: '#assignment-detail',
     data: {
@@ -466,13 +475,30 @@ $(function () {
     $('#video').click();
   }
 
-  function deleteVideo () {
-
+  function deleteVideo (testerId, assignment) {
+    sendDeleteVideoRequest(testerId, assignment.id, function (data) {
+      console.log(data)
+      assignment.status = assignment.beginner ? 'test': 'new';
+      assignment.video = '';
+    });
   }
 
   function deleteAssigment () {
+    assignmentsIng.assignments.$remove(assignmentsIng.currAssignIndex);
 
   }
+
+  $('#confirm').on('click', function () {
+    var eventName = $(this).parents('.operate').data('event-name');
+        assignment = assignmentsIng.assignments[assignmentsIng.currAssignIndex];
+    switch(eventName) {
+      case 'deleteVideo':
+        deleteVideo(testerId, assignment);
+      break;
+    }
+    $('#confirm-modal').removeClass('show');
+    $('body .main-mask').remove();
+  });
 
 
 
@@ -491,7 +517,9 @@ $(function () {
       // operator切换相关函数
       isWaitUpload: isWaitUpload,
       isWaitCheck: isWaitCheck,
+      // 任务相关操作函数
       cancelUploading: cancelUploading,
+      showDeleteVideoConfirm: showDeleteVideoConfirm,
       showStatus: showStatus,
       mapStatus: mapStatus,
       showReasons: showReasons,

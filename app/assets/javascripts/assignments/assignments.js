@@ -439,13 +439,13 @@ $(function () {
   }
 
 
-  // 显示操作的提示信息
+  // 显示操作确认的提示信息
   /* @param options  Object 显示的提示信息
    * options.title  String 标题
    * options.content String 内容
    * options.eventName String 确认按钮将会触发的事件
    */
-  function showInfoModal (options) {
+  Geeklab.showConfirmModal = function (options) {
     var $modal = $('#confirm-modal');
     $modal.data('eventName', options.eventName);
     $modal.find('.content').text(options.content);
@@ -453,11 +453,6 @@ $(function () {
     $modal.addClass('show');
   }
 
-  // 点击modal确认按钮的处理函数
-  $('#confirm-modal #confirm').on('click', function () {
-    var eventName = $('#confirm-modal').data('event-name');
-    eventConfirm(eventName);
-  });
   $('.js-operate-cancel').on('click', function () {
     $(this).parents('.operate').removeClass('show');
     $('body .main-mask').remove();
@@ -580,9 +575,8 @@ $(function () {
 
   // 显示上传进度
   Geeklab.showUploadProgress = function (progressPercent, $progressCircle) {
-    var deg = progressPercent * 3.6;
-    //var $progressCircle = $card.find('.progressCircle')
-    var transform = '';
+    var deg = progressPercent * 3.6,
+        transform = '';
     if(deg <= 180) {
       transform = 'rotate(' + deg + 'deg)';
       $progressCircle.find('.right .inner').css({

@@ -15,7 +15,7 @@ main role="main"
         li
           a href="javascript: void(0)" data-target="#assignments-done" data-hash="done"
             | 已结束
-    #assignments-ing.assignments-wrp.clearfix.active
+    #assignments-ing.assignments-wrp.clearfix.active v-class="empty: noAssign"
       .assignment-item v-repeat="assignment:assignments"
         .item-header
           .title
@@ -127,7 +127,7 @@ main role="main"
           | 没有更多了
       p.no-assignment-hint v-if="noAssign"
         | 没有正在进行中的任务，快去做任务吧
-    #assignments-done.assignments-wrp.clearfix
+    #assignments-done.assignments-wrp.clearfix v-class="empty: noAssign"
       .assignment-item v-repeat="assignment: assignments"
         .item-header
           .title

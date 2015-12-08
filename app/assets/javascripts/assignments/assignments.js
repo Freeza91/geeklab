@@ -508,19 +508,11 @@ $(function () {
     $this.parents('ul').find('.active').removeClass('active');
     $this.addClass('active');
     $('.assignments-wrp.active').removeClass('active').hide();
-    var isEmpty = $(target).find('.card').length === 0;
-    toggleEmpty(isEmpty);
     $(target).fadeIn().addClass('active');
     location.hash = hash;
   });
 
-  var hash = location.hash.substr(1),
-      $subTab = $('[data-hash="]' + hash  + '"]'),
-      $assignmentsWrp = $('#assignments-' + hash),
-      isEmpty = ($assignmentsWrp.find('.assignment-item').length === 0);
-
-  toggleEmpty(isEmpty);
-
+  var hash = location.hash.substr(1);
   if(location.pathname === '/assignments') {
     location.hash = 'fresh';
   } else {
@@ -532,12 +524,12 @@ $(function () {
     }
   }
 
-  function toggleEmpty(isEmpty) {
-    if(isEmpty) {
-      $('main').addClass('empty');
-    } else {
-      $('main').removeClass('empty');
-    }
+  function setAssignmentsMinHeight () {
+    var height = document.documentElement.clientHeight - 50 - 160 - 117;
+    $('.assignments-wrp').css({
+      'min-height': height + 'px'
+    });
   }
+  setAssignmentsMinHeight();
 
 });

@@ -521,6 +521,7 @@ $(function () {
       reuploadVideo: reuploadVideo,
       cancelReupload: cancelReupload,
       playVideo: playVideo,
+      order: Geeklab.orderAssignment,
       subscribe: Geeklab.subscribeAssignment,
       unsubscribe: Geeklab.unsubscribeAssignment,
       // 加载下一页

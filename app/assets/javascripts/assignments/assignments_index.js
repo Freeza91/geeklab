@@ -34,12 +34,15 @@ $(function () {
     });
   }
 
+  var testerId = $('#tester-id').val();
   // assignemnt-fresh vue modal
   var assignmentsFresh = new Vue ({
     el: '#assignments-fresh',
     data: {
       page: 1,
       assignments: [],
+      noAssign: false,
+      isAll: false
     },
     methods: {
       showOrderOperator: showOrderOperator,
@@ -53,17 +56,26 @@ $(function () {
     el: '#assignments-finish',
     data: {
       page: 1,
-      assignments: []
+      assignments: [],
+      noAssign: false,
+      isAll: false
     }
   });
 
   getAssignmentPaging('fresh', 1, function (assignments) {
-    assignmentsFresh.assignments = assignments;
+    if(assignments.length > 0) {
+      assignmentsFresh.assignments = assignments;
+    } else {
+      assignmentsFresh.noAssign = true;
+    }
   });
 
   getAssignmentPaging('finish', 1, function (assignments) {
-    assignmentsFinish.assignments = assignments;
+    if(assignments.length > 0) {
+      assignmentsFinish.assignments = assignments;
+    } else {
+      assignmentsFinish.noAssign = true;
+    }
   });
-
 
 });

@@ -1,5 +1,5 @@
 main role="main"
-  section.assignments-list data-tester-id="#{@current_user.to_tester.to_params}"
+  section.assignments-lis
     ul.nav.nav-tabs role="tablist"
       li.active
         a href="#{assignments_path}"
@@ -15,7 +15,7 @@ main role="main"
         li
           a href="javascript: void(0)" data-target="#assignments-finish" data-hash="finish"
             | 已结束
-    #assignments-fresh.assignments-wrp.clearfix.active
+    #assignments-fresh.assignments-wrp.clearfix.active v-class="empty: noAssign"
       .assignment-item v-repeat="assignment:assignments"
         .item-header
           .title
@@ -82,13 +82,14 @@ main role="main"
                   a href="#{how_to_get_five_star_testers_path}" target="_blank"
                     | 如何获得5星好评
                 .extra-score-triangle
-      .load-more
+      .load-more v-if="!noAssign"
         button.btn.btn-flat.yellow.btn-full
           | 加载更多
-      //- if @assignments.try(:size) == 0
-          //p.no-assignment-hint
-            //| 目前没有新任务，过段时间再来查看吧
-    #assignments-finish.assignments-wrp.clearfix
+        p v-show="isAll"
+          | 没有更多了
+      p.no-assignment-hint v-if="noAssign"
+        | 目前没有新任务，过段时间再来查看吧
+    #assignments-finish.assignments-wrp.clearfix v-class="empty: noAssign"
       .assignment-item v-repeat="assignment: assignments"
         .item-header
           .title
@@ -123,9 +124,13 @@ main role="main"
                   a href="#{how_to_get_five_star_testers_path}" target="_blank"
                     | 如何获得5星好评
                 .extra-score-triangle
-      .load-more v-show="isAll"
-        button.btn.btn-flat.yellow.btn-full
+      .load-more v-if="!noAssign"
+        button.btn.btn-flat.yellow.btn-full v-show="!isAll"
           | 加载更多
+        p v-show="isAll"
+          | 没有更多了
+      p.no-assignment-hint v-if="noAssign"
+        | 还没有已结束的任务
 
   <!-- 上传视频文件选择-->
   input type="file" id="video" accept="video/mp4,video/x-m4v,video/*" style="display:none"
@@ -148,3 +153,5 @@ main role="main"
 
 = render partial: 'shared/confirm_modal'
 = render partial: 'assignments/shared/assignment_detail'
+.user-info
+  input#tester-id type="hidden" value="#{@current_user.to_tester.id}"

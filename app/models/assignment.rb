@@ -55,7 +55,7 @@ class Assignment < ActiveRecord::Base
   end
 
   def subscribe?
-    $redis.smembers("subscribe-#{project_id}").include?(tester_id)
+    $redis.smembers("subscribe-#{project_id}").include?(tester_id.to_s)
   end
 
   def can_do?

@@ -38,7 +38,7 @@ $(function () {
 
   function subscribe (assignment) {
     var assignmentId = assignment.id;
-    Geeklab.subscribeAssignment(assignmentId, function () {
+    Geeklab.subscribeAssignment(assignmentId, function (data) {
       switch(data.code) {
         case 1:
           // 订阅成功
@@ -58,12 +58,12 @@ $(function () {
 
   function unsubscribe (assignment) {
     var assignmentId = assignment.id;
-    Geeklab.unsubsribeAssignment (assignmentId, function (data) {
+    Geeklab.unsubscribeAssignment (assignmentId, function (data) {
       switch(data.code) {
         case 1:
           // 取消订阅成功
           alert('取消订阅成功');
-          assignment.subsribe = false;
+          assignment.subscribe = false;
         break;
         case 2:
           // 已经取消订阅过
@@ -90,6 +90,8 @@ $(function () {
       showBonus: showBonus,
       // 任务操作
       orderAssignment: orderAssignment,
+      subscribe: subscribe,
+      unsubscribe: unsubscribe,
       // 加载下一页
       loadNextPage: Geeklab.loadNextPage
     }

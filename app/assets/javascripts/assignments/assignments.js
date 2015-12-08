@@ -302,7 +302,7 @@ $(function () {
   }
 
   // 订阅任务提醒
-  Geeklab.subsribeAssignmet = function (assignmentId, callback) {
+  Geeklab.subscribeAssignment = function (assignmentId, callback) {
     $.ajax({
       url: '/assignments/' + assignmentId + '/subscribe',
       success: function (data) {
@@ -315,7 +315,7 @@ $(function () {
   }
 
   // 取消任务订阅
-  Geeklab.unsubsribeAssignment = function (assignmentId, callback) {
+  Geeklab.unsubscribeAssignment = function (assignmentId, callback) {
     $.ajax({
       url: '/assignments/' + assignmentId + '/unsubscribe',
       success: function (data) {

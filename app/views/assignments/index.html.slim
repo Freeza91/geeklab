@@ -34,7 +34,7 @@ main role="main"
                     |个名额
                   p.sub-hint v-if="assignment.subscribe"
                     | 已订阅提醒
-                    a href="javascript: void(0)"
+                    a href="javascript: void(0)" v-on="click: unsubscribe(assignment)"
                       | 取消订阅
               .button-wrp.button-center
                 button.btn.btn-flat.blue.btn-rounded.btn-s v-on="click: orderAssignment(assignment)"
@@ -47,9 +47,9 @@ main role="main"
                   p.sub-hint
                     | 订阅提醒后有空出的名额会邮件通知你
               .button-wrp.button-center
-                button.btn.btn-flat.blue.btn-rounded.btn-s v-if="!assignment.subscribe"
+                button.btn.btn-flat.blue.btn-rounded.btn-s v-if="!assignment.subscribe" v-on="click: subscribe(assignment)"
                   | 订阅提醒
-                button.btn.btn-flat.blue.btn-rounded.btn-s v-if="assignment.subscribe"
+                button.btn.btn-flat.blue.btn-rounded.btn-s v-if="assignment.subscribe" v-on="click: unsubscribe(assignment)"
                   | 取消订阅
             .operator.wait-upload v-if="assignment.beginner"
               .content-wrp
@@ -144,4 +144,4 @@ main role="main"
 = render partial: 'shared/confirm_modal'
 = render partial: 'assignments/shared/assignment_detail'
 .user-info
-  input#tester-id type="hidden" value="#{@current_user.to_tester.id}"
+  input#tester-id type="hidden" value="#{@current_user.to_tester.to_params}"

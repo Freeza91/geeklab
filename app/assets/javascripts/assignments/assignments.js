@@ -382,7 +382,6 @@ $(function () {
         break
       }
     });
-
   }
 
   // 获取assignments分页数据

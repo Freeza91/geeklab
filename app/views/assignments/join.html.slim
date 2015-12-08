@@ -70,25 +70,25 @@ main role="main"
                     | 仅剩
                     span.available-count v-text="assignment.available_count"
                     |个名额
-                  p.sub-hint v-if="assignment.subscribe"
+                  p.sub-hint v-if="assignment.subscribe" v-on="click: unsubscribe(assignment)"
                     | 已订阅提醒
                     a href="javascript: void(0)"
                       | 取消订阅
               .button-wrp.button-center
                 button.btn.btn-flat.blue.btn-rounded.btn-s.js-assignment-order
                   | 抢任务
-              .operator.subscribe v-show="assignment.extra_status === 'can_subscribe'"
-                .content-wrp.vertical-center
-                  .vertical-item
-                    p
-                      | 名额已抢光
-                    p.sub-hint
-                      | 订阅提醒后有空出的名额会邮件通知你
-                .button-wrp.button-center
-                  button.btn.btn-flat.blue.btn-rounded.btn-s v-if="!assignment.subscribe"
-                    | 订阅提醒
-                  button.btn.btn-flat.blue.btn-rounded.btn-s v-if="assignment.subscribe"
-                    | 取消订阅
+            .operator.subscribe v-show="assignment.extra_status === 'can_subscribe'"
+              .content-wrp.vertical-center
+                .vertical-item
+                  p
+                    | 名额已抢光
+                  p.sub-hint
+                    | 订阅提醒后有空出的名额会邮件通知你
+              .button-wrp.button-center
+                button.btn.btn-flat.blue.btn-rounded.btn-s v-if="!assignment.subscribe" v-on="click: subscribe(assignment)"
+                  | 订阅提醒
+                button.btn.btn-flat.blue.btn-rounded.btn-s v-if="assignment.subscribe" v-on="click: unsubscribe(assignment)"
+                  | 取消订阅
           .status v-class="assignment.status" v-if="showStatus(assignment)"
             span v-text="mapStatus(assignment.status)"
             .fa.fa-question-circle v-if="showReasons(assignment)"

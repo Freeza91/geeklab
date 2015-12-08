@@ -18,15 +18,6 @@ $(function () {
     return !assignment.beginner && (assignment.bonus !== 0);
   }
 
-  //function orderAssignment (assignment) {
-  //}
-
-  //function subscribeAssignment (assignment) {
-  //}
-
-  //function unsubscribeAssignment (assignment) {
-  //}
-
   var testerId = $('#tester-id').val();
   // assignemnt-fresh vue modal
   var assignmentsFresh = new Vue ({

@@ -521,6 +521,8 @@ $(function () {
       reuploadVideo: reuploadVideo,
       cancelReupload: cancelReupload,
       playVideo: playVideo,
+      subscribe: Geeklab.subscribeAssignment,
+      unsubscribe: Geeklab.unsubscribeAssignment,
       // 加载下一页
       loadNextPage: Geeklab.loadNextPage
     }

@@ -19,7 +19,7 @@ $(function () {
   //* 删除任务
   //* 获取任务详情
   //* 播放视频
-  //* 分页加载
+  // 分页加载
 
 
   // 发送删除视频的请求
@@ -105,7 +105,9 @@ $(function () {
       data: {page: page},
       datatype: 'json',
       success: function (data, status) {
-        callback(data.assignments);
+        if(data.status === 0 && data.code === 1) {
+          callback(data.assignments);
+        }
       },
       errror: function (xhr, textstatus, errors) {
         console.log(errors);
@@ -315,6 +317,25 @@ $(function () {
     });
   }
 
+  // 加载下一页数据
+  function loadNextPage (vm) {
+    var type = vm.type,
+        page = vm.page + 1;
+    getAssignmentPaging(type, page, function (assignments) {
+      if(assignments.length > 0) {
+        for(var i = 0, len = assignments.length; i < len; i++) {
+          assignments[i].uploading = false;
+          assignments[i].uploadFailed = false;
+        }
+        vm.assignments = vm.assignments.concat(assignments);
+        vm.page = vm.page + 1;
+      }
+      if(assignments.length < 10) {
+        vm.isAll = true;
+      }
+    });
+  }
+
   var assignmentDetailVm = new Vue({
     el: '#assignment-detail',
     data: {
@@ -509,10 +530,13 @@ $(function () {
   var assignmentsIng = new Vue({
     el: '#assignments-ing',
     data: {
+      type: 'ing',
       page: 1,
       currAssignIndex: 0,
       currAssign: $('#assignments-ing .assignment-item').first(),
       assignments: [],
+      noAssign: false,
+      isAll: false
     },
     methods: {
       // operator切换相关函数
@@ -533,16 +557,21 @@ $(function () {
       showDeleteAssignConfirm: showDeleteAssignConfirm,
       reuploadVideo: reuploadVideo,
       cancelReupload: cancelReupload,
-      playVideo: playVideo
+      playVideo: playVideo,
+      // 加载下一页
+      loadNextPage: loadNextPage
     }
   });
 
   var assignmentsDone = new Vue({
     el: '#assignments-done',
     data: {
+      type: 'done',
       page: 1,
       currAssignIndex: 0,
-      assignments: []
+      assignments: [],
+      noAssign: false,
+      isAll: false
     },
     methods: {
       // 数据显示
@@ -554,19 +583,30 @@ $(function () {
       videoImage: videoImage,
       // 操作
       showDeleteAssignConfirm: showDeleteAssignConfirm,
-      playVideo: playVideo
+      playVideo: playVideo,
+      // 加载下一页
+      loadNextPage: loadNextPage
     }
   });
 
   getAssignmentPaging('ing', 1, function (assignments) {
-    for(var i = 0, len = assignments.length; i < len; i++) {
-      assignments[i].uploading = false;
-      assignments[i].uploadFailed = false;
+    if(assignments.length > 0) {
+      for(var i = 0, len = assignments.length; i < len; i++) {
+        assignments[i].uploading = false;
+        assignments[i].uploadFailed = false;
+      }
+      assignmentsIng.assignments = assignments;
+    } else {
+      assignmentsIng.noAssign = true;
     }
-    assignmentsIng.assignments = assignments;
   });
+
   getAssignmentPaging('done', 1, function (assignments) {
-    assignmentsDone.assignments = assignments;
+    if(assignments.length > 0) {
+      assignmentsDone.assignments = assignments;
+    } else {
+      assignmentsDone.noAssign = true;
+    }
   });
 
 });

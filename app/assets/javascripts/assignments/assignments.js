@@ -310,14 +310,6 @@ $(function () {
     }
   });
 
-  $('.load-more').on('click', 'button', function () {
-    page++;
-    getAssignmentPaging(page, function (data) {
-      appendAssignments(data.assignments);
-    });
-  });
-
-
   // 上传视频按钮的click事件处理函数
   $('.js-video-upload').on('click', function () {
     // 选择文件

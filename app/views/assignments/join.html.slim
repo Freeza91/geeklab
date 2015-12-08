@@ -120,12 +120,13 @@ main role="main"
                   a href="#{how_to_get_five_star_testers_path}" target="_blank"
                     | 如何获得5星好评
                 .extra-score-triangle
-      .load-more
-        button.btn.btn-flat.yellow.btn-full
+      .load-more v-if="!noAssign"
+        button.btn.btn-flat.yellow.btn-full v-on="click: loadNextPage(this)" v-show="!isAll"
           | 加载更多
-      //- if @assignments_ing.try(:size) == 0
-          //p.no-assignment-hint
-            //| 没有正在进行中的任务，快去做任务吧
+        p v-show="isAll"
+          | 没有更多了
+      p.no-assignment-hint v-if="noAssign"
+        | 没有正在进行中的任务，快去做任务吧
     #assignments-done.assignments-wrp.clearfix
       .assignment-item v-repeat="assignment: assignments"
         .item-header
@@ -191,12 +192,13 @@ main role="main"
                   a href="#{how_to_get_five_star_testers_path}" target="_blank"
                     | 如何获得5星好评
                 .extra-score-triangle
-      .load-more
-        button.btn.btn-flat.yellow.btn-full
+      .load-more v-if="!noAssign"
+        button.btn.btn-flat.yellow.btn-full v-on="click: loadNextPage(this)" v-show="!isAll"
           | 加载更多
-      //- if @assignments_done.try(:size) == 0
-          //p.no-assignment-hint
-            //| 还没有完成的任务噢
+        p v-show="isAll"
+          | 没有更多了
+      p.no-assignment-hint v-if="noAssign"
+        | 还没有完成的任务噢
 
   <!-- 上传视频文件选择-->
   input type="file" id="video" accept="video/mp4,video/x-m4v,video/*" style="display:none"

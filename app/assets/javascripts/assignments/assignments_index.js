@@ -18,6 +18,61 @@ $(function () {
     return !assignment.beginner && (assignment.bonus !== 0);
   }
 
+  function orderAssignment (assignment) {
+    var assignmentId = assignment.id;
+    Geeklab.getAssignment(assignmentId, function (data) {
+      switch(data.code) {
+        case 1:
+          // 抢到
+          location.href="/assignments/join";
+        break;
+        case 2:
+          // 未抢到
+          alert('名额已抢光');
+          assignment.available = false;
+          assignment.available_count = 0;
+        break;
+      }
+    });
+  }
+
+  function subscribe (assignment) {
+    var assignmentId = assignment.id;
+    Geeklab.subscribeAssignment(assignmentId, function () {
+      switch(data.code) {
+        case 1:
+          // 订阅成功
+          alert('订阅成功');
+          assignment.subscribe = true;
+        break;
+        case 2:
+          // 已订阅过
+          alert('已经订阅过了');
+        break;
+        case 3:
+          // 任务已结束
+        break;
+      }
+    });
+  }
+
+  function unsubscribe (assignment) {
+    var assignmentId = assignment.id;
+    Geeklab.unsubsribeAssignment (assignmentId, function (data) {
+      switch(data.code) {
+        case 1:
+          // 取消订阅成功
+          alert('取消订阅成功');
+          assignment.subsribe = false;
+        break;
+        case 2:
+          // 已经取消订阅过
+          alert('还没有订阅过')
+        break
+      }
+    });
+  }
+
   var testerId = $('#tester-id').val();
   // assignemnt-fresh vue modal
   var assignmentsFresh = new Vue ({
@@ -33,6 +88,8 @@ $(function () {
       showOrderOperator: showOrderOperator,
       showSubscribeOperator: showSubscribeOperator,
       showBonus: showBonus,
+      // 任务操作
+      orderAssignment: orderAssignment,
       // 加载下一页
       loadNextPage: Geeklab.loadNextPage
     }

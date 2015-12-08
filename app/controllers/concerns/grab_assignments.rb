@@ -13,9 +13,8 @@ module GrabAssignments
     if @project.available? && @assignment.status == 'new'
       $redis.decr("available-#{@project.id}")
       set_assignment
-      NotitySubscribeJob.set(wait_until: (@t + 3.minutes)).perform_later(@assignment.id)
     else
-      json[:code], json[:msg] = -1, '被抢光或者任务结束'
+      json[:code], json[:msg] = 2, '被抢光或者任务结束'
     end
 
     render json: json
@@ -26,10 +25,10 @@ module GrabAssignments
 
     if @project.available?
       unless $redis.sadd("subscribe-#{@assignment.project_id}", current_user.id)
-        json[:code], json[:msg] = 0, '已经订阅了！'
+        json[:code], json[:msg] = 2, '已经订阅了！'
       end
     else
-      json[:code], json[:msg] = 0, '任务已经结束'
+      json[:code], json[:msg] = 3, '任务已经结束'
     end
 
     render json: json
@@ -39,7 +38,7 @@ module GrabAssignments
     json = { status: 0, code: 1, msg: '取消订阅成功' }
 
     unless $redis.srem("subscribe-#{@assignment.project_id}", current_user.id)
-      json[:code], json[:msg] = 0, '已经取消订阅了！'
+      json[:code], json[:msg] = 2, '已经取消订阅了！'
     end
 
     render json: json
@@ -61,8 +60,8 @@ private
         msg: '项目为空',
         status: 0
       }
-      @project = @assignment.project
     end
+    @project = @assignment.project
   end
 
 end

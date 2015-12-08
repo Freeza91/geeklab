@@ -278,6 +278,7 @@ $(function () {
   }
 
   window.Geeklab = window.Geeklab || {};
+
   Geeklab.uploader = new QiniuChunkUpload();
 
   //生成一个qrcode实例
@@ -287,6 +288,46 @@ $(function () {
     height: 120,
   });
 
+  // 抢任务
+  Geeklab.getAssignment = function (assignmentId, callback) {
+    $.ajax({
+      url: '/assignments/' + assignmentId + '/got_it',
+      success: function (data) {
+        callback(data);
+      },
+      error: function (xhr, textStatus, errors) {
+        console.log(errors);
+      }
+    });
+  }
+
+  // 订阅任务提醒
+  Geeklab.subsribeAssignmet = function (assignmentId, callback) {
+    $.ajax({
+      url: '/assignments/' + assignmentId + '/subscribe',
+      success: function (data) {
+        callback(data);
+      },
+      error: function (xhr, textStatus, errors) {
+        console.log(errors);
+      }
+    });
+  }
+
+  // 取消任务订阅
+  Geeklab.unsubsribeAssignment = function (assignmentId, callback) {
+    $.ajax({
+      url: '/assignments/' + assignmentId + '/unsubscribe',
+      success: function (data) {
+        callback(data);
+      },
+      error: function (xhr, textStatus, errors) {
+        console.log(errors);
+      }
+    });
+  }
+
+  // 获取assignments分页数据
   Geeklab.fetchAssignmentPaging = function (type, page, callback) {
     var url = '/assignments/' + type;
     $.ajax({
@@ -304,6 +345,7 @@ $(function () {
     });
   }
 
+  // 加载assignments下一页
   Geeklab.loadNextPage = function (vm) {
     var type = vm.type,
         page = vm.page + 1;
@@ -363,7 +405,7 @@ $(function () {
     })
     .done(function (data, status) {
       if(data.status === 0 && data.code === 1) {
-        // 成功获取token, 执行回调上传图片
+        // 成功获取token, 执行回调上传视频
         var token = data.token;
         callback(token);
       } else {

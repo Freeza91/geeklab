@@ -18,27 +18,12 @@ $(function () {
     return !assignment.beginner && (assignment.bonus !== 0);
   }
 
-  // 获取assgnment分页数据
-  function getAssignmentPaging (type, page, callback) {
-    var url = '/assignments/' + type;
-    $.ajax({
-      url: url,
-      data: {page: page},
-      datatype: 'json',
-      success: function (data, status) {
-        callback(data.assignments);
-      },
-      errror: function (xhr, textstatus, errors) {
-        console.log(errors);
-      }
-    });
-  }
-
   var testerId = $('#tester-id').val();
   // assignemnt-fresh vue modal
   var assignmentsFresh = new Vue ({
     el: '#assignments-fresh',
     data: {
+      type: 'fresh',
       page: 1,
       assignments: [],
       noAssign: false,
@@ -48,6 +33,8 @@ $(function () {
       showOrderOperator: showOrderOperator,
       showSubscribeOperator: showSubscribeOperator,
       showBonus: showBonus,
+      // 加载下一页
+      loadNextPage: Geeklab.loadNextPage
     }
   });
 
@@ -55,14 +42,19 @@ $(function () {
   var assignmentsFinish = new Vue({
     el: '#assignments-finish',
     data: {
+      type: 'finish',
       page: 1,
       assignments: [],
       noAssign: false,
       isAll: false
+    },
+    methods: {
+      // 加载下一页
+      loadNextPage: Geeklab.loadNextPage
     }
   });
 
-  getAssignmentPaging('fresh', 1, function (assignments) {
+  Geeklab.fetchAssignmentPaging('fresh', 1, function (assignments) {
     if(assignments.length > 0) {
       assignmentsFresh.assignments = assignments;
     } else {
@@ -70,7 +62,7 @@ $(function () {
     }
   });
 
-  getAssignmentPaging('finish', 1, function (assignments) {
+  Geeklab.fetchAssignmentPaging('finish', 1, function (assignments) {
     if(assignments.length > 0) {
       assignmentsFinish.assignments = assignments;
     } else {

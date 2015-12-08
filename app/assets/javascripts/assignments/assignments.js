@@ -287,6 +287,41 @@ $(function () {
     height: 120,
   });
 
+  Geeklab.fetchAssignmentPaging = function (type, page, callback) {
+    var url = '/assignments/' + type;
+    $.ajax({
+      url: url,
+      data: {page: page},
+      datatype: 'json',
+      success: function (data, status) {
+        if(data.status === 0 && data.code === 1) {
+          callback(data.assignments);
+        }
+      },
+      errror: function (xhr, textstatus, errors) {
+        console.log(errors);
+      }
+    });
+  }
+
+  Geeklab.loadNextPage = function (vm) {
+    var type = vm.type,
+        page = vm.page + 1;
+    Geeklab.fetchAssignmentPaging(type, page, function (assignments) {
+      if(assignments.length > 0) {
+        for(var i = 0, len = assignments.length; i < len; i++) {
+          assignments[i].uploading = false;
+          assignments[i].uploadFailed = false;
+        }
+        vm.assignments = vm.assignments.concat(assignments);
+        vm.page = vm.page + 1;
+      }
+      if(assignments.length < 10) {
+        vm.isAll = true;
+      }
+    });
+  }
+
   // 瀑布流加载，监听window滚动事件
   $(window).on('scroll', function () {
     // 第一页数量小于10

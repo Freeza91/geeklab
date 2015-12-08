@@ -97,24 +97,6 @@ $(function () {
     });
   }
 
-  // 获取assgnment分页数据
-  function getAssignmentPaging (type, page, callback) {
-    var url = '/assignments/' + type;
-    $.ajax({
-      url: url,
-      data: {page: page},
-      datatype: 'json',
-      success: function (data, status) {
-        if(data.status === 0 && data.code === 1) {
-          callback(data.assignments);
-        }
-      },
-      errror: function (xhr, textstatus, errors) {
-        console.log(errors);
-      }
-    });
-  }
-
   function isWaitUpload (assignment) {
     if(assignment.extra_status === 'normal') {
       var isFresh = (assignment.status === 'new') || (assignment.status === 'test'),
@@ -314,25 +296,6 @@ $(function () {
     Geeklab.showConfirmModal({
       eventName: 'deleteAssign',
       content: '任务删除后将无法查看和恢复, 确认删除任务?'
-    });
-  }
-
-  // 加载下一页数据
-  function loadNextPage (vm) {
-    var type = vm.type,
-        page = vm.page + 1;
-    getAssignmentPaging(type, page, function (assignments) {
-      if(assignments.length > 0) {
-        for(var i = 0, len = assignments.length; i < len; i++) {
-          assignments[i].uploading = false;
-          assignments[i].uploadFailed = false;
-        }
-        vm.assignments = vm.assignments.concat(assignments);
-        vm.page = vm.page + 1;
-      }
-      if(assignments.length < 10) {
-        vm.isAll = true;
-      }
     });
   }
 
@@ -559,7 +522,7 @@ $(function () {
       cancelReupload: cancelReupload,
       playVideo: playVideo,
       // 加载下一页
-      loadNextPage: loadNextPage
+      loadNextPage: Geeklab.loadNextPage
     }
   });
 
@@ -585,11 +548,11 @@ $(function () {
       showDeleteAssignConfirm: showDeleteAssignConfirm,
       playVideo: playVideo,
       // 加载下一页
-      loadNextPage: loadNextPage
+      loadNextPage: Geeklab.loadNextPage
     }
   });
 
-  getAssignmentPaging('ing', 1, function (assignments) {
+  Geeklab.fetchAssignmentPaging('ing', 1, function (assignments) {
     if(assignments.length > 0) {
       for(var i = 0, len = assignments.length; i < len; i++) {
         assignments[i].uploading = false;
@@ -601,7 +564,7 @@ $(function () {
     }
   });
 
-  getAssignmentPaging('done', 1, function (assignments) {
+  Geeklab.fetchAssignmentPaging('done', 1, function (assignments) {
     if(assignments.length > 0) {
       assignmentsDone.assignments = assignments;
     } else {

@@ -83,7 +83,7 @@ main role="main"
                     | 如何获得5星好评
                 .extra-score-triangle
       .load-more v-if="!noAssign"
-        button.btn.btn-flat.yellow.btn-full
+        button.btn.btn-flat.yellow.btn-full v-show="!isAll" v-on="click: loadNextPage(this)"
           | 加载更多
         p v-show="isAll"
           | 没有更多了
@@ -125,7 +125,7 @@ main role="main"
                     | 如何获得5星好评
                 .extra-score-triangle
       .load-more v-if="!noAssign"
-        button.btn.btn-flat.yellow.btn-full v-show="!isAll"
+        button.btn.btn-flat.yellow.btn-full v-show="!isAll" v-on="click: loadNextPage(this)"
           | 加载更多
         p v-show="isAll"
           | 没有更多了

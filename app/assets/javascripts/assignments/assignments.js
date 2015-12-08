@@ -288,8 +288,8 @@ $(function () {
     height: 120,
   });
 
-  // 抢任务
-  Geeklab.getAssignment = function (assignmentId, callback) {
+  // 发送抢任务请求
+  Geeklab.sendOrderAssignmentRequest = function (assignmentId, callback) {
     $.ajax({
       url: '/assignments/' + assignmentId + '/got_it',
       success: function (data) {
@@ -301,8 +301,8 @@ $(function () {
     });
   }
 
-  // 订阅任务提醒
-  Geeklab.subscribeAssignment = function (assignmentId, callback) {
+  // 发送订阅任务提醒请求
+  Geeklab.sendSubscribeRequest = function (assignmentId, callback) {
     $.ajax({
       url: '/assignments/' + assignmentId + '/subscribe',
       success: function (data) {
@@ -314,8 +314,8 @@ $(function () {
     });
   }
 
-  // 取消任务订阅
-  Geeklab.unsubscribeAssignment = function (assignmentId, callback) {
+  // 发送取消任务提醒订阅请求
+  Geeklab.sendUnsubscribeRequest = function (assignmentId, callback) {
     $.ajax({
       url: '/assignments/' + assignmentId + '/unsubscribe',
       success: function (data) {
@@ -325,6 +325,64 @@ $(function () {
         console.log(errors);
       }
     });
+  }
+
+  // 抢任务
+  Geeklab.orderAssignment = function (assignment) {
+    var assignmentId = assignment.id;
+    Geeklab.sendOrderAssignmentRequest(assignmentId, function (data) {
+      switch(data.code) {
+        case 1:
+          // 抢到
+          location.href="/assignments/join";
+        break;
+        case 2:
+          // 未抢到
+          alert('名额已抢光');
+          assignment.available = false;
+          assignment.available_count = 0;
+        break;
+      }
+    });
+  }
+  // 订阅提醒
+  Geeklab.subscribeAssignment = function (assignment) {
+    var assignmentId = assignment.id;
+    Geeklab.sendSubscribeRequest(assignmentId, function (data) {
+      switch(data.code) {
+        case 1:
+          // 订阅成功
+          alert('订阅成功');
+          assignment.subscribe = true;
+        break;
+        case 2:
+          // 已订阅过
+          alert('已经订阅过了');
+        break;
+        case 3:
+          // 任务已结束
+        break;
+      }
+    });
+  }
+
+  // 取消订阅
+  Geeklab.unsubscribeAssignment = function (assignment) {
+    var assignmentId = assignment.id;
+    Geeklab.sendUnsubscribeRequest (assignmentId, function (data) {
+      switch(data.code) {
+        case 1:
+          // 取消订阅成功
+          alert('取消订阅成功');
+          assignment.subscribe = false;
+        break;
+        case 2:
+          // 已经取消订阅过
+          alert('还没有订阅过')
+        break
+      }
+    });
+
   }
 
   // 获取assignments分页数据

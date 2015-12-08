@@ -18,60 +18,14 @@ $(function () {
     return !assignment.beginner && (assignment.bonus !== 0);
   }
 
-  function orderAssignment (assignment) {
-    var assignmentId = assignment.id;
-    Geeklab.getAssignment(assignmentId, function (data) {
-      switch(data.code) {
-        case 1:
-          // 抢到
-          location.href="/assignments/join";
-        break;
-        case 2:
-          // 未抢到
-          alert('名额已抢光');
-          assignment.available = false;
-          assignment.available_count = 0;
-        break;
-      }
-    });
-  }
+  //function orderAssignment (assignment) {
+  //}
 
-  function subscribe (assignment) {
-    var assignmentId = assignment.id;
-    Geeklab.subscribeAssignment(assignmentId, function (data) {
-      switch(data.code) {
-        case 1:
-          // 订阅成功
-          alert('订阅成功');
-          assignment.subscribe = true;
-        break;
-        case 2:
-          // 已订阅过
-          alert('已经订阅过了');
-        break;
-        case 3:
-          // 任务已结束
-        break;
-      }
-    });
-  }
+  //function subscribeAssignment (assignment) {
+  //}
 
-  function unsubscribe (assignment) {
-    var assignmentId = assignment.id;
-    Geeklab.unsubscribeAssignment (assignmentId, function (data) {
-      switch(data.code) {
-        case 1:
-          // 取消订阅成功
-          alert('取消订阅成功');
-          assignment.subscribe = false;
-        break;
-        case 2:
-          // 已经取消订阅过
-          alert('还没有订阅过')
-        break
-      }
-    });
-  }
+  //function unsubscribeAssignment (assignment) {
+  //}
 
   var testerId = $('#tester-id').val();
   // assignemnt-fresh vue modal
@@ -89,9 +43,9 @@ $(function () {
       showSubscribeOperator: showSubscribeOperator,
       showBonus: showBonus,
       // 任务操作
-      orderAssignment: orderAssignment,
-      subscribe: subscribe,
-      unsubscribe: unsubscribe,
+      order: Geeklab.orderAssignment,
+      subscribe: Geeklab.subscribeAssignment,
+      unsubscribe: Geeklab.unsubscribeAssignment,
       // 加载下一页
       loadNextPage: Geeklab.loadNextPage
     }

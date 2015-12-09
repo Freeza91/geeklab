@@ -24,7 +24,7 @@ main role="main"
             span v-text="assignment.name"
           .describle v-text="assignment.profile"
         .item-body
-          .operators
+          .operators v-if="!assignment.beginner"
             .operator.order v-show="showOrderOperator(assignment)"
               .content-wrp.vertical-center
                 .vertical-item
@@ -51,12 +51,35 @@ main role="main"
                   | 订阅提醒
                 button.btn.btn-flat.blue.btn-rounded.btn-s v-if="assignment.subscribe" v-on="click: unsubscribe(assignment)"
                   | 取消订阅
-            .operator.wait-upload v-if="assignment.beginner"
+          .operators v-if="assignment.beginner"
+            .operator.wait-upload v-show="!assignment.uploading && !assignment.uploadFailed"
               .content-wrp
                 .icon.icon-file
               .button-wrp.button-center
-                button.btn.btn-flat.blue.btn-rounded.btn-s.js-assignment-start
+                button.btn.btn-flat.blue.btn-rounded.btn-s v-on="click: startAssignment(this, assignment, $event, $index)"
                   | 开始体验
+            .operator.uploading v-show="assignment.uploading"
+              .content-wrp
+                .progressCircle
+                  .left
+                    .inner
+                  .right
+                    .inner
+                  .mask
+                    span.progressCount
+                      | 0%
+              .button-wrp.button-center
+                button.btn.btn-flat.blue.btn-rounded.btn-s v-on="click: cancelUploading(assignment)"
+                  | 取消
+            .operator.upload-failed v-show="assignment.uploadFailed"
+              .content-wrp.vertical-center
+                p.vertical-item
+                  | 上传失败
+              .button-wrp.button-center
+                button.btn.btn-flat.blue.btn-rounded.btn-s v-on="click: reuploadVideo(this, assignment, $event, $index)"
+                  | 重新上传
+                button.btn.btn-flat.blue.btn-rounded.btn-s v-on="click: cancelReupload(assignment)"
+                  | 取消
         .item-footer
           .score
             span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"

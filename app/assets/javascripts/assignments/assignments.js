@@ -279,6 +279,7 @@ $(function () {
 
   window.Geeklab = window.Geeklab || {};
 
+  Geeklab.testerId = $('#tester-id').val();
   Geeklab.uploader = new QiniuChunkUpload();
 
   //生成一个qrcode实例
@@ -528,6 +529,183 @@ $(function () {
       console.log('获取qrtoken失败');
     });
   }
+
+  Geeklab.startAssignment = function (vm, assignment, event, index) {
+    Geeklab.showLoading();
+    var assignmentId = assignment.id;
+    assignmentDetailVm.id = assignmentId;
+    vm.currAssignIndex = index;
+    vm.currAssign = $(event.target).parents('.assignment-item');
+    Geeklab.fetchAssignmentDetail(Geeklab.testerId, assignmentId, function (project) {
+      // 任务为手机应用时生成二维码
+      if(assignment.device !== 'web') {
+        Geeklab.fetchQrcodeToken(assignmentId, function (token) {
+          var uploadUrl = location.origin
+                        + "/assignments/upload?"
+                        + "auth_token="
+                        + token
+                        + "&id="
+                        + assignmentId;
+          Geeklab.qrcode.clear();
+          Geeklab.qrcode.makeCode(uploadUrl);
+        });
+      }
+
+      // 赋值数据给assignmentDetailVm
+      assignmentDetailVm.project = project;
+      assignmentDetailVm.taskLen = project.tasks.length;
+      assignmentDetailVm.stepLen = project.tasks.length + 6;
+      setTimeout(function () {
+        Geeklab.removeLoading();
+        $('#assignment-detail').modal();
+      }, 1000);
+    });
+  }
+
+
+  function prevStep (vm) {
+    vm.curStepIndex -= 1;
+    switch(vm.progress) {
+      case 'prepare':
+        vm.progress = 'requirement';
+        vm.nextStepText = '好的';
+      break;
+      case 'help':
+        vm.progress = 'prepare';
+        vm.nextStepText = '好了';
+      break;
+      case 'hint':
+        vm.progress = 'help';
+        vm.nextStepText = '开始任务';
+      break;
+      case 'situation':
+        vm.progress = 'hint';
+        vm.nextStepText = '接下来 →';
+      break;
+      case 'work-on':
+      if(vm.curStepIndex === 5) {
+        vm.curStepContent = vm.project.desc;
+        vm.progress = 'situation';
+      } else {
+        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 6].content;
+      }
+      break;
+      case 'work-done':
+        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 6].content;
+        vm.progress = 'work-on';
+        vm.nextStepText = '接下来 →';
+      break;
+    }
+  }
+
+  function nextStep (vm) {
+    vm.curStepIndex += 1;
+    switch(vm.progress) {
+      case 'requirement':
+        vm.progress = 'prepare';
+        vm.nextStepText = '好了';
+      break;
+      case 'prepare':
+        vm.progress = 'help';
+        vm.nextStepText = '开始任务';
+      break;
+      case 'help':
+        vm.progress = 'hint';
+        vm.nextStepText = '接下来 →';
+      break;
+      case 'hint':
+        vm.progress = 'situation';
+        vm.curStepContent = vm.project.desc;
+        vm.nextStepText = '接下来 →';
+      break;
+      case 'situation':
+        vm.progress = 'work-on';
+        vm.curStepContent = vm.project.tasks[0].content;
+      break;
+      case 'work-on':
+      if(vm.curStepIndex - 6 === vm.taskLen) {
+        vm.progress = 'work-done';
+      } else {
+        vm.curStepContent = vm.project.tasks[vm.curStepIndex - 6].content;
+      }
+      break;
+    }
+  }
+
+  function lastStep (vm) {
+    vm.$set('progress', 'work-done');
+    vm.$set('curStepIndex', vm.stepLen);
+  }
+
+  function close(vm) {
+    $('#assignment-detail').modal('hide');
+    vm.$set('curStepIndex', 1);
+    vm.$set('progress', 'requirement');
+  }
+
+  function refreshQrImage (vm, event) {
+    var $target = $(event.target);
+    if($target.hasClass('disable')) {
+      return false;
+    }
+    $target.addClass('disable');
+    var $qrcode = $('#upload-qrcode');
+    Geeklab.qrcode.clear();
+    $qrcode.find('.fa-refresh').addClass('fa-spin');
+    $qrcode.find('.img-mask').css({
+      display: 'block'
+    });
+    Geeklab.fetchQrcodeToken(vm.id, function (token) {
+      var uploadUrl = location.origin
+                    + "/assignments/upload?"
+                    + "auth_token="
+                    + token
+                    + "&id="
+                    + vm.id;
+      setTimeout(function () {
+        Geeklab.qrcode.makeCode(uploadUrl);
+        $qrcode.find('.fa-refresh').removeClass('fa-spin');
+        $qrcode.find('.img-mask').removeAttr('style');
+        $target.removeClass('disable');
+      }, 1000)
+    });
+  }
+
+  function mapDevice (platform, device) {
+    if(device === 'web') {
+      return '电脑'
+    }
+    var map = {
+      'iospad': 'iPad',
+      'iosphone': 'iPhone',
+      'androidphone': 'Android Phone',
+      'androidpad': 'Android Pad',
+    }
+    return map[platform + device];
+  }
+
+   var assignmentDetailVm = new Vue({
+    el: '#assignment-detail',
+    data: {
+      id: '',
+      progress: 'requirement',
+      curStepContent: '',
+      curStepIndex: 1,
+      stepLen: 0,
+      taskLen: 0,
+      project: {},
+      nextStepText: '好的',
+      uplodging: false
+    },
+    methods: {
+      prev: prevStep,
+      next: nextStep,
+      lastStep: lastStep,
+      refreshQrImage: refreshQrImage,
+      mapDevice: mapDevice,
+      close: close
+    }
+  });
 
   // 任务过期时间倒计时
   //var countDownInterval = []; // 倒计时interval id list

@@ -9,7 +9,7 @@ class NotitySubscribeJob < ActiveJob::Base
     unless assignment.status == 'success' # 自己的任务没完成
 
       if assignment.expired?  # 已经过期
-        if project.available? # 可以继续做，重新可以抢
+        if project.get_status != 'finish' # 可以继续做，重新可以抢
           delete_qiniu_resource(assignment) if assignment.status == 'not_accept' # 任务不成功
           assignment.update_column(:status, 'new') # 新任务重新可以抢
           $redis.incr("available-#{project.id}")   # 总量增加

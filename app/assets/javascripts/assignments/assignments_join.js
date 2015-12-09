@@ -103,13 +103,15 @@ $(function () {
           isUploading = assignment.uploading || assignment.uploadFailed;
       return isFresh && !isUploading;
     }
+    console.log(false);
     return false;
   }
 
   function isWaitCheck(assignment) {
     var isWaitCheck = (assignment.status === 'wait_check') || (assignment.status === 'not_accept'),
-        isUploading = assignment.uploading || assignment.uploadFailed;
-    return isWaitCheck && !isUploading;
+        isUploading = assignment.uploading || assignment.uploadFailed,
+        isNormal = (assignment.extra_status === 'normal');
+    return isNormal && isWaitCheck && !isUploading;
   }
 
   function canBeDeleted (assignment) {

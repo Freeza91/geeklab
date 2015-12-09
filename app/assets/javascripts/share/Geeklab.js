@@ -94,19 +94,11 @@ $(function () {
     Geeklab.removeMak();
   };
 
-  Geeklab.getAssignmentPaging  = function (type, page, callback) {
-    var url = '/assignments/' + type;
-    $.ajax({
-      url: url,
-      data: {page: page},
-      dataType: 'json',
-      success: function (data, status) {
-        callback(data.assignments);
-      },
-      errror: function (xhr, textStatus, errors) {
-        console.log(errors);
-      }
-    });
+  Geeklab.showInfoModal = function (infoContent) {
+    var $modal = $('#info-modal');
+    $modal.find('.content').text(infoContent);
+    $('body').append('<div class="main-mask"></div>');
+    $modal.addClass('show');
   };
 
   window.Geeklab = Geeklab;

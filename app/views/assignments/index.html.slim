@@ -165,6 +165,7 @@ main role="main"
 <!-- 完成个人信息的提示结束 -->
 
 = render partial: 'shared/confirm_modal'
+= render partial: 'assignments/shared/subscribe_modal'
 = render partial: 'assignments/shared/assignment_detail'
 .user-info
   input#tester-id type="hidden" value="#{@current_user.to_tester.to_params}"

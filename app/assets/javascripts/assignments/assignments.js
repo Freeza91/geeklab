@@ -339,7 +339,7 @@ $(function () {
         break;
         case 2:
           // 未抢到
-          alert('名额已抢光');
+          Geeklab.showInfoModal('很遗憾, 任务被抢光了');
           assignment.available = false;
           assignment.available_count = 0;
         break;
@@ -353,15 +353,16 @@ $(function () {
       switch(data.code) {
         case 1:
           // 订阅成功
-          alert('订阅成功');
+          showSubscribeHint('订阅成功');
           assignment.subscribe = true;
         break;
         case 2:
           // 已订阅过
-          alert('已经订阅过了');
+          showSubscribeHint('订阅成功');
         break;
         case 3:
           // 任务已结束
+          showSubscribeHint('任务已结束');
         break;
       }
     });
@@ -374,15 +375,26 @@ $(function () {
       switch(data.code) {
         case 1:
           // 取消订阅成功
-          alert('取消订阅成功');
+          showSubscribeHint('取消订阅成功');
           assignment.subscribe = false;
         break;
         case 2:
           // 已经取消订阅过
-          alert('还没有订阅过')
+          showSubscribeHint('还没有订阅过');
         break
       }
     });
+  }
+
+  function showSubscribeHint (content) {
+    var $modal = $('#subscribe-modal');
+    $modal.find('.content').text(content);
+    $('body').append('<div class="main-mask"></div>');
+    $modal.addClass('show')
+    setTimeout(function () {
+      $modal.removeClass('show');
+      $('.main-mask').remove();
+    }, 1500);
   }
 
   // 获取assignments分页数据

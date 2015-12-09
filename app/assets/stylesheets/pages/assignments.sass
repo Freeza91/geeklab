@@ -308,7 +308,6 @@
     width: 570px
     height: 320px
 
-
 // 倒计时
 .countdown
   color: $dark-gray
@@ -326,6 +325,7 @@
     color: $dark-blue
     margin: 0
   .hint-content
+    display: none
     position: absolute
     bottom: 100%
     left: 0
@@ -334,9 +334,8 @@
     margin-left: -145px
     padding: 10px
     background: $light-yellow
-    opacity: 0
     +box-shadow(0 0 2px $gray)
-    +transition(opacity .5s ease)
+    +transition(all .5s ease)
   .hint-triangle
     position: absolute
     bottom: 0
@@ -350,7 +349,7 @@
     +box-shadow(1px 1px 1px $gray)
 .countdown-hint:hover
   .hint-content
-    opacity: 1
+    display: block
 .countdown,
 .countdown-hint
   display: inline-block
@@ -363,9 +362,9 @@
   color: $blue
   font-size: 1rem
 .extra-score
+  display: none
   position: absolute
   bottom: 100%
-  opacity: 0
   width: 200px
   margin-bottom: 17px
   margin-left: -85px
@@ -373,7 +372,7 @@
   background: $light-yellow
   box-shadow: 0 0 3px rgba(0, 0, 0, .3)
   z-index: 20
-  +transition(opacity .5s ease)
+  +transition(all .5s ease)
   p
     font-size: .8rem
     color: $dark-blue
@@ -397,4 +396,4 @@
   +transform(rotate(45deg))
 .extra:hover
   .extra-score
-    opacity: 1
+    display: block

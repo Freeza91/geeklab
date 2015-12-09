@@ -39,8 +39,7 @@ class Assignment < ActiveRecord::Base
     end
 
     def take_part_ing
-      not_finish #测试用数据
-      #assigned.not_finish #真实数据逻辑
+      assigned.not_finish #真实数据逻辑
       # assigned.not_expired.ing + assigned.not_finish.expired
     end
 
@@ -59,7 +58,7 @@ class Assignment < ActiveRecord::Base
   end
 
   def can_do?
-    assigned && !expired?
+    flag && !expired?
   end
 
   def type
@@ -83,6 +82,13 @@ class Assignment < ActiveRecord::Base
         extra_status = 'can_subscribe'
       end
     end
+  end
+
+  def expired_time
+    if stop_time
+      return (expired_at - stop_time_at).to_i;
+    end
+    (expired_at - Time.now).to_i
   end
 
   def video_notice_to_tester

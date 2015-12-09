@@ -95,6 +95,16 @@ main role="main"
             ol.reasons v-if="showReasons(assignment)"
               li v-repeat="reason: assignment.reasons" v-text="reason"
         .item-footer
+          .count-down v-if="!assignment.beginner && assignment.extra_status === 'normal'"
+            | 剩余时间:
+            span.day v-text="assignment.deadline[0]"
+            | 天
+            span.hour v-text="assignment.deadline[1]"
+            | 时
+            span.minute v-text="assignment.deadline[2]"
+            | 分
+            span.second v-text="assignment.deadline[3]"
+            | 秒
           .score
             span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"
               i.icon-inner.icon-score-old

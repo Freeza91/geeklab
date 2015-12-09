@@ -197,6 +197,7 @@ $(function () {
           assignment.video = data.video;
           assignment.uploading = false;
           assignment.status = 'wait_check';
+          assignment.stop_time = true;
           Geeklab.clearUploadProgresss($progressCircle);
         }, function () {
           console.log('上传失败');
@@ -274,7 +275,6 @@ $(function () {
 
   function deleteVideo (testerId, assignment) {
     sendDeleteVideoRequest(testerId, assignment.id, function (data) {
-      console.log(data)
       assignment.status = assignment.beginner ? 'test': 'new';
       assignment.video = '';
     });
@@ -314,6 +314,99 @@ $(function () {
   });
 
 
+  // 加载下一页数据for assignments_ing
+  function loadNextPageForIng (vm) {
+    var page = vm.page + 1;
+    Geeklab.fetchAssignmentPaging('ing', page, function (assignments) {
+      if(assignments.length > 0) {
+        var assignment;
+        for(var i = 0, len = assignments.length; i < len; i++) {
+          assignment = assignments[i];
+          assignment.uploading = false;
+          assignment.uploadFailed = false;
+          if(!assignment.beginner && assignment.extra_status === 'normal') {
+            assignment.deadline = generateDeadline(assignment.expired_time);
+          }
+        }
+        vm.assignments = vm.assignments.concat(assignments);
+        vm.page = vm.page + 1;
+      }
+      if(assignments.length < 10) {
+        vm.isAll = true;
+      }
+    });
+  }
+
+  // 倒计时
+  function generateDeadline (expiredTimeCount) {
+    // 初始化倒计时
+    var count = expiredTimeCount,
+        days = 0,
+        hours = 0,
+        minutes = 0,
+        seconds = 0,
+        deadline = [];
+
+     days = ~~ (count / (24 * 60 * 60 )); //天
+     hours = ~~ ((count / (60 * 60 )) % 24); //小时
+     minutes = ~~ ((count / 60 ) % 60); //分钟
+     seconds = ~~ (count % 60); //秒
+
+     deadline[0] = days < 10 ? '0' + days : days;
+     deadline[1] = hours < 10 ? '0' + hours : hours;
+     deadline[2] = minutes < 10 ? '0' + minutes : minutes;
+     deadline[3] = seconds < 10 ? '0' + seconds : seconds;
+     return deadline;
+  }
+
+  function updateDeadline (assignments) {
+    var deadline,
+        day,
+        hour,
+        minute;
+    for(var i = 0, len = assignments.length; i < len; i++) {
+      if(assignments[i].beginner || assignments[i].stop_time) {
+        continue;
+      }
+      deadline = assignments[i].deadline;
+      if(deadline && deadline.join('') > 0) {
+        day = parseInt(deadline[0]);
+        hour = parseInt(deadline[1]);
+        minute = parseInt(deadline[2]);
+        second = parseInt(deadline[3]);
+
+        if(second > 0) {
+          second = second - 1;
+          second = second < 10 ? '0' + second : second;
+          deadline.$set(3, second)
+        } else {
+          if(minute > 0) {
+            minute = minute -1;
+            minute = minute < 10 ? '0' + minute : minute;
+            deadline.$set(3, 59)
+            deadline.$set(2, minute);
+          } else {
+            if (hour > 0) {
+              hour = hour -1;
+              hour = hour < 10 ? '0' + hour : hour;
+              deadline.$set(3, 59)
+              deadline.$set(2, 59);
+              deadline.$set(1, hour);
+            } else {
+              if (day > 0) {
+                day = day - 1;
+                day = day < 10 ? '0' + day : day;
+                deadline.$set(3, 59)
+                deadline.$set(2, 59);
+                deadline.$set(1, 23);
+                deadline.$set(0, day);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 
   var testerId = $('#tester-id').val();
   var assignmentsIng = new Vue({
@@ -351,7 +444,7 @@ $(function () {
       subscribe: Geeklab.subscribeAssignment,
       unsubscribe: Geeklab.unsubscribeAssignment,
       // 加载下一页
-      loadNextPage: Geeklab.loadNextPage
+      loadNextPage: loadNextPageForIng
     }
   });
 
@@ -383,11 +476,19 @@ $(function () {
 
   Geeklab.fetchAssignmentPaging('ing', 1, function (assignments) {
     if(assignments.length > 0) {
+      var assignment;
       for(var i = 0, len = assignments.length; i < len; i++) {
-        assignments[i].uploading = false;
-        assignments[i].uploadFailed = false;
+        assignment = assignments[i];
+        assignment.uploading = false;
+        assignment.uploadFailed = false;
+        if(!assignment.beginner && assignment.extra_status === 'normal') {
+          assignment.deadline = generateDeadline(assignment.expired_time);
+        }
       }
       assignmentsIng.assignments = assignments;
+      setInterval(function () {
+        updateDeadline(assignmentsIng.assignments);
+      }, 1000);
     } else {
       assignmentsIng.noAssign = true;
     }

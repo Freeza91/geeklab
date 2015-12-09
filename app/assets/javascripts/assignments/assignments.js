@@ -409,10 +409,6 @@ $(function () {
         page = vm.page + 1;
     Geeklab.fetchAssignmentPaging(type, page, function (assignments) {
       if(assignments.length > 0) {
-        for(var i = 0, len = assignments.length; i < len; i++) {
-          assignments[i].uploading = false;
-          assignments[i].uploadFailed = false;
-        }
         vm.assignments = vm.assignments.concat(assignments);
         vm.page = vm.page + 1;
       }

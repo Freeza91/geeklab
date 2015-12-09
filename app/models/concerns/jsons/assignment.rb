@@ -28,6 +28,8 @@ module JSONS
         profile: project.profile,
         status: status,
         extra_status: extra_status,
+        expired_time: expired_time,
+        stop_time: stop_time,
         reasons: reasons,
         video: video,
         credit: project.credit,

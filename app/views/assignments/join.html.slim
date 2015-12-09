@@ -95,7 +95,7 @@ main role="main"
             ol.reasons v-if="showReasons(assignment)"
               li v-repeat="reason: assignment.reasons" v-text="reason"
         .item-footer
-          .count-down v-if="!assignment.beginner && assignment.extra_status === 'normal'"
+          .countdown v-if="!assignment.beginner && assignment.extra_status === 'normal'"
             | 剩余时间:
             span.day v-text="assignment.deadline[0]"
             | 天
@@ -105,6 +105,14 @@ main role="main"
             | 分
             span.second v-text="assignment.deadline[3]"
             | 秒
+          .countdown-hint v-if="!assignment.beginner && assignment.extra_status === 'normal'"
+            .fa.fa-exclamation-circle
+            .hint-content
+              p v-if="!assignment.stop_time"
+                | 时间为0时任务没有完成, 任务将转移给其他人
+              p v-if="assignment.stop_time"
+                | 等待审核时, "剩余时间"会停止, 如果"审核不通过"时间将继续流逝
+              .hint-triangle
           .score
             span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"
               i.icon-inner.icon-score-old

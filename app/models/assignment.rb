@@ -31,7 +31,7 @@ class Assignment < ActiveRecord::Base
     end
 
     def new_tasks
-      not_assigned.not_finish
+      not_assigned.not_finish.not_take_part
     end
 
     def finish_project
@@ -39,8 +39,8 @@ class Assignment < ActiveRecord::Base
     end
 
     def take_part_ing
-      assigned.not_finish #真实数据逻辑
-      # assigned.not_expired.ing + assigned.not_finish.expired
+      assigned.not_finish + ing # 抢到但是为完成和正在进行中的新手任务
+                                # 两者不可能同时存在
     end
 
     def finish_task

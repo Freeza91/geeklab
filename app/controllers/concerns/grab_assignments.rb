@@ -23,7 +23,6 @@ module GrabAssignments
   def subscribe
     json = { status: 0, code: 1, msg: '订阅成功' }
 
-    #if @project.available?
     if @project.get_status != 'finish'
       unless $redis.sadd("subscribe-#{@assignment.project_id}", current_user.id)
         json[:code], json[:msg] = 2, '已经订阅了！'

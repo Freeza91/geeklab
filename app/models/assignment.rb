@@ -53,6 +53,11 @@ class Assignment < ActiveRecord::Base
     Time.now >= expired_at
   end
 
+  def expired_upload?
+    return stop_time_at >= expired_at if stop_time
+    false
+  end
+
   def subscribe?
     $redis.smembers("subscribe-#{project_id}").include?(tester_id.to_s)
   end

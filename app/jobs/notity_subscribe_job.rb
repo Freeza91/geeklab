@@ -10,10 +10,10 @@ class NotitySubscribeJob < ActiveJob::Base
 
       if assignment.expired?  # 已经过期
         if project.get_status != 'finish' # 可以继续做，重新可以抢
+          send_notity_email(project.id, assignment)
           delete_qiniu_resource(assignment) if assignment.status == 'not_accept' # 任务不成功
           assignment.update_column(:status, 'new') # 新任务重新可以抢
           $redis.incr("available-#{project.id}")   # 总量增加
-          send_notity_email(project.id, assignment)
         end
       else # 还在进行中
         # pass 没有操作
@@ -25,25 +25,25 @@ class NotitySubscribeJob < ActiveJob::Base
 
   end
 
-  def send_notity_email(project_id)
+  def send_notity_email(project_id, assignment)
     users = $redis.smembers("subscribe-#{project_id}")
     if users.present?
       users.each do |u_id|
 
         next if $redis.get("notify-#{u_id}") # 如果已经通知过则直接跳过
 
-        u = User.where(id: u_id).first
-        tester = u.to_tester
+        tester = Tester.where(id: u_id).first
+        info = tester.tester_infor
 
         email =
-          if info = tester.tester_info && info.email_contract.present?
+          if info.email_contract.present?
             info.email_contract
           else
-            u.email
+            tester.email
           end
 
         task_url =
-          if assignment.assigned # 已经抢到
+          if assignment.flag # 已经抢到
             "#{Settings.domain}/assignments/join"
           else
             "#{Settings.domain}/assignments"

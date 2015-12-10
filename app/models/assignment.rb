@@ -117,7 +117,7 @@ class Assignment < ActiveRecord::Base
       # 让时间暂停结束
       # 重新设置过期时间
       if stop_time
-        new_expired_at = Time.now - stop_time_at + expired_at
+        new_expired_at = expired_at + (Time.now - stop_time_at) # expired_at 必须在前，弱类型的数据类型按照第一个来得到最终的数据类型
         update_columns(stop_time: false, expired_at: new_expired_at)
         NotitySubscribeJob.set(wait_until: (new_expired_at + 3.minutes)).perform_later(id)
       end

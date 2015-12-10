@@ -50,6 +50,7 @@ private
   def set_assignment # 标记抢到 && 设置过期时间
     @t = Time.now + @project.duration || 84600
     @assignment.update_columns(flag: true, expired_at: @t)
+    NotitySubscribeJob.set(wait_until: (@t + 3.minutes)).perform_later(@assignment.id)
   end
 
   def require_access

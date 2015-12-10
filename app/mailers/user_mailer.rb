@@ -54,8 +54,8 @@ class UserMailer < ApplicationMailer
     @name = name
     @task_url = task_url
 
-    sendgrid_category "subscribe_notify"
-    mail to: mail, subject: '你有新任务可以做啦'
+    sendgrid_category "subscribe notify"
+    mail to: email, subject: '你有新任务可以做啦'
     render 'user_mailer/subscribe_notify'
   end
 

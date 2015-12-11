@@ -42,6 +42,8 @@ class NotitySubscribeJob < ActiveJob::Base
             tester.email
           end
 
+        name = assignment.project.name
+
         task_url =
           if assignment.flag # 已经抢到
             "#{Settings.domain}/assignments/join"
@@ -49,7 +51,7 @@ class NotitySubscribeJob < ActiveJob::Base
             "#{Settings.domain}/assignments"
           end
 
-        UserMailer.subscribe_notify(email, "现在有可以做的任务啦", task_url).deliver_later
+        UserMailer.subscribe_notify(email, name, task_url).deliver_later
 
         $redis.set "notify-#{u_id}", true
         $redis.expire "notify-#{u_id}", 180

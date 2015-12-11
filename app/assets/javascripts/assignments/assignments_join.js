@@ -279,6 +279,7 @@ $(function () {
     sendDeleteVideoRequest(testerId, assignment.id, function (data) {
       assignment.status = assignment.beginner ? 'test': 'new';
       assignment.video = '';
+      assignment.stop_time = false;
     });
   }
 
@@ -362,51 +363,20 @@ $(function () {
   }
 
   function updateDeadline (assignments) {
-    var deadline,
-        day,
+    var day,
         hour,
-        minute;
+        minute,
+        assignment;
     for(var i = 0, len = assignments.length; i < len; i++) {
-      if(assignments[i].beginner || assignments[i].stop_time) {
+      assignment = assignments[i];
+      if(assignment.count <= 0) {
         continue;
       }
-      deadline = assignments[i].deadline;
-      if(deadline && deadline.join('') > 0) {
-        day = parseInt(deadline[0]);
-        hour = parseInt(deadline[1]);
-        minute = parseInt(deadline[2]);
-        second = parseInt(deadline[3]);
-
-        if(second > 0) {
-          second = second - 1;
-          second = second < 10 ? '0' + second : second;
-          deadline.$set(3, second)
-        } else {
-          if(minute > 0) {
-            minute = minute -1;
-            minute = minute < 10 ? '0' + minute : minute;
-            deadline.$set(3, 59)
-            deadline.$set(2, minute);
-          } else {
-            if (hour > 0) {
-              hour = hour -1;
-              hour = hour < 10 ? '0' + hour : hour;
-              deadline.$set(3, 59)
-              deadline.$set(2, 59);
-              deadline.$set(1, hour);
-            } else {
-              if (day > 0) {
-                day = day - 1;
-                day = day < 10 ? '0' + day : day;
-                deadline.$set(3, 59)
-                deadline.$set(2, 59);
-                deadline.$set(1, 23);
-                deadline.$set(0, day);
-              }
-            }
-          }
-        }
+      if(assignment.beginner || assignment.stop_time) {
+        continue;
       }
+      assignment.expired_time = assignment.expired_time - 1;
+      assignment.deadline = generateDeadline(assignment.expired_time);
     }
   }
 

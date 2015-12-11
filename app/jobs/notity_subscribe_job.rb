@@ -13,7 +13,7 @@ class NotitySubscribeJob < ActiveJob::Base
         if project.get_status != 'finish' # 可以继续做，重新可以抢
           send_notity_email(project.id, assignment)
           delete_qiniu_resource(assignment) if assignment.status == 'not_accept' # 任务不成功
-          assignment.update_column(:status, 'new') unless assignment.status == 'delete'  # 只要任务不被删除，新任务重新可以抢
+          assignment.update_columns(status: 'new', video: '') unless assignment.status == 'delete'  # 只要任务不被删除，新任务重新可以抢
           $redis.incr("available-#{project.id}")   # 总量增加
         end
       else # 还在进行中

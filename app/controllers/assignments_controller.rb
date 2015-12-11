@@ -112,7 +112,8 @@ class AssignmentsController < ApplicationController
 
     if assignment
       expired_at = Time.now
-      assignment.update_columns(status: 'delete', expired_at: expired_at, stop_time: false)
+      assignment.update_columns(status: 'delete', expired_at: expired_at,
+                                stop_time: false, video: '')
       NotitySubscribeJob.set(wait_until: expired_at).perform_later(assignment.id)
     else
       json[:code], json[:msg] = 0, '没有权限删除这个任务或者此任务已经不存在'
@@ -189,6 +190,7 @@ private
     rescue
       puts "网络异常"
     end
+    assignment.update_column(:video, '')
 
     true
   end

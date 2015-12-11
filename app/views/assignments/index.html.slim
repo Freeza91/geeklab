@@ -123,16 +123,22 @@ main role="main"
               span v-text="assignment.name"
           .describle v-text="assignment.profile"
         .item-body
-            | 任务已结束
+          .operators
+            .operator.finish
+              .content-wrp.vertical-center
+                .vertical-item
+                  p
+                    | 任务已结束
         .item-footer
           .score
             span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"
               i.icon-inner.icon-score-old
             span.number v-text="assignment.credit"
-            span v-if="showBonus(assignment)"
-              | &nbsp+&nbsp
-            span.extra v-if="showBonus(assignment)"
-              | 评分奖励
+            .extra v-if="showBonus(assignment)"
+              span
+                | &nbsp+&nbsp
+              span.extra v-if="showBonus(assignment)"
+                | 评分奖励
               .extra-score
                 p
                   | 产品经理会对上传的视频进行评分, 评分星级为1-5星

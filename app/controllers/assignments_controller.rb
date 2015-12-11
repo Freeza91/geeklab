@@ -110,7 +110,11 @@ class AssignmentsController < ApplicationController
       return render json: json
     end
 
-    unless assignment && delete_video_at_qiniu(assignment, {}) && assignment.destroy
+    if assignment
+      expired_at = Time.now
+      assignment.update_columns(status: 'delete', expired_at: expired_at, stop_time: false)
+      NotitySubscribeJob.set(wait_until: expired_at).perform_later(assignment.id)
+    else
       json[:code], json[:msg] = 0, '没有权限删除这个任务或者此任务已经不存在'
     end
 
@@ -123,6 +127,7 @@ class AssignmentsController < ApplicationController
     assignment = Assignment.find_by(id: params[:assignment_id])
     if assignment.tester.id == current_user.id
       delete_video_at_qiniu(assignment, json)
+      recover_time_donw(assignment)
     else
       json[:code], json[:msg] = 0, '你没有权限操作'
     end
@@ -186,6 +191,14 @@ private
     end
 
     true
+  end
+
+  def recover_time_down(assignment)
+    if assignment.stop_time
+      new_expired_at = assignment.expired_at + (Time.now - stop_time_at)
+      assignment.update_columns(expired_at: new_expired_at, stop_time: false)
+      NotitySubscribeJob.set(wait_until: new_expired_at).perform_later(assignment.id)
+    end
   end
 
 end

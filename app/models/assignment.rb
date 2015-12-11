@@ -2,6 +2,7 @@ class Assignment < ActiveRecord::Base
 
   scope :test,         -> { where("assignments.status = ?", 'test') } # 新手测试任务
   scope :not_take_part,-> { where("assignments.status = ?",  "new") }
+  scope :not_delete,   -> { where.not(status: 'delete') }
   scope :assigned,     -> { where(flag: true) }
   scope :not_assigned, -> { where(flag: false) }
   scope :finish,       -> { joins(:project).where("projects.status = ?", 'finish') }
@@ -27,24 +28,24 @@ class Assignment < ActiveRecord::Base
   class << self
 
     def test_task
-      test
+      test # 新手测试任务
     end
 
     def new_tasks
-      not_assigned.not_finish.not_take_part
+      not_assigned.not_finish.not_take_part # 没有抢到同时也没完成还是新手任务
     end
 
     def finish_project
-      not_assigned.finish
+      not_assigned.finish.not_delete # 没有抢到但是任务已经结束
     end
 
     def take_part_ing
-      assigned.not_finish + ing # 抢到但是为完成和正在进行中的新手任务
-                                # 两者不可能同时存在
+      assigned.not_finish.not_delete + ing # 抢到但是为完成和正在进行中的新手任务
+                                           # 两者不可能同时存在
     end
 
     def finish_task
-      assigned.finish + done
+      assigned.finish.not_delete + done
     end
 
   end

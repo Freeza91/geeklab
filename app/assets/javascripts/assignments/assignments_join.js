@@ -443,6 +443,7 @@ $(function () {
     }
   });
 
+  Geeklab.showLoading();
   Geeklab.fetchAssignmentPaging('ing', 1, function (assignments) {
     if(assignments.length > 0) {
       var assignment;
@@ -461,6 +462,7 @@ $(function () {
     } else {
       assignmentsIng.noAssign = true;
     }
+    Geeklab.removeLoading();
   });
 
   Geeklab.fetchAssignmentPaging('done', 1, function (assignments) {

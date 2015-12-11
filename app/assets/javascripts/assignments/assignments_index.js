@@ -119,12 +119,14 @@ $(function () {
     }
   });
 
+  Geeklab.showLoading();
   Geeklab.fetchAssignmentPaging('fresh', 1, function (assignments) {
     if(assignments.length > 0) {
       assignmentsFresh.assignments = assignments;
     } else {
       assignmentsFresh.noAssign = true;
     }
+    Geeklab.removeLoading();
   });
 
   Geeklab.fetchAssignmentPaging('finish', 1, function (assignments) {

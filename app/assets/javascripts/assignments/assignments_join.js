@@ -366,7 +366,7 @@ $(function () {
         assignment;
     for(var i = 0, len = assignments.length; i < len; i++) {
       assignment = assignments[i];
-      if(assignment.count <= 0) {
+      if(assignment.expired_time <= 0) {
         continue;
       }
       if(assignment.beginner || assignment.stop_time) {

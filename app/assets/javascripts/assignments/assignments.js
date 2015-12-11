@@ -470,12 +470,32 @@ $(function () {
       }
     })
     .done(function (data, status) {
-      if(data.status === 0 && data.code === 1) {
-        // 成功获取token, 执行回调上传视频
-        var token = data.token;
-        callback(token);
-      } else {
-        alert('获取token失败');
+      if(data.status === 0) {
+        switch(data.code) {
+          case 1:
+            callback(data.token);
+          break;
+          case 2:
+            // 文件名为空
+            Geeklab.showInfoModal('文件名不能为空');
+          break;
+          case 3:
+            // 任务过期
+            Geeklab.showInfoModal('任务已过期');
+          break;
+          case 4:
+            // 没有抢到当前任务
+            Geeklab.showInfoModal('你没有抢到当前任务');
+          break;
+          case 5:
+            // 没有当前任务
+            Geeklab.showInfoModal('不存在这个任务');
+          break;
+          case 6:
+            // 没有权限
+            Geeklab.showInfoModal('你没有权限进行操作');
+          break;
+        }
       }
     })
     .error(function(errors, status) {

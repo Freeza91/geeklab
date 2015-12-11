@@ -103,7 +103,6 @@ $(function () {
           isUploading = assignment.uploading || assignment.uploadFailed;
       return isFresh && !isUploading;
     }
-    console.log(false);
     return false;
   }
 
@@ -195,14 +194,12 @@ $(function () {
         Geeklab.uploader.upload(assignment.id, file, function (progressPercent) {
           Geeklab.showUploadProgress(progressPercent, $progressCircle);
         }, function (data) {
-          console.log('上传成功');
           assignment.video = data.video;
           assignment.uploading = false;
           assignment.status = 'wait_check';
           assignment.stop_time = true;
           Geeklab.clearUploadProgresss($progressCircle);
         }, function () {
-          console.log('上传失败');
           assignment.uploading = false;
           assignment.uploadFailed = true;
           Geeklab.clearUploadProgresss($progressCircle);

@@ -85,10 +85,12 @@ main role="main"
             span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"
               i.icon-inner.icon-score-old
             span.number v-text="assignment.credit"
-            span v-if="showBonus(assignment)"
-              | &nbsp+&nbsp
-            span.extra v-if="showBonus(assignment)"
-              | 评分奖励
+            .extra v-if="showBonus(assignment)"
+              span
+                | &nbsp+&nbsp
+              span
+                | 评分奖励
+              .fa.fa-exclamation-circle
               .extra-score
                 p
                   | 产品经理会对上传的视频进行评分, 评分星级为1-5星

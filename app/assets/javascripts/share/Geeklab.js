@@ -92,7 +92,14 @@ $(function () {
   Geeklab.removeLoading = function () {
     $('body .jar').remove();
     Geeklab.removeMak();
-  }
+  };
+
+  Geeklab.showInfoModal = function (infoContent) {
+    var $modal = $('#info-modal');
+    $modal.find('.content').text(infoContent);
+    $('body').append('<div class="main-mask"></div>');
+    $modal.addClass('show');
+  };
 
   window.Geeklab = Geeklab;
 });

@@ -59,7 +59,8 @@
     resources :feedbacks
 
     collection do
-      get 'miss'
+      get 'fresh'
+      get 'finish'
       get 'join'
       get 'ing'
       get 'done'
@@ -75,6 +76,10 @@
       post 'callback_from_qiniu_transfer'
       post 'callback_from_qiniu_video_images'
       post 'rating'
+
+      get 'got_it'
+      get 'subscribe'
+      get 'unsubscribe'
     end
 
   end

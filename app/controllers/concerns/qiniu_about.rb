@@ -32,17 +32,27 @@ module QiniuAbout
 
   def upload_token
     json = { status: 0, code: 1, msg: "生成token成功", token: '' }
+
     if params[:name].blank?
-      json[:code], json[:msg] = 0, '文件名不能为空'
+      json[:code], json[:msg] = 2, '文件名不能为空'
     elsif current_user || auth_user_token(params[:auth_token])
       assignment_id = params[:assignment_id]
-      if assignment_id && Assignment.find_by(id: assignment_id)
-        json[:token] = generate_token(params[:assignment_id], params[:name])
+      if assignment_id && assignment = Assignment.find_by(id: assignment_id)
+        project = assignment.project
+        if project.beginner || assignment.can_do?
+          json[:token] = generate_token(params[:assignment_id], params[:name])
+        else
+          if assignment.expired?
+            json[:code], json[:msg] = 3, '任务过期'
+          else
+            json[:code], json[:msg] = 4, '你木有抢到，无法做任务'
+          end
+        end
       else
-        json[:code], json[:msg] = 0, '当前账户没有此任务信息'
+        json[:code], json[:msg] = 5, '当前账户没有此任务信息'
       end
     else
-      json[:code], json[:msg] = 0, '你没有权限!'
+      json[:code], json[:msg] = 6, '你没有权限!'
     end
 
     render json: json
@@ -81,6 +91,11 @@ module QiniuAbout
         json[:code] = 1
         json[:video] = video
         json[:msg] = '上传文件成功'
+
+        # 时间暂停
+        project = assignment.project
+        assignment.update_columns(stop_time: true, stop_time_at: Time.now ) unless project.beginner # 不是新手任务
+
       end
     end
 

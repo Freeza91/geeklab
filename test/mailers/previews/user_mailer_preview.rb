@@ -25,5 +25,9 @@ if Rails.env.development?
       task_url = "#{Settings.domain}/testers/1/assignments/join"
       UserMailer.video_check_success('rudy@geekpark.net', name, task_url)
     end
+
+    def subscribe_notify
+      UserMailer.subscribe_notify('yuanyegreat@163.com', 'hello', "http://test.geeklab.cc/assignments/join")
+    end
   end
 end

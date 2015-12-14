@@ -8,19 +8,7 @@ main role="main"
             .fa.fa-mobile v-if="project.device !== 'web'"
             .fa.fa-desktop v-if="project.device === 'web'"
             span v-text="project.name"
-            //| 测试任务
           .right-operation
-            .timer v-if="canShowCountDown(project)"
-              | 距离任务结束:
-              span.day v-text="project.deadline[0]"
-                | 3
-              | 天
-              span.hour v-text="project.deadline[1]"
-                | 10
-              | 时
-              span.minute v-text="project.deadline[2]"
-                | 13
-              | 分
             .operation
               .fa.fa-trash-o v-on="click: showDeleteConfirm($index)" v-if="canBeDeleted(project.status)"
               a v-attr="href: '/projects/' + project.id + '/edit'" target="_blank" v-if="isEditable(project.status)"
@@ -32,10 +20,6 @@ main role="main"
               .project-comment v-if="project.status === 'not_accept' && project.reasons.length !== 0"
                 ol
                   li v-repeat="reason: project.reasons" v-text="reason"
-                  li
-                    | comment2
-                  li
-                    | comment3
                 .triangle
         .item-body v-show="$index === 0"
           .nav-subtabs.dark-blue

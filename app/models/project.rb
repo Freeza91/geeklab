@@ -2,7 +2,6 @@ class Project < ActiveRecord::Base
 
   validates :name, :profile, :platform, :desc,
             :requirement, :device,
-            # :expired_at
             :contact_name, :phone, :email, :company,
             presence: true
 
@@ -22,106 +21,50 @@ class Project < ActiveRecord::Base
   before_save { self.email = email.to_s.downcase }
   after_update :prepare_assign
   after_save :auto_update_status
-  after_save :set_expired_at
 
   mount_uploader :qr_code, QrCodeUploader
 
   scope :success,           -> { where(status: 'success') }
   scope :collect_beigning,  -> { order("updated_at desc").where(beginner: true) }
 
-  def to_json_with_tasks
-    {
-      name: name,
-      profile: profile,
-      device: device,
-      requirement: requirement,
-      qr_code: qr_code.try(:url),
-      platform: platform,
-      desc: desc,
-      tasks: self.tasks
-    }
+  include JSONS::Project
+
+  def available
+    value = $redis.get("available-#{id}")
+    unless value
+      value = demand - self.assignments.done.show_pm.try(:size).to_i
+      value > 0 ? value : 0
+      $redis.set("available-#{id}", value)
+    end
+
+    value.to_i
   end
 
-  def to_json_to_pm
-    {
-      id: self.to_params,
-      name: name,
-      profile: profile,
-      device: device,
-      demand: demand,
-      requirement: requirement,
-      qr_code: qr_code.try(:url),
-      platform: platform,
-      desc: desc,
-      contact_name: contact_name,
-      phone: phone,
-      email: email,
-      company: company,
-      user_feature: self.user_feature,
-      tasks: self.tasks
-    }
-  end
-
-  def to_json_for_index
-    {
-      id: self.to_params,
-      name: name,
-      status: get_status,
-      profile: profile,
-      device: device,
-      demand: demand,
-      requirement: requirement,
-      qr_code: qr_code.try(:url),
-      platform: platform,
-      desc: desc,
-      expired_at: expired_at,
-      contact_name: contact_name,
-      phone: phone,
-      email: email,
-      company: company,
-      user_feature: self.user_feature,
-      tasks: self.tasks,
-      reasons: reasons,
-      assignments: self.assignments.done
-                       .show_pm.order("updated_at desc")
-                       .limit(demand)
-                       .map{|a| {id: a.to_params, video: a.video, is_read: a.is_read}}
-    }
+  def available?
+    return false if get_status == 'finish'
+    available > 0 ? true : false
   end
 
   def get_status
 
-    return status unless status == 'underway'
+    return status unless status == 'underway' # 审核流程：success -> underway(进行中)
 
     num = self.assignments.done.show_pm.try(:size)
-    if !expired? && num < demand
-      self.update_column(:status, 'failed')
-    elsif num >= demand
+    if num >= demand
       self.update_column(:status, 'finish')
     end
-    status
-  end
 
-  def expired?
-    expired_at.to_i > Time.now.to_i
+    status
   end
 
   def prepare_assign
     StartAssignJob.perform_later(id) if status == 'success' &&
                                         status_was != 'success' &&
-                                        expired? && is_beigner?
+                                        is_beigner?
   end
 
   def is_beigner?
     !beginner
-  end
-
-  def set_expired_at
-    if beginner
-      update_column(:expired_at, Time.now + 100.years)
-    elsif beginner_was && !beginner
-      update_column(:expired_at, DateTime.new(2015,3,2))
-    end
   end
 
   def auto_update_status

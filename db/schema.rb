@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151027070138) do
+ActiveRecord::Schema.define(version: 20151203091301) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,13 +35,17 @@ ActiveRecord::Schema.define(version: 20151027070138) do
     t.string   "video"
     t.boolean  "is_transfer",       default: false
     t.boolean  "is_sexy",           default: false
-    t.string   "reasons",                           array: true
+    t.string   "reasons",                                           array: true
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "is_read",           default: false
     t.boolean  "public",            default: false
     t.integer  "rating_from_pm"
     t.integer  "rating_from_admin"
+    t.datetime "expired_at",        default: '2015-03-02 00:00:00'
+    t.boolean  "flag",              default: false
+    t.boolean  "stop_time",         default: false
+    t.datetime "stop_time_at"
   end
 
   create_table "comments", force: :cascade do |t|
@@ -131,6 +135,7 @@ ActiveRecord::Schema.define(version: 20151027070138) do
     t.boolean  "beginner",     default: false
     t.datetime "assign_time",  default: '2015-03-02 00:00:00'
     t.integer  "basic_bonus",  default: 0
+    t.integer  "duration",     default: 86400
   end
 
   create_table "skus", force: :cascade do |t|
@@ -202,7 +207,7 @@ ActiveRecord::Schema.define(version: 20151027070138) do
     t.datetime "updated_at"
     t.datetime "last_view_time",         default: '2015-05-21 11:37:35'
     t.integer  "credits",                default: 0
-    t.datetime "approved_time",          default: '2015-07-28 18:03:00'
+    t.datetime "approved_time",          default: '2015-07-31 11:54:50'
     t.integer  "admin",                  default: 0
     t.datetime "last_login"
     t.boolean  "limit_user",             default: false

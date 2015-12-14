@@ -1,82 +1,179 @@
-main role="main" class="#{isAssignmentEmpty(@assignments)}"
-  section.assignments-list data-tester-id="#{@current_user.to_tester.to_params}"
+main role="main"
+  section.assignments-lis
     ul.nav.nav-tabs role="tablist"
       li.active
         a href="#{assignments_path}"
-          | 新任务
+          | 未参与
       li
         a href="#{join_assignments_path}"
-          | 我参与的
-    .assignments-wrp.clearfix
-      - if @assignments
-        - @assignments.each do |assignment|
-          .card data-assignment-id="#{assignment.to_params}"
-            .inner
-              header
-                h1.title
-                  i.fa.fa-mobile
-                  span action="getAssignmentDetail"
-                    = assignment.project.name
-                  - if current_user.approved
-                    span.close.assignment-del
-                      | &times
-                p.describle
-                  = assignment.project.profile
-              .content
-                img
-                = render partial: 'assignments/operators/wait_upload'
-                = render partial: 'assignments/operators/uploading'
-                = render partial: 'assignments/operators/upload_failed'
-              footer
-                .timer
-                   - if Time.now + 50.years > assignment.project.expired_at
-                    p
-                      | 距离任务结束
-                      span.time data-deadline="#{assignment.project.expired_at}"
-                        | 00:00:00
-                .score
-                  span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"
+          | 已参与
+    nav.nav-subtabs
+      ul
+        li
+          a.active href="javascript: void(0)" data-target="#assignments-fresh" data-hash="fresh"
+            | 进行中
+        li
+          a href="javascript: void(0)" data-target="#assignments-finish" data-hash="finish"
+            | 已结束
+    #assignments-fresh.assignments-wrp.clearfix.active v-class="empty: noAssign"
+      .assignment-item v-repeat="assignment:assignments"
+        .item-header
+          .title
+            .fa.fa-mobile v-if="assignment.type === 'mobile'"
+            .fa.fa-desktop v-if="assignment.type === 'web'"
+            span v-text="assignment.name"
+          .describle v-text="assignment.profile"
+        .item-body
+          .operators v-if="!assignment.beginner"
+            .operator.order v-show="showOrderOperator(assignment)"
+              .content-wrp.vertical-center
+                .vertical-item
+                  p
+                    | 仅剩
+                    span.available-count v-text="assignment.available_count"
+                    |个名额
+                  p.sub-hint v-if="assignment.subscribe"
+                    | 已订阅提醒
+                    a href="javascript: void(0)" v-on="click: unsubscribe(assignment)"
+                      | 取消订阅
+              .button-wrp.button-center
+                button.btn.btn-flat.blue.btn-rounded.btn-s v-on="click: order(assignment)"
+                  | 抢任务
+            .operator.subscribe v-show="showSubscribeOperator(assignment)"
+              .content-wrp.vertical-center
+                .vertical-item
+                  p
+                    | 名额已抢光
+                  p.sub-hint
+                    | 订阅提醒后有空出的名额会邮件通知你
+              .button-wrp.button-center
+                button.btn.btn-flat.blue.btn-rounded.btn-s v-if="!assignment.subscribe" v-on="click: subscribe(assignment)"
+                  | 订阅提醒
+                button.btn.btn-flat.blue.btn-rounded.btn-s v-if="assignment.subscribe" v-on="click: unsubscribe(assignment)"
+                  | 取消订阅
+          .operators v-if="assignment.beginner"
+            .operator.wait-upload v-show="!assignment.uploading && !assignment.uploadFailed"
+              .content-wrp
+                .icon.icon-file
+              .button-wrp.button-center
+                button.btn.btn-flat.blue.btn-rounded.btn-s v-on="click: startAssignment(this, assignment, $event, $index)"
+                  | 开始体验
+            .operator.uploading v-show="assignment.uploading"
+              .content-wrp
+                .progressCircle
+                  .left
+                    .inner
+                  .right
+                    .inner
+                  .mask
+                    span.progressCount
+                      | 0%
+              .button-wrp.button-center
+                button.btn.btn-flat.blue.btn-rounded.btn-s v-on="click: cancelUploading(assignment)"
+                  | 取消
+            .operator.upload-failed v-show="assignment.uploadFailed"
+              .content-wrp.vertical-center
+                p.vertical-item
+                  | 上传失败
+              .button-wrp.button-center
+                button.btn.btn-flat.blue.btn-rounded.btn-s v-on="click: reuploadVideo(this, assignment, $event, $index)"
+                  | 重新上传
+                button.btn.btn-flat.blue.btn-rounded.btn-s v-on="click: cancelReupload(assignment)"
+                  | 取消
+        .item-footer
+          .score
+            span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"
+              i.icon-inner.icon-score-old
+            span.number v-text="assignment.credit"
+            .extra v-if="showBonus(assignment)"
+              span
+                | &nbsp+&nbsp
+              span
+                | 评分奖励
+              .fa.fa-exclamation-circle
+              .extra-score
+                p
+                  | 产品经理会对上传的视频进行评分, 评分星级为1-5星
+                p
+                  | (请谨慎录制, 审核通过的视频将无法修改)
+                p
+                  | 评分奖励 =
+                  span.icon-img.icon-outer-18 style="margin: 0 5px -5px"
                     i.icon-inner.icon-score-old
-                  span.number
-                    = assignment.project.credit
-                  - if !assignment.project.beginner && !is_old_assignment(assignment.project.created_at)
-                    span
-                      | &nbsp+&nbsp
-                    span.extra
-                      | 评分奖励
-                      = render partial: "assignments/shared/extra_score", locals: {credit_record: nil, bonus: assignment.project.basic_bonus}
-    .load-more
-      - if @assignments.try(:size) == 10
-        button.btn.btn-base.yellow.btn-full
+                  span style="padding: 0 3px" v-text="assignment.bonus"
+                  span
+                    | * 星
+                p style="padding-top: 15px"
+                  a href="#{how_to_get_five_star_testers_path}" target="_blank"
+                    | 如何获得5星好评
+                .extra-score-triangle
+      .load-more v-if="!noAssign"
+        button.btn.btn-flat.yellow.btn-full v-show="!isAll" v-on="click: loadNextPage(this)"
           | 加载更多
-    - if @assignments.try(:size) == 0
-        p.no-assignment-hint
-          | 目前没有新任务，过段时间再来查看吧
+        p v-show="isAll"
+          | 没有更多了
+      p.no-assignment-hint v-if="noAssign"
+        | 目前没有新任务，过段时间再来查看吧
+    #assignments-finish.assignments-wrp.clearfix v-class="empty: noAssign"
+      .assignment-item v-repeat="assignment: assignments"
+        .item-header
+          .title
+            .fa.fa-mobile v-if="assignment.type === 'mobile'"
+            .fa.fa-desktop v-if="assignment.type === 'web'"
+              span v-text="assignment.name"
+          .describle v-text="assignment.profile"
+        .item-body
+          .operators
+            .operator.finish
+              .content-wrp.vertical-center
+                .vertical-item
+                  p
+                    | 任务已结束
+        .item-footer
+          .score
+            span.icon-img.icon-outer-18 style="margin: 0 5px -3px 0"
+              i.icon-inner.icon-score-old
+            span.number v-text="assignment.credit"
+            .extra v-if="showBonus(assignment)"
+              span
+                | &nbsp+&nbsp
+              span.extra v-if="showBonus(assignment)"
+                | 评分奖励
+              .extra-score
+                p
+                  | 产品经理会对上传的视频进行评分, 评分星级为1-5星
+                p
+                  | (请谨慎录制, 审核通过的视频将无法修改)
+                p
+                  | 评分奖励 =
+                  span.icon-img.icon-outer-18 style="margin: 0 5px -5px"
+                    i.icon-inner.icon-score-old
+                  span style="padding: 0 3px" v-text="assignment.bonus"
+                  span
+                    | * 星
+                p style="padding-top: 15px"
+                  a href="#{how_to_get_five_star_testers_path}" target="_blank"
+                    | 如何获得5星好评
+                .extra-score-triangle
+      .load-more v-if="!noAssign"
+        button.btn.btn-flat.yellow.btn-full v-show="!isAll" v-on="click: loadNextPage(this)"
+          | 加载更多
+        p v-show="isAll"
+          | 没有更多了
+      p.no-assignment-hint v-if="noAssign"
+        | 还没有已结束的任务
 
   <!-- 上传视频文件选择-->
   input type="file" id="video" accept="video/mp4,video/x-m4v,video/*" style="display:none"
   <!-- 上传视频文件选择-->
 
-  //= render partial: 'assignments/shared/miss_assignments_reminder'
-  <!-- 过期任务入口 -->
-  .assignments-reminder
-   a href="#{miss_assignments_path}" target="_blank"
-    | 过期任务
-
+<!-- 完成个人信息的提示 -->
 - if !current_user.to_tester.tester_infor.try(:already_finish) && current_user.approved
-  <!-- 完成个人信息的提示 -->
-  .operate.show#info-finish-hint data-backdrop='static'
-    .handle
-    .operate-content
-      p.content
-        | 想体验更多合你口味的产品?赶紧去完善个人信息吧!
-      .tools
-        a.btn.btn-flat.blue.btn-rounded.btn-s href="#{new_tester_path}"
-          | 现在就去
-        button.btn.btn-flat.blue.btn-rounded.btn-s.js-operate-cancel
-          | 算了
-  .main-mask
-  <!-- 完成个人信息的提示结束 -->
+  = render partial: 'assignments/shared/finish_info_hint'
+<!-- 完成个人信息的提示结束 -->
 
 = render partial: 'shared/confirm_modal'
+= render partial: 'assignments/shared/subscribe_modal'
 = render partial: 'assignments/shared/assignment_detail'
+.user-info
+  input#tester-id type="hidden" value="#{@current_user.to_tester.to_params}"

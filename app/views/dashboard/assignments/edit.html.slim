@@ -9,15 +9,17 @@
       | 体验师邮箱:
     a href="#{edit_dashboard_user_path(@assignment.tester)}" target="_blank"
       = @assignment.tester.email
-  .assignment-deadline
-    span.name
-      | 过期时间:
-    span
-      = @assignment.project.expired_at.strftime("%F: %T")
 .content-block
   - if @assignment.video && @assignment.video != ''
     video controls="controls" style="width: 30%; height: 20%; align: center"
       source src="#{@assignment.try(:video)}"
+
+    - if @assignment.expired_upload?
+      p
+        | 此视频是用户过期上传完成的
+    - else
+      p
+        | 正常上传完成
   - else
     p
       | 用户还未上传视频

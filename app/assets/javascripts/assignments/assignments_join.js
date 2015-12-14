@@ -188,10 +188,11 @@ $(function () {
         // 清空input的value, 使再次选中同一视频时还能触发change事件
         $(this).val('');
 
-        // 显示上传进度
-        assignment.uploading = true;
         // 调用uploader上传视频
-        Geeklab.uploader.upload(assignment.id, file, function (progressPercent) {
+        Geeklab.uploader.upload(assignment.id, file, function () {
+          // 显示上传进度
+          assignment.uploading = true;
+        }, function (progressPercent) {
           Geeklab.showUploadProgress(progressPercent, $progressCircle);
         }, function (data) {
           assignment.video = data.video;

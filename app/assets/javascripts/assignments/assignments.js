@@ -236,7 +236,7 @@ $(function () {
       });
     }
 
-    this.upload = function (assignmentId, file, onProgress, callback, errorHandle) {
+    this.upload = function (assignmentId, file, beforeUpload, onProgress, callback, errorHandle) {
 
       var blockSize = 4 << 20;
       that.file = file;
@@ -256,6 +256,7 @@ $(function () {
       that.errorHandle = errorHandle;
 
       getUploadToken(assignmentId, file.name, function (token) {
+        beforeUpload();
         that.uploadToken = token;
         while(that.blockIndex < 5) {
           that.httpCount = that.httpCount + 1;

@@ -33,6 +33,10 @@ class NotitySubscribeJob < ActiveJob::Base
 
         next if $redis.get("notify-#{u_id}") # 如果已经通知过则直接跳过
 
+        # must be first set
+        $redis.set "notify-#{u_id}", true
+        $redis.expire "notify-#{u_id}", 180
+
         tester = Tester.where(id: u_id).first
         info = tester.tester_infor
 
@@ -53,9 +57,6 @@ class NotitySubscribeJob < ActiveJob::Base
           end
 
         UserMailer.subscribe_notify(email, name, task_url).deliver_later
-
-        $redis.set "notify-#{u_id}", true
-        $redis.expire "notify-#{u_id}", 180
 
       end
     end

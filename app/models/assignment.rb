@@ -79,7 +79,7 @@ class Assignment < ActiveRecord::Base
   def extra_status
     extra_status = ''
 
-    if project.beginner || !expired?
+    if project.beginner || status != 'new' || !expired?
       extra_status = 'normal'
     else
       if project.available?

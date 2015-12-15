@@ -95,7 +95,7 @@ main role="main"
             ol.reasons v-if="showReasons(assignment)"
               li v-repeat="reason: assignment.reasons" v-text="reason"
         .item-footer
-          .countdown v-if="!assignment.beginner && assignment.extra_status === 'normal'"
+          .countdown v-if="showCountdown(assignment)"
             | 剩余时间:
             span.day v-text="assignment.deadline[0]"
             | 天
@@ -105,7 +105,7 @@ main role="main"
             | 分
             span.second v-text="assignment.deadline[3]"
             | 秒
-          .countdown-hint v-if="!assignment.beginner && assignment.extra_status === 'normal'"
+          .countdown-hint v-if="showCountdown(assignment)"
             .fa.fa-exclamation-circle
             .hint-content
               p v-if="!assignment.stop_time"

@@ -138,6 +138,10 @@ $(function () {
     return statusMap[assignmentStatus];
   }
 
+  function showCountdown (assignment) {
+    return !assignment.beginner && assignment.extra_status === 'normal' && assignment.expired_time >= 0;
+  }
+
   function showReasons (assignment) {
     if(assignment.reasons && assignment.reasons.length > 0) {
       return assignment.status === 'not_accept' || assignment.status === 'failed';
@@ -173,6 +177,7 @@ $(function () {
     }
     return imageUrl;
   }
+
 
   // 选中视频后触发视频上传
   $('#video').on('change', function () {
@@ -399,6 +404,7 @@ $(function () {
       // 数据显示
       showStatus: showStatus,
       mapStatus: mapStatus,
+      showCountdown: showCountdown,
       showReasons: showReasons,
       showBonus: showBonus,
       videoImage: videoImage,

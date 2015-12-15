@@ -122,6 +122,9 @@ $(function () {
     } else {
       assignmentsFresh.noAssign = true;
     }
+    if(assignments.length < 10) {
+      assignmentsFresh.isAll = true;
+    }
     Geeklab.removeLoading();
   });
 
@@ -130,6 +133,9 @@ $(function () {
       assignmentsFinish.assignments = assignments;
     } else {
       assignmentsFinish.noAssign = true;
+    }
+    if(assignments.length < 10) {
+      assignmentsFresh.isAll = true;
     }
   });
 

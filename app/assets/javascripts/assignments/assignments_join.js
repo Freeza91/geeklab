@@ -463,6 +463,9 @@ $(function () {
     } else {
       assignmentsIng.noAssign = true;
     }
+    if(assignments.length < 10) {
+      assignmentsIng.isAll = true;
+    }
     Geeklab.removeLoading();
   });
 
@@ -471,6 +474,9 @@ $(function () {
       assignmentsDone.assignments = assignments;
     } else {
       assignmentsDone.noAssign = true;
+    }
+    if(assignments.length < 10) {
+      assignmentsFinish.isAll = true;
     }
   });
 

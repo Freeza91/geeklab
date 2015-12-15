@@ -560,6 +560,13 @@ $(function () {
   }
 
   Geeklab.startAssignment = function (vm, assignment, event, index) {
+    // 判断任务是否过期
+    if(assignment.expired_time <= 0) {
+      // 任务过期
+      Geeklab.showInfoModal('任务已过期');
+      return false;
+    }
+
     Geeklab.showLoading();
     var assignmentId = assignment.id;
     assignmentDetailVm.id = assignmentId;

@@ -9,7 +9,7 @@ class NotitySubscribeJob < ActiveJob::Base
 
     unless assignment.status == 'success' # 自己的任务没完成
 
-      if assignment.expired?  # 已经过期
+      if assignment.expired? && !assignment.stop_time # 已经过期并且处在任务非暂停状态
         if project.get_status != 'finish' # 可以继续做，重新可以抢
           send_notity_email(project.id, assignment)
           delete_qiniu_resource(assignment) if assignment.status == 'not_accept' # 任务不成功

@@ -140,7 +140,7 @@ main role="main"
                     | 如何获得5星好评
                 .extra-score-triangle
       .load-more v-if="!noAssign"
-        button.btn.btn-flat.yellow.btn-full v-on="click: loadNextPage(this)" v-show="!isAll"
+        button.load-more-btn.btn.btn-flat.yellow.btn-full v-on="click: loadNextPage(this)" v-show="!isAll"
           | 加载更多
         p v-show="isAll"
           | 没有更多了
@@ -212,7 +212,7 @@ main role="main"
                     | 如何获得5星好评
                 .extra-score-triangle
       .load-more v-if="!noAssign"
-        button.btn.btn-flat.yellow.btn-full v-on="click: loadNextPage(this)" v-show="!isAll"
+        button.load-more-btn.btn.btn-flat.yellow.btn-full v-on="click: loadNextPage(this)" v-show="!isAll"
           | 加载更多
         p v-show="isAll"
           | 没有更多了

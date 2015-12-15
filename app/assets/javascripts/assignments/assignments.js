@@ -418,6 +418,9 @@ $(function () {
 
   // 加载assignments下一页
   Geeklab.loadNextPage = function (vm) {
+    if(vm.isAll) {
+      return false;
+    }
     var type = vm.type,
         page = vm.page + 1;
     Geeklab.fetchAssignmentPaging(type, page, function (assignments) {
@@ -431,13 +434,8 @@ $(function () {
     });
   }
 
-  // 瀑布流加载，监听window滚动事件
-  $(window).on('scroll', function () {
-    // 第一页数量小于10
-    if(!!$('.load-more p')){
-      $(window).unbind('scroll');
-      return false;
-    }
+
+  Geeklab.fallLoad = function () {
     // 页面高度
     var pageHeight = $(document).height();
     // 视窗高度
@@ -445,14 +443,11 @@ $(function () {
     // 滚动高度
     var scrollTop = $(window).scrollTop();
      //滚动到底部时自动加载新任务
-    if((viewHeight + scrollTop) > (pageHeight - 10)) {
-      // 页数自增
-      page++;
-      getAssignmentPaging(page, function (data) {
-        appendAssignments(data.assignments);
-      });
+    if((viewHeight + scrollTop) > (pageHeight - 15)) {
+      $('.assignments-wrp.active .load-more-btn').click();
     }
-  });
+  };
+  $(window).on('scroll', Geeklab.fallLoad);
 
   // 上传视频按钮的click事件处理函数
   $('.js-video-upload').on('click', function () {

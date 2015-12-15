@@ -476,7 +476,7 @@ $(function () {
       assignmentsDone.noAssign = true;
     }
     if(assignments.length < 10) {
-      assignmentsFinish.isAll = true;
+      assignmentsDone.isAll = true;
     }
   });
 

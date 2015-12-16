@@ -420,10 +420,11 @@ $(function () {
     var url = '/assignments/' + assignemntId;
     $.ajax({
       url: url,
+      data: {type: 'ing'},
       datatype: 'json',
       success: function (data) {
         console.log(data);
-        callback(data);
+        callback(data.assignment);
       },
       error: function (xhr, textStatus, errors) {
         console.log(errors);
@@ -494,6 +495,9 @@ $(function () {
           break;
           case 3:
             // 任务过期
+            Geeklab.fetchAssignment(assignmentId, function (assignment) {
+              assignmentsIng.assignments.$set(assignmentsIng.currAssignIndex, assignment);
+            });
             Geeklab.showInfoModal('任务已过期');
           break;
           case 4:
@@ -576,6 +580,9 @@ $(function () {
     // 判断任务是否过期
     if(!assignment.beginner && assignment.expired_time <= 0) {
       // 任务过期
+      Geeklab.fetchAssignment(assignment.id, function (newAssignment) {
+        vm.assignments.$set(index, newAssignment);
+      });
       Geeklab.showInfoModal('任务已过期');
       return false;
     }

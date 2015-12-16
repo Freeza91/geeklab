@@ -44,10 +44,16 @@ class AssignmentsController < ApplicationController
     json = { status: 0, code: 1 }
 
     @assignment = Assignment.find_by(id: params[:id])
+    type = params[:type]
 
     if @assignment && @assignment.tester_id == current_user.id
-      @project = @assignment.project
-      json[:project] = @project.to_json_with_tasks
+      case type
+        when 'task'
+          @project = @assignment.project
+          json[:project] = @project.to_json_with_tasks
+        when 'ing'
+          json[:assignment] = @assignment.to_json_for_ing
+      end
     else
       json[:code], json[:msg] = 0, '项目为空'
     end

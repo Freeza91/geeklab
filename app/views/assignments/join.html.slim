@@ -141,7 +141,11 @@ main role="main"
                 .extra-score-triangle
       .load-more v-if="!noAssign"
         button.load-more-btn.btn.btn-flat.yellow.btn-full v-on="click: loadNextPage(this)" v-show="!isAll"
-          | 加载更多
+          span v-show="!loading"
+            | 加载更多
+          span v-show="loading"
+            | 正在加载
+          .fa.fa-circle-o-notch.fa-spin v-show="loading"
         p v-show="isAll"
           | 没有更多了
       p.no-assignment-hint v-if="noAssign"
@@ -213,7 +217,11 @@ main role="main"
                 .extra-score-triangle
       .load-more v-if="!noAssign"
         button.load-more-btn.btn.btn-flat.yellow.btn-full v-on="click: loadNextPage(this)" v-show="!isAll"
-          | 加载更多
+          span v-show="!loading"
+            | 加载更多
+          span v-show="loading"
+            | 正在加载
+          .fa.fa-circle-o-notch.fa-spin v-show="loading"
         p v-show="isAll"
           | 没有更多了
       p.no-assignment-hint v-if="noAssign"

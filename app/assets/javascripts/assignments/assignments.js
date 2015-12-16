@@ -423,6 +423,7 @@ $(function () {
     }
     var type = vm.type,
         page = vm.page + 1;
+    vm.loading = true;
     Geeklab.fetchAssignmentPaging(type, page, function (assignments) {
       if(assignments.length > 0) {
         vm.assignments = vm.assignments.concat(assignments);
@@ -431,6 +432,7 @@ $(function () {
       if(assignments.length < 10) {
         vm.isAll = true;
       }
+      vm.loading = false;
     });
   }
 

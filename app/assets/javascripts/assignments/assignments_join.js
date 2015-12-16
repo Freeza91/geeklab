@@ -169,6 +169,9 @@ $(function () {
 
   function videoImage(assignment) {
     var imageUrl = '';
+    if(assignment.uploading || assignment.uploadFailed) {
+      return imageUrl;
+    }
     if(assignment.status === 'success') {
       imageUrl =  'url(' + assignment.video + '?vframe/png/offset/0)';
     } else {

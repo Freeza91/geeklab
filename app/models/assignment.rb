@@ -33,7 +33,7 @@ class Assignment < ActiveRecord::Base
     end
 
     def new_tasks
-      not_assigned.not_finish.not_take_part # 没有抢到同时也没完成还是新手任务
+      not_assigned.not_finish
     end
 
     def finish_project

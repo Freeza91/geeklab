@@ -9,6 +9,7 @@ class Assignment < ActiveRecord::Base
   scope :not_finish,   -> { joins(:project).where("projects.status != ?", 'finish') }
   scope :ing,          -> { where('assignments.status in (?)', ['wait_check', 'checking', 'not_accept']) }
   scope :done,         -> { where("assignments.status = ?", "success") }
+  scope :not_done,     -> { where("assignments.status != ?", "success") }
   scope :show_pm,      -> { where("public = ?", true) }
 
   belongs_to :tester,  inverse_of: :assignments
@@ -40,8 +41,7 @@ class Assignment < ActiveRecord::Base
     end
 
     def take_part_ing
-      assigned.not_finish.not_delete + ing # 抢到但是为完成和正在进行中的新手任务
-                                           # 两者不可能同时存在
+      assigned.not_finish.not_done.not_delete
     end
 
     def finish_task

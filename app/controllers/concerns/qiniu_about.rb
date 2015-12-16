@@ -1,4 +1,3 @@
-require 'active_support/concern'
 
 module QiniuAbout
   extend ActiveSupport::Concern
@@ -90,6 +89,7 @@ module QiniuAbout
         video = "http://" + Settings.qiniu_bucket_domain + "/" + params[:key_name].to_s
         if project
           if project.beginner # 新手任务无限制
+            assignment.update_column(:flag, true) if !assignment.flag
             json = success_upload(video, assignment)
           else
             if assignment.can_do? # 非过期上传

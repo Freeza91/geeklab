@@ -376,6 +376,12 @@ $(function () {
     for(var i = 0, len = assignments.length; i < len; i++) {
       assignment = assignments[i];
       if(assignment.expired_time <= 0) {
+        // 是否在上传视频
+        if(assignment.uploading) {
+          cancelUploading(assignment);
+          assignment.uploadFailed = true;
+          Geeklab.showInfoModal('上传失败, 任务已过期');
+        }
         continue;
       }
       if(assignment.beginner || assignment.stop_time) {

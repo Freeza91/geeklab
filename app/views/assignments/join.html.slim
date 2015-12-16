@@ -109,7 +109,7 @@ main role="main"
             .fa.fa-exclamation-circle
             .hint-content
               p v-if="!assignment.stop_time"
-                | 时间为0时任务没有完成, 任务将转移给其他人
+                | 请在剩余时间截止前成功提交视频, 时间截止未成功提交视频, 任务将发给大家继续抢(你也可以抢)
               p v-if="assignment.stop_time"
                 | 等待审核时, "剩余时间"会停止, 如果"审核不通过"时间将继续流逝
               .hint-triangle

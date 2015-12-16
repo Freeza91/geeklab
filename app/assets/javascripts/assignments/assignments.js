@@ -414,7 +414,22 @@ $(function () {
         console.log(errors);
       }
     });
-  }
+  };
+
+  Geeklab.fetchAssignment = function (assignemntId, callback) {
+    var url = '/assignments/' + assignemntId;
+    $.ajax({
+      url: url,
+      datatype: 'json',
+      success: function (data) {
+        console.log(data);
+        callback(data);
+      },
+      error: function (xhr, textStatus, errors) {
+        console.log(errors);
+      }
+    });
+  };
 
   // 加载assignments下一页
   Geeklab.loadNextPage = function (vm) {
@@ -434,7 +449,7 @@ $(function () {
       }
       vm.loading = false;
     });
-  }
+  };
 
 
   Geeklab.fallLoad = function () {
@@ -526,6 +541,7 @@ $(function () {
     var url = '/assignments/' + assignmentId;
     $.ajax({
       url: url,
+      data: {type: 'task'}
     })
     .done(function (data, status) {
       if(data.status === 0 && data.code === 1) {
@@ -558,7 +574,7 @@ $(function () {
 
   Geeklab.startAssignment = function (vm, assignment, event, index) {
     // 判断任务是否过期
-    if(assignment.expired_time <= 0) {
+    if(!assignment.beginner && assignment.expired_time <= 0) {
       // 任务过期
       Geeklab.showInfoModal('任务已过期');
       return false;

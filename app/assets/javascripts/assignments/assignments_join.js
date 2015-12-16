@@ -375,6 +375,9 @@ $(function () {
         as
     for(var i = 0, len = assignments.length; i < len; i++) {
       assignment = assignments[i];
+      if(assignment.beginner || assignment.stop_time) {
+        continue;
+      }
       if(assignment.expired_time <= 0) {
         // 是否在上传视频
         if(assignment.uploading) {
@@ -385,9 +388,6 @@ $(function () {
           assignment.uploadFailed = true;
           Geeklab.showInfoModal('上传失败, 任务已过期');
         }
-        continue;
-      }
-      if(assignment.beginner || assignment.stop_time) {
         continue;
       }
       assignment.expired_time = assignment.expired_time - 1;

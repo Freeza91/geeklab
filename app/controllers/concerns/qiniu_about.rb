@@ -229,6 +229,7 @@ private
     assignment.update_attributes(video: video, status: "wait_check", is_transfer: false)
 
     {
+      status: 0,
       code: 1,
       video: video,
       msg: '上传文件成功'

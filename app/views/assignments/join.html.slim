@@ -63,6 +63,9 @@ main role="main"
                   | 删除视频
               .content-wrp
                 .icon-play v-on="click: playVideo(assignment)"
+            .operator.no-btn.play v-if="assignment.status === 'checking'"
+              .content-wrp
+                .icon-play v-on="click: playVideo(assignment)"
             .operator.order v-show="assignment.extra_status === 'can_get'"
               .content-wrp.vertical-center
                 .vertical-item

@@ -88,15 +88,16 @@ module QiniuAbout
       if assignment.try(:tester_id) == tester.id
         project = assignment.project
         video = "http://" + Settings.qiniu_bucket_domain + "/" + params[:key_name].to_s
-
-        if project.beginner # 新手任务无限制
-          json = success_upload(video, assignment)
-        else project.beginner
-          if assignment.can_do? # 非过期上传
-            assignment.update_columns(stop_time: true, stop_time_at: Time.now)
+        if project
+          if project.beginner # 新手任务无限制
             json = success_upload(video, assignment)
           else
-            json[:code], json[:msg] = -1, '过期上传，上传不成功'
+            if assignment.can_do? # 非过期上传
+              assignment.update_columns(stop_time: true, stop_time_at: Time.now)
+              json = success_upload(video, assignment)
+            else
+              json[:code], json[:msg] = -1, '过期上传，上传不成功'
+            end
           end
         end
       end

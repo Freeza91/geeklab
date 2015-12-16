@@ -109,8 +109,9 @@ $(function () {
   function isWaitCheck(assignment) {
     var isWaitCheck = (assignment.status === 'wait_check') || (assignment.status === 'not_accept'),
         isUploading = assignment.uploading || assignment.uploadFailed,
-        isNormal = (assignment.extra_status === 'normal');
-    return isNormal && isWaitCheck && !isUploading;
+        isNormal = (assignment.extra_status === 'normal'),
+        notExpired = assignment.beginner || ((!assignment.beginner) && (assignment.expired_time > 0));
+    return isNormal && isWaitCheck && !isUploading && notExpired;
   }
 
   function canBeDeleted (assignment) {

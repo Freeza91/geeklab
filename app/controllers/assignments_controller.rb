@@ -127,8 +127,12 @@ class AssignmentsController < ApplicationController
 
     assignment = Assignment.find_by(id: params[:assignment_id])
     if assignment.tester.id == current_user.id
-      delete_video_at_qiniu(assignment, json)
-      recover_time_down(assignment)
+      if assignment.can_do?
+        delete_video_at_qiniu(assignment, json)
+        recover_time_down(assignment)
+      else
+        json[:code], json[:msg] = -1, '任务已经过期或者已经结束，你无法进行此项操作'
+      end
     else
       json[:code], json[:msg] = 0, '你没有权限操作'
     end

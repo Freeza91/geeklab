@@ -126,8 +126,10 @@ class AssignmentsController < ApplicationController
     json = { status: 0, code: 1, msg: '删除视频成功' }
 
     assignment = Assignment.find_by(id: params[:assignment_id])
-    if assignment.tester.id == current_user.id
-      if assignment.can_do?
+    if assignment && assignment.tester.id == current_user.id
+      if project = assignment.project && project.beginner # 新手任务
+        delete_video_at_qiniu(assignment, json)
+      elsif assignment.can_do?
         delete_video_at_qiniu(assignment, json)
         recover_time_down(assignment)
       else

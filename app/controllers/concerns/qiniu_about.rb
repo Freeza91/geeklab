@@ -86,16 +86,19 @@ module QiniuAbout
     if id && tester = Tester.find_by(id: id)
       assignment = Assignment.find_by(id: params[:id])
       if assignment.try(:tester_id) == tester.id
-        video = "http://" + Settings.qiniu_bucket_domain + "/" + params[:key_name].to_s
-        assignment.update_attributes(video: video, status: "wait_check", is_transfer: false)
-        json[:code] = 1
-        json[:video] = video
-        json[:msg] = '上传文件成功'
-
-        # 时间暂停
         project = assignment.project
-        assignment.update_columns(stop_time: true, stop_time_at: Time.now ) unless project.beginner # 不是新手任务
+        video = "http://" + Settings.qiniu_bucket_domain + "/" + params[:key_name].to_s
 
+        if project.beginner # 新手任务无限制
+          json = success_upload(video, assignment)
+        else project.beginner
+          if assignment.can_do? # 非过期上传
+            assignment.update_columns(stop_time: true, stop_time_at: Time.now)
+            json = success_upload(video, assignment)
+          else
+            json[:code], json[:msg] = -1, '过期上传，上传不成功'
+          end
+        end
       end
     end
 
@@ -116,7 +119,7 @@ module QiniuAbout
         )
         assignment.save
         # 将video进行分解
-        PfopVideoImagesJob.perform_later(assignment.id)
+        # PfopVideoImagesJob.perform_later(assignment.id)
       end
     end
 
@@ -219,6 +222,16 @@ private
 
   def qiniu_encode(content)
     Qiniu::Utils.urlsafe_base64_encode content
+  end
+
+  def success_upload(video, assignment)
+    assignment.update_attributes(video: video, status: "wait_check", is_transfer: false)
+
+    {
+      code: 1,
+      video: video,
+      msg: '上传文件成功'
+    }
   end
 
   def SoraAoi(image)

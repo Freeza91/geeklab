@@ -372,7 +372,7 @@
 .countdown-hint
   display: inline-block
 
-// extrao score
+// extra score
 .extra
   position: relative
   display: inline-block
@@ -384,7 +384,8 @@
     vertical-align: middle
     margin-left: 5px
 .extra-score
-  display: none
+  visibility: hidden
+  opacity: 0
   position: absolute
   bottom: 100%
   width: 200px
@@ -418,4 +419,5 @@
   +transform(rotate(45deg))
 .extra:hover
   .extra-score
-    display: block
+    opacity: 1
+    visibility: visible

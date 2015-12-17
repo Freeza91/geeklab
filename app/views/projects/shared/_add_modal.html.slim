@@ -1,27 +1,10 @@
-.modal.fade.sign#add-project data-backdrop='static'
-  .modal-dialog
-    .modal-content
-      .modal-header
-        button.close type='button' data-dismiss='modal' aria-label='Close'
-          span aria-hidden='true'
-            | &times
-        .logo 
-          img src=image_path('logo/logo.png')
-      .modal-body
-        h4.title
-          | 你想发布哪种测试?
-        p.content
-        .row
-          .col-md-6
-            .row
-              i.fa.fa-mobile.fa-5x style="color: #16a0c6; font-size: 7em"
-            .row
-              a.btn.btn-blue href="/projects/app/new"
-                | 应用测试
-          .col-md-6
-            .row
-              i.fa.fa-desktop.fa-5x style="color: #a0a0a0; padding: 13px 0;"
-            .row
-              a.btn.btn-gray href="/projects/web/new"
-                | 网页测试
+#add-project.operate data-backdrop='static'
+  .handle
+  .operate-content
+    p.content
+      | 你想发布哪种测试?
+    a.btn.btn-flat.blue.btn-circle.btn-s href="/projects/app/new"
+      .fa.fa-mobile
+    a.btn.btn-flat.blue.btn-circle.btn-s href="/projects/web/new"
+      .fa.fa-desktop
 

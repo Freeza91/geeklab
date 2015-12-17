@@ -90,6 +90,8 @@ a.btn:focus
 .btn:visited
   outline: none
 
+.btn-xs
+  width: 90px
 .btn-s
   width: 120px
 .btn-m
@@ -105,3 +107,15 @@ a.btn:focus
   border-radius: 30px
 .btn-rounded.btn-g
   border-radius: 40px
+.btn-circle.btn-xs
+  height: 90px
+  +border-radius(45px)
+.btn-circle.btn-s
+  height: 120px
+  +border-radius(60px)
+.btn-circle.btn-m
+  height: 160px
+  +border-radius(80px)
+.btn-circle.btn-g
+  height: 200px
+  +border-radius(100px)

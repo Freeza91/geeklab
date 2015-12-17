@@ -3,6 +3,12 @@ $(function () {
     return false;
   }
 
+  // 添加新任务
+  $('.add-project').on('click', function () {
+    $('body').append('<div class="main-mask" onclick="Geeklab.clearMask()"></div>')
+    $('#add-project').addClass('show');
+  });
+
   function confirmClose() {
     $('#confirm-modal').removeClass('show');
     $('body .main-mask').remove();

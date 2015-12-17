@@ -120,10 +120,14 @@ $(function () {
   }
 
   function showStatus (assignment) {
+    var isUploading = assignment.uploading || assignment.uploadFailed,
+        isNormal = assignment.extra_status === 'normal',
+        isNew = assignment.status === 'new';
+
     if(assignment.beginner) {
-      return assignment.status !== 'test';
+      return !isUploading && (assignment.status !== 'test');
     }
-    return (assignment.extra_status === 'normal') && (assignment.status !== 'new');
+    return isNormal && !isNew && !isUploading;
   }
 
   function mapStatus (assignmentStatus) {

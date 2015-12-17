@@ -210,9 +210,10 @@ private
   def recover_time_down(assignment)
     if assignment.stop_time
       new_expired_at = assignment.expired_at + (Time.now - assignment.stop_time_at)
-      assignment.update_columns(expired_at: new_expired_at, stop_time: false, status: 'new')
+      assignment.update_columns(expired_at: new_expired_at, stop_time: false)
       NotitySubscribeJob.set(wait_until: new_expired_at).perform_later(assignment.id)
     end
+    assignment.update_column(:status, 'new')
   end
 
 end

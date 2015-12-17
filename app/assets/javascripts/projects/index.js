@@ -102,11 +102,11 @@ $(function () {
 
   // 显示删除project确认对话框
   function showDeleteConfirm (index) {
-    var $modal = $('#confirm-modal');
-    $modal.data('eventName', 'deleteProject');
-    $modal.find('.content').text('确认删除任务?');
-    $('body').append('<div class="main-mask"></div>')
-    $modal.addClass('show');
+    Geeklab.showConfirmModal({
+      modal: '#confirm-modal',
+      eventName: 'deleteProject',
+      content: '确认删除任务'
+    });
 
     projectList.currProjectId = projectList.projects[index].id;
     projectList.currProjectIndex = index;

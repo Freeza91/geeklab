@@ -267,6 +267,7 @@ $(function () {
   function showDeleteVideoConfirm (vm, index) {
     vm.currAssignIndex = index;
     Geeklab.showConfirmModal({
+      modal: '#confirm-modal',
       eventName: 'deleteVideo',
       content: '确认删除视频?'
     });
@@ -276,6 +277,7 @@ $(function () {
   function showDeleteAssignConfirm (vm, index) {
     vm.currAssignIndex = index;
     Geeklab.showConfirmModal({
+      modal: '#confirm-modal',
       eventName: 'deleteAssign',
       content: '任务删除后将无法查看和恢复, 确认删除任务?'
     });

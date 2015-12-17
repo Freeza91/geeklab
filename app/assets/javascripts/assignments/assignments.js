@@ -527,14 +527,6 @@ $(function () {
    * options.content String 内容
    * options.eventName String 确认按钮将会触发的事件
    */
-  Geeklab.showConfirmModal = function (options) {
-    var $modal = $('#confirm-modal');
-    $modal.data('eventName', options.eventName);
-    $modal.find('.content').text(options.content);
-    $('body').append('<div class="main-mask"></div>');
-    $modal.addClass('show');
-  }
-
   $('.js-operate-cancel').on('click', function () {
     $(this).parents('.operate').removeClass('show');
     $('body .main-mask').remove();

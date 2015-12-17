@@ -87,8 +87,7 @@ class AssignmentsController < ApplicationController
   def ing
     json = {status: 0, code: 1, assignments: [] }
 
-    @assignments = @assignments.take_part_ing.sort_by { |a| -1 * a.id }.uniq
-    @assignments = Kaminari.paginate_array(@assignments).page(params[:page]).per(10)
+    @assignments = @assignments.take_part_ing.order('id desc').page(params[:page]).per(10)
     @assignments.each do |a|
       json[:assignments] << a.to_json_for_ing
     end

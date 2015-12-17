@@ -375,7 +375,7 @@ $(function () {
     var day,
         hour,
         minute,
-        as
+        assignment;
     for(var i = 0, len = assignments.length; i < len; i++) {
       assignment = assignments[i];
       if(assignment.beginner || assignment.stop_time) {

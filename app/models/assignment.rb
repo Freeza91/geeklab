@@ -173,7 +173,8 @@ class Assignment < ActiveRecord::Base
               # 累加基础分
               tester.update_column(:credits, credits)
               # 设置过期自动评分
-              AddBonusCreditJob.set(wait_until: expired_at || Time.now).perform_later(id, tester.id)
+              time = Time.now + project.rating_duration * 3600
+              AddBonusCreditJob.set(wait_until: time).perform_later(id, tester.id)
             end
           end
         end

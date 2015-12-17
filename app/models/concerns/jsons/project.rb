@@ -13,7 +13,8 @@ module JSONS
         reasons: reasons || [],
         basic_bonus: basic_bonus,
         beginner: beginner,
-        duration: expired_duration
+        expired_duration: expired_duration,
+        rating_duration: rating_duration
       }
     end
 

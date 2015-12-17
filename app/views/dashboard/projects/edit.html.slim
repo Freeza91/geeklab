@@ -133,8 +133,12 @@
       input type="text" v-model="project.basic_bonus" required="required"
     .item
       span.name
-        | 做任务的时长：
-      input type="text" v-model="project.duration" required="required"
+        | 做任务的时长(小时为单位)：
+      input type="text" v-model="project.expired_duration" required="required"
+    .item
+      span.name
+        | 任务评分周期(小时为单位)：
+      input type="text" v-model="project.rating_duration" required="required"
     .item
       span.name
         | 任务状态
@@ -200,7 +204,8 @@ javascript:
       data.status = project.status;
       data.credit = project.credit;
       data.basic_bonus = project.basic_bonus;
-      data.duration = project.duration;
+      data.expired_duration = project.expired_duration;
+      data.rating_duration = data.rating_duration;
       data.reasons = [];
       if(project.beginner === 'true') {
         data.beginner = true;

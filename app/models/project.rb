@@ -25,7 +25,7 @@ class Project < ActiveRecord::Base
   scope :success,           -> { where(status: 'success') }
   scope :collect_beigning,  -> { order("updated_at desc").where(beginner: true) }
 
-  include JSONS::Project
+  include ::Jsons::Project
   include ::Callbacks::Project
 
   def available

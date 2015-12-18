@@ -20,7 +20,7 @@ class Assignment < ActiveRecord::Base
 
   accepts_nested_attributes_for :feedbacks, allow_destroy: true
 
-  include JSONS::Assignment
+  include ::Jsons::Assignment
   include ::Callbacks::Assignment
 
   class << self

@@ -17,7 +17,7 @@ class Good < ActiveRecord::Base
 
   attr_reader :available
 
-  include JSONS::Good
+  include ::Jsons::Good
 
   def available
     if status == "on_sell"

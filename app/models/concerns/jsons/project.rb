@@ -1,6 +1,6 @@
 require 'active_support/concern'
 
-module JSONS
+module Jsons
 
   module Project
     extend ActiveSupport::Concern

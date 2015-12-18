@@ -13,6 +13,6 @@ class TesterInfor < ActiveRecord::Base
   before_save { self.email_contract = email_contract.to_s.downcase }
 
   include TesterInforVirtualAttr
-  include JSONS::TesterInfor
+  include ::Jsons::TesterInfor
 
 end

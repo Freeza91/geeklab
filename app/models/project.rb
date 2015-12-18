@@ -19,15 +19,14 @@ class Project < ActiveRecord::Base
   accepts_nested_attributes_for :user_feature, allow_destroy: true, update_only: true
 
   before_save { self.email = email.to_s.downcase }
-  after_update :prepare_assign
-  after_save :auto_update_status
 
   mount_uploader :qr_code, QrCodeUploader
 
   scope :success,           -> { where(status: 'success') }
   scope :collect_beigning,  -> { order("updated_at desc").where(beginner: true) }
 
-  include JSONS::Project
+  include ::Jsons::Project
+  include ::Callbacks::Project
 
   def available
     value = $redis.get("available-#{id}")
@@ -55,22 +54,6 @@ class Project < ActiveRecord::Base
     end
 
     status
-  end
-
-  def prepare_assign
-    StartAssignJob.perform_later(id) if status == 'success' &&
-                                        status_was != 'success' &&
-                                        is_beigner?
-  end
-
-  def is_beigner?
-    !beginner
-  end
-
-  def auto_update_status
-    if status == 'wait_check' && status_was != 'wait_check'
-      AutoUpdateProjectJob.set(wait: (1.day / 2)).perform_later(id)
-    end
   end
 
 end

@@ -3,6 +3,12 @@ $(function () {
     return false;
   }
 
+  // 添加新任务
+  $('.add-project').on('click', function () {
+    $('body').append('<div class="main-mask" onclick="Geeklab.clearMask()"></div>')
+    $('#add-project').addClass('show');
+  });
+
   function confirmClose() {
     $('#confirm-modal').removeClass('show');
     $('body .main-mask').remove();
@@ -32,7 +38,6 @@ $(function () {
     if((viewHeight + scrollTop) > (pageHeight - 10)) {
       projectList.page = projectList.page + 1;
       getProjectPaging(projectList.page, function (projects) {
-        projects = generateProjectDeadline(projects);
         projectList.projects = projectList.projects.concat(projects);
       });
     }
@@ -41,7 +46,6 @@ $(function () {
   $('.load-more').on('click', function () {
     projectList.page = projectList.page + 1;
     getProjectPaging(projectList.page, function (projects) {
-      projects = generateProjectDeadline(projects);
       projectList.projects = projectList.projects.concat(projects);
     });
   });
@@ -87,30 +91,6 @@ $(function () {
     });
   }
 
-  // 生成projects的dealine数据
-  function generateProjectDeadline (projects) {
-    // 初始化倒计时
-    var count = 0,
-        day = 0,
-        hour = 0,
-        minute = 0;
-    for(var i = 0, len = projects.length; i < len; i++) {
-      count = new Date(projects[i].expired_at) - new Date();
-      if(count > 0) {
-        projects[i].deadline = [];
-
-        days = ~~ (count / (24 * 60 * 60 * 1000)), //天
-        hours = ~~ ((count / (60 * 60 * 1000)) % 24), //小时
-        minutes = ~~ ((count / (60 * 1000)) % 60), //分钟
-
-        projects[i].deadline[0] = days < 10 ? '0' + days : days;
-        projects[i].deadline[1] = hours < 10 ? '0' + hours : hours;
-        projects[i].deadline[2] = minutes < 10 ? '0' + minutes : minutes;
-      }
-    }
-    return projects;
-  }
-
   // project card show & hide toggle
   function showProjectBody(event) {
     var $target = $(event.target);
@@ -128,11 +108,11 @@ $(function () {
 
   // 显示删除project确认对话框
   function showDeleteConfirm (index) {
-    var $modal = $('#confirm-modal');
-    $modal.data('eventName', 'deleteProject');
-    $modal.find('.content').text('确认删除任务?');
-    $('body').append('<div class="main-mask"></div>')
-    $modal.addClass('show');
+    Geeklab.showConfirmModal({
+      modal: '#confirm-modal',
+      eventName: 'deleteProject',
+      content: '确认删除任务'
+    });
 
     projectList.currProjectId = projectList.projects[index].id;
     projectList.currProjectIndex = index;
@@ -162,11 +142,6 @@ $(function () {
 
   function canBeDeleted (status) {
     return status !== 'underway' && status !== 'success';
-  }
-
-  function canShowCountDown (project) {
-    var isRightStatus = (project.status === 'underway' || project.status === 'success');
-    return isRightStatus && project.deadline;
   }
 
   // statusMap, cityMap
@@ -207,7 +182,6 @@ $(function () {
     methods: {
       isEditable: isProjectEditable,
       canBeDeleted: canBeDeleted,
-      canShowCountDown: canShowCountDown,
       getStatusMap: getStatusMap,
       getCityMap: getCityMap,
       showProjectBody: showProjectBody,
@@ -220,49 +194,9 @@ $(function () {
 
   // 页面初始化，获取第一页数据
   getProjectPaging(1, function(projects) {
-
-    // 生成deadline
-    projects = generateProjectDeadline(projects);
     // 全量更新projectList.$data.projects
     projectList.projects = projects;
 
-    // 倒计时更新
-    setInterval(function () {
-      var deadline,
-          day,
-          hour,
-          minute;
-      for(var i = 0, len = projectList.projects.length; i < len; i++) {
-        deadline = projectList.projects[i].deadline;
-        if(deadline && deadline.join('') > 0) {
-          day = parseInt(deadline[0]);
-          hour = parseInt(deadline[1]);
-          minute = parseInt(deadline[2]);
-
-          if(minute > 0) {
-            minute = minute -1;
-            minute = minute < 10 ? '0' + minute : minute;
-            deadline.$set(2, minute);
-          } else {
-            if (day > 0 || hour > 0) {
-              deadline.$set(2, 59);
-            }
-            if (hour > 0) {
-              hour = hour -1;
-              hour = hour < 10 ? '0' + hour : hour;
-              deadline.$set(1, hour);
-            } else {
-              if (day > 0) {
-                day = day - 1;
-                day = day < 10 ? '0' + day : day;
-                deadline.$set(1, 23);
-                deadline.$set(0, day);
-              }
-            }
-          }
-        }
-      }
-    }, 1000 * 60)
   });
 
 });

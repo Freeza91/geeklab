@@ -92,7 +92,27 @@ $(function () {
   Geeklab.removeLoading = function () {
     $('body .jar').remove();
     Geeklab.removeMak();
+  };
+
+  Geeklab.showConfirmModal = function (options) {
+    var $modal = $(options.modal);
+    $modal.data('eventName', options.eventName);
+    $modal.find('.content').text(options.content);
+    $('body').append('<div class="main-mask" onclick="Geeklab.clearMask()"></div>')
+    $modal.addClass('show');
   }
+
+  Geeklab.showInfoModal = function (infoContent) {
+    var $modal = $('#info-modal');
+    $modal.find('.content').text(infoContent);
+    $('body').append('<div class="main-mask" onclick="Geeklab.clearMask()"></div>')
+    $modal.addClass('show');
+  };
+
+  Geeklab.clearMask = function () {
+    $('.operate.show').removeClass('show');
+    $('body .main-mask').remove();
+  };
 
   window.Geeklab = Geeklab;
 });

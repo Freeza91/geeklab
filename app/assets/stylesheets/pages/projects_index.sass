@@ -79,6 +79,32 @@
   background: image_url('projects/new_project_hover.png')
   p
     color: $blue
+#add-project
+  .content
+    margin-bottom: 20px
+  .fa
+    color: $dark-blue
+  .fa-mobile
+    margin-top: 6px
+    font-size: 5rem
+  .fa-desktop
+    margin-top: 20px
+    font-size: 3.4rem
+  .create
+    display: inline-block
+    a
+      display: block
+      width: 90px
+      height: 90px
+      margin-bottom: 5px
+      background: $blue
+      border: 1px solid $dark-blue
+      +border-radius(45px)
+    a:hover
+      background: $white
+      border-color: $blue
+  .create + .create
+    margin-left: 50px
 
 // 是否看过的标记
 .read-mark
@@ -88,19 +114,6 @@
   right: 10px
   width: 38px
   height: 38px
-.count-down
-  position: absolute
-  right: 10px
-  bottom: 20px
-  color: #a0a0a0
-  > span
-    font-size: 15px
-    color: #16a0c6
-    margin-left: 7px
-  > .fa-clock-o
-    font-size: 23px
-    vertical-align: bottom
-    margin-right: 5px
 
 
 // revision

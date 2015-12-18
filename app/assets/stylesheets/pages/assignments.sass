@@ -13,15 +13,122 @@
   padding-left: 60px
   padding-right: 60px
 
+.assignment-item
+  width: 50%
+  padding: 14px
+  float: left
+  .item-header
+    padding: 10px 15px
+    background: $white
+  .item-body
+    position: relative
+    height: 230px
+    background-color: $light-yellow
+    background-size: cover
+  .item-footer
+    position: relative
+    height: 42px
+    padding: 10px
+    background: $white
+  .title,
+  .describle
+    padding-top: 2px
+    padding-bottom: 2px
+  .title
+    margin-bottom: 10px
+    color: $dark-blue
+    font-size: 1.2rem
+    .fa
+      margin-right: 5px
+      color: $blue
+      font-size: 1.4rem
+  .describle
+    color: $dark-gray
+  .operators
+  .score
+    position: absolute
+    top: 10px
+    right: 10px
+
+  // 删除任务按钮
+  .js-delete-assign
+    float: right
+    font-size: 1.6rem
+    color: $dark-gray
+    cursor: pointer
+  .js-delete-assign:hover
+    color: $dark-blue
+
+  // assignment状态显示
+  .status
+    position: absolute
+    bottom: 0
+    width: 100%
+    padding-top: 7px
+    padding-bottom: 7px
+    color: $white
+    text-align: center
+    background-color: rgba(23, 160, 198, .8)
+  .status.wait_check
+    background-color: rgba(23, 160, 198, .8)
+  .status.checking
+    background-color: rgba(255, 241, 0, .8)
+  .status.not_accept
+    background-color: rgba(255, 0, 0, .8)
+  .status.failed
+    background-color: rgba(160, 160, 160, .8)
+  .status.success
+    background-color: rgba(50, 177, 108, .8)
+  .status.not_accept span,
+  .status.failed span
+    cursor: pointer
+
+  // 审核不通过的理由
+  .reasons
+    display: none
+    position: absolute
+    left: 50%
+    bottom: 30px
+    margin-left: -70px
+    width: 200px
+    padding-top: 10px
+    padding-bottom: 10px
+    background: $light-yellow
+    +box-shadow(0 0 5px #ccc)
+    z-index: 10
+    > li
+      padding: 2px
+      color: $warn-red
+      text-align: left
+  .reasons::before
+    position: absolute
+    left: 50%
+    top: 100%
+    margin-left: -6px
+    content: ''
+    display: block
+    width: 0
+    height: 0
+    border-left: 10px solid transparent
+    border-top: 10px solid $light-yellow
+    border-right: 10px solid transparent
+
+
 // 加载更多
 .load-more
   cursor: pointer
-  padding-top: 20px
-  padding-bottom: 20px
+  padding: 20px 14px
+  clear: both
   p
     text-align: center
     color: $dark-blue
 
+// 订阅提示
+#subscribe-modal
+  .operate-content
+    padding: 50px
+  .content
+    margin-bottom: 0
 // assignment detail modal
 .task-guide
   position: relative
@@ -126,78 +233,47 @@
 
 // 任务操作
 .operator
-  position: absolute
-  width: 100%
   height: 230px
-  top: 0
-  .button-wrp
+  .button-wrp.button-center
     text-align: center
-    position: absolute
-    width: 100%
-  .btn
-    cursor: pointer
-  .icon-wrp
+    .btn + .btn
+      margin-left: 30px
+  .content-wrp
+    height: 150px
+    padding-top: 30px
     text-align: center
-    margin-top: 25px
-  .button-wrp.single
-    bottom: 55px
-  .status-info
-    text-align: center
-    color: #313131
-    font-size: 16px
+    p
+      color: $dark-blue
+      font-size: 1rem
+      letter-spacing: .1rem
+    .sub-hint
+      color: $dark-gray
+      font-size: .8rem
+.operator.no-btn
+  .content-wrp
+    height: 230px
+    padding-top: 60px
 
 
 .operator.uploading
   .progressCircle
-    left: 50%
-    margin-left: -35px
-
-.operator.upload-failed
-  .button-wrp
-    top: 50px
-    .btn + .btn
-      margin-left: 30px
-  .status-info
-    width: 100%
-    position: absolute
-    top: 110px
+    display: inline-block
 
 .operator.wait-check
   .button-wrp
     padding: 20px 20px 0
-    .btn:first-child
-      float: left
     .btn:last-child
       float: right
-  .icon-wrp
-    margin-top: 60px
-    .fa-play-circle-o
-      opacity: .5
-      color: #fff
-      cursor: pointer
-    .fa-play-circle-o:hover
-      opacity: 1
 
-.operator.play
-  .icon-wrp
-    margin-top: 60px
-    .fa-play-circle-o
-      opacity: .5
-      color: #fff
-      cursor: pointer
-    .fa-play-circle-o:hover
-      opacity: 1
-
-// 不同状态洗的operator 切换
-.assignments_index
-  .operator.uploading,
-  .operator.upload-failed
-    display: none
+.operator.order
+  .available-count
+    color: $dark-gray
+    padding-left: 3px
+    padding-right: 3px
+    font-size: 1.4rem
 
 // 我参与的任务--operator
-#assignments-ing
-  .operator
-    display: none
+#assignments-finish,
 #assignments-done
   display: none
 
@@ -249,28 +325,81 @@
     width: 570px
     height: 320px
 
+// 倒计时
+.countdown
+  color: $dark-gray
+  > span
+    font-size: 15px
+    color: $blue
+    margin-left: 3px
+.countdown-hint
+  position: relative
+  vertical-align: middle
+  .fa
+    font-size: 1.2rem
+    color: $blue
+    margin-left: 5px
+  p
+    color: $dark-blue
+    margin: 0
+  .hint-content
+    display: none
+    position: absolute
+    bottom: 100%
+    left: 0
+    width: 300px
+    margin-bottom: 15px
+    margin-left: -145px
+    padding: 10px
+    background: $light-yellow
+    +box-shadow(0 0 2px $gray)
+    +transition(all .5s ease)
+  .hint-triangle
+    position: absolute
+    bottom: 0
+    left: 50%
+    width: 16px
+    height: 16px
+    margin-left: -8px
+    background: $light-yellow
+    transform-origin: left bottom
+    +transform(rotate(45deg))
+    +box-shadow(1px 1px 1px $gray)
+.countdown-hint:hover
+  .hint-content
+    display: block
+.countdown,
+.countdown-hint
+  display: inline-block
 
-// extrao score
+// extra score
 .extra
   position: relative
+  display: inline-block
   cursor: pointer
   color: $blue
   font-size: 1rem
+  .fa
+    font-size: 1.2rem
+    vertical-align: middle
+    margin-left: 5px
 .extra-score
+  visibility: hidden
+  opacity: 0
   position: absolute
   bottom: 100%
-  opacity: 0
   width: 200px
   margin-bottom: 17px
-  margin-left: -50px
+  margin-left: -60px
   padding: 12px 8px
   background: $light-yellow
   box-shadow: 0 0 3px rgba(0, 0, 0, .3)
   z-index: 20
-  +transition(opacity .5s ease)
+  +transition(all .5s ease)
   p
     font-size: .8rem
     color: $dark-blue
+    margin: 0
   .fa-star
     padding-left: 3px
     padding-right: 3px
@@ -281,6 +410,7 @@
   top: 100%
   left: 50%
   margin-top: -8px
+  margin-left: -8px
   display: block
   width: 15px
   height: 15px
@@ -290,3 +420,4 @@
 .extra:hover
   .extra-score
     opacity: 1
+    visibility: visible

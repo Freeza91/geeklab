@@ -6,4 +6,11 @@ class CreditRecord < ActiveRecord::Base
   belongs_to :assignment
   belongs_to :project
 
+  def to_json
+    {
+      bonus_credits: bonus_credits,
+      rating: rating
+    }
+  end
+
 end

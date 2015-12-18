@@ -1,11 +1,15 @@
 class Assignment < ActiveRecord::Base
 
-  scope :expired,      -> { joins(:project).where("projects.expired_at < ?", Time.now - 1.minutes) }
-  scope :not_expired,  -> { joins(:project).where("projects.expired_at > ?", Time.now + 1.minutes) }
-  scope :test,         -> { where("assignments.status = ?", 'test') }
+  scope :test,         -> { where("assignments.status = ?", 'test') } # 新手测试任务
   scope :not_take_part,-> { where("assignments.status = ?",  "new") }
-  scope :ing,          -> { where('assignments.status in (?)', ['wait_check', 'checking', 'not_accept', 'delete']) }
+  scope :not_delete,   -> { where.not(status: 'delete') }
+  scope :assigned,     -> { where(flag: true) }
+  scope :not_assigned, -> { where(flag: false) }
+  scope :finish,       -> { joins(:project).where("projects.status = ?", 'finish') }
+  scope :not_finish,   -> { joins(:project).where("projects.status != ?", 'finish') }
+  scope :ing,          -> { where('assignments.status in (?)', ['wait_check', 'checking', 'not_accept']) }
   scope :done,         -> { where("assignments.status = ?", "success") }
+  scope :not_done,     -> { where("assignments.status != ?", "success") }
   scope :show_pm,      -> { where("public = ?", true) }
 
   belongs_to :tester,  inverse_of: :assignments
@@ -20,48 +24,77 @@ class Assignment < ActiveRecord::Base
   after_update :auto_update_assignment_status
   after_update :add_credit_to_user
 
+  include JSONS::Assignment
+
   class << self
 
-    def take_part_ing
-      not_expired.ing
-    end
-
-    def take_part_expired
-      ing.expired
+    def test_task
+      test # 新手测试任务
     end
 
     def new_tasks
-      not_expired.not_take_part
+      not_assigned.not_finish
     end
 
-    def missing
-      expired.not_take_part
+    def finish_project
+      not_assigned.finish.not_delete # 没有抢到但是任务已经结束
     end
 
-    def test_task
-      test
+    def take_part_ing
+      assigned.not_finish.not_done.not_delete
+    end
+
+    def finish_task
+      assigned.finish.not_delete + done
     end
 
   end
 
-  def to_json_with_project
-    {
-      status: status,
-      video: video,
-      id: self.to_params,
-      name: self.project.name,
-      deadline: self.project.expired_at,
-      bonus: project.basic_bonus,
-      credit_record: credit_record
-    }
+  def expired?
+    Time.now >= expired_at
   end
 
-  def to_json_for_project_index
-    {
-      id: id,
-      video: video,
-      is_read: is_read
-    }
+  def expired_upload?
+    return stop_time_at >= expired_at if stop_time
+    false
+  end
+
+  def subscribe?
+    $redis.smembers("subscribe-#{project_id}").include?(tester_id.to_s)
+  end
+
+  def can_do?
+    flag && !expired?
+  end
+
+  def type
+    type = ''
+    if(project.device == 'web')
+      type = 'web'
+    else
+      type = 'mobile'
+    end
+  end
+
+  def extra_status
+    extra_status = ''
+
+    if project.beginner || status != 'new' || !expired?
+      extra_status = 'normal'
+    else
+      if project.available?
+        extra_status = 'can_get'
+      else
+        extra_status = 'can_subscribe'
+      end
+    end
+  end
+
+  def expired_time
+    if stop_time
+      return (expired_at - stop_time_at).to_i;
+    end
+    (expired_at - Time.now).to_i
   end
 
   def video_notice_to_tester
@@ -81,6 +114,15 @@ class Assignment < ActiveRecord::Base
 
       UserMailer.video_check_failed(email_to, name, task_url + "#ing").deliver_later if status == "not_accept"
       UserMailer.video_check_success(email_to, name, task_url + "#done").deliver_later if status == "success"
+
+      # 让时间暂停结束
+      # 重新设置过期时间
+      if stop_time
+        new_expired_at = expired_at + (Time.now - stop_time_at) # expired_at 必须在前，弱类型的数据类型按照第一个来得到最终的数据类型
+        update_columns(stop_time: false, expired_at: new_expired_at)
+        NotitySubscribeJob.set(wait_until: new_expired_at).perform_later(id)
+      end
+
     end
   end
 
@@ -131,7 +173,8 @@ class Assignment < ActiveRecord::Base
               # 累加基础分
               tester.update_column(:credits, credits)
               # 设置过期自动评分
-              AddBonusCreditJob.set(wait_until: project.expired_at || Time.now).perform_later(id, tester.id)
+              time = Time.now + project.rating_duration * 3600
+              AddBonusCreditJob.set(wait_until: time).perform_later(id, tester.id)
             end
           end
         end

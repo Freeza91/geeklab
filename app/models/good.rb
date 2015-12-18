@@ -17,6 +17,8 @@ class Good < ActiveRecord::Base
 
   attr_reader :available
 
+  include JSONS::Good
+
   def available
     if status == "on_sell"
       if stock == 0 || is_limit == true
@@ -32,15 +34,6 @@ class Good < ActiveRecord::Base
   def virtual?
     return true if label == '0'
     false
-  end
-
-  def to_json_with_pictures
-    {
-      id: self.to_params,
-      name: name,
-      cost: cost,
-      pictures: self.pictures.collect {|picture| picture.url.try(:url) }
-    }
   end
 
 end

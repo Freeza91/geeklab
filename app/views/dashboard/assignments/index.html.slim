@@ -13,7 +13,7 @@ div
         th 体验师邮箱
         th 产品经理邮箱
         th 任务状态
-        th 过期时间
+        th 正常完成
         th 评分
         th 操作
     tbody
@@ -34,7 +34,10 @@ div
             td
               = get_assignment_status_info(assignment.status)
             td
-              | #{assignment.project.expired_at.strftime("%F %T")}
+              - if assignment.expired_upload?
+                | 过期后上传
+              - else
+                | 正常完成
             td
               - if assignment.credit_record
                 | #{assignment.credit_record.rating}

@@ -38,19 +38,19 @@ module AssignmentsHelper
     (1..5).to_a.collect{|k| [k, k] }
   end
 
-  def isAssignmentEmpty(assignments)
-    if assignments.size == 0
-      return 'empty'
-    end
-  end
+  #def isAssignmentEmpty(assignments)
+    #if assignments.size == 0
+      #return 'empty'
+    #end
+  #end
 
-  def showBonus(credit_record)
-    if credit_record && credit_record.used
-      (credit_record.bonus_credits.to_i) * (credit_record.rating.to_i)
-    else
-      '评分奖励'
-    end
-  end
+  #def showBonus(credit_record)
+    #if credit_record && credit_record.used
+      #(credit_record.bonus_credits.to_i) * (credit_record.rating.to_i)
+    #else
+      #'评分奖励'
+    #end
+  #end
 
   def is_old_assignment(create_time)
     create_time < Date.new(2015, 10, 23)

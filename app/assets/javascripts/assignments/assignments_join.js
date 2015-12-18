@@ -332,6 +332,10 @@ $(function () {
 
   // 加载下一页数据for assignments_ing
   function loadNextPageForIng (vm) {
+    // 防止多次加载相同数据
+    if(vm.loading || vm.isAll) {
+      return false;
+    }
     var page = vm.page + 1;
     vm.loading = true;
     Geeklab.fetchAssignmentPaging('ing', page, function (assignments) {

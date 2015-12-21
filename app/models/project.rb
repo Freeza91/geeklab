@@ -9,7 +9,7 @@ class Project < ActiveRecord::Base
 
   scope :show, -> { where.not(status: 'delete') }
 
-  has_many :assignments,   inverse_of: :project
+  has_many :assignments,   inverse_of: :project, dependent: :destroy
   has_many :tasks,         inverse_of: :project, dependent: :destroy
   has_one  :user_feature,  inverse_of: :project, dependent: :destroy
   belongs_to :pm

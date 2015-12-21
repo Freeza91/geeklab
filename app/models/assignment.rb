@@ -1,6 +1,6 @@
 class Assignment < ActiveRecord::Base
 
-  scope :new_assign,   -> { where("assignments.created_at >", Time.new(2015, 12, 20))}
+  scope :new_assign,   -> { where("assignments.created_at > ?", Time.new(2015, 12, 20))}
   scope :test,         -> { where("assignments.status = ?", 'test') } # 新手测试任务
   scope :not_take_part,-> { where("assignments.status = ?",  "new") }
   scope :not_delete,   -> { where.not(status: 'delete') }

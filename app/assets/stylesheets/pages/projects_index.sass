@@ -97,12 +97,14 @@
       width: 90px
       height: 90px
       margin-bottom: 5px
-      background: $blue
+      background: #fff
       border: 1px solid $dark-blue
       +border-radius(45px)
     a:hover
-      background: $white
       border-color: $blue
+    a:focus
+      background: $blue
+      border-color: $dark-blue
   .create + .create
     margin-left: 50px
 
@@ -178,10 +180,12 @@
     background: $dark-blue
     color: $light-yellow
 .project-status
-  padding: 5px 9px
+  width: 86px
+  padding: 5px 10px
   font-size: .8rem
   font-weight: bold
   color: #fff
+  text-align: center
 .project-status.wait_check
   background: $dark-blue
 .project-status.checking

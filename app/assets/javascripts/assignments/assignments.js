@@ -434,7 +434,8 @@ $(function () {
 
   // 加载assignments下一页
   Geeklab.loadNextPage = function (vm) {
-    if(vm.isAll) {
+    // 防止多次加载相同数剧
+    if(vm.loading || vm.isAll) {
       return false;
     }
     var type = vm.type,

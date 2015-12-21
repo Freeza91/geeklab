@@ -37,16 +37,17 @@
     left: 0
     top: 0
     opacity: 0
-  .rating-star:hover .fa-star,
-  .rating-star:hover ~ .rating-star .fa-star,
-  [type="radio"]:checked ~ .rating-star .fa-star
-    opacity: 1
-  .rating-star:hover .fa-star-o,
-  .rating-star:hover ~ .rating-star .fa-star-o,
-  [type="radio"]:checked ~ .rating-star .fa-star-o
-    opacity: 0
   [type="radio"]
     display: none
+  .un-rating
+    .rating-star:hover .fa-star,
+    .rating-star:hover ~ .rating-star .fa-star,
+    [type="radio"]:checked ~ .rating-star .fa-star
+      opacity: 1
+    .rating-star:hover .fa-star-o,
+    .rating-star:hover ~ .rating-star .fa-star-o,
+    [type="radio"]:checked ~ .rating-star .fa-star-o
+      opacity: 0
 
 .video-info-area
   width: 35%

@@ -9,7 +9,7 @@ class Project < ActiveRecord::Base
 
   scope :show, -> { where.not(status: 'delete') }
 
-  has_many :assignments,   inverse_of: :project
+  has_many :assignments,   inverse_of: :project, dependent: :destroy
   has_many :tasks,         inverse_of: :project, dependent: :destroy
   has_one  :user_feature,  inverse_of: :project, dependent: :destroy
   belongs_to :pm
@@ -29,9 +29,10 @@ class Project < ActiveRecord::Base
   include ::Callbacks::Project
 
   def available
+
     value = $redis.get("available-#{id}")
     unless value
-      value = demand - self.assignments.done.show_pm.try(:size).to_i
+      value = demand.to_i - self.assignments.done.show_pm.try(:size).to_i
       value > 0 ? value : 0
       $redis.set("available-#{id}", value)
     end

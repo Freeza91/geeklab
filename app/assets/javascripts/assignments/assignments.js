@@ -15,6 +15,7 @@ $(function () {
         fileBlockArr = [],
         blockLen = 0,
         blockIndex = 0,
+        httpLimit = 5,
         httpCount = 0,
         ctxCount = 0, // 记录ctx数量, 调用makeFile的标志
         uploadToken = '',
@@ -79,6 +80,10 @@ $(function () {
       $.ajax({
         url: 'http://upload.qiniu.com/mkblk/' + blockSize,
         method: 'post',
+        headers: {
+          'Content-Type': 'application/octet-stream',
+          'Authorization': authorization
+        },
         data: firstChunk,
         cache: false,
         processData: false, //Dont't process the file
@@ -107,8 +112,6 @@ $(function () {
           }
         },
         beforeSend: function (xhr) {
-          xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-          xhr.setRequestHeader('Authorization', authorization);
           that.xhrArr[xhrIndex] = xhr;
         }
       });
@@ -150,6 +153,10 @@ $(function () {
       $.ajax({
         url: uploadHost + '/bput/' + ctx + '/' + chunkOffset,
         method: 'post',
+        headers: {
+          'Content-Type': 'application/octet-stream',
+          'Authorization': authorization
+        },
         data: chunk,
         cache: false,
         processData: false, //Dont't process the file
@@ -183,8 +190,6 @@ $(function () {
           }
         },
         beforeSend: function (xhr){
-          xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-          xhr.setRequestHeader('Authorization', authorization);
           that.xhrArr[xhrIndex] = xhr;
         }
       });
@@ -196,6 +201,10 @@ $(function () {
       $.ajax({
         url: uploadHost + '/mkfile/' + fileSize,
         method: 'post',
+        headers: {
+          'Content-Type': 'application/octet-stream',
+          'Authorization': authorization
+        },
         data: that.ctx.join(','),
         tryCount: 0,
         retryLimit: 3,
@@ -229,8 +238,6 @@ $(function () {
           }
         },
         beforeSend: function (xhr){
-          xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-          xhr.setRequestHeader('Authorization', authorization);
           that.xhrArr[5] = xhr;
         }
       });
@@ -248,6 +255,7 @@ $(function () {
 
       that.blockIndex = 0;
       that.httpCount = 0;
+      that.httpLimit = 5;
       that.ctxCount = 0;
       that.xhrArr = that.xhrArr || [];
 
@@ -258,7 +266,7 @@ $(function () {
       getUploadToken(assignmentId, file.name, function (token) {
         beforeUpload();
         that.uploadToken = token;
-        while(that.blockIndex < 5) {
+        while(that.blockIndex < that.httpLimit) {
           that.httpCount = that.httpCount + 1;
           that.postBlock(that.blockIndex);
           that.blockIndex = that.blockIndex + 1;
@@ -534,7 +542,7 @@ $(function () {
   });
 
   // 获取任务详情
-  Geeklab. fetchAssignmentDetail = function (testerId, assignmentId, callback) {
+  Geeklab.fetchAssignmentDetail = function (testerId, assignmentId, callback) {
     var url = '/assignments/' + assignmentId;
     $.ajax({
       url: url,
@@ -551,7 +559,7 @@ $(function () {
   };
 
   // 获取生成二维码所需token
-  Geeklab. fetchQrcodeToken = function (assignmentId, callback) {
+  Geeklab.fetchQrcodeToken = function (assignmentId, callback) {
     var url = "/assignments/qr_token";
     $.ajax({
       url: url,
@@ -711,6 +719,7 @@ $(function () {
                     + token
                     + "&id="
                     + vm.id;
+      console.log(uploadUrl);
       setTimeout(function () {
         Geeklab.qrcode.makeCode(uploadUrl);
         $qrcode.find('.fa-refresh').removeClass('fa-spin');

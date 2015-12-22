@@ -80,6 +80,10 @@ $(function () {
       $.ajax({
         url: 'http://upload.qiniu.com/mkblk/' + blockSize,
         method: 'post',
+        headers: {
+          'Content-Type': 'application/octet-stream',
+          'Authorization': authorization
+        },
         data: firstChunk,
         cache: false,
         processData: false, //Dont't process the file
@@ -108,8 +112,6 @@ $(function () {
           }
         },
         beforeSend: function (xhr) {
-          xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-          xhr.setRequestHeader('Authorization', authorization);
           that.xhrArr[xhrIndex] = xhr;
         }
       });
@@ -151,6 +153,10 @@ $(function () {
       $.ajax({
         url: uploadHost + '/bput/' + ctx + '/' + chunkOffset,
         method: 'post',
+        headers: {
+          'Content-Type': 'application/octet-stream',
+          'Authorization': authorization
+        },
         data: chunk,
         cache: false,
         processData: false, //Dont't process the file
@@ -184,8 +190,6 @@ $(function () {
           }
         },
         beforeSend: function (xhr){
-          xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-          xhr.setRequestHeader('Authorization', authorization);
           that.xhrArr[xhrIndex] = xhr;
         }
       });
@@ -197,6 +201,10 @@ $(function () {
       $.ajax({
         url: uploadHost + '/mkfile/' + fileSize,
         method: 'post',
+        headers: {
+          'Content-Type': 'application/octet-stream',
+          'Authorization': authorization
+        },
         data: that.ctx.join(','),
         tryCount: 0,
         retryLimit: 3,
@@ -230,8 +238,6 @@ $(function () {
           }
         },
         beforeSend: function (xhr){
-          xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-          xhr.setRequestHeader('Authorization', authorization);
           that.xhrArr[5] = xhr;
         }
       });

@@ -32,7 +32,7 @@ html lang=session[:locale]
             | 温馨提示：请到二维码页面重新扫描二维码进行上传
             | 视频噢！(点击引导指南右上角的“页数”可以直接跳
             | 转到二维码页面)
-      - elsif @assignment.expired_time <= 0
+      - elsif !@assignment.project.beginner && @assignment.expired_time <= 0
         section.hint
           h3.invalid-title
             | sorry，任务已过期
@@ -483,7 +483,7 @@ html lang=session[:locale]
         if(count > 60) {
           var minutes = ~~ ((count / 60) % 60);
           minutes = minutes < 10 ? '0' + minutes : minutes;
-          timeArr.push(~~ (minutes + '分');
+          timeArr.push(minutes + '分');
         }
         if(count > 0) {
           var seconds = ~~ (count % 60);

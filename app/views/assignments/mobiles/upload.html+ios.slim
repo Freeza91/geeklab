@@ -467,23 +467,23 @@ html lang=session[:locale]
       });
       function countDown(count, $ele) {
         var timeArr = [];
-        if(count > 24 * 60 * 60 * 1000) {
-          var days = ~~ (count / (24 * 60 * 60 * 1000));
+        if(count > 24 * 60 * 60) {
+          var days = ~~ (count / (24 * 60 * 60));
           days = days < 10 ? '0' + days : days;
           timeArr.push(days + '天');
         }
-        if(count > 60 * 60 * 1000) {
-          var hours = ~~ ((count / (60 * 60 * 1000)) % 24);
+        if(count > 60 * 60) {
+          var hours = ~~ ((count / (60 * 60)) % 24);
           hours = hours < 10 ? '0' + hours : hours;
           timeArr.push(hours + '小时');
         }
-        if(count > 60 * 1000) {
-          var minutes = ~~ ((count / (60 * 1000)) % 60);
+        if(count > 60) {
+          var minutes = ~~ ((count / 60) % 60);
           minutes = minutes < 10 ? '0' + minutes : minutes;
-          timeArr.push(~~ ((count / (60 * 1000)) % 60) + '分');
+          timeArr.push(~~ (minutes + '分');
         }
-        if(count > 1000) {
-          var seconds = ~~ ((count / 1000) % 60);
+        if(count > 0) {
+          var seconds = ~~ (count % 60);
           seconds = seconds < 10 ? '0' + seconds : seconds
           timeArr.push(seconds + '秒');
         }

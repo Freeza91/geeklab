@@ -84,6 +84,7 @@ class TestersController < ApplicationController
     json = { status: 0, code: 1 }
     if tester && tester.tester_infor
       json[:tester] = tester.tester_infor.to_json
+      json[:tester][:email] = current_user.email unless tester.tester_infor.try(:already_finish)
     else
       json[:code], json[:status] = 0, '用户信息不存在'
     end

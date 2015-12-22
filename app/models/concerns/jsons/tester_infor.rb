@@ -6,7 +6,7 @@ module Jsons
     extend ActiveSupport::Concern
 
     def to_json
-      if sex
+      if try(:already_finish)
         time = birthday.to_datetime
         {
           name: username,

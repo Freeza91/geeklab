@@ -14,7 +14,6 @@ module GrabAssignments
       $redis.decr("available-#{@project.id}")
       set_assignment
     else
-      $redis.del "available-#{@project.id}" # exception
       json[:code], json[:msg] = 2, '被抢光或者任务结束'
     end
 

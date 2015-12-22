@@ -276,7 +276,7 @@ main role="mian"
             span
               | 我的设备(可多选)
           .field-content
-            - for device in @devices
+            - for device in tester_devices
               label.checkbox-default.checkbox-with-icon
                 input type="checkbox" v-on="change: updateDevice(this, $event)" value="#{device}" checked=(@tester_infor.device.include?(device))
                 span
@@ -423,7 +423,7 @@ main role="mian"
             span
               | 兴趣爱好(可多选)
           .field-content
-            - for interest in @interests
+            - for interest in tester_interests
               label.checkbox-default.checkbox-with-icon.need-padding-bottom
                 input type="checkbox" v-on="change: updateInterest(this, $event)" value="#{interest}" checked=(@tester_infor.interest && @tester_infor.interest.include?(interest))
                 span

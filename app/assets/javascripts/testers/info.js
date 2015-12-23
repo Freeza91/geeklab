@@ -588,24 +588,22 @@ $(function () {
           profession = options.profession;
     }
 
-    var defaultDateOption = [],
-        initDateOption = [],
-        initDates = new Date(infoVm.birthday[0], infoVm.birthday[1], 0).getDate();
+    var defaultDateOption = [];
     for(var i = 1; i <= 31; i++) {
       defaultDateOption.push({value: i});
-    }
-    for(var i = 1; i <= initDates; i++) {
-      initDateOption.push({value: i});
     }
 
     $birthYearSelect = $('#birth-year').selectize({
       onChange: function (value) {
         infoVm.birthday[0] = $.trim(value);
+        if(infoVm.error.birthday) {
+          infoVm.error.birthday = false;
+        }
 
         birthDateSelect.disable();
         birthDateSelect.clearOptions();
         birthDateSelect.load(function (callback) {
-          var  results = defaultDateOption;
+          var results = defaultDateOption;
           birthDateSelect.enable();
           callback(results);
 
@@ -639,7 +637,6 @@ $(function () {
 
     $birthDateSelect = $('#birth-date').selectize({
       labelField: 'value',
-      options: initDateOption,
       onChange: function (value) {
         infoVm.birthday[2] = $.trim(value);
       }
@@ -675,6 +672,9 @@ $(function () {
       onChange: function (value) {
         // 更新model中的数据
         infoVm.birthplace[0] = value;
+        if(infoVm.error.birthplace) {
+          infoVm.error.birthplace = false;
+        }
 
         // 更新二级类目
         birthCitySelect.disable();
@@ -694,7 +694,6 @@ $(function () {
 
     $birthCitySelect = $('#birthplace-city').selectize({
       labelField: 'value',
-      options: cityData[infoVm.birthplace[0]],
       onChange: function (value) {
         // 更新model中的数据
         infoVm.birthplace[1] = value;
@@ -727,6 +726,9 @@ $(function () {
       onChange: function (value) {
         // 更新model中的数据
         infoVm.livingplace[0] = value;
+        if(infoVm.error.livingplace) {
+          infoVm.error.livingplace = false;
+        }
 
         // 更新二级类目
         livingCitySelect.disable();
@@ -746,7 +748,6 @@ $(function () {
 
     $livingCitySelect = $('#livingplace-city').selectize({
       labelField: 'value',
-      options: cityData[infoVm.livingplace[0]],
       onChange: function (value) {
         // 更新model中的数据
         infoVm.livingplace[1] = value;
@@ -779,6 +780,9 @@ $(function () {
       onChange: function (value) {
         // 更新model中的数据
         infoVm.profession[0] = value;
+        if(infoVm.error.profession) {
+          infoVm.error.profession = false;
+        }
 
         // 更新二级类目
         professionLevelTwoSelect.disable();
@@ -788,7 +792,7 @@ $(function () {
           if (results) {
             professionLevelTwoSelect.enable();
             callback(results);
-            professionLevelTwoSelect.addItem(results[0].value, true);
+            professionLevelTwoSelect.addItem(results[0].value, false);
           } else {
             return false;
           }
@@ -798,7 +802,6 @@ $(function () {
 
     $professionLevelTwoSelect = $('#profession-level-two').selectize({
       labelField: 'value',
-      options: professionLevelTow[infoVm.profession[0]],
       onChange: function (value) {
         infoVm.profession[1] = value;
       }
@@ -857,6 +860,9 @@ $(function () {
         email: false,
         cellphone: false,
         device: false,
+        birthday: false,
+        birthplace: false,
+        livingplace: false,
         profession: false
       }
     };
@@ -935,6 +941,7 @@ $(function () {
         result = false;
       }
     }
+
     if(!vm.cellphone) {
       vm.hint.cellphone = '请输入手机号';
       vm.error.cellphone = true;
@@ -949,6 +956,26 @@ $(function () {
 
     if(vm.device.length === 0) {
       vm.error.device = true;
+      result = false;
+    }
+
+    if(vm.birthday.length < 3) {
+      vm.error.birthday = true;
+      result = false;
+    }
+
+    if(vm.birthplace.length < 2) {
+      vm.error.birthplace = true;
+      result = false;
+    }
+
+    if(vm.livingplace.length < 2) {
+      vm.error.livingplace = true;
+      result = false;
+    }
+
+    if(vm.profession.length < 2) {
+      vm.error.profession = true;
       result = false;
     }
 

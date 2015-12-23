@@ -49,7 +49,7 @@ main role="mian"
             span
               | 生日
           .field-content#birth
-            select#birth-year placeholder="测试"
+            select#birth-year placeholder="请选择"
               option value=""
                 | 请选择
               option value="1980"
@@ -125,6 +125,9 @@ main role="mian"
             span.birth-label 月
             select#birth-date placeholder="请选择"
             span.birth-label 日
+          .field-warn v-show="error.birthday"
+            span
+              | 请选择出生日期
         .form-field
           .field-name.middle
             span
@@ -202,6 +205,9 @@ main role="mian"
               option value="台湾"
                 | 台湾
             select#birthplace-city placeholder="请选择"
+          .field-warn v-show="error.birthplace"
+            span
+              | 请选择出生地
         .form-field#livingplace
           .field-name.middle
             span
@@ -279,6 +285,9 @@ main role="mian"
               option value="台湾"
                 | 台湾
             select#livingplace-city placeholder="请选择"
+          .field-warn v-show="error.livingplace"
+            span
+              | 请选择居住地
         .form-field
           .field-name.top
             span
@@ -387,6 +396,9 @@ main role="mian"
               option value="公共事业"
                 | 公共事业
             select#profession-level-two placeholder="请选择"
+          .field-warn v-show="error.profession"
+            span
+              | 请选择职业
         .form-field
           .field-name.top
             span

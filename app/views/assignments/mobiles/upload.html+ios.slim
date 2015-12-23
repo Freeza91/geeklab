@@ -82,6 +82,8 @@ html lang=session[:locale]
                       | 取消上传
                 //#play.vertical-item
                   //.icon.icon-play
+            #status
+              | 等待审核
             .card-footer
               .countdown
                 - if !@assignment.project.beginner && (@assignment.expired_time > 0)
@@ -188,9 +190,18 @@ html lang=session[:locale]
       .progressCircle
         display: inline-block
 
+      #status
+        width: 100%
+        padding: 10px
+        background: #5cbcc9
+        color: #fff
+        text-align: center
+        box-sizing: border-box
+
       //#play
       #uploading,
-      #upload-fail
+      #upload-fail,
+      #status
         display: none
       // icon
       .icon
@@ -372,6 +383,7 @@ html lang=session[:locale]
             $('.file-picker').css({
               'background-image': 'url(' + imageUrl + ')'
             });
+            $('#status').show();
             return true;
           }
           return false;

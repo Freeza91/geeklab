@@ -556,6 +556,7 @@ $(function () {
   };
 
   // init testerInfoVm
+  Geeklab.showLoading();
   var id = $('#id').attr('value');
   fetchTesterInfo(id, function (testerInfo) {
     initTesterVm(testerInfo);
@@ -565,6 +566,7 @@ $(function () {
       livingplace: infoVm.livingplace,
       profession: infoVm.profession
     });
+    Geeklab.removeLoading();
   });
 
   /* select initialization

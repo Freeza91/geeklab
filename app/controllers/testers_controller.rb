@@ -5,6 +5,9 @@ class TestersController < ApplicationController
 
   def index
     current_user.update_attribute(:role, 'both') if current_user.try(:role) == 'pm'
+    if current_user && current_user.to_tester.approved
+      redirect_to assignments_path
+    end
   end
 
   def new

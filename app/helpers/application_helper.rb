@@ -4,6 +4,14 @@ module ApplicationHelper
     "http://" + Settings.qiniu_bucket_domain + "/" + path
   end
 
+  def tester_homepage_url(current_user)
+    if current_user && current_user.to_tester.approved
+      assignments_path
+    else
+      testers_path
+    end
+  end
+
   def render_footer(controller_name, action_name)
     if controller_name == 'passwords' || controller_name == 'errors'
       return false

@@ -45,7 +45,7 @@ when 'stg'
   set :unicorn_config, lambda { "#{app_path}/config/unicorn_#{branch}.rb" }
 else
   set :domain, '119.254.101.120'
-  set :branch, 'develop'
+  set :branch, 'wx'
   set :unicorn_config, lambda { "#{app_path}/config/unicorn_master.rb" }
 end
 

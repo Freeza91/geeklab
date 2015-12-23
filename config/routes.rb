@@ -1,6 +1,5 @@
  Rails.application.routes.draw do
 
-  #root 'pages#home'
   root 'testers#index'
 
   namespace :users do
@@ -142,6 +141,8 @@
       resources :addresses, only: :update
     end
   end
+
+  resource :wechat, only: [:show, :create]
 
   require 'sidekiq/web'
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|

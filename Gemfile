@@ -33,6 +33,9 @@ gem 'mini_magick'
 gem 'sendgrid'
 gem 'redis'
 
+# wx
+gem 'wechat'
+
 gem 'sidekiq'
 gem 'sinatra', require: false
 

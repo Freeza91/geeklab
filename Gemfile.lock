@@ -350,6 +350,11 @@ GEM
       binding_of_caller (>= 0.7.2)
       railties (>= 4.0)
       sprockets-rails (>= 2.0, < 4.0)
+    wechat (0.6.7)
+      activesupport (>= 3.2)
+      nokogiri (>= 1.6.0)
+      rest-client
+      thor
     whenever (0.9.4)
       chronic (>= 0.6.3)
 
@@ -407,6 +412,7 @@ DEPENDENCIES
   unicorn
   unicorn-worker-killer
   web-console (~> 2.0)
+  wechat
   whenever
 
 BUNDLED WITH

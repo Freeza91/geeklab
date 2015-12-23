@@ -31,22 +31,18 @@ set :shared_paths, [
 ]
 
 case ENV['on']
-when 'release'
-  set :branch, 'release'
-  set :domain, '119.254.100.115'
-  set :unicorn_config, lambda { "#{app_path}/config/unicorn_#{branch}.rb" }
 when 'master'
+set :domain, '119.254.100.115'
+set :branch, 'master'
+set :unicorn_config, lambda { "#{app_path}/config/unicorn_master.rb" }
+when 'release' || 'bugs'
+  set :branch, ENV['on']
   set :domain, '119.254.101.120'
-  set :branch, 'master'
-  set :unicorn_config, lambda { "#{app_path}/config/unicorn_#{branch}.rb" }
-when 'stg'
-  set :domain, '119.254.101.120'
-  set :branch, 'master'
-  set :unicorn_config, lambda { "#{app_path}/config/unicorn_#{branch}.rb" }
+  set :unicorn_config, lambda { "#{app_path}/config/unicorn_release.rb" }
 else
   set :domain, '119.254.101.120'
   set :branch, 'develop'
-  set :unicorn_config, lambda { "#{app_path}/config/unicorn_master.rb" }
+  set :unicorn_config, lambda { "#{app_path}/config/unicorn_release.rb" }
 end
 
 task :environment do

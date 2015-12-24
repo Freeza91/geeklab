@@ -5,7 +5,8 @@ $(function () {
     var result;
     switch(type){
       case 'email':
-        var emailReg = /^(\w)+(\.\w+)*@(\w)+((\.\w{2,3}){1,3})$/;
+        //var emailReg = /^(\w)+(\.\w+)*@(\w)+((\.\w{2,3}){1,3})$/;
+        var emailReg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
         result = emailReg.test(value);
       break;
       case 'password':

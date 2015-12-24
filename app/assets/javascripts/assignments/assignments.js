@@ -15,6 +15,7 @@ $(function () {
         fileBlockArr = [],
         blockLen = 0,
         blockIndex = 0,
+        httpLimit = 5,
         httpCount = 0,
         ctxCount = 0, // 记录ctx数量, 调用makeFile的标志
         uploadToken = '',
@@ -79,6 +80,10 @@ $(function () {
       $.ajax({
         url: 'http://upload.qiniu.com/mkblk/' + blockSize,
         method: 'post',
+        headers: {
+          'Content-Type': 'application/octet-stream',
+          'Authorization': authorization
+        },
         data: firstChunk,
         cache: false,
         processData: false, //Dont't process the file
@@ -107,8 +112,6 @@ $(function () {
           }
         },
         beforeSend: function (xhr) {
-          xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-          xhr.setRequestHeader('Authorization', authorization);
           that.xhrArr[xhrIndex] = xhr;
         }
       });
@@ -150,6 +153,10 @@ $(function () {
       $.ajax({
         url: uploadHost + '/bput/' + ctx + '/' + chunkOffset,
         method: 'post',
+        headers: {
+          'Content-Type': 'application/octet-stream',
+          'Authorization': authorization
+        },
         data: chunk,
         cache: false,
         processData: false, //Dont't process the file
@@ -183,8 +190,6 @@ $(function () {
           }
         },
         beforeSend: function (xhr){
-          xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-          xhr.setRequestHeader('Authorization', authorization);
           that.xhrArr[xhrIndex] = xhr;
         }
       });
@@ -196,6 +201,10 @@ $(function () {
       $.ajax({
         url: uploadHost + '/mkfile/' + fileSize,
         method: 'post',
+        headers: {
+          'Content-Type': 'application/octet-stream',
+          'Authorization': authorization
+        },
         data: that.ctx.join(','),
         tryCount: 0,
         retryLimit: 3,
@@ -229,8 +238,6 @@ $(function () {
           }
         },
         beforeSend: function (xhr){
-          xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-          xhr.setRequestHeader('Authorization', authorization);
           that.xhrArr[5] = xhr;
         }
       });
@@ -248,6 +255,7 @@ $(function () {
 
       that.blockIndex = 0;
       that.httpCount = 0;
+      that.httpLimit = 5;
       that.ctxCount = 0;
       that.xhrArr = that.xhrArr || [];
 
@@ -258,7 +266,7 @@ $(function () {
       getUploadToken(assignmentId, file.name, function (token) {
         beforeUpload();
         that.uploadToken = token;
-        while(that.blockIndex < 5) {
+        while(that.blockIndex < that.httpLimit) {
           that.httpCount = that.httpCount + 1;
           that.postBlock(that.blockIndex);
           that.blockIndex = that.blockIndex + 1;
@@ -414,12 +422,33 @@ $(function () {
         console.log(errors);
       }
     });
-  }
+  };
+
+  Geeklab.fetchAssignment = function (assignemntId, callback) {
+    var url = '/assignments/' + assignemntId;
+    $.ajax({
+      url: url,
+      data: {type: 'ing'},
+      datatype: 'json',
+      success: function (data) {
+        console.log(data);
+        callback(data.assignment);
+      },
+      error: function (xhr, textStatus, errors) {
+        console.log(errors);
+      }
+    });
+  };
 
   // 加载assignments下一页
   Geeklab.loadNextPage = function (vm) {
+    // 防止多次加载相同数剧
+    if(vm.loading || vm.isAll) {
+      return false;
+    }
     var type = vm.type,
         page = vm.page + 1;
+    vm.loading = true;
     Geeklab.fetchAssignmentPaging(type, page, function (assignments) {
       if(assignments.length > 0) {
         vm.assignments = vm.assignments.concat(assignments);
@@ -428,16 +457,12 @@ $(function () {
       if(assignments.length < 10) {
         vm.isAll = true;
       }
+      vm.loading = false;
     });
-  }
+  };
 
-  // 瀑布流加载，监听window滚动事件
-  $(window).on('scroll', function () {
-    // 第一页数量小于10
-    if(!!$('.load-more p')){
-      $(window).unbind('scroll');
-      return false;
-    }
+
+  Geeklab.fallLoad = function () {
     // 页面高度
     var pageHeight = $(document).height();
     // 视窗高度
@@ -445,14 +470,11 @@ $(function () {
     // 滚动高度
     var scrollTop = $(window).scrollTop();
      //滚动到底部时自动加载新任务
-    if((viewHeight + scrollTop) > (pageHeight - 10)) {
-      // 页数自增
-      page++;
-      getAssignmentPaging(page, function (data) {
-        appendAssignments(data.assignments);
-      });
+    if((viewHeight + scrollTop) > (pageHeight - 15)) {
+      $('.assignments-wrp.active .load-more-btn').click();
     }
-  });
+  };
+  $(window).on('scroll', Geeklab.fallLoad);
 
   // 上传视频按钮的click事件处理函数
   $('.js-video-upload').on('click', function () {
@@ -482,6 +504,9 @@ $(function () {
           break;
           case 3:
             // 任务过期
+            Geeklab.fetchAssignment(assignmentId, function (assignment) {
+              assignmentsIng.assignments.$set(assignmentsIng.currAssignIndex, assignment);
+            });
             Geeklab.showInfoModal('任务已过期');
           break;
           case 4:
@@ -511,24 +536,17 @@ $(function () {
    * options.content String 内容
    * options.eventName String 确认按钮将会触发的事件
    */
-  Geeklab.showConfirmModal = function (options) {
-    var $modal = $('#confirm-modal');
-    $modal.data('eventName', options.eventName);
-    $modal.find('.content').text(options.content);
-    $('body').append('<div class="main-mask"></div>');
-    $modal.addClass('show');
-  }
-
   $('.js-operate-cancel').on('click', function () {
     $(this).parents('.operate').removeClass('show');
     $('body .main-mask').remove();
   });
 
   // 获取任务详情
-  Geeklab. fetchAssignmentDetail = function (testerId, assignmentId, callback) {
+  Geeklab.fetchAssignmentDetail = function (testerId, assignmentId, callback) {
     var url = '/assignments/' + assignmentId;
     $.ajax({
       url: url,
+      data: {type: 'task'}
     })
     .done(function (data, status) {
       if(data.status === 0 && data.code === 1) {
@@ -541,7 +559,7 @@ $(function () {
   };
 
   // 获取生成二维码所需token
-  Geeklab. fetchQrcodeToken = function (assignmentId, callback) {
+  Geeklab.fetchQrcodeToken = function (assignmentId, callback) {
     var url = "/assignments/qr_token";
     $.ajax({
       url: url,
@@ -560,6 +578,16 @@ $(function () {
   }
 
   Geeklab.startAssignment = function (vm, assignment, event, index) {
+    // 判断任务是否过期
+    if(!assignment.beginner && assignment.expired_time <= 0) {
+      // 任务过期
+      Geeklab.fetchAssignment(assignment.id, function (newAssignment) {
+        vm.assignments.$set(index, newAssignment);
+      });
+      Geeklab.showInfoModal('任务已过期');
+      return false;
+    }
+
     Geeklab.showLoading();
     var assignmentId = assignment.id;
     assignmentDetailVm.id = assignmentId;
@@ -691,6 +719,7 @@ $(function () {
                     + token
                     + "&id="
                     + vm.id;
+      console.log(uploadUrl);
       setTimeout(function () {
         Geeklab.qrcode.makeCode(uploadUrl);
         $qrcode.find('.fa-refresh').removeClass('fa-spin');

@@ -118,10 +118,17 @@
 .load-more
   cursor: pointer
   padding: 20px 14px
+  clear: both
   p
     text-align: center
     color: $dark-blue
 
+// 订阅提示
+#subscribe-modal
+  .operate-content
+    padding: 50px
+  .content
+    margin-bottom: 0
 // assignment detail modal
 .task-guide
   position: relative
@@ -331,6 +338,7 @@
   .fa
     font-size: 1.2rem
     color: $blue
+    margin-left: 5px
   p
     color: $dark-blue
     margin: 0
@@ -364,7 +372,7 @@
 .countdown-hint
   display: inline-block
 
-// extrao score
+// extra score
 .extra
   position: relative
   display: inline-block
@@ -374,8 +382,10 @@
   .fa
     font-size: 1.2rem
     vertical-align: middle
+    margin-left: 5px
 .extra-score
-  display: none
+  visibility: hidden
+  opacity: 0
   position: absolute
   bottom: 100%
   width: 200px
@@ -409,4 +419,5 @@
   +transform(rotate(45deg))
 .extra:hover
   .extra-score
-    display: block
+    opacity: 1
+    visibility: visible

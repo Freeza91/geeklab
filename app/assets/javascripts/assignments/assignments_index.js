@@ -76,6 +76,7 @@ $(function () {
     data: {
       type: 'fresh',
       page: 1,
+      loading: false,
       currAssignIndex: 0,
       currAssign: $('#assignments-fresh .assignment-item').first(),
       assignments: [],
@@ -105,6 +106,7 @@ $(function () {
     data: {
       type: 'finish',
       page: 1,
+      loading: false,
       assignments: [],
       noAssign: false,
       isAll: false
@@ -115,22 +117,38 @@ $(function () {
     }
   });
 
-  Geeklab.showLoading();
-  Geeklab.fetchAssignmentPaging('fresh', 1, function (assignments) {
-    if(assignments.length > 0) {
-      assignmentsFresh.assignments = assignments;
-    } else {
-      assignmentsFresh.noAssign = true;
-    }
-    Geeklab.removeLoading();
-  });
+  function init() {
+    Geeklab.showLoading();
+    assignmentsFresh.loading = true;
+    assignmentsFinish.loading = true;
 
-  Geeklab.fetchAssignmentPaging('finish', 1, function (assignments) {
-    if(assignments.length > 0) {
-      assignmentsFinish.assignments = assignments;
-    } else {
-      assignmentsFinish.noAssign = true;
-    }
-  });
+    Geeklab.fetchAssignmentPaging('fresh', 1, function (assignments) {
+      if(assignments.length > 0) {
+        assignmentsFresh.assignments = assignments;
+      } else {
+        assignmentsFresh.noAssign = true;
+      }
+      if(assignments.length < 10) {
+        assignmentsFresh.isAll = true;
+      }
+      assignmentsFresh.loading = false;
+      Geeklab.removeLoading();
+    });
+
+    Geeklab.fetchAssignmentPaging('finish', 1, function (assignments) {
+      if(assignments.length > 0) {
+        assignmentsFinish.assignments = assignments;
+      } else {
+        assignmentsFinish.noAssign = true;
+      }
+      if(assignments.length < 10) {
+        assignmentsFinish.isAll = true;
+      }
+      assignmentsFinish.loading = false;
+    });
+  }
+
+  init();
 
 });
+

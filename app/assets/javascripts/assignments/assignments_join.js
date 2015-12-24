@@ -109,8 +109,9 @@ $(function () {
   function isWaitCheck(assignment) {
     var isWaitCheck = (assignment.status === 'wait_check') || (assignment.status === 'not_accept'),
         isUploading = assignment.uploading || assignment.uploadFailed,
-        isNormal = (assignment.extra_status === 'normal');
-    return isNormal && isWaitCheck && !isUploading;
+        isNormal = (assignment.extra_status === 'normal'),
+        notExpired = assignment.beginner || ((!assignment.beginner) && (assignment.expired_time > 0));
+    return isNormal && isWaitCheck && !isUploading && notExpired;
   }
 
   function canBeDeleted (assignment) {
@@ -119,10 +120,14 @@ $(function () {
   }
 
   function showStatus (assignment) {
+    var isUploading = assignment.uploading || assignment.uploadFailed,
+        isNormal = assignment.extra_status === 'normal',
+        isNew = assignment.status === 'new';
+
     if(assignment.beginner) {
-      return assignment.status !== 'test';
+      return !isUploading && (assignment.status !== 'test');
     }
-    return (assignment.extra_status === 'normal') && (assignment.status !== 'new');
+    return isNormal && !isNew && !isUploading;
   }
 
   function mapStatus (assignmentStatus) {
@@ -136,6 +141,10 @@ $(function () {
       'failed': '任务失败'
     };
     return statusMap[assignmentStatus];
+  }
+
+  function showCountdown (assignment) {
+    return !assignment.beginner && assignment.extra_status === 'normal' && assignment.expired_time >= 0;
   }
 
   function showReasons (assignment) {
@@ -164,6 +173,9 @@ $(function () {
 
   function videoImage(assignment) {
     var imageUrl = '';
+    if(assignment.uploading || assignment.uploadFailed) {
+      return imageUrl;
+    }
     if(assignment.status === 'success') {
       imageUrl =  'url(' + assignment.video + '?vframe/png/offset/0)';
     } else {
@@ -173,6 +185,7 @@ $(function () {
     }
     return imageUrl;
   }
+
 
   // 选中视频后触发视频上传
   $('#video').on('change', function () {
@@ -254,6 +267,7 @@ $(function () {
   function showDeleteVideoConfirm (vm, index) {
     vm.currAssignIndex = index;
     Geeklab.showConfirmModal({
+      modal: '#confirm-modal',
       eventName: 'deleteVideo',
       content: '确认删除视频?'
     });
@@ -263,6 +277,7 @@ $(function () {
   function showDeleteAssignConfirm (vm, index) {
     vm.currAssignIndex = index;
     Geeklab.showConfirmModal({
+      modal: '#confirm-modal',
       eventName: 'deleteAssign',
       content: '任务删除后将无法查看和恢复, 确认删除任务?'
     });
@@ -317,7 +332,12 @@ $(function () {
 
   // 加载下一页数据for assignments_ing
   function loadNextPageForIng (vm) {
+    // 防止多次加载相同数据
+    if(vm.loading || vm.isAll) {
+      return false;
+    }
     var page = vm.page + 1;
+    vm.loading = true;
     Geeklab.fetchAssignmentPaging('ing', page, function (assignments) {
       if(assignments.length > 0) {
         var assignment;
@@ -335,6 +355,7 @@ $(function () {
       if(assignments.length < 10) {
         vm.isAll = true;
       }
+      vm.loading = false;
     });
   }
 
@@ -367,10 +388,19 @@ $(function () {
         assignment;
     for(var i = 0, len = assignments.length; i < len; i++) {
       assignment = assignments[i];
-      if(assignment.expired_time <= 0) {
+      if(assignment.beginner || assignment.stop_time) {
         continue;
       }
-      if(assignment.beginner || assignment.stop_time) {
+      if(assignment.expired_time <= 0) {
+        // 是否在上传视频
+        if(assignment.uploading) {
+          Geeklab.fetchAssignment(assignment.id, function (assignment) {
+            assignments.$set(assignmentsIng.currAssignIndex, assignment);
+          });
+          cancelUploading(assignment);
+          assignment.uploadFailed = true;
+          Geeklab.showInfoModal('上传失败, 任务已过期');
+        }
         continue;
       }
       assignment.expired_time = assignment.expired_time - 1;
@@ -384,6 +414,7 @@ $(function () {
     data: {
       type: 'ing',
       page: 1,
+      loading: false,
       currAssignIndex: 0,
       currAssign: $('#assignments-ing .assignment-item').first(),
       assignments: [],
@@ -399,6 +430,7 @@ $(function () {
       // 数据显示
       showStatus: showStatus,
       mapStatus: mapStatus,
+      showCountdown: showCountdown,
       showReasons: showReasons,
       showBonus: showBonus,
       videoImage: videoImage,
@@ -423,6 +455,7 @@ $(function () {
     data: {
       type: 'done',
       page: 1,
+      loading: false,
       currAssignIndex: 0,
       assignments: [],
       noAssign: false,
@@ -444,34 +477,49 @@ $(function () {
     }
   });
 
-  Geeklab.showLoading();
-  Geeklab.fetchAssignmentPaging('ing', 1, function (assignments) {
-    if(assignments.length > 0) {
-      var assignment;
-      for(var i = 0, len = assignments.length; i < len; i++) {
-        assignment = assignments[i];
-        assignment.uploading = false;
-        assignment.uploadFailed = false;
-        if(!assignment.beginner && assignment.extra_status === 'normal') {
-          assignment.deadline = generateDeadline(assignment.expired_time);
-        }
-      }
-      assignmentsIng.assignments = assignments;
-      setInterval(function () {
-        updateDeadline(assignmentsIng.assignments);
-      }, 1000);
-    } else {
-      assignmentsIng.noAssign = true;
-    }
-    Geeklab.removeLoading();
-  });
+  function init () {
+    Geeklab.showLoading();
+    assignmentsIng.loading = true;
+    assignmentsDone.loading = true;
 
-  Geeklab.fetchAssignmentPaging('done', 1, function (assignments) {
-    if(assignments.length > 0) {
-      assignmentsDone.assignments = assignments;
-    } else {
-      assignmentsDone.noAssign = true;
-    }
-  });
+    Geeklab.fetchAssignmentPaging('ing', 1, function (assignments) {
+      if(assignments.length > 0) {
+        var assignment;
+        for(var i = 0, len = assignments.length; i < len; i++) {
+          assignment = assignments[i];
+          assignment.uploading = false;
+          assignment.uploadFailed = false;
+          if(!assignment.beginner && assignment.extra_status === 'normal') {
+            assignment.deadline = generateDeadline(assignment.expired_time);
+          }
+        }
+        assignmentsIng.assignments = assignments;
+        setInterval(function () {
+          updateDeadline(assignmentsIng.assignments);
+        }, 1000);
+      } else {
+        assignmentsIng.noAssign = true;
+      }
+      if(assignments.length < 10) {
+        assignmentsIng.isAll = true;
+      }
+      assignmentsIng.loading = false;
+      Geeklab.removeLoading();
+    });
+
+    Geeklab.fetchAssignmentPaging('done', 1, function (assignments) {
+      if(assignments.length > 0) {
+        assignmentsDone.assignments = assignments;
+      } else {
+        assignmentsDone.noAssign = true;
+      }
+      if(assignments.length < 10) {
+        assignmentsDone.isAll = true;
+      }
+      assignmentsDone.loading = false;
+    });
+  }
+
+  init();
 
 });

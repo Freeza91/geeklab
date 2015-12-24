@@ -79,6 +79,34 @@
   background: image_url('projects/new_project_hover.png')
   p
     color: $blue
+#add-project
+  .content
+    margin-bottom: 20px
+  .fa
+    color: $dark-blue
+  .fa-mobile
+    margin-top: 6px
+    font-size: 5rem
+  .fa-desktop
+    margin-top: 20px
+    font-size: 3.4rem
+  .create
+    display: inline-block
+    a
+      display: block
+      width: 90px
+      height: 90px
+      margin-bottom: 5px
+      background: #fff
+      border: 1px solid $dark-blue
+      +border-radius(45px)
+    a:hover
+      border-color: $blue
+    a:focus
+      background: $blue
+      border-color: $dark-blue
+  .create + .create
+    margin-left: 50px
 
 // 是否看过的标记
 .read-mark
@@ -152,10 +180,12 @@
     background: $dark-blue
     color: $light-yellow
 .project-status
-  padding: 5px 9px
+  width: 86px
+  padding: 5px 10px
   font-size: .8rem
   font-weight: bold
   color: #fff
+  text-align: center
 .project-status.wait_check
   background: $dark-blue
 .project-status.checking

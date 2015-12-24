@@ -108,8 +108,12 @@ main role="main"
                     | 如何获得5星好评
                 .extra-score-triangle
       .load-more v-if="!noAssign"
-        button.btn.btn-flat.yellow.btn-full v-show="!isAll" v-on="click: loadNextPage(this)"
-          | 加载更多
+        button.load-more-btn.btn.btn-flat.yellow.btn-full v-show="!isAll" v-on="click: loadNextPage(this)"
+          span v-show="!loading"
+            | 加载更多
+          span v-show="loading"
+            | 正在加载
+          .fa.fa-circle-o-notch.fa-spin v-show="loading"
         p v-show="isAll"
           | 没有更多了
       p.no-assignment-hint v-if="noAssign"
@@ -120,7 +124,7 @@ main role="main"
           .title
             .fa.fa-mobile v-if="assignment.type === 'mobile'"
             .fa.fa-desktop v-if="assignment.type === 'web'"
-              span v-text="assignment.name"
+            span v-text="assignment.name"
           .describle v-text="assignment.profile"
         .item-body
           .operators
@@ -156,8 +160,12 @@ main role="main"
                     | 如何获得5星好评
                 .extra-score-triangle
       .load-more v-if="!noAssign"
-        button.btn.btn-flat.yellow.btn-full v-show="!isAll" v-on="click: loadNextPage(this)"
-          | 加载更多
+        button.load-more-btn.btn.btn-flat.yellow.btn-full v-show="!isAll" v-on="click: loadNextPage(this)"
+          span v-show="!loading"
+            | 加载更多
+          span v-show="loading"
+            | 正在加载
+          .fa.fa-circle-o-notch.fa-spin v-show="loading"
         p v-show="isAll"
           | 没有更多了
       p.no-assignment-hint v-if="noAssign"

@@ -16,7 +16,8 @@ $(function () {
       return false;
     }
     rating = 5 - $(this).data('rating');
-    showConfirmModal({
+    Geeklab.showConfirmModal({
+      modal: '#video-op-confirm',
       eventName: 'rating',
       content: '确定评分为"' + rating + '星"? 提交后无法修改'
     });
@@ -41,14 +42,6 @@ $(function () {
   }
 
   // confirm modal 相关操作
-  function showConfirmModal (options) {
-    var $modal = $('#video-op-confirm');
-    $modal.data('eventName', options.eventName);
-    $modal.find('.content').text(options.content);
-    $('body').append('<div class="main-mask"></div>');
-    $modal.addClass('show');
-  }
-
   function confirmClose() {
     var $modal = $('#video-op-confirm');
     $modal.removeClass('show');
@@ -61,13 +54,6 @@ $(function () {
     var $modal = $('#video-op-confirm');
     $modal.find('.loading').hide();
     $modal.find('.error-hint').text(error).show();
-  }
-
-  function showInfoModal (infoContent) {
-    var $modal = $('#info-modal');
-    $modal.find('.content').text(infoContent);
-    $('body').append('<div class="main-mask"></div>');
-    $modal.addClass('show');
   }
 
   function eventConfirm(eventName) {
@@ -124,7 +110,7 @@ $(function () {
         }
       },
       error: function (xhr, textStatus, errors) {
-        showInfoModal('评分失败，请稍后重试');
+        Geeklab.showInfoModal('评分失败，请稍后重试');
       }
     });
 
@@ -156,7 +142,7 @@ $(function () {
       },
       error: function (xhr, textStatus, errors) {
         callback();
-        showInfoModal('获取注释失败');
+        Geeklab.showInfoModal('获取注释失败');
       }
     });
   }
@@ -175,7 +161,7 @@ $(function () {
         }
       },
       error: function (xhr, textStatus, errors) {
-        showInfoModal('创建失败,请稍后重试');
+        Geeklab.showInfoModal('创建失败,请稍后重试');
         errorHandle();
       }
     });
@@ -195,7 +181,7 @@ $(function () {
         }
       },
       error: function (xhr, textStatus, errors) {
-        showInfoModal('更新失败, 请稍后重试');
+        Geeklab.showInfoModal('更新失败, 请稍后重试');
         errorHandle();
       }
     });
@@ -254,7 +240,7 @@ $(function () {
         vm.freshComment.$set('saving', false);
       });
     } else {
-      showInfoModal('注释内容不能为空');
+      Geeklab.showInfoModal('注释内容不能为空');
       return false;
     }
   }
@@ -303,7 +289,8 @@ $(function () {
 
   function showDeleteConfirm (vm, commentIndex) {
     var comment = vm.comments[commentIndex].desc.substr(0, 10);
-    showConfirmModal({
+    Geeklab.showConfirmModal({
+      modal: '#video-op-confirm',
       eventName: 'deleteComment',
       content: '确定要删除注释"' + comment + '"'
     });

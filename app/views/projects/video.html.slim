@@ -7,25 +7,38 @@ main role="main"
           //source src="http://7xjd7d.com2.z0.glb.qiniucdn.com/copy-1446604255Ykw4bljU.mp4" type="video/mp4"
       - if !@project.beginner
         .score-editor
-          p
-            span
-              | 评分
-            span
-              | (请在任务过期前给出评价, 客观的评分能帮助进一步的提高视频质量)
           - if @assignment.rating_from_pm
+            p
+              span
+                | 已评分
+              span
+                | (已给出评分, 感谢你提供的反馈)
             .stars
               - @assignment.rating_from_pm.times
                 .fa.fa-star
               - (5 - @assignment.rating_from_pm).times
                 .fa.fa-star-o
           - else
-            .stars.un-rating
+            - if @assignment.rating_from_admin
+              input#is-rating type="hidden" value="true"
+              p
+                span
+                  | 未评分
+                span
+                  | (时间已截止, 系统已给出默认评分)
+            - else
+              input#is-rating type="hidden" value="false"
+              p
+                span
+                  | 评分
+                span
+                  | (客观的评分能帮助进一步的提高视频质量)
+            .stars class=(@assignment.rating_from_admin ? "" : "un-rating")
               - 5.times do |index|
                 input id=("rating-" + "#{index}") type="radio" name="rating"
                 label.rating-star for=("rating-" + "#{index}") data-rating="#{index}"
                   .fa.fa-star
                   .fa.fa-star-o
-            input#is-rating type="hidden" value="false"
     .video-info-area
       .video-info-header
         - if @project.device == 'web'

@@ -63,6 +63,9 @@ main role="main"
                   | 删除视频
               .content-wrp
                 .icon-play v-on="click: playVideo(assignment)"
+            .operator.no-btn.play v-if="assignment.status === 'checking'"
+              .content-wrp
+                .icon-play v-on="click: playVideo(assignment)"
             .operator.order v-show="assignment.extra_status === 'can_get'"
               .content-wrp.vertical-center
                 .vertical-item
@@ -95,7 +98,7 @@ main role="main"
             ol.reasons v-if="showReasons(assignment)"
               li v-repeat="reason: assignment.reasons" v-text="reason"
         .item-footer
-          .countdown v-if="!assignment.beginner && assignment.extra_status === 'normal'"
+          .countdown v-if="showCountdown(assignment)"
             | 剩余时间:
             span.day v-text="assignment.deadline[0]"
             | 天
@@ -105,11 +108,11 @@ main role="main"
             | 分
             span.second v-text="assignment.deadline[3]"
             | 秒
-          .countdown-hint v-if="!assignment.beginner && assignment.extra_status === 'normal'"
+          .countdown-hint v-if="showCountdown(assignment)"
             .fa.fa-exclamation-circle
             .hint-content
               p v-if="!assignment.stop_time"
-                | 时间为0时任务没有完成, 任务将转移给其他人
+                | 请在剩余时间截止前成功提交视频, 时间截止未成功提交视频, 任务将发给大家继续抢(你也可以抢)
               p v-if="assignment.stop_time"
                 | 等待审核时, "剩余时间"会停止, 如果"审核不通过"时间将继续流逝
               .hint-triangle
@@ -140,8 +143,12 @@ main role="main"
                     | 如何获得5星好评
                 .extra-score-triangle
       .load-more v-if="!noAssign"
-        button.btn.btn-flat.yellow.btn-full v-on="click: loadNextPage(this)" v-show="!isAll"
-          | 加载更多
+        button.load-more-btn.btn.btn-flat.yellow.btn-full v-on="click: loadNextPage(this)" v-show="!isAll"
+          span v-show="!loading"
+            | 加载更多
+          span v-show="loading"
+            | 正在加载
+          .fa.fa-circle-o-notch.fa-spin v-show="loading"
         p v-show="isAll"
           | 没有更多了
       p.no-assignment-hint v-if="noAssign"
@@ -212,8 +219,12 @@ main role="main"
                     | 如何获得5星好评
                 .extra-score-triangle
       .load-more v-if="!noAssign"
-        button.btn.btn-flat.yellow.btn-full v-on="click: loadNextPage(this)" v-show="!isAll"
-          | 加载更多
+        button.load-more-btn.btn.btn-flat.yellow.btn-full v-on="click: loadNextPage(this)" v-show="!isAll"
+          span v-show="!loading"
+            | 加载更多
+          span v-show="loading"
+            | 正在加载
+          .fa.fa-circle-o-notch.fa-spin v-show="loading"
         p v-show="isAll"
           | 没有更多了
       p.no-assignment-hint v-if="noAssign"

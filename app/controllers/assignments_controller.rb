@@ -44,10 +44,16 @@ class AssignmentsController < ApplicationController
     json = { status: 0, code: 1 }
 
     @assignment = Assignment.find_by(id: params[:id])
+    type = params[:type]
 
     if @assignment && @assignment.tester_id == current_user.id
-      @project = @assignment.project
-      json[:project] = @project.to_json_with_tasks
+      case type
+        when 'task'
+          @project = @assignment.project
+          json[:project] = @project.to_json_with_tasks
+        when 'ing'
+          json[:assignment] = @assignment.to_json_for_ing
+      end
     else
       json[:code], json[:msg] = 0, '项目为空'
     end
@@ -81,8 +87,7 @@ class AssignmentsController < ApplicationController
   def ing
     json = {status: 0, code: 1, assignments: [] }
 
-    @assignments = @assignments.take_part_ing.sort_by { |a| -1 * a.id }.uniq
-    @assignments = Kaminari.paginate_array(@assignments).page(params[:page]).per(10)
+    @assignments = @assignments.take_part_ing.order('id desc').page(params[:page]).per(10)
     @assignments.each do |a|
       json[:assignments] << a.to_json_for_ing
     end
@@ -126,9 +131,16 @@ class AssignmentsController < ApplicationController
     json = { status: 0, code: 1, msg: '删除视频成功' }
 
     assignment = Assignment.find_by(id: params[:assignment_id])
-    if assignment.tester.id == current_user.id
-      delete_video_at_qiniu(assignment, json)
-      recover_time_down(assignment)
+    if assignment && assignment.tester.id == current_user.id && project = assignment.project
+      if project.beginner # 新手任务
+        delete_video_at_qiniu(assignment, json)
+        assignment.update_column(:status, 'test')
+      elsif assignment.can_do?
+        delete_video_at_qiniu(assignment, json)
+        recover_time_down(assignment)
+      else
+        json[:code], json[:msg] = -1, '任务已经过期或者已经结束，你无法进行此项操作'
+      end
     else
       json[:code], json[:msg] = 0, '你没有权限操作'
     end
@@ -201,6 +213,7 @@ private
       assignment.update_columns(expired_at: new_expired_at, stop_time: false)
       NotitySubscribeJob.set(wait_until: new_expired_at).perform_later(assignment.id)
     end
+    assignment.update_column(:status, 'new')
   end
 
 end

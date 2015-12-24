@@ -1,6 +1,6 @@
 require 'active_support/concern'
 
-module JSONS
+module Jsons
 
   module Project
     extend ActiveSupport::Concern
@@ -13,7 +13,8 @@ module JSONS
         reasons: reasons || [],
         basic_bonus: basic_bonus,
         beginner: beginner,
-        duration: duration
+        expired_duration: expired_duration,
+        rating_duration: rating_duration
       }
     end
 

@@ -32,7 +32,7 @@ html lang=session[:locale]
             | 温馨提示：请到二维码页面重新扫描二维码进行上传
             | 视频噢！(点击引导指南右上角的“页数”可以直接跳
             | 转到二维码页面)
-      - elsif @assignment.project.expired_at <= Time.now
+      - elsif !@assignment.project.beginner && @assignment.expired_time <= 0
         section.hint
           h3.invalid-title
             | sorry，任务已过期
@@ -84,9 +84,9 @@ html lang=session[:locale]
                   /.icon.icon-play
             .card-footer
               .countdown
-                - if Time.now + 50.years > @assignment.project.expired_at
-                  span 距离任务结束
-                  span#countdown data-deadline="#{@assignment.project.expired_at}"
+                - if !@assignment.project.beginner && (@assignment.expired_time > 0)
+                  span 剩余时间
+                  span#countdown data-deadline="#{@assignment.expired_time}"
               .score
                 .icon.icon-score
                 span = @assignment.project.credit
@@ -302,11 +302,13 @@ html lang=session[:locale]
             assignmentId = $('#id').val();
 
         var $countdown = $('#countdown'),
-            deadline = new Date($countdown.data('deadline'));
+            deadline = $countdown.data('deadline');
         if($countdown) {
-          countDown(deadline - new Date(), $countdown);
+          countDown(deadline, $countdown);
+          deadline = deadline - 1;
           var interval = setInterval(function () {
-            countDown(deadline - new Date(), $countdown);
+            countDown(deadline, $countdown);
+            deadline = deadline - 1;
           }, 1000);
         }
 
@@ -468,23 +470,23 @@ html lang=session[:locale]
       });
       function countDown(count, $ele) {
         var timeArr = [];
-        if(count > 24 * 60 * 60 * 1000) {
-          var days = ~~ (count / (24 * 60 * 60 * 1000));
+        if(count > 24 * 60 * 60) {
+          var days = ~~ (count / (24 * 60 * 60));
           days = days < 10 ? '0' + days : days;
           timeArr.push(days + '天');
         }
-        if(count > 60 * 60 * 1000) {
-          var hours = ~~ ((count / (60 * 60 * 1000)) % 24);
+        if(count > 60 * 60) {
+          var hours = ~~ ((count / (60 * 60)) % 24);
           hours = hours < 10 ? '0' + hours : hours;
           timeArr.push(hours + '小时');
         }
-        if(count > 60 * 1000) {
-          var minutes = ~~ ((count / (60 * 1000)) % 60);
+        if(count > 60) {
+          var minutes = ~~ ((count / 60) % 60);
           minutes = minutes < 10 ? '0' + minutes : minutes;
-          timeArr.push(~~ ((count / (60 * 1000)) % 60) + '分');
+          timeArr.push(minutes + '分');
         }
-        if(count > 1000) {
-          var seconds = ~~ ((count / 1000) % 60);
+        if(count > 0) {
+          var seconds = ~~ (count % 60);
           seconds = seconds < 10 ? '0' + seconds : seconds
           timeArr.push(seconds + '秒');
         }

@@ -31,7 +31,11 @@ class Users::SessionsController < ApplicationController
         if /pms/i.match(request.referer)
           pms_path
         else
-          assignments_path
+          if @user.to_tester.approved
+            assignments_path
+          else
+            testers_path
+          end
         end
 
       render json: json

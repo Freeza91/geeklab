@@ -5,12 +5,12 @@ class TestersController < ApplicationController
 
   def index
     current_user.update_attribute(:role, 'both') if current_user.try(:role) == 'pm'
+    if current_user && current_user.to_tester.approved
+      redirect_to assignments_path
+    end
   end
 
   def new
-    @devices = ['iPhone', 'iPad', 'Android Phone', 'Android Pad']
-    @personality = ['温柔', '粗犷', '活泼', '老成', '内向', '开朗', '豪爽', '沉默', '急躁', '稳重']
-    @interests = ['足球', '健身', '旅游', '二次元', '音乐', '看书', '电影', '星座']
     @tester_infor = current_user.to_tester.tester_infor
 
     render '/testers/edit'
@@ -53,9 +53,6 @@ class TestersController < ApplicationController
   end
 
   def edit
-    @devices = ['iPhone', 'iPad', 'Android Phone', 'Android Pad']
-    @personality = ['温柔', '粗犷', '活泼', '老成', '内向', '开朗', '豪爽', '沉默', '急躁', '稳重']
-    @interests = ['足球', '健身', '旅游', '二次元', '音乐', '看书', '电影', '星座']
     @tester_infor = current_user.to_tester.tester_infor
 
     render 'testers/edit'
@@ -84,6 +81,7 @@ class TestersController < ApplicationController
     json = { status: 0, code: 1 }
     if tester && tester.tester_infor
       json[:tester] = tester.tester_infor.to_json
+      json[:tester][:email] = current_user.email unless tester.tester_infor.try(:already_finish)
     else
       json[:code], json[:status] = 0, '用户信息不存在'
     end

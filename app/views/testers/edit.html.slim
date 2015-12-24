@@ -49,7 +49,9 @@ main role="mian"
             span
               | 生日
           .field-content#birth
-            select#birth-year
+            select#birth-year placeholder="请选择"
+              option value=""
+                | 请选择
               option value="1980"
                 | 1980
               option value="1981"
@@ -93,7 +95,9 @@ main role="mian"
               option value="2000"
                 | 2000
             span.birth-label 年
-            select#birth-month
+            select#birth-month placeholder="请选择"
+              option value=""
+                | 请选择
               option value="1"
                 | 1
               option value="2"
@@ -119,14 +123,19 @@ main role="mian"
               option value="12"
                 | 12
             span.birth-label 月
-            select#birth-date
+            select#birth-date placeholder="请选择"
             span.birth-label 日
+          .field-warn v-show="error.birthday"
+            span
+              | 请选择出生日期
         .form-field
           .field-name.middle
             span
               | 出生地
           .field-content
-            select#birthplace-prov
+            select#birthplace-prov placeholder="请选择"
+              option value=""
+                | 请选择
               option value="北京"
                 | 北京
               option value="天津"
@@ -195,13 +204,18 @@ main role="mian"
                 | 澳门
               option value="台湾"
                 | 台湾
-            select#birthplace-city
+            select#birthplace-city placeholder="请选择"
+          .field-warn v-show="error.birthplace"
+            span
+              | 请选择出生地
         .form-field#livingplace
           .field-name.middle
             span
               | 居住地
           .field-content
-            select#livingplace-prov
+            select#livingplace-prov placeholder="请选择"
+              option value=""
+                | 请选择
               option value="北京"
                 | 北京
               option value="天津"
@@ -270,13 +284,16 @@ main role="mian"
                 | 澳门
               option value="台湾"
                 | 台湾
-            select#livingplace-city
+            select#livingplace-city placeholder="请选择"
+          .field-warn v-show="error.livingplace"
+            span
+              | 请选择居住地
         .form-field
           .field-name.top
             span
               | 我的设备(可多选)
           .field-content
-            - for device in @devices
+            - for device in tester_devices
               label.checkbox-default.checkbox-with-icon
                 input type="checkbox" v-on="change: updateDevice(this, $event)" value="#{device}" checked=(@tester_infor.device.include?(device))
                 span
@@ -357,10 +374,12 @@ main role="mian"
             span
               | 职业信息
           .field-content
-            select#profession-level-one
+            select#profession-level-one placeholder="请选择"
+              option value=""
+                | 请选择
               option value="学生"
                 | 学生
-              option value="信息技术" selected="selected"
+              option value="信息技术"
                 | 信息技术
               option value="金融保险"
                 | 金融保险
@@ -376,7 +395,10 @@ main role="mian"
                 | 娱乐体育
               option value="公共事业"
                 | 公共事业
-            select#profession-level-two
+            select#profession-level-two placeholder="请选择"
+          .field-warn v-show="error.profession"
+            span
+              | 请选择职业
         .form-field
           .field-name.top
             span
@@ -423,7 +445,7 @@ main role="mian"
             span
               | 兴趣爱好(可多选)
           .field-content
-            - for interest in @interests
+            - for interest in tester_interests
               label.checkbox-default.checkbox-with-icon.need-padding-bottom
                 input type="checkbox" v-on="change: updateInterest(this, $event)" value="#{interest}" checked=(@tester_infor.interest && @tester_infor.interest.include?(interest))
                 span

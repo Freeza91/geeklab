@@ -1,7 +1,7 @@
 header#header class=(current_user ? '' : 'no-logged')
   .headers.clearfix
     .logo
-      a.logo-text href="#{testers_path}"
+      a.logo-text href="#{tester_homepage_url(@current_user)}"
         img src="http://7xjciz.com2.z0.glb.qiniucdn.com/geeklab.png"
     ul.nav.navbar-nav.navbar-right.top-nav-right.login
       li

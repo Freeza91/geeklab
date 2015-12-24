@@ -556,10 +556,17 @@ $(function () {
   };
 
   // init testerInfoVm
+  Geeklab.showLoading();
   var id = $('#id').attr('value');
   fetchTesterInfo(id, function (testerInfo) {
     initTesterVm(testerInfo);
-    initSelect();
+    initSelect({
+      birthday: infoVm.birthday,
+      birthplace: infoVm.birthplace,
+      livingplace: infoVm.livingplace,
+      profession: infoVm.profession
+    });
+    Geeklab.removeLoading();
   });
 
   /* select initialization
@@ -568,7 +575,7 @@ $(function () {
    * livingplace select
    * profession select
    */
-  function initSelect() {
+  function initSelect(options) {
     var $birthYearSelect,
         $birthMonthSelect,
         $birthDateSelect,
@@ -576,26 +583,29 @@ $(function () {
         birthMonthSelect,
         birthDateSelect;
 
-    var defaultDateOption = [],
-        initDateOption = [],
-        initDates = new Date(infoVm.birthday[0], infoVm.birthday[1], 0).getDate();
+    if(options) {
+      var birthday = options.birthday,
+          birthplace = options.birthplace,
+          livingplace = options.livingplace,
+          profession = options.profession;
+    }
+
+    var defaultDateOption = [];
     for(var i = 1; i <= 31; i++) {
       defaultDateOption.push({value: i});
     }
-    for(var i = 1; i <= initDates; i++) {
-      initDateOption.push({value: i});
-    }
 
     $birthYearSelect = $('#birth-year').selectize({
-      items: [infoVm.birthday[0]],
-
       onChange: function (value) {
         infoVm.birthday[0] = $.trim(value);
+        if(infoVm.error.birthday) {
+          infoVm.error.birthday = false;
+        }
 
         birthDateSelect.disable();
         birthDateSelect.clearOptions();
         birthDateSelect.load(function (callback) {
-          var  results = defaultDateOption;
+          var results = defaultDateOption;
           birthDateSelect.enable();
           callback(results);
 
@@ -606,8 +616,6 @@ $(function () {
     });
 
     $birthMonthSelect = $('#birth-month').selectize({
-      items: [infoVm.birthday[1]],
-
       onChange: function (value) {
         infoVm.birthday[1] = $.trim(value);
 
@@ -631,18 +639,30 @@ $(function () {
 
     $birthDateSelect = $('#birth-date').selectize({
       labelField: 'value',
-      options: initDateOption,
-      items: [infoVm.birthday[2]],
-
       onChange: function (value) {
         infoVm.birthday[2] = $.trim(value);
-        console.log(infoVm.birthday);
       }
     });
 
     birthYearSelect = $birthYearSelect[0].selectize;
     birthMonthSelect = $birthMonthSelect[0].selectize;
     birthDateSelect = $birthDateSelect[0].selectize;
+
+    if(birthday && birthday.length > 0) {
+      birthYearSelect.addItem(birthday[0], true);
+      birthMonthSelect.addItem(birthday[1], true);
+      birthDateSelect.disable();
+      birthDateSelect.load(function (callback) {
+        var dates = new Date(birthday[0], birthday[1], 0).getDate(),
+            results = [];
+        for(var i = 1; i <= dates; i++) {
+          results.push({value: i});
+        }
+        birthDateSelect.enable();
+        callback(results);
+        birthDateSelect.addItem(birthday[2], false);
+      });
+    }
 
 
     var $birthProvSelect,
@@ -651,11 +671,12 @@ $(function () {
         birthCitySelect;
 
     $birthProvSelect = $('#birthplace-prov').selectize({
-      items: [infoVm.birthplace[0]],
-
       onChange: function (value) {
         // 更新model中的数据
         infoVm.birthplace[0] = value;
+        if(infoVm.error.birthplace) {
+          infoVm.error.birthplace = false;
+        }
 
         // 更新二级类目
         birthCitySelect.disable();
@@ -672,21 +693,31 @@ $(function () {
         });
       }
     });
+
     $birthCitySelect = $('#birthplace-city').selectize({
       labelField: 'value',
-      options: cityData[infoVm.birthplace[0]],
-      items: [infoVm.birthplace[1]],
-
       onChange: function (value) {
         // 更新model中的数据
         infoVm.birthplace[1] = value;
-        console.log(infoVm.birthplace);
       }
     });
 
     birthProvSelect = $birthProvSelect[0].selectize;
     birthCitySelect = $birthCitySelect[0].selectize;
 
+    if(birthplace && birthplace.length > 0) {
+      birthProvSelect.addItem(birthplace[0], true);
+      birthCitySelect.load(function (callback) {
+        var results = cityData[birthplace[0]];
+        if (results) {
+          birthCitySelect.enable();
+          callback(results);
+          birthCitySelect.addItem(birthplace[1], true);
+        } else {
+          return false;
+        }
+      });
+    }
 
     var $livingProvSelect,
         $livingCitySelect,
@@ -694,11 +725,12 @@ $(function () {
         livingCitySelect;
 
     $livingProvSelect = $('#livingplace-prov').selectize({
-      items: [infoVm.livingplace[0]],
-
       onChange: function (value) {
         // 更新model中的数据
         infoVm.livingplace[0] = value;
+        if(infoVm.error.livingplace) {
+          infoVm.error.livingplace = false;
+        }
 
         // 更新二级类目
         livingCitySelect.disable();
@@ -718,19 +750,28 @@ $(function () {
 
     $livingCitySelect = $('#livingplace-city').selectize({
       labelField: 'value',
-      options: cityData[infoVm.livingplace[0]],
-      items: [infoVm.livingplace[1]],
-
       onChange: function (value) {
         // 更新model中的数据
         infoVm.livingplace[1] = value;
-        console.log(infoVm.livingplace);
       }
     });
 
     livingProvSelect = $livingProvSelect[0].selectize;
     livingCitySelect = $livingCitySelect[0].selectize;
 
+    if(livingplace && livingplace.length > 0) {
+      livingProvSelect.addItem(livingplace[0], true);
+      livingCitySelect.load(function (callback) {
+        var results = cityData[livingplace[0]];
+        if (results) {
+          livingCitySelect.enable();
+          callback(results);
+          livingCitySelect.addItem(livingplace[1], true);
+        } else {
+          return false;
+        }
+      });
+    }
 
     var $professionLevelOneSelect,
         $professionLevelTwoSelect,
@@ -738,11 +779,12 @@ $(function () {
         professionLevelTwoSelect;
 
     $professionLevelOneSelect = $('#profession-level-one').selectize({
-      items: [infoVm.profession[0]],
-
       onChange: function (value) {
         // 更新model中的数据
         infoVm.profession[0] = value;
+        if(infoVm.error.profession) {
+          infoVm.error.profession = false;
+        }
 
         // 更新二级类目
         professionLevelTwoSelect.disable();
@@ -752,7 +794,7 @@ $(function () {
           if (results) {
             professionLevelTwoSelect.enable();
             callback(results);
-            professionLevelTwoSelect.addItem(results[0].value);
+            professionLevelTwoSelect.addItem(results[0].value, false);
           } else {
             return false;
           }
@@ -762,9 +804,6 @@ $(function () {
 
     $professionLevelTwoSelect = $('#profession-level-two').selectize({
       labelField: 'value',
-      options: professionLevelTow[infoVm.profession[0]],
-      items: [infoVm.profession[1]],
-
       onChange: function (value) {
         infoVm.profession[1] = value;
       }
@@ -772,13 +811,26 @@ $(function () {
 
     professionLevelOneSelect = $professionLevelOneSelect[0].selectize;
     professionLevelTwoSelect = $professionLevelTwoSelect[0].selectize;
+
+    if(profession && profession.length > 0) {
+      professionLevelOneSelect.addItem(profession[0], true);
+      professionLevelTwoSelect.load(function (callback) {
+        var results = professionLevelTow[profession[0]];
+        if (results) {
+          professionLevelTwoSelect.enable();
+          callback(results);
+          professionLevelTwoSelect.addItem(profession[1], true);
+        } else {
+          return false;
+        }
+      });
+    }
   }
 
   function fetchTesterInfo (id, callback) {
     $.ajax({
       url: '/testers/' + id,
     }).done(function (data) {
-      console.log(data);
       if(data.status === 0 && data.code ===1) {
         callback(data.tester);
       }
@@ -791,14 +843,14 @@ $(function () {
       email: '',
       cellphone: '',
       sex: '男',
-      birthday: [1980, 1, 1],
-      birthplace: ['北京', '北京'],
-      livingplace: ['北京', '北京'],
+      birthday: [],
+      birthplace: [],
+      livingplace: [],
       device: [],
       emotion: '单身',
       orientation: '异性恋',
       education: '本科',
-      profession: ['信息技术', '互联网'],
+      profession: [],
       income: '0-2',
       interest: [],
       hint: {
@@ -810,12 +862,14 @@ $(function () {
         email: false,
         cellphone: false,
         device: false,
+        birthday: false,
+        birthplace: false,
+        livingplace: false,
         profession: false
       }
     };
 
     $.extend(testerInfoDefault, testerInfo);
-    console.log(testerInfoDefault);
 
     infoVm = new Vue({
       el:  '#tester-info',
@@ -889,6 +943,7 @@ $(function () {
         result = false;
       }
     }
+
     if(!vm.cellphone) {
       vm.hint.cellphone = '请输入手机号';
       vm.error.cellphone = true;
@@ -903,6 +958,26 @@ $(function () {
 
     if(vm.device.length === 0) {
       vm.error.device = true;
+      result = false;
+    }
+
+    if(vm.birthday.length < 3) {
+      vm.error.birthday = true;
+      result = false;
+    }
+
+    if(vm.birthplace.length < 2) {
+      vm.error.birthplace = true;
+      result = false;
+    }
+
+    if(vm.livingplace.length < 2) {
+      vm.error.livingplace = true;
+      result = false;
+    }
+
+    if(vm.profession.length < 2) {
+      vm.error.profession = true;
       result = false;
     }
 
@@ -946,7 +1021,6 @@ $(function () {
         vm.device.splice(index, 1);
       }
     }
-    console.log(vm.device);
   }
 
   function updateInterest (vm, event) {
@@ -967,7 +1041,6 @@ $(function () {
     event.preventDefault();
     if(checkTesterInfo(vm)) {
       var testerInfo = generateTesterInfo(vm);
-      console.log(testerInfo);
        //loading
       Geeklab.showLoading();
       postTesterInfo(

@@ -1,9 +1,15 @@
 class WechatsController < ActionController::Base
+  include Wechatsable
   wechat_responder
 
   # default text responder when no other match
   on :text do |request, content|
     request.reply.text "echo: #{content}" # Just echo
+  end
+
+  on :text, with: '红包' do |request|
+    openid = request[:FromUserName]
+    request.reply.text "#{send_reward(openid, 100, 1)}"
   end
 
   # When receive 'help', will trigger this responder

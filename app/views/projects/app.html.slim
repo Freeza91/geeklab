@@ -8,16 +8,13 @@ main role="main"
         // app
         .step-1 v-show="step === 1"
           = render partial: 'projects/steps/app'
-          = render partial: 'projects/shared/step_next'
         // target user
         .step-2 v-show="step === 2"
           = render partial: 'projects/steps/target_user'
-          = render partial: 'projects/shared/step_switch'
           // 测试任务
         .step-3 v-show="step === 3"
           = render partial: 'projects/steps/tasks'
-          = render partial: 'projects/shared/step_switch'
           // 联系方式
         .step-4 v-show="step === 4"
           = render partial: 'projects/steps/contact'
-          = render partial: 'projects/shared/step_finish'
+        = render partial: 'projects/shared/step_switch'

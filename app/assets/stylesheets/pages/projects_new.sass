@@ -143,10 +143,19 @@
 // step switch
 .step-switch
   text-align: center
-  .btn
+  .prestep
+    display: inline-block
     width: 120px
-    height: 34px
-  .btn + .btn
+    color: $light-yellow
+    cursor: pointer
+  .prestep:hover
+    color: $dark-blue
+  .nextstep
+    background: $light-yellow
+    color: $blue
+  .nextstep:hover
+    background: $dark-blue
+  .nextstep
     margin-left: 20px
 
 // task

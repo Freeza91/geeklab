@@ -1,5 +1,8 @@
 .step-switch
-  button.btn.btn-gray v-on="click: previousStep"
+  .prestep v-show="step !== 1" v-on="click: previousStep"
     | 上一步
-  button.btn.btn-blue v-on="click: nextStep"
-    | 下一步
+  button.nextstep.btn.btn-rounded.btn-m v-on="click: nextStep"
+    span v-if="step !== 4"
+      | 下一步
+    span v-if="step === 4"
+      | 开始测试

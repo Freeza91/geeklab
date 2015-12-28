@@ -315,13 +315,13 @@ $(function () {
   }
 
   $('#confirm').on('click', function () {
-    var eventName = $(this).parents('.operate').data('event-name');
+    var eventName = $(this).parents('.operate').data('event-name'),
         hash = location.hash.substr(1),
         assignment;
         if(hash === 'ing') {
           assignment = assignmentsIng.assignments[assignmentsIng.currAssignIndex];
         } else {
-          assignment = assignmentsFinish.assignments[assignmentsFinish.currAssignIndex];
+          assignment = assignmentsDone.assignments[assignmentsDone.currAssignIndex];
         }
     switch(eventName) {
       case 'deleteVideo':

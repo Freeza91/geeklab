@@ -163,8 +163,9 @@ class AssignmentsController < ApplicationController
         project = assignment.project
         basic_bonus = project.basic_bonus || 0
         bonus = rating * basic_bonus
-        origin_credis = current_user.credits || 0
         tester = assignment.tester
+        origin_credis = tester.credits || 0
+
 
         record = CreditRecord.new(tester_id: assignment.tester_id,
                                   project_id: project.id,

@@ -1,4 +1,4 @@
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 选择测试平台
@@ -12,7 +12,7 @@
     p.msg
       i.fa.fa-exclamation-circle
       | Android和iOS都需测试的话，请分别提交两份表单噢!
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 用户应该使用什么设备
@@ -26,7 +26,7 @@
     p.msg
       i.fa.fa-exclamation-circle
       | 智能手机和平板狄电脑都需测试的话，请分别提交两份表单噢!
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 用户系统要求
@@ -35,7 +35,7 @@
       span.sys-value
     .slider-sys#slider-ios v-show="platform === 'ios'"
       span.sys-value
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 产品简介(必填)
@@ -49,7 +49,7 @@
       span.js-len-count v-class="introduction.length >= 10 ? 'warn' : ''"
         | {{introduction ? (15 - introduction.length) : 15}}
       | 字
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 应用下载二维码(必填)

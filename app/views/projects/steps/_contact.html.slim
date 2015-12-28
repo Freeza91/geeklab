@@ -1,4 +1,4 @@
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 姓名(必填)
@@ -12,7 +12,7 @@
       span.js-len-count v-class="username.length >= 10 ? 'warn' : ''"
         | {{username ? (15 - username.length) : 15}}
       | 字
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 手机(必填)
@@ -28,7 +28,7 @@
       /span.js-len-count
         /| {{11 - mobile.content.length}}
       /| 字
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 邮箱(必填)
@@ -39,7 +39,7 @@
   .panel-body
     .form-group v-class="has-error: !validated.step_4 && !email"
       input.form-control type="text" v-model="email.content" v-on="focus: email.validated = true"
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 公司(必填)

@@ -1,22 +1,22 @@
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 测试用户个数
   .panel-body
     #slider-user
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 年龄范围
   .panel-body
     #slider-age
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 年收入
   .panel-body
     #slider-income
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 性别
@@ -31,7 +31,7 @@
       input type="checkbox" v-model="checked" v-on="change: checkAllEffect('sex', checked)"
       span
         | {{key}}
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 城市级别
@@ -46,7 +46,7 @@
       input type="checkbox" v-model="checked" v-on="change: checkAllEffect('city', checked)"
       span
         | {{key}}
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 学历
@@ -61,7 +61,7 @@
       input type="checkbox" v-model="checked" v-on="change: checkAllEffect('education', checked)"
       span
         | {{key}}
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 情感状况
@@ -76,7 +76,7 @@
       input type="checkbox" v-model="checked" v-on="change: checkAllEffect('emotion', checked)"
       span
         | {{key}}
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 性取向
@@ -91,14 +91,14 @@
       input type="checkbox" v-model="checked" v-on="change: checkAllEffect('orientation', checked)"
       span
         | {{key}}
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 兴趣标签
-    /label.checkbox-inline.checkbox-default.checkall
-      /input type="checkbox" value="checkall" v-model="checkAll.interests" v-on="click: toggleCheckAll('interests')"
-      /span
-        /| 全选
+    //label.checkbox-inline.checkbox-default.checkall
+      //input type="checkbox" value="checkall" v-model="checkAll.interests" v-on="click: toggleCheckAll('interests')"
+      //span
+        //| 全选
   .panel-body
     .row
       label.checkbox-inline.checkbox-default v-repeat="interests.slice(0, 4)"

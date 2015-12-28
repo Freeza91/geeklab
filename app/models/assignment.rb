@@ -49,7 +49,7 @@ class Assignment < ActiveRecord::Base
   end
 
   def expired?
-    Time.now >= expired_at
+    Time.now >= expired_at && !stop_time
   end
 
   def expired_upload?

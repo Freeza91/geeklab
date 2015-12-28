@@ -22,7 +22,7 @@ class NotitySubscribeJob < ActiveJob::Base
 
     end
 
-    free_redis_data(project.id) unless project.available? # 任务结束释放
+    free_redis_data(project.id) if project.status == 'finish' # 任务结束释放
 
   end
 

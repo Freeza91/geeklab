@@ -37,6 +37,9 @@
     text-align: center
 
 .project
+  .input-field,
+  .textarea-field
+    position: relative
   .input-field
     width: 50%
     margin-left: auto
@@ -109,14 +112,17 @@
 
 // text input length hint
 .js-len-control
-  margin-bottom: 0
+  position: absolute
+  right: 20px
+  bottom: 10px
   text-align: right
   font-size: 13px
+  color: $gray
   .js-len-count
-    color: #16a0c6
+    color: $blue
     margin: 0 2px
   .js-len-count.warn
-    color: #a94442
+    color: $warn-red
 
 // user slider
 #slider-user

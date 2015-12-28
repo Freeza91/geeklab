@@ -5,13 +5,13 @@
     span.hint-info v-show="!validated.step_4 && !username"
       | 请填写姓名
   .panel-body
-    .form-group.input-field v-class="has-error: !validated.step_4 && !username"
+    .input-field v-class="has-error: !validated.step_4 && !username"
       input.form-input type="text" maxlength="15" v-model="username"
-    p.js-len-control
-      | 还可以输入
-      span.js-len-count v-class="username.length >= 10 ? 'warn' : ''"
-        | {{username ? (15 - username.length) : 15}}
-      | 字
+      .js-len-control
+        | 还可以输入
+        span.js-len-count v-class="username.length >= 10 ? 'warn' : ''"
+          | {{username ? (15 - username.length) : 15}}
+        | 字
 .panel.project-panel
   .panel-heading
     span.name
@@ -21,7 +21,7 @@
     span.hint-info v-show="!validated.step_4 && !mobile.validated"
       | 手机格式错误
   .panel-body
-    .form-group.input-field v-class="has-error: !validated.step_4 && !mobile"
+    .input-field v-class="has-error: !validated.step_4 && !mobile"
       input.form-input type="text" maxlength="11" v-model="mobile.content" v-on="focus: mobile.validated = true"
 .panel.project-panel
   .panel-heading
@@ -32,7 +32,7 @@
     span.hint-info v-show="!validated.step_4 && !email.validated"
       | 邮箱格式错误
   .panel-body
-    .form-group.input-field v-class="has-error: !validated.step_4 && !email"
+    .input-field v-class="has-error: !validated.step_4 && !email"
       input.form-input type="text" v-model="email.content" v-on="focus: email.validated = true"
 .panel.project-panel
   .panel-heading
@@ -41,10 +41,10 @@
     span.hint-info v-show="!validated.step_4 && !company"
       | 请填写公司
   .panel-body
-    .form-group.input-field v-class="has-error: !validated.step_4 && !company"
+    .input-field v-class="has-error: !validated.step_4 && !company"
       input.form-input type="text" maxlength="30" v-model="company"
-    p.js-len-control
-      | 还可以输入
-      span.js-len-count v-class="company.length >= 25 ? 'warn' : ''"
-        | {{company ? (30 - company.length) : 30}}
-      | 字
+      .js-len-control
+        | 还可以输入
+        span.js-len-count v-class="company.length >= 25 ? 'warn' : ''"
+          | {{company ? (30 - company.length) : 30}}
+        | 字

@@ -1,17 +1,17 @@
-.panel.roject-panel
+.panel.project-panel
   .panel-heading
     span.name
       | 测试情景(必填)
     span.hint-info v-show="!validated.step_3 && !situation"
       | 请填写测试情景
   .panel-body
-    .form-group v-class="has-error: !validated.step_3 && !situation"
+    .textarea-field v-class="has-error: !validated.step_3 && !situation"
       textarea.form-control rows="4" v-model="situation" placeholder="例如：想象一下你现在想给自己买一套新衣裳" v-on="keyup: textareaLengthLimit('situation',$event, 140)"
-    p.js-len-control
-      | 还可以输入
-      span.js-len-count v-class="situation.length >= 135 ? 'warn' : ''"
-        | {{situation ? (140 - situation.length) : 140}}
-      | 字
+      .js-len-control
+        | 还可以输入
+        span.js-len-count v-class="situation.length >= 135 ? 'warn' : ''"
+          | {{situation ? (140 - situation.length) : 140}}
+        | 字
 .panel.project-panel
   .panel-heading
     span.name
@@ -21,9 +21,9 @@
   .panel-body
     ul.sortable
       li v-repeat="tasks"
-        .form-group v-class="has-error: !validated.step_3 && !content"
+        .textarea-field v-class="has-error: !validated.step_3 && !content"
           textarea.form-control rows="4" v-model="content" v-on="keyup: textareaLengthLimit($index, $event, 50)"
-          p.js-len-control
+          .js-len-control
             | 还可以输入
             span.js-len-count v-class="content.length >= 45 ? 'warn' : ''"
               | {{50 - content.length}}

@@ -1,7 +1,7 @@
 .project-header.clearfix
-  .form-group.project-title v-class="has-error: !validated.step_4 && !name"
+  .input-field.project-title v-class="has-error: !validated.step_4 && !name"
     input.form-input type="text" maxlength="20" placeholder="请输入测试任务标题..." v-model="name"
-    p.js-len-control
+    .js-len-control
       | 还可以输入
       span.js-len-count v-class="name.length >= 15 ? 'warn' : ''"
         | {{name ? (20 - name.length) : 20}}

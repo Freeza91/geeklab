@@ -42,8 +42,8 @@
     span.hint-info v-show="!validated.step_1 && !introduction"
       | 请输入产品简介
   .panel-body
-    .form-group v-class="has-error: !validated.step_1 && !introduction"
-      input.form-control type="text" maxlength="15" v-model="introduction" placeholder="请用一句话介绍你的产品可以用来干什么..."
+    .form-group.input-field v-class="has-error: !validated.step_1 && !introduction"
+      input.form-input type="text" maxlength="15" v-model="introduction" placeholder="请用一句话介绍你的产品可以用来干什么..."
     p.js-len-control
       | 还可以输入
       span.js-len-count v-class="introduction.length >= 10 ? 'warn' : ''"

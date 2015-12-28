@@ -5,8 +5,8 @@
     span.hint-info v-show="!validated.step_4 && !username"
       | 请填写姓名
   .panel-body
-    .form-group v-class="has-error: !validated.step_4 && !username"
-      input.form-control type="text" maxlength="15" v-model="username"
+    .form-group.input-field v-class="has-error: !validated.step_4 && !username"
+      input.form-input type="text" maxlength="15" v-model="username"
     p.js-len-control
       | 还可以输入
       span.js-len-count v-class="username.length >= 10 ? 'warn' : ''"
@@ -21,13 +21,8 @@
     span.hint-info v-show="!validated.step_4 && !mobile.validated"
       | 手机格式错误
   .panel-body
-    .form-group v-class="has-error: !validated.step_4 && !mobile"
-      input.form-control type="text" maxlength="11" v-model="mobile.content" v-on="focus: mobile.validated = true"
-    /p.js-len-control
-      /| 还可以输入
-      /span.js-len-count
-        /| {{11 - mobile.content.length}}
-      /| 字
+    .form-group.input-field v-class="has-error: !validated.step_4 && !mobile"
+      input.form-input type="text" maxlength="11" v-model="mobile.content" v-on="focus: mobile.validated = true"
 .panel.project-panel
   .panel-heading
     span.name
@@ -37,8 +32,8 @@
     span.hint-info v-show="!validated.step_4 && !email.validated"
       | 邮箱格式错误
   .panel-body
-    .form-group v-class="has-error: !validated.step_4 && !email"
-      input.form-control type="text" v-model="email.content" v-on="focus: email.validated = true"
+    .form-group.input-field v-class="has-error: !validated.step_4 && !email"
+      input.form-input type="text" v-model="email.content" v-on="focus: email.validated = true"
 .panel.project-panel
   .panel-heading
     span.name
@@ -46,8 +41,8 @@
     span.hint-info v-show="!validated.step_4 && !company"
       | 请填写公司
   .panel-body
-    .form-group v-class="has-error: !validated.step_4 && !company"
-      input.form-control type="text" maxlength="30" v-model="company"
+    .form-group.input-field v-class="has-error: !validated.step_4 && !company"
+      input.form-input type="text" maxlength="30" v-model="company"
     p.js-len-control
       | 还可以输入
       span.js-len-count v-class="company.length >= 25 ? 'warn' : ''"

@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
   scope :order_by_created, -> { order('created_at desc') }
   scope :during_time, ->(start_at, end_at) { where('created_at >= ? and created_at <= ?', start_at, end_at) }
 
+  has_one :id_card
+
   def to_tester
     @tester ||= Tester.find_by(id: self.to_params)
   end

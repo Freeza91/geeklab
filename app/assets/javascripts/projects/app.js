@@ -166,6 +166,7 @@ $(function () {
       tasksLimited: false
     },
     methods: {
+      transformSex: transformSex,
       previousStep: previousStep,
       nextStep: nextStep,
       addTask: addTask,
@@ -198,24 +199,11 @@ $(function () {
     var data = new FormData();
     var vmData = vm.$data;
 
-    // 获取数据
-    //data.name = vmData.name;
-    //data.platform = vmData.platform;
-    //data.device = vmData.device;
-    //data.profile = vmData.introduction;
     data.append('name', vmData.name);
     data.append('platform', vmData.platform);
     data.append('device', vmData.device);
     data.append('profile', vmData.introduction);
 
-    // target user requirement
-    //data.user_feature_attributes = {};
-    //data.user_feature_attributes.sex = getvmcheckboxarr(vmdata.sex);
-    //data.user_feature_attributes.city_level = getvmcheckboxarr(vmdata.city, 'index');
-    //data.user_feature_attributes.education = getvmcheckboxarr(vmdata.education);
-    //data.user_feature_attributes.emotional_status = getvmcheckboxarr(vmdata.emotion);
-    //data.user_feature_attributes.sex_orientation = getvmcheckboxarr(vmdata.orientation);
-    //data.user_feature_attributes.interest = getvmcheckboxarr(vmdata.interests);
     var user_feature_attributes = {};
     user_feature_attributes.sex = getVmCheckboxArr(vmData.sex);
     user_feature_attributes.city_level = getVmCheckboxArr(vmData.city, 'index');
@@ -234,10 +222,6 @@ $(function () {
     data.append('tasks_attributes', JSON.stringify(tasks_attributes));
     data.append('desc', vmData.situation);
 
-    //data.contact_name = vmData.username;
-    //data.phone = vmData.mobile;
-    //data.email= vmData.email;
-    //data.company = vmData.company;
     data.append('contact_name', vmData.username);
     data.append('phone', vmData.mobile.content);
     data.append('email', vmData.email.content);
@@ -247,10 +231,6 @@ $(function () {
     var age = $('#slider-age').val();
     var income = $('#slider-income').val();
     var sys = (vmData.platform === 'ios' ? $('#slider-ios').val() : $('#slider-android').val());
-    //data.demand = userCount;
-    //data.user_feature_attributes.age = age.join('-');
-    //data.user_feature_attributes.income = income.join('-');
-    //data.requirement = sys;
 
     data.append('demand', userCount);
     data.append('requirement', sys);
@@ -265,7 +245,6 @@ $(function () {
     $.ajax({
       url: url,
       method: 'post',
-      //data: {project: data},
       data: data,
       cache: false,
       processData: false, //Dont't process the file
@@ -284,6 +263,14 @@ $(function () {
   /*
    * @param valueType 返回值的类型
    */
+  function transformSex (sex) {
+    var sexMap = {
+      '男': 'male',
+      '女': 'female'
+    };
+    return sexMap[sex];
+  }
+
   function getVmCheckboxArr (vmArr, valueType) {
     valueType = valueType || 'value';
     var result = [];

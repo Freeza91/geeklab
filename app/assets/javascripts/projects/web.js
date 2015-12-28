@@ -163,6 +163,7 @@ $(function () {
       tasksLimited: false
     },
     methods: {
+      transformSex: transformSex,
       previousStep: previousStep,
       nextStep: nextStep,
       addTask: addTask,
@@ -189,33 +190,19 @@ $(function () {
   }
 
   function postData () {
-    //var data = {};
     var data = new FormData();
     var vmData = vm.$data;
 
     // 不存在的数据，为了统一
-    //data.device = 'web';
-    //data.requirement = "all";
     data.append('device', 'web');
     data.append('requirement', 'all');
 
     // 获取数据
-    // project basic info
-    //data.name = vmData.name;
-    //data.platform = vmData.website;
-    //data.profile = vmData.introduction;
     data.append('name', vmData.name);
     data.append('platform', vmData.website);
     data.append('profile', vmData.introduction);
 
     // target user requirement
-    //data.user_feature_attributes = {};
-    //data.user_feature_attributes.sex = getVmCheckboxArr(vmData.sex);
-    //data.user_feature_attributes.city_level = getVmCheckboxArr(vmData.city, 'index');
-    //data.user_feature_attributes.education = getVmCheckboxArr(vmData.education);
-    //data.user_feature_attributes.emotional_status = getVmCheckboxArr(vmData.emotion);
-    //data.user_feature_attributes.sex_orientation = getVmCheckboxArr(vmData.orientation);
-    //data.user_feature_attributes.interest = getVmCheckboxArr(vmData.interests);
     var user_feature_attributes = {};
     user_feature_attributes.sex = getVmCheckboxArr(vmData.sex);
     user_feature_attributes.city_level = getVmCheckboxArr(vmData.city, 'index');
@@ -235,10 +222,6 @@ $(function () {
     data.append('desc', vmData.situation);
 
     // contact info
-    //data.contact_name = vmData.username;
-    //data.phone = vmData.mobile;
-    //data.email= vmData.email;
-    //data.company = vmData.company;
     data.append('contact_name', vmData.username);
     data.append('phone', vmData.mobile.content);
     data.append('email', vmData.email.content);
@@ -247,10 +230,6 @@ $(function () {
     var userCount = $('#slider-user').val();
     var age = $('#slider-age').val();
     var income = $('#slider-income').val();
-
-    //data.demand = userCount;
-    //data.user_feature_attributes.age = age.join('-');
-    //data.user_feature_attributes.income = income.join('-');
 
     data.append('demand', userCount);
     user_feature_attributes.age = age.join('-');
@@ -263,7 +242,6 @@ $(function () {
     $.ajax({
       url: url,
       method: 'post',
-      //data: {project: data}
       data: data,
       cache: false,
       processData: false, //Dont't process the file
@@ -282,6 +260,14 @@ $(function () {
   /*
    * @param valueType 返回值的类型
    */
+  function transformSex (sex) {
+    var sexMap = {
+      '男': 'male',
+      '女': 'female'
+    };
+    return sexMap[sex];
+  }
+
   function getVmCheckboxArr (vmArr, valueType) {
     valueType = valueType || 'value';
     var result = [];

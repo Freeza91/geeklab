@@ -296,7 +296,7 @@ $(function () {
     });
   }
 
-  function deleteAssignment () {
+  function deleteAssignment (testerId, assignment) {
     sendDeleteAssigmentRequest(testerId, assignment.id, function (data) {
       var hash = location.hash.substr(1),
           assignmentsVm;
@@ -316,7 +316,13 @@ $(function () {
 
   $('#confirm').on('click', function () {
     var eventName = $(this).parents('.operate').data('event-name');
-        assignment = assignmentsIng.assignments[assignmentsIng.currAssignIndex];
+        hash = location.hash.substr(1),
+        assignment;
+        if(hash === 'ing') {
+          assignment = assignmentsIng.assignments[assignmentsIng.currAssignIndex];
+        } else {
+          assignment = assignmentsFinish.assignments[assignmentsFinish.currAssignIndex];
+        }
     switch(eventName) {
       case 'deleteVideo':
         deleteVideo(testerId, assignment);

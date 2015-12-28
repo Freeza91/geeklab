@@ -59,14 +59,14 @@ module Wechatsable
   end
 
   def build_cert_http
-    cert = File.read("#{ Rails.root }/cert/apiclient_cert.pem")
-    key = File.read("#{ Rails.root }/cert/apiclient_key.pem")
+    cert = File.read("#{Settings.cert_path}/cert/apiclient_cert.pem")
+    key = File.read("#{Settings.cert_path}/cert/apiclient_key.pem")
     @uri = URI.parse URL
     http = Net::HTTP.new(@uri.host, @uri.port)
     http.use_ssl = true if @uri.scheme == 'https'
     http.cert = OpenSSL::X509::Certificate.new(cert)
     http.key = OpenSSL::PKey::RSA.new(key, '商户编号')
-    http.ca_file = File.join("#{ Rails.root}/cert/rootca.pem")
+    http.ca_file = File.join("#{Settings.cert_path}/cert/rootca.pem")
     http.verify_mode = OpenSSL::SSL::VERIFY_PEER
 
     http

@@ -114,26 +114,37 @@
     color: $warn-red
 
 // user slider
-#slider-user
-  .noUi-horizontal
-  .noUi-handle
-    background-color: #16a0c6
-    border-color: #16a0c6
-#slider-age,
-#slider-income
+.noUi-horizontal
   .noUi-handle
     position: relative
-    .slider-value
-      position: absolute
-      left: 0
-      bottom: 100%
-      width: 60px
-      height: 30px
-      line-height: 30px
-      margin-left: -25px
-      margin-bottom: 15px
-      background-color: #f8f8f8
-      color: #a0a0a0
+    width: 0
+    height: 0
+    margin-top: -6px
+    background-color: transparent
+    border-top: none
+    border-right: 15px solid transparent
+    border-bottom: 30px solid $blue
+    border-left: 15px solid transparent
+  .slider-value
+    position: absolute
+    left: 0
+    bottom: 100%
+    width: 60px
+    height: 30px
+    line-height: 30px
+    margin-left: -30px
+    color: $dark-blue
+.noUi-connect
+  background: $dark-blue
+.noUi-background,
+.noUi-base
+  +border-radius(12px)
+.noUi-origin
+  +border-radius(12px)
+#slider-user
+  background: $dark-blue
+  .noUi-origin
+    background: #dadada
 
 // step switch
 .step-switch

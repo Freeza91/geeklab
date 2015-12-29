@@ -18,7 +18,10 @@ module Wechatsable
     http.start do
       http.request_post(@uri.path, xml.to_xml) do |res|
         doc = Hash.from_xml(res.body)['xml']
-        return '恭喜你获得红包' if doc['return_code'] == 'SUCCESS'
+        if doc['return_code'] == 'SUCCESS'
+          p params[:mch_billno]
+          return '恭喜你获得红包'
+        end
       end
     end
 

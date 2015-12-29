@@ -13,3 +13,4 @@ production: # work model
   - [inc_good_stock, 5]
   - [add_bonus_credit]
   - [notity_subscribe, 3]
+  - [check_reward_from_wechats_job]

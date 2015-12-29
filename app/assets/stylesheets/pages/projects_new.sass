@@ -169,6 +169,30 @@
     margin-left: 20px
 
 // task
+.hot-tasks
+  padding: 15px
+  background: $light-yellow
+  border: 2px dashed $blue
+  .task-item
+    position: relative
+    float: left
+    width: 33.3%
+    padding: 10px
+    color: $light-yellow
+    cursor: pointer
+  .item-content
+    padding: 15px 30px 15px 10px
+    background: $blue
+    text-align: left
+  .fa-plus
+    position: absolute
+    right: 20px
+    top: 50%
+    margin-top: -10px
+    font-size: 1.4rem
+  .task-item:hover
+    .item-content
+      background: $dark-blue
 .add-task
   .btn +.btn
     margin-left: 30px

@@ -5,7 +5,7 @@
     span.hint-info v-show="!validated.step_1 && !website"
       | 请填写网址
   .panel-body
-    .form-group.input-field v-class="has-error: !validated.step_1 && !website"
+    .input-field v-class="has-error: !validated.step_1 && !website"
       input.form-input type="text" v-model="website"
 .panel.project-panel
   .panel-heading

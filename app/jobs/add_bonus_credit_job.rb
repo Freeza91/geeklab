@@ -11,7 +11,7 @@ class AddBonusCreditJob < ActiveJob::Base
         rating = assignment.rating_from_admin || 5
         basic_bonus = project.basic_bonus || 0
         bonus = rating * basic_bonus
-        origin_credis = tester.credits || 0
+        origin_credits = tester.credits || 0
 
         record = CreditRecord.new(tester_id: tester.id,
                                   project_id: project.id,
@@ -22,7 +22,7 @@ class AddBonusCreditJob < ActiveJob::Base
                                   rating_type: 'admin',
                                   rating: rating)
 
-        record.save && tester.update_column(credits: bonus + origin_credis)
+        record.save && tester.update_column(:credits, bonus + origin_credits)
       end
     end
 

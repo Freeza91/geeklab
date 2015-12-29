@@ -18,6 +18,7 @@
       | 测试任务(必填)
     span.hint-info v-show="!validated.step_3 && !tasks[0].content"
       | 请填写测试任务
+    span.hint-info v-show="tasksLimited"
   .panel-body
     ul.sortable
       li v-repeat="tasks"
@@ -33,8 +34,10 @@
             i.fa.fa-arrows-v.fa-2x
           .delete-handle v-on="click: deleteTask(this, $event)"
             i.fa.fa-trash-o.fa-2x
-    button.btn.btn-gray.add-task v-on="click: addTask"
-      i.fa.fa-plus style="font-size: 1.5em"
-    p.task-limit v-show="tasksLimited"
-      span
-        | 最多添加8个任务
+    .add-task
+      button.btn.btn-flat.blue.btn-rounded.btn-m v-on="click: addTask"
+        | 空白任务
+        .fa.fa-plus
+      button.btn.btn-flat.blue.btn-rounded.btn-m v-on="click: addTask"
+        | 热门任务
+        .fa.fa-plus

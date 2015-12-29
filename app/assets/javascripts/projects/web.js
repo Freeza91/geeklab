@@ -332,6 +332,7 @@ $(function () {
     }
     return false;
   }
+
   function addTask (event) {
     event.preventDefault();
     if(vm.tasks.length < 8) {
@@ -344,7 +345,6 @@ $(function () {
         vm.tasksLimited = false;
       }, 2000);
     }
-    updateSort();
   }
 
   function deleteTask (task, event) {
@@ -378,21 +378,6 @@ $(function () {
 
   function isCheck(item) {
     return item.checked;
-  }
-  // init task sortable
-  function initSortable () {
-    $('.sortable').sortable({
-      handle: '.drag-handle'
-    });
-  }
-  initSortable ();
-
-  // 动态插入task之后的拖动
-  function updateSort () {
-    $('.sortable').on('DOMNodeInserted', function () {
-      initSortable();
-      $('.sortable').unbind('DOMNodeInserted');
-    });
   }
 
   function inputValid (value, type) {

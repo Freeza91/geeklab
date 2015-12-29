@@ -211,24 +211,25 @@
 .sortable
   list-style: none
   padding: 0
-  > li
+  .sortable-item
     position: relative
+    margin-bottom: 10px
     .handle
       position: absolute
       left: 0
       top: 0
     .drag-handle,
     .delete-handle
-      height: 46px
+      height: 47px
       color: #fff
-      background-color: #a0a0a0
-      margin-bottom: 1px
+      background-color: $blue
       padding: 0 7px
     .drag-handle
+      border-bottom: 1px solid $dark-blue
       cursor: move
     .drag-handle:hover,
     .delete-handle:hover
-      background-color: #16a0c6
+      background-color: $dark-blue
     .fa
       line-height: 46px
       font-size: 1.5em
@@ -237,6 +238,10 @@
       background-color: #16a0c6
   textarea
     padding-left: 35px
+.sortable-ghost
+  opacity: .4
+.sortable-choose
+
 
 // qrcode preview
 .qrcode-preview

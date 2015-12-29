@@ -20,8 +20,8 @@
       | 请填写测试任务
     span.hint-info v-show="tasksLimited"
   .panel-body
-    ul.sortable
-      li v-repeat="tasks"
+    #task-list.sortable
+      .sortable-item v-repeat="tasks"
         .textarea-field v-class="has-error: !validated.step_3 && !content"
           textarea.form-control rows="4" v-model="content" v-on="keyup: textareaLengthLimit($index, $event, 50)"
           .js-len-control

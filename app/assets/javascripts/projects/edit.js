@@ -44,8 +44,6 @@ $(function () {
 
   function generateVmData (project) {
     var incomeMap = [0, 2, 5, 8, 10, 15, 30, 50, 100];
-    var androidMap = ['2.2', '2.3', '2.3.3', '3.0', '3.1', '3.2', '4.0', '4.0.3', '4.1', '4.2', '4.3', '4.4', '4.5', '5.0', '5.1'];
-    var iosMap = ['6.0', '7.0', '8.0'];
 
     var vmData = {};
     vmData.step = 1;
@@ -82,7 +80,7 @@ $(function () {
     } else {
       vmData.platform = project.platform;
     }
-    
+
     // target user
     vmData.sex = generateVmCheckArr(['男', '女'], project.user_feature.sex);
     vmData.city = generateVmCheckArr(['北上广深', '省会城市', '其它'], project.user_feature.city_level, 'index');
@@ -121,27 +119,16 @@ $(function () {
     });
     $('#slider-income').val(income);
     $('#slider-user').val(project.demand);
-    // app时设置系统要求
-    if(project.device != 'web') {
-      switch(project.platform) {
-        case 'android':
-          $('#slider-android').val(androidMap[project.requirement]);
-        break;
-        case 'ios':
-          $('#slider-ios').val(iosMap[project.requirement]);
-        break;
-      }
-    }
     // 是否全选
     for (key in vmData.checkAll) {
-      vmData.checkAll[key] = isCheckAll(vmData[key]); 
+      vmData.checkAll[key] = isCheckAll(vmData[key]);
     }
     // 显示二维码图片
     if(project.qr_code) {
       $('.qrcode-preview').attr('src', project.qr_code).show();
       $('.fa-upload').hide();
       vmData.qrcode = project.qr_code;
-    } 
+    }
     console.log(vmData);
     return vmData;
   }
@@ -172,7 +159,7 @@ $(function () {
     });
   }
 
-  
+
   function submit(event) {
     event.preventDefault();
 
@@ -364,7 +351,6 @@ $(function () {
         vm.tasksLimited = false;
       }, 2000);
     }
-    updateSort();
   }
 
   function deleteTask (task, event) {
@@ -402,26 +388,10 @@ $(function () {
   function isCheck(item) {
     return item.checked;
   }
- 
-  // init task sortable
-  function initSortable () {
-    $('.sortable').sortable({
-      handle: '.drag-handle'
-    });
-  }
-  initSortable ();
-
-  // 动态插入task之后的拖动
-  function updateSort () {
-    $('.sortable').on('DOMNodeInserted', function () {
-      initSortable();
-      $('.sortable').unbind('DOMNodeInserted');
-    });
-  }
 
   // 上传二维码
   function uploadQrcode (event) {
-    event.preventDefault(); 
+    event.preventDefault();
     $('[name="qrcode"]').click();
   }
 
@@ -431,7 +401,7 @@ $(function () {
       case 'email':
         var emailReg = /^[0-9a-zA-Z_-]+@([0-9a-zA-Z]+.)+[a-zA-Z]$/;
         result = emailReg.test(value);
-      break; 
+      break;
       case 'mobile_phone':
         var mobileReg = /^1[3|5|7|8][0-9]{9}$/;
         result = mobileReg.test(value);

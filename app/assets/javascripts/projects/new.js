@@ -26,17 +26,7 @@ $(function () {
       '<span>' + value + '个</span>'
     )
   });
-  //$('#slider-user').noUiSlider_pips({
-    //mode: 'steps',
-    //format: {
-      //to: function (value) {
-        //return value + '个';
-      //},
-      //from: function (value) {
-        //return value;
-      //}
-    //}
-  //});
+
   $('#slider-age').noUiSlider({
     start: [18, 48],
     margin: 5,
@@ -95,6 +85,12 @@ $(function () {
     $(this).html(
       '<span>' + value + '万</span>'
     )
+  });
+
+  // init sortable task list
+  var sortEl = document.getElementById('task-list');
+  var sortable = Sortable.create(sortEl, {
+    handle: '.drag-handle'
   });
 
 });

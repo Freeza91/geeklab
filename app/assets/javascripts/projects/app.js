@@ -182,6 +182,7 @@ $(function () {
 
   function submit(event) {
     event.preventDefault();
+    console.log('submit');
 
     vm.mobile.validated = inputValid(vm.mobile.content, 'mobile_phone');
     vm.email.validated = inputValid(vm.email.content, 'email');
@@ -230,10 +231,9 @@ $(function () {
     var userCount = $('#slider-user').val();
     var age = $('#slider-age').val();
     var income = $('#slider-income').val();
-    var sys = (vmData.platform === 'ios' ? $('#slider-ios').val() : $('#slider-android').val());
 
     data.append('demand', userCount);
-    data.append('requirement', sys);
+    data.append('requirement', 'all');
     user_feature_attributes.age = age.join('-');
     user_feature_attributes.income = income.join('-');
     data.append('user_feature_attributes', JSON.stringify(user_feature_attributes));

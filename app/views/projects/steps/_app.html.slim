@@ -39,15 +39,6 @@
 .panel.project-panel
   .panel-heading
     span.name
-      | 用户系统要求
-  .panel-body
-    .slider-sys#slider-android v-show="platform === 'android'"
-      span.sys-value
-    .slider-sys#slider-ios v-show="platform === 'ios'"
-      span.sys-value
-.panel.project-panel
-  .panel-heading
-    span.name
       | 产品简介(必填)
     span.hint-info v-show="!validated.step_1 && !introduction"
       | 请输入产品简介

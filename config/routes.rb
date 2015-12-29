@@ -32,6 +32,11 @@
         get 'send_novice_task'
       end
     end
+
+    get '/id_cards',  to: 'id_cards#show'
+    post '/id_cards', to: 'id_cards#create'
+    put '/id_cards',  to: 'id_cards#update'
+
   end
 
   resources :pms
@@ -82,7 +87,6 @@
     end
 
   end
-
 
   namespace :stores do
     root to: "base#index"

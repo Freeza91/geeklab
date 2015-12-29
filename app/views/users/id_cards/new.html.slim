@@ -1,0 +1,10 @@
+= form_for [:users, @id_card] do |f|
+  = f.label '真实姓名'
+  = f.text_field :name
+  = f.label '身份证号'
+  = f.text_field :id_num
+  = f.label '身份证正面'
+  = f.file_field :face
+  = f.label '身份证反面'
+  = f.file_field :back
+  = f.submit '提交'

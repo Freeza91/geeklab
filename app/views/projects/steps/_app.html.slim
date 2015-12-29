@@ -58,8 +58,9 @@
       | 请上传二维码
   .panel-body
     input type="file" accept="image/*" name="qrcode" style="display: none" v-on="change: localImageView"
-    img.qrcode-preview
-    .upload
-      .fa.fa-upload.fa-5x style="color: #eee"
-    button.btn.btn-blue.upload-qrcode v-on="click: uploadQrcode($event)" style="width: 120px"
-      | 上传二维码
+    .qrcode-upload
+      .qrcode-preview
+        img v-show="qrcode"
+        .fa.fa-qrcode.fa-5x v-show="!qrcode"
+      button.btn.btn-flat.blue.btn-rounded.btn-m v-on="click: uploadQrcode($event)"
+        | 上传二维码

@@ -156,6 +156,7 @@
   .prestep
     display: inline-block
     width: 120px
+    margin-right: 20px
     color: $light-yellow
     cursor: pointer
   .prestep:hover
@@ -165,8 +166,6 @@
     color: $blue
   .nextstep:hover
     background: $dark-blue
-  .nextstep
-    margin-left: 20px
 
 // task
 .hot-tasks
@@ -245,14 +244,14 @@
 
 // qrcode preview
 .qrcode-preview
-  display: none
-  width: 100px
-  height: 100px
-  margin: 10px
-  transition: all .5s ease
-.qrcode-preview[src]
-  display: inline
-
+  .fa-qrcode
+    font-size: 7rem
+    color: $gray
+  img
+    width: 100px
+    height: 100px
+    margin: 10px
+    transition: all .5s ease
 
 // task length limit hint
 .task-limit

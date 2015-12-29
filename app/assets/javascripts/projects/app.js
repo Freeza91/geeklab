@@ -299,8 +299,7 @@ $(function () {
     vm.qrcode = input.value;
     var url = window.URL.createObjectURL(qrcode);
     input.value = '';
-    $('.qrcode-preview').attr('src', url);
-    $('.fa-upload').hide();
+    $('.qrcode-preview img').attr('src', url);
   }
 
   function previousStep (event) {

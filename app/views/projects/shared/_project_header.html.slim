@@ -11,12 +11,8 @@
     span
       | 请输入测试标题
   .project-pagination
-    ul
-      li
-        | 测试方式
-      li
-        | 目标人群
-      li
-        | 任务
-      li
-        | 联系方式
+    img src="#{image_path('projects/project-pagination-1.png')}" v-show="step === 1"
+    img src="#{image_path('projects/project-pagination-2.png')}" v-show="step === 2"
+    img src="#{image_path('projects/project-pagination-3.png')}" v-show="step === 3"
+    img src="#{image_path('projects/project-pagination-4.png')}" v-show="step === 4"
+

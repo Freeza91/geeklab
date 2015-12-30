@@ -7,6 +7,18 @@
   .panel-body
     .input-field v-class="has-error: !validated.step_1 && !website"
       input.form-input type="text" v-model="website"
+      .input-prompt
+        .prompt-title
+          | 用户需要访问那个网站开始
+        .prompt-example
+          h6
+            | 例如:
+          ul
+            li
+              | http://geeklab.cc
+            li
+              | geeklab.cc
+        .prompt-triangle
 .panel.project-panel
   .panel-heading
     span.name
@@ -21,3 +33,15 @@
         span.js-len-count v-class="introduction.length >= 10 ? 'warn' : ''"
           | {{introduction ? (15 - introduction.length) : 15}}
         | 字
+      .input-prompt
+        .prompt-title
+          | 用简短的一句话来介绍你的产品
+        .prompt-example
+          h6
+            | 例如:
+          ul
+            li
+              | 人人都是综艺咖
+            li
+              | 单身男女必备脱单神器
+        .prompt-triangle

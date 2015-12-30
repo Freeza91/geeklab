@@ -12,6 +12,18 @@
         span.js-len-count v-class="situation.length >= 135 ? 'warn' : ''"
           | {{situation ? (140 - situation.length) : 140}}
         | 字
+      .input-prompt
+        .prompt-title
+          | 介绍用户需要想象的测试场景
+        .prompt-example
+          h6
+            | 例如:
+          ul
+            li
+              | 想象一下你现在准备去看一些有趣的视频
+            li
+              | 想象一下你现在想去发现一些身边的美食
+        .prompt-triangle
 .panel.project-panel
   .panel-heading
     span.name
@@ -29,11 +41,11 @@
             span.js-len-count v-class="content.length >= 45 ? 'warn' : ''"
               | {{50 - content.length}}
             | 字
-        .handle
-          .drag-handle
-            i.fa.fa-arrows-v.fa-2x
-          .delete-handle v-on="click: deleteTask(this, $event)"
-            i.fa.fa-trash-o.fa-2x
+          .handle
+            .drag-handle
+              i.fa.fa-arrows-v.fa-2x
+            .delete-handle v-on="click: deleteTask(this, $event)"
+              i.fa.fa-trash-o.fa-2x
     .hot-tasks.clearfix
       .tasks-header
         span

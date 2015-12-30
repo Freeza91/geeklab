@@ -130,11 +130,11 @@
               i.fa.fa-arrows-v.fa-2x
             .delete-handle v-on="click: deleteTask(this, $event)"
               i.fa.fa-trash-o.fa-2x
-    .hot-tasks.clearfix
+    .hot-tasks.clearfix v-show="showHotTasks"
       .tasks-header
         span
           | 快捷添加热门任务
-        .fa.fa-close
+        .fa.fa-close v-on="click: showHotTasks = false"
       .task-item
         .item-content
           | 使用手机号注册一个新用户, 并完善你的个人信息.
@@ -155,6 +155,6 @@
       button.btn.btn-flat.blue.btn-rounded.btn-m v-on="click: addTask"
         | 空白任务
         .fa.fa-plus
-      button.btn.btn-flat.blue.btn-rounded.btn-m v-on="click: addTask"
+      button.btn.btn-flat.blue.btn-rounded.btn-m v-on="click: showHotTask(this, $event)"
         | 热门任务
         .fa.fa-plus

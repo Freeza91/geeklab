@@ -27,6 +27,7 @@ $(function () {
           nextStep: nextStep,
           addTask: addTask,
           deleteTask: deleteTask,
+          showHotTask: showHotTask,
           toggleCheckAll: toggleCheckAll,
           checkAllEffect: checkAllEffect,
           uploadQrcode: uploadQrcode,
@@ -99,6 +100,7 @@ $(function () {
       });
     });
     vmData.deletedTask = [];
+    vmDate.showHotTasks = false;
 
     // 联系方式
     vmData.mobile = {
@@ -358,6 +360,13 @@ $(function () {
     vm.tasks.$remove(task.$index);
     if(task.id) {
       vm.deletedTask.push(task.id);
+    }
+  }
+
+  function showHotTask (vm, event) {
+    event.preventDefault();
+    if(!vm.showHotTasks) {
+      vm.showHotTasks = true;
     }
   }
 

@@ -163,7 +163,8 @@ $(function () {
           content: ''
         }
       ],
-      tasksLimited: false
+      tasksLimited: false,
+      showHotTasks: false
     },
     methods: {
       transformSex: transformSex,
@@ -171,6 +172,7 @@ $(function () {
       nextStep: nextStep,
       addTask: addTask,
       deleteTask: deleteTask,
+      showHotTask: showHotTask,
       toggleCheckAll: toggleCheckAll,
       checkAllEffect: checkAllEffect,
       uploadQrcode: uploadQrcode,
@@ -358,6 +360,13 @@ $(function () {
   function deleteTask (task, event) {
     event.preventDefault();
     vm.tasks.$remove(task.$index);
+  }
+
+  function showHotTask (vm, event) {
+    event.preventDefault();
+    if(!vm.showHotTasks) {
+      vm.showHotTasks = true;
+    }
   }
 
   function toggleCheckAll (category) {

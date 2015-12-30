@@ -1,11 +1,8 @@
 main role="main"
-  section style="padding-bottom: 50px"
+  section
     form.form.project
       = render partial: 'projects/shared/project_header'
-      .container
-        /.form
-          /form
-        // app
+      .project-body
         .step-1 v-show="step === 1"
           = render partial: 'projects/steps/app'
         // target user

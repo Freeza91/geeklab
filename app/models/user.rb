@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   scope :during_time, ->(start_at, end_at) { where('created_at >= ? and created_at <= ?', start_at, end_at) }
 
   has_one :id_card
+  has_many :reward_records
 
   def to_tester
     @tester ||= Tester.find_by(id: self.to_params)

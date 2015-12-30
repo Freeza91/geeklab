@@ -9,7 +9,7 @@ class WechatsController < ActionController::Base
 
   on :text, with: '红包' do |request|
     openid = request[:FromUserName]
-    request.reply.text "#{send_reward(openid, 100, 1)}"
+    request.reply.text "#{send_reward(openid, 'secret')}"
   end
 
   # When receive 'help', will trigger this responder

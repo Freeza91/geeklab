@@ -7,20 +7,38 @@ module Wechatsable
 
   private
 
-  def send_reward(openid, amount, num)
-    params = build_params(openid, amount, num)
+  def send_reward(openid, secret)
+
+    return '连续输错5次将在1小时内无法在进行兑换!' if limit_openid?(openid, secret)
+    return '已经发放成功无法在使用!' unless @record.status == 'SENDING' # 待发放
+
+    params = build_params(openid, @record.amount, 1)
     xml = build_xml_body(params)
     http = build_cert_http
-    return '拿到了还想拿，真是贪婪' if $redis.get(openid)
-    $redis.set openid, true
-    $redis.expire openid, 300 * 10
 
     http.start do
       http.request_post(@uri.path, xml.to_xml) do |res|
         doc = Hash.from_xml(res.body)['xml']
         if doc['return_code'] == 'SUCCESS'
-          p params[:mch_billno]
+
+          begin
+            send_time = doc['send_time'].to_datetime
+          rescue
+            send_time = Time.now
+          end
+          @record.update_attributes(send_time: send_time, mch_billno: params[:mch_billno],openid: openid, status: 'SENT')
+
+          # 在24小时候查询这个红包状态
+          t = Time.now + 24.hours + 5.minutes
+          CheckRewardFromWechatsJob.set(wait_until: t).perform_later(params[:mch_billno])
+
           return '恭喜你获得红包'
+        else
+          # 1. 余额不足
+          # 2. API发送受限
+          # 3. .......
+          UserMailer.send_reward_error(doc)
+          return '红包没有发送成功，请稍后再试或者联系管理员'
         end
       end
     end
@@ -95,6 +113,26 @@ module Wechatsable
     XML
 
     Nokogiri::XML xml
+  end
+
+  # 连续输错5次将在1小时内无法在进行兑换
+  def limit_openid?(openid, secret)
+    value = $redis.get openid
+    return true if value.to_i >= 5
+
+    @record = RewardRecord.find_by(secret: secret).first
+    if record
+      $redis.del openid
+    else
+      if value.to_i == 0
+        $redis.set openid, 0
+        $redis.expire openid, 1.hours.to_i
+      end
+
+      $redis.incr openid
+    end
+
+    false
   end
 
 end

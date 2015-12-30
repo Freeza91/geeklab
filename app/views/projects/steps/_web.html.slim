@@ -3,6 +3,7 @@
     span.name
       | 测试网址(必填)
     span.hint-info v-show="!validated.step_1 && !website"
+      .fa.fa-exclamation-triangle
       | 请填写网址
   .panel-body
     .input-field v-class="has-error: !validated.step_1 && !website"
@@ -24,6 +25,7 @@
     span.name
       | 产品简介(必填)
     span.hint-info v-show="!validated.step_1 && !introduction"
+      .fa.fa-exclamation-triangle
       | 请填写产品简介
   .panel-body
     .input-field v-class="has-error: !validated.step_1 && !introduction"

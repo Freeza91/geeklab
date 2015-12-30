@@ -3,6 +3,7 @@
     span.name
       | 姓名(必填)
     span.hint-info v-show="!validated.step_4 && !username"
+      .fa.fa-exclamation-triangle
       | 请填写姓名
   .panel-body
     .input-field v-class="has-error: !validated.step_4 && !username"
@@ -17,8 +18,10 @@
     span.name
       | 手机(必填)
     span.hint-info v-show="!validated.step_4 && !mobile.content"
+      .fa.fa-exclamation-triangle
       | 请填写手机
     span.hint-info v-show="!validated.step_4 && !mobile.validated"
+      .fa.fa-exclamation-triangle
       | 手机格式错误
   .panel-body
     .input-field v-class="has-error: !validated.step_4 && !mobile"
@@ -28,8 +31,10 @@
     span.name
       | 邮箱(必填)
     span.hint-info v-show="!validated.step_4 && !email.content"
+      .fa.fa-exclamation-triangle
       | 请填写邮箱
     span.hint-info v-show="!validated.step_4 && !email.validated"
+      .fa.fa-exclamation-triangle
       | 邮箱格式错误
     span.panel-label
       | *不区分大小写格式
@@ -41,6 +46,7 @@
     span.name
       | 公司(必填)
     span.hint-info v-show="!validated.step_4 && !company"
+      .fa.fa-exclamation-triangle
       | 请填写公司
   .panel-body
     .input-field v-class="has-error: !validated.step_4 && !company"

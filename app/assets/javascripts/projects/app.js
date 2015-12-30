@@ -185,10 +185,12 @@ $(function () {
 
   function submit(event) {
     event.preventDefault();
-    console.log('submit');
-
-    vm.mobile.validated = inputValid(vm.mobile.content, 'mobile_phone');
-    vm.email.validated = inputValid(vm.email.content, 'email');
+    if(vm.mobile.content) {
+      vm.mobile.validated = inputValid(vm.mobile.content, 'mobile_phone');
+    }
+    if(vm.email.content) {
+      vm.email.validated = inputValid(vm.email.content, 'email');
+    }
     if(vm.name && vm.username && vm.mobile.validated && vm.email.validated && vm.company) {
       vm.step_4 = true;
       postData();
@@ -414,7 +416,7 @@ $(function () {
     var result;
     switch(type){
       case 'email':
-        var emailReg = /^[0-9a-zA-Z_-]+@([0-9a-zA-Z]+.)+[a-zA-Z]$/;
+        var emailReg = /^(\w)+(\.?[a-zA-Z0-9_-])*@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
         result = emailReg.test(value);
       break;
       case 'mobile_phone':

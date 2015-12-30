@@ -41,6 +41,7 @@
     span.name
       | 产品简介(必填)
     span.hint-info v-show="!validated.step_1 && !introduction"
+      .fa.fa-exclamation-triangle
       | 请输入产品简介
   .panel-body
     .input-field v-class="has-error: !validated.step_1 && !introduction"
@@ -67,6 +68,7 @@
     span.name
       | 应用下载二维码(必填)
     span.hint-info v-show="!validated.step_1 && !qrcode"
+      .fa.fa-exclamation-triangle
       | 请上传二维码
   .panel-body
     input type="file" accept="image/*" name="qrcode" style="display: none" v-on="change: localImageView"

@@ -3,6 +3,7 @@
     span.name
       | 测试情景(必填)
     span.hint-info v-show="!validated.step_3 && !situation"
+      .fa.fa-exclamation-triangle
       | 请填写测试情景
   .panel-body
     .textarea-field v-class="has-error: !validated.step_3 && !situation"
@@ -29,8 +30,10 @@
     span.name
       | 测试任务(必填)
     span.hint-info v-show="!validated.step_3 && !tasks[0].content"
+      .fa.fa-exclamation-triangle
       | 请填写测试任务
     span.hint-info v-show="tasksLimited"
+      .fa.fa-exclamation-triangle
       | 最多只能添加8个任务
     .task-example
       span

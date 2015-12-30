@@ -21,6 +21,7 @@
     span.name
       | 性别
     span.hint-info v-show="!validated.step_2 && !hasChecked.sex"
+      .fa.fa-exclamation-triangle
       | 请选择性别
     label.checkbox-default.checkbox-rounded.checkall
       input type="checkbox" value="checkall" v-model="checkAll.sex" v-on="change: toggleCheckAll('sex')"
@@ -38,6 +39,7 @@
     span.name
       | 城市级别
     span.hint-info v-show="!validated.step_2 && !hasChecked.city"
+      .fa.fa-exclamation-triangle
       | 请选择城市级别
     label.checkbox-default.checkbox-rounded.checkall
       input type="checkbox" value="checkall" v-model="checkAll.city" v-on="change: toggleCheckAll('city')"
@@ -53,6 +55,7 @@
     span.name
       | 学历
     span.hint-info v-show="!validated.step_2 && !hasChecked.education"
+      .fa.fa-exclamation-triangle
       | 请选择学历
     label.checkbox-default.checkbox-rounded.checkall
       input type="checkbox" value="checkall" v-model="checkAll.education" v-on="change: toggleCheckAll('education')"
@@ -68,6 +71,7 @@
     span.name
       | 情感状况
     span.hint-info v-show="!validated.step_2 && !hasChecked.emotion"
+      .fa.fa-exclamation-triangle
       | 请选择情感状况
     label.checkbox-default.checkbox-rounded.checkall
       input type="checkbox" value="checkall" v-model="checkAll.emotion" v-on="change: toggleCheckAll('emotion')"
@@ -83,6 +87,7 @@
     span.name
       | 性取向
     span.hint-info v-show="!validated.step_2 && !hasChecked.orientation"
+      .fa.fa-exclamation-triangle
       | 请选择性取向
     label.checkbox-default.checkbox-rounded.checkall
       input type="checkbox" value="checkall" v-model="checkAll.orientation" v-on="change: toggleCheckAll('orientation')"

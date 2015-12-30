@@ -27,6 +27,7 @@ $(function () {
           nextStep: nextStep,
           addTask: addTask,
           deleteTask: deleteTask,
+          addHotTask: addHotTask,
           showHotTask: showHotTask,
           toggleCheckAll: toggleCheckAll,
           checkAllEffect: checkAllEffect,
@@ -341,11 +342,11 @@ $(function () {
     }
     return false;
   }
-  function addTask (event) {
+  function addTask (event, taskContent) {
     event.preventDefault();
     if(vm.tasks.length < 5) {
       vm.tasks.push({
-        content: ''
+        content: taskContent || ''
       });
     } else {
       vm.tasksLimited = true;
@@ -361,6 +362,12 @@ $(function () {
     if(task.id) {
       vm.deletedTask.push(task.id);
     }
+  }
+
+  function addHotTask (vm, event) {
+    event.preventDefault();
+    var taskContent = event.target.innerText;
+    addTask(event, taskContent);
   }
 
   function showHotTask (vm, event) {

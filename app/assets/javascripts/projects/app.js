@@ -172,6 +172,7 @@ $(function () {
       nextStep: nextStep,
       addTask: addTask,
       deleteTask: deleteTask,
+      addHotTask: addHotTask,
       showHotTask: showHotTask,
       toggleCheckAll: toggleCheckAll,
       checkAllEffect: checkAllEffect,
@@ -344,11 +345,11 @@ $(function () {
     }
     return false;
   }
-  function addTask (event) {
+  function addTask (event, taskContent) {
     event.preventDefault();
     if(vm.tasks.length < 8) {
       vm.tasks.push({
-        content: ''
+        content: taskContent || ''
       }); } else {
       vm.tasksLimited = true;
       setTimeout(function () {
@@ -360,6 +361,12 @@ $(function () {
   function deleteTask (task, event) {
     event.preventDefault();
     vm.tasks.$remove(task.$index);
+  }
+
+  function addHotTask (vm, event) {
+    event.preventDefault();
+    var taskContent = event.target.innerText;
+    addTask(event, taskContent);
   }
 
   function showHotTask (vm, event) {

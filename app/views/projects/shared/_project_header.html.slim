@@ -6,6 +6,10 @@
       span.js-len-count v-class="name.length >= 15 ? 'warn' : ''"
         | {{name ? (20 - name.length) : 20}}
       | 字
+  .hint-info v-show="!validated.step_4 && !name" style="float: left; height: 38px; line-height: 38px; margin-left: 10px"
+    .fa.fa-exclamation-triangle
+    span
+      | 请输入测试标题
   .project-pagination
     ul
       li

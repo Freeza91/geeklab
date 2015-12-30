@@ -40,6 +40,52 @@
   > .panel-body
     text-align: center
 
+.task-example
+  float: right
+  position: relative
+  color: $blue
+  .fa
+    font-size: 1.4rem
+    vertical-align: top
+  .task-example-detail
+    visibility: hidden
+    opacity: 0
+    position: absolute
+    top: 0
+    right: 100%
+    width: 700px
+    margin-top: -247px
+    margin-right: 15px
+    padding: 20px
+    background: $light-yellow
+    z-index: 10
+    +box-shadow(0 0 3px rgba(0, 0, 0, .3))
+  .table
+    margin-bottom: 0
+    > tbody
+      > tr > td
+        text-align: left
+      > tr:nth-child(n + 3) > td
+        font-size: .8rem
+    ul > li
+      padding-top: 3px
+      padding-bottom: 3px
+  .task-example-triangle
+    position: absolute
+    top: 50%
+    left: 100%
+    margin-top: -8px
+    margin-left: -8px
+    display: block
+    width: 15px
+    height: 15px
+    background-color: $light-yellow
+    +box-shadow(1px -1px 1px rgba(0, 0, 0, .3))
+    +transform(rotate(45deg))
+.task-example:hover .task-example-detail
+  visibility: visible
+  opacity: 1
+
 .project
 
   .input-field,

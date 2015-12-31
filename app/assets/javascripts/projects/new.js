@@ -106,4 +106,6 @@ $(function () {
     handle: '.drag-handle'
   });
 
+  Vue.transition('expand');
+
 });

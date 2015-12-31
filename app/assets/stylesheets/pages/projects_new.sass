@@ -294,6 +294,7 @@
 .add-task
   .btn +.btn
     margin-left: 30px
+
 // sortable
 .sortable
   list-style: none
@@ -341,8 +342,11 @@
     margin: 10px
     transition: all .5s ease
 
-// task length limit hint
-.task-limit
-  margin-top: 15px
-  color: #a94442
-  transition: all 1s ease
+// task transition
+.expand-transition
+  +transition(all .5s ease)
+  height: 94px
+.expand-enter,
+.expand-leave
+  height: 0
+  opacity: 0

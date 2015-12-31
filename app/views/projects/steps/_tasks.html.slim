@@ -120,7 +120,7 @@
 
   .panel-body
     #task-list.sortable
-      .sortable-item v-repeat="tasks"
+      .sortable-item v-repeat="tasks" v-transition="expand"
         .textarea-field v-class="has-error: !validated.step_3 && !content"
           textarea.form-control rows="4" v-model="content" v-on="keyup: textareaLengthLimit($index, $event, 50)"
           .js-len-control

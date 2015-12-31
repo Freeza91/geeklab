@@ -5,7 +5,8 @@ $(function () {
 
   var incomeMap = [0, 2, 5, 8, 10, 15, 30, 50, 100];
   // range slider
-  $('#slider-user').noUiSlider({
+  var userSlider = $('#slider-user');
+  userSlider.noUiSlider({
     start: 10,
     range: {
       min: 1,
@@ -21,10 +22,22 @@ $(function () {
       }
     }
   });
-  $('#slider-user').Link('lower').to('-inline-<div class="slider-value"></div>', function (value) {
+  userSlider.Link('lower').to('-inline-<div class="slider-value"></div>', function (value) {
     $(this).html(
-      '<span>' + value + '个</span>'
+      '<span>' + value + '个</span><div class="fa fa-edit"></div><input class="count-input" type="text" onchange="Geeklab.setUserCount(event)">'
     )
+  });
+  Geeklab = window.Geeklab || {};
+  window.Geeklab = Geeklab;
+  Geeklab.setUserCount = function (event) {
+    var value = event.target.value;
+    userSlider.val(value);
+  }
+
+  $('#slider-user .slider-value').on('click', function (event, value) {
+    var $this = $(this),
+        value = value || '';
+    $this.find('input').css('visibility', 'visible').focus();
   });
 
   $('#slider-age').noUiSlider({

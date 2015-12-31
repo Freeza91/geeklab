@@ -216,6 +216,26 @@
   background: $dark-blue
   .noUi-origin
     background: #dadada
+  .count-input
+    visibility: hidden
+    position: absolute
+    top: 0
+    left: 0
+    width: 60px
+    border: 1px solid $blue
+  .count-input:focus
+    outline: none
+  .slider-value
+    .fa
+      margin-left: 5px
+      color: $gray
+      font-size: 1.2rem
+      vertical-align: middle
+  .slider-value:hover
+    .count-input
+    border: 1px solid $blue
+    .fa
+      color: $blue
 
 // step switch
 .step-switch

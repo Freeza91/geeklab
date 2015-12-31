@@ -26,7 +26,8 @@ $(function () {
         city: true,
         education: true,
         emotion: true,
-        orientation: true
+        orientation: true,
+        tasks: true
       },
       name: '',
       introduction: '',
@@ -300,10 +301,11 @@ $(function () {
   // 操作相关的函数
   function previousStep (event) {
     event.preventDefault();
+    scrollToTop(0);
     vm.step--;
-    scrollToTop();
     return false;
   }
+
   function nextStep (event) {
     event.preventDefault();
     switch(vm.step) {
@@ -311,35 +313,49 @@ $(function () {
         if(vm.website && vm.introduction) {
           vm.validated.step_1 = true;
           vm.step++;
-          scrollToTop();
         } else {
           vm.validated.step_1 = false;
         }
       break;
       case 2:
-        var cates = ['sex', 'city', 'education', 'emotion', 'orientation'];
-        vm.validated.step_2 = cates.every(function (cate) {
+        var cates = ['sex', 'city', 'education', 'emotion', 'orientation'],
+            firstErrorIndex = 0;
+        cates.forEach(function (cate) {
           vm.hasChecked[cate] = vm[cate].some(isCheck);
+          return vm.hasChecked[cate];
+        });
+        vm.validated.step_2 = cates.every(function (cate, index) {
+          if(!cate) {
+            firstErrorIndex = index;
+          }
           return vm.hasChecked[cate];
         });
         if(vm.validated.step_2) {
           vm.step++;
-          scrollToTop();
+          scrollToTop(0);
+        } else {
+          var topPoint = $('.step-2').find('.project-panel').eq(firstErrorIndex + 3).position().top;
+          scrollToTop(topPoint - 100);
         }
       break;
       case 3:
-        if(vm.situation && vm.tasks[0].content) {
+        vm.hasChecked.tasks = vm.tasks.some(isTaskFilled);
+        if(vm.situation && vm.hasChecked.tasks) {
           vm.validated.step_3 = true;
           vm.step++;
-          scrollToTop();
+          scrollToTop(0);
         } else {
           vm.validated.step_3 = false;
+          scrollToTop(0);
         }
       break;
     }
     return false;
   }
 
+  function isTaskFilled (task) {
+    return task.content.length > 0
+  }
   function addTask (event, taskContent) {
     event.preventDefault();
     if(vm.tasks.length < 8) {
@@ -431,9 +447,10 @@ $(function () {
     }
   };
 
-  function scrollToTop () {
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
+  function scrollToTop (topPoint) {
+    $('html, body').animate({
+      scrollTop: topPoint,
+    }, 800);
   }
 
 });

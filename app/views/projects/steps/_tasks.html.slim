@@ -29,7 +29,7 @@
   .panel-heading
     span.name
       | 测试任务(必填)
-    span.hint-info v-show="!validated.step_3 && !tasks[0].content"
+    span.hint-info v-show="!validated.step_3 && !hasChecked.tasks"
       .fa.fa-exclamation-triangle
       | 请填写测试任务
     span.hint-info v-show="tasksLimited"
@@ -121,7 +121,7 @@
   .panel-body
     #task-list.sortable
       .sortable-item v-repeat="tasks" v-transition="expand"
-        .textarea-field v-class="has-error: !validated.step_3 && !content"
+        .textarea-field v-class="has-error: !validated.step_3 && !hasChecked.tasks && !content"
           textarea.form-control rows="4" v-model="content" v-on="keyup: textareaLengthLimit($index, $event, 50)"
           .js-len-control
             | 还可以输入

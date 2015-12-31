@@ -29,7 +29,7 @@
       | 请填写产品简介
   .panel-body
     .input-field v-class="has-error: !validated.step_1 && !introduction"
-      input.form-input type="text" maxlength="15" v-model="introduction" placeholder="请用一句话介绍你的产品可以用来干什么..."
+      input.form-input type="text" maxlength="15" v-model="introduction"
       .js-len-control
         | 还可以输入
         span.js-len-count v-class="introduction.length >= 10 ? 'warn' : ''"

@@ -7,7 +7,7 @@
       | 请填写测试情景
   .panel-body
     .textarea-field v-class="has-error: !validated.step_3 && !situation"
-      textarea.form-control rows="4" v-model="situation" placeholder="例如：想象一下你现在想给自己买一套新衣裳" v-on="keyup: textareaLengthLimit('situation',$event, 140)"
+      textarea.form-control rows="4" v-model="situation" v-on="keyup: textareaLengthLimit('situation',$event, 140)"
       .js-len-control
         | 还可以输入
         span.js-len-count v-class="situation.length >= 135 ? 'warn' : ''"

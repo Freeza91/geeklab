@@ -24,7 +24,7 @@ $(function () {
   });
   userSlider.Link('lower').to('-inline-<div class="slider-value"></div>', function (value) {
     $(this).html(
-      '<span>' + value + '个</span><div class="fa fa-edit"></div><input class="count-input" type="text" onchange="Geeklab.setUserCount(event)">'
+      '<span>' + value + '个</span><div class="fa fa-edit"></div><input class="count-input" type="text" onchange="Geeklab.setUserCount(event)" onblur="Geeklab.loseFocus()">'
     )
   });
   Geeklab = window.Geeklab || {};
@@ -33,11 +33,20 @@ $(function () {
     var value = event.target.value;
     userSlider.val(value);
   }
+  Geeklab.loseFocus = function () {
+    userSlider.find('.slider-value input').css({
+      'visibility': 'hidden',
+      'z-index': 0
+    });
+  };
 
   $('#slider-user .slider-value').on('click', function (event, value) {
     var $this = $(this),
         value = value || '';
-    $this.find('input').css('visibility', 'visible').focus();
+    $this.find('input').css({
+      'visibility': 'visible',
+      'z-index': 10
+    }).focus();
   });
 
   $('#slider-age').noUiSlider({

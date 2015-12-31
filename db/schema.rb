@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151230063658) do
+ActiveRecord::Schema.define(version: 20151231025446) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -153,8 +153,8 @@ ActiveRecord::Schema.define(version: 20151230063658) do
     t.string   "mch_billno"
     t.string   "detail_id"
     t.string   "status"
-    t.datetime "send_time"
-    t.datetime "refund_time"
+    t.string   "send_time"
+    t.string   "refund_time"
     t.integer  "refund_amount"
     t.string   "openid"
     t.integer  "amount"

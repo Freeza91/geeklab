@@ -21,16 +21,11 @@ module Wechatsable
         doc = Hash.from_xml(res.body)['xml']
         if doc['return_code'] == 'SUCCESS'
 
-          begin
-            send_time = doc['send_time'].to_datetime
-          rescue
-            send_time = Time.now
-          end
-          @record.update_attributes(send_time: send_time, mch_billno: params[:mch_billno],openid: openid, status: 'SENT')
+          @record.update_attributes(status: 'SENT', mch_billno: params[:mch_billno])
 
           # 在24小时候查询这个红包状态
           t = Time.now + 24.hours + 5.minutes
-          CheckRewardFromWechatsJob.set(wait_until: t).perform_later(params[:mch_billno])
+          CheckRewardFromWechatsJob.set(wait_until: t).perform_later(@record.id)
 
           return '恭喜你获得红包'
         else

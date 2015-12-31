@@ -3,28 +3,18 @@ class CheckRewardFromWechatsJob < ActiveJob::Base
 
   URL = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/gethbinfo'
 
-  def perform(mch_billno, record_id)
+  def perform(record_id)
     @record = RewardRecord.where(id: record_id).last
     return unless @record
 
-    params = build_params(mch_billno)
+    params = build_params(@record.mch_billno)
     xml = build_xml_body(params)
     http = build_cert_http
     http.start do
       http.request_post(@uri.path, xml.to_xml) do |res|
         doc = Hash.from_xml(res.body)['xml']
         if doc['return_code'] == "SUCCESS"
-          # 成功领取
-          # 退款
-
-          # t.string   "detail_id"
-          # t.string   "status"
-          # t.datetime "send_time"
-          # t.datetime "refund_time"
-          # t.integer  "refund_amount"
-          # t.string   "openid"
-          # t.integer  "amount"
-          # t.string   "rcv_time"
+          @record.update_attributes(record_params(doc))
         end
       end
     end
@@ -81,6 +71,12 @@ class CheckRewardFromWechatsJob < ActiveJob::Base
     XML
 
     Nokogiri::XML xml
+  end
+
+  def record_params(doc)
+    doc.permit(:mch_billno, :detail_id, :status,
+               :send_time, :refund_time, :refund_amount,
+               :openid, :amount, :rcv_time)
   end
 
 end

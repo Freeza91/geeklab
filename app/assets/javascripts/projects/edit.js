@@ -12,6 +12,7 @@ $(function () {
     city: ['一线城市', '省会城市', '其它']
   };
 
+  Geeklab.showLoading();
   $.ajax({
     url: url,
     dataType: 'json'
@@ -23,6 +24,7 @@ $(function () {
         el: '.project',
         data: generateVmData(data.project),
         methods: {
+          transformSex: transformSex,
           previousStep: previousStep,
           nextStep: nextStep,
           addTask: addTask,
@@ -37,6 +39,7 @@ $(function () {
           submit: submit
         }
       });
+      Geeklab.removeLoading();
     }
   })
   .error(function (errors, status) {
@@ -101,7 +104,7 @@ $(function () {
       });
     });
     vmData.deletedTask = [];
-    vmDate.showHotTasks = false;
+    vmData.showHotTasks = false;
 
     // 联系方式
     vmData.mobile = {
@@ -128,8 +131,7 @@ $(function () {
     }
     // 显示二维码图片
     if(project.qr_code) {
-      $('.qrcode-preview').attr('src', project.qr_code).show();
-      $('.fa-upload').hide();
+      $('.qrcode-preview img').attr('src', project.qr_code).show();
       vmData.qrcode = project.qr_code;
     }
     console.log(vmData);
@@ -247,6 +249,7 @@ $(function () {
       qrcode ? data.append('qr_code', qrcode) : data.append('qr_code', vmData.qrcode);
     }
 
+    Geeklab.showLoading();
     $.ajax({
       url: uploadUrl,
       method: 'put',
@@ -264,6 +267,15 @@ $(function () {
       console.log(errors);
     });
   }
+
+  function transformSex (sex) {
+    var sexMap = {
+      '男': 'male',
+      '女': 'female'
+    };
+    return sexMap[sex];
+  }
+
   function getVmCheckboxArr (vmArr, valueType) {
     valueType = valueType || 'value';
     var result = [];
@@ -292,8 +304,7 @@ $(function () {
     vm.qrcode = input.value;
     var url = window.URL.createObjectURL(qrcode);
     input.value = '';
-    $('.qrcode-preview').attr('src', url);
-    $('.fa-upload').hide();
+    $('.qrcode-preview img').attr('src', url);
   }
 
   function previousStep (event) {

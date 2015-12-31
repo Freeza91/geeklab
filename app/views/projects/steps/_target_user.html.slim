@@ -1,113 +1,120 @@
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 测试用户个数
   .panel-body
     #slider-user
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 年龄范围
   .panel-body
     #slider-age
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 年收入
   .panel-body
     #slider-income
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 性别
     span.hint-info v-show="!validated.step_2 && !hasChecked.sex"
+      .fa.fa-exclamation-triangle
       | 请选择性别
-    label.checkbox-inline.checkbox-default.checkall
+    label.checkbox-default.checkbox-rounded.checkall
       input type="checkbox" value="checkall" v-model="checkAll.sex" v-on="change: toggleCheckAll('sex')"
       span
         | 全选
   .panel-body
-    label.checkbox-inline.checkbox-default v-repeat="sex"
+    label.checkbox-default.checkbox-with-icon v-repeat="sex"
       input type="checkbox" v-model="checked" v-on="change: checkAllEffect('sex', checked)"
       span
+        div v-attr="class: 'edit-icon edit-icon-' + transformSex(key)"
+      h6
         | {{key}}
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 城市级别
     span.hint-info v-show="!validated.step_2 && !hasChecked.city"
+      .fa.fa-exclamation-triangle
       | 请选择城市级别
-    label.checkbox-inline.checkbox-default.checkall
+    label.checkbox-default.checkbox-rounded.checkall
       input type="checkbox" value="checkall" v-model="checkAll.city" v-on="change: toggleCheckAll('city')"
       span
         | 全选
   .panel-body
-    label.checkbox-inline.checkbox-default v-repeat="city"
+    label.checkbox-default.checkbox-rounded v-repeat="city"
       input type="checkbox" v-model="checked" v-on="change: checkAllEffect('city', checked)"
       span
         | {{key}}
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 学历
     span.hint-info v-show="!validated.step_2 && !hasChecked.education"
+      .fa.fa-exclamation-triangle
       | 请选择学历
-    label.checkbox-inline.checkbox-default.checkall
+    label.checkbox-default.checkbox-rounded.checkall
       input type="checkbox" value="checkall" v-model="checkAll.education" v-on="change: toggleCheckAll('education')"
       span
         | 全选
   .panel-body
-    label.checkbox-inline.checkbox-default v-repeat="education"
+    label.checkbox-default.checkbox-rounded v-repeat="education"
       input type="checkbox" v-model="checked" v-on="change: checkAllEffect('education', checked)"
       span
         | {{key}}
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 情感状况
     span.hint-info v-show="!validated.step_2 && !hasChecked.emotion"
+      .fa.fa-exclamation-triangle
       | 请选择情感状况
-    label.checkbox-inline.checkbox-default.checkall
+    label.checkbox-default.checkbox-rounded.checkall
       input type="checkbox" value="checkall" v-model="checkAll.emotion" v-on="change: toggleCheckAll('emotion')"
       span
         | 全选
   .panel-body
-    label.checkbox-inline.checkbox-default v-repeat="emotion"
+    label.checkbox-default.checkbox-rounded v-repeat="emotion"
       input type="checkbox" v-model="checked" v-on="change: checkAllEffect('emotion', checked)"
       span
         | {{key}}
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 性取向
     span.hint-info v-show="!validated.step_2 && !hasChecked.orientation"
+      .fa.fa-exclamation-triangle
       | 请选择性取向
-    label.checkbox-inline.checkbox-default.checkall
+    label.checkbox-default.checkbox-rounded.checkall
       input type="checkbox" value="checkall" v-model="checkAll.orientation" v-on="change: toggleCheckAll('orientation')"
       span
         | 全选
   .panel-body
-    label.checkbox-inline.checkbox-default v-repeat="orientation"
+    label.checkbox-default.checkbox-rounded v-repeat="orientation"
       input type="checkbox" v-model="checked" v-on="change: checkAllEffect('orientation', checked)"
       span
         | {{key}}
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 兴趣标签
-    /label.checkbox-inline.checkbox-default.checkall
-      /input type="checkbox" value="checkall" v-model="checkAll.interests" v-on="click: toggleCheckAll('interests')"
-      /span
-        /| 全选
+    //label.checkbox-inline.checkbox-default.checkall
+      //input type="checkbox" value="checkall" v-model="checkAll.interests" v-on="click: toggleCheckAll('interests')"
+      //span
+        //| 全选
   .panel-body
     .row
-      label.checkbox-inline.checkbox-default v-repeat="interests.slice(0, 4)"
+      label.checkbox-default.checkbox-rounded v-repeat="interests.slice(0, 4)"
         input type="checkbox" value="key" v-model="checked"
         //v-on="change: checkAllEffect('interests', checked)"
         span
           | {{key}}
     .row style="margin-top: 15px"
-      label.checkbox-inline.checkbox-default v-repeat="interests.slice(4)"
+      label.checkbox-default.checkbox-rounded v-repeat="interests.slice(4)"
         input type="checkbox" value="key" v-model="checked"
         // v-on="click: checkAllEffect('interests', checked)"
         span

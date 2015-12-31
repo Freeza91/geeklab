@@ -163,13 +163,17 @@ $(function () {
           content: ''
         }
       ],
-      tasksLimited: false
+      tasksLimited: false,
+      showHotTasks: false
     },
     methods: {
+      transformSex: transformSex,
       previousStep: previousStep,
       nextStep: nextStep,
       addTask: addTask,
       deleteTask: deleteTask,
+      addHotTask: addHotTask,
+      showHotTask: showHotTask,
       toggleCheckAll: toggleCheckAll,
       checkAllEffect: checkAllEffect,
       uploadQrcode: uploadQrcode,
@@ -181,9 +185,12 @@ $(function () {
 
   function submit(event) {
     event.preventDefault();
-
-    vm.mobile.validated = inputValid(vm.mobile.content, 'mobile_phone');
-    vm.email.validated = inputValid(vm.email.content, 'email');
+    if(vm.mobile.content) {
+      vm.mobile.validated = inputValid(vm.mobile.content, 'mobile_phone');
+    }
+    if(vm.email.content) {
+      vm.email.validated = inputValid(vm.email.content, 'email');
+    }
     if(vm.name && vm.username && vm.mobile.validated && vm.email.validated && vm.company) {
       vm.step_4 = true;
       postData();
@@ -198,24 +205,11 @@ $(function () {
     var data = new FormData();
     var vmData = vm.$data;
 
-    // 获取数据
-    //data.name = vmData.name;
-    //data.platform = vmData.platform;
-    //data.device = vmData.device;
-    //data.profile = vmData.introduction;
     data.append('name', vmData.name);
     data.append('platform', vmData.platform);
     data.append('device', vmData.device);
     data.append('profile', vmData.introduction);
 
-    // target user requirement
-    //data.user_feature_attributes = {};
-    //data.user_feature_attributes.sex = getvmcheckboxarr(vmdata.sex);
-    //data.user_feature_attributes.city_level = getvmcheckboxarr(vmdata.city, 'index');
-    //data.user_feature_attributes.education = getvmcheckboxarr(vmdata.education);
-    //data.user_feature_attributes.emotional_status = getvmcheckboxarr(vmdata.emotion);
-    //data.user_feature_attributes.sex_orientation = getvmcheckboxarr(vmdata.orientation);
-    //data.user_feature_attributes.interest = getvmcheckboxarr(vmdata.interests);
     var user_feature_attributes = {};
     user_feature_attributes.sex = getVmCheckboxArr(vmData.sex);
     user_feature_attributes.city_level = getVmCheckboxArr(vmData.city, 'index');
@@ -234,10 +228,6 @@ $(function () {
     data.append('tasks_attributes', JSON.stringify(tasks_attributes));
     data.append('desc', vmData.situation);
 
-    //data.contact_name = vmData.username;
-    //data.phone = vmData.mobile;
-    //data.email= vmData.email;
-    //data.company = vmData.company;
     data.append('contact_name', vmData.username);
     data.append('phone', vmData.mobile.content);
     data.append('email', vmData.email.content);
@@ -246,14 +236,9 @@ $(function () {
     var userCount = $('#slider-user').val();
     var age = $('#slider-age').val();
     var income = $('#slider-income').val();
-    var sys = (vmData.platform === 'ios' ? $('#slider-ios').val() : $('#slider-android').val());
-    //data.demand = userCount;
-    //data.user_feature_attributes.age = age.join('-');
-    //data.user_feature_attributes.income = income.join('-');
-    //data.requirement = sys;
 
     data.append('demand', userCount);
-    data.append('requirement', sys);
+    data.append('requirement', 'all');
     user_feature_attributes.age = age.join('-');
     user_feature_attributes.income = income.join('-');
     data.append('user_feature_attributes', JSON.stringify(user_feature_attributes));
@@ -265,7 +250,6 @@ $(function () {
     $.ajax({
       url: url,
       method: 'post',
-      //data: {project: data},
       data: data,
       cache: false,
       processData: false, //Dont't process the file
@@ -284,6 +268,14 @@ $(function () {
   /*
    * @param valueType 返回值的类型
    */
+  function transformSex (sex) {
+    var sexMap = {
+      '男': 'male',
+      '女': 'female'
+    };
+    return sexMap[sex];
+  }
+
   function getVmCheckboxArr (vmArr, valueType) {
     valueType = valueType || 'value';
     var result = [];
@@ -312,8 +304,7 @@ $(function () {
     vm.qrcode = input.value;
     var url = window.URL.createObjectURL(qrcode);
     input.value = '';
-    $('.qrcode-preview').attr('src', url);
-    $('.fa-upload').hide();
+    $('.qrcode-preview img').attr('src', url);
   }
 
   function previousStep (event) {
@@ -356,23 +347,35 @@ $(function () {
     }
     return false;
   }
-  function addTask (event) {
+  function addTask (event, taskContent) {
     event.preventDefault();
     if(vm.tasks.length < 8) {
       vm.tasks.push({
-        content: ''
+        content: taskContent || ''
       }); } else {
       vm.tasksLimited = true;
       setTimeout(function () {
         vm.tasksLimited = false;
       }, 2000);
     }
-    updateSort();
   }
 
   function deleteTask (task, event) {
     event.preventDefault();
     vm.tasks.$remove(task.$index);
+  }
+
+  function addHotTask (vm, event) {
+    event.preventDefault();
+    var taskContent = event.target.innerText;
+    addTask(event, taskContent);
+  }
+
+  function showHotTask (vm, event) {
+    event.preventDefault();
+    if(!vm.showHotTasks) {
+      vm.showHotTasks = true;
+    }
   }
 
   function toggleCheckAll (category) {
@@ -403,22 +406,6 @@ $(function () {
     return item.checked;
   }
 
-  // init task sortable
-  function initSortable () {
-    $('.sortable').sortable({
-      handle: '.drag-handle'
-    });
-  }
-  initSortable ();
-
-  // 动态插入task之后的拖动
-  function updateSort () {
-    $('.sortable').on('DOMNodeInserted', function () {
-      initSortable();
-      $('.sortable').unbind('DOMNodeInserted');
-    });
-  }
-
   // 上传二维码
   function uploadQrcode (event) {
     event.preventDefault();
@@ -429,7 +416,7 @@ $(function () {
     var result;
     switch(type){
       case 'email':
-        var emailReg = /^[0-9a-zA-Z_-]+@([0-9a-zA-Z]+.)+[a-zA-Z]$/;
+        var emailReg = /^(\w)+(\.?[a-zA-Z0-9_-])*@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
         result = emailReg.test(value);
       break;
       case 'mobile_phone':

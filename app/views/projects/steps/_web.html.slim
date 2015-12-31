@@ -1,23 +1,49 @@
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 测试网址(必填)
     span.hint-info v-show="!validated.step_1 && !website"
+      .fa.fa-exclamation-triangle
       | 请填写网址
   .panel-body
-    .form-group v-class="has-error: !validated.step_1 && !website"
-      input.form-control type="text" v-model="website"
-.panel.panel-default
+    .input-field v-class="has-error: !validated.step_1 && !website"
+      input.form-input type="text" v-model="website"
+      .input-prompt
+        .prompt-title
+          | 用户需要访问那个网站开始
+        .prompt-example
+          h6
+            | 例如:
+          ul
+            li
+              | http://geeklab.cc
+            li
+              | geeklab.cc
+        .prompt-triangle
+.panel.project-panel
   .panel-heading
     span.name
       | 产品简介(必填)
     span.hint-info v-show="!validated.step_1 && !introduction"
+      .fa.fa-exclamation-triangle
       | 请填写产品简介
   .panel-body
-    .form-group v-class="has-error: !validated.step_1 && !introduction"
-      input.form-control type="text" maxlength="15" v-model="introduction" placeholder="请用一句话介绍你的产品可以用来干什么..."
-    p.js-len-control
-      | 还可以输入
-      span.js-len-count v-class="introduction.length >= 10 ? 'warn' : ''"
-        | {{introduction ? (15 - introduction.length) : 15}}
-      | 字
+    .input-field v-class="has-error: !validated.step_1 && !introduction"
+      input.form-input type="text" maxlength="15" v-model="introduction"
+      .js-len-control
+        | 还可以输入
+        span.js-len-count v-class="introduction.length >= 10 ? 'warn' : ''"
+          | {{introduction ? (15 - introduction.length) : 15}}
+        | 字
+      .input-prompt
+        .prompt-title
+          | 用简短的一句话来介绍你的产品
+        .prompt-example
+          h6
+            | 例如:
+          ul
+            li
+              | 人人都是综艺咖
+            li
+              | 单身男女必备脱单神器
+        .prompt-triangle

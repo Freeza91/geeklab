@@ -51,35 +51,26 @@ main role="main"
             table.table.zebra
               colgroup
                 col width="15%"
-                col width="85%"
+                col width="35%"
+                col width="15%"
+                col width="35%"
               tbody
                 tr v-if="project.device === 'web'"
                   td.name
                     | 网站地址
-                  td v-text="project.platform"
+                  td colspan="3" v-text="project.platform"
                 tr v-if="project.device !== 'web'"
                   td.name
                     | 平台
-                  td v-text="project.platform"
+                  td colspan="3" v-text="project.platform"
                 tr v-if="project.device !== 'web'"
                   td.name
                     | 测试设备
-                  td v-text="project.device"
-                tr v-if="project.device !== 'web'"
-                  td.name
-                    | 系统要求
-                  td v-text="project.requirement"
+                  td colspan="3" v-text="project.device"
                 tr
                   td.name
                     | 产品简介
-                  td v-text="project.profile"
-            table.table.zebra
-              colgroup
-                col width="15%"
-                col width="35%"
-                col width="15%"
-                col width="35%"
-              tbody
+                  td colspan="3" v-text="project.profile"
                 tr
                   td.name
                     | 年龄范围
@@ -108,30 +99,18 @@ main role="main"
                   td.name
                     | 兴趣标签
                   td v-text="project.user_feature.interest"
-            table.table.zebra
-              colgroup
-                col width="15%"
-                col width="85%"
-              tbody
                 tr
                   td.name
                     | 测试场景
-                  td v-text="project.desc"
+                  td colspan="3" v-text="project.desc"
                 tr
                   td.name
                     | 任务详情
-                  td
+                  td colspan="3"
                     ul
                       li v-repeat="task: project.tasks"
                         img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
                         span v-text="task.content"
-            table.table.zebra
-              colgroup
-                col width="15%"
-                col width="35%"
-                col width="15%"
-                col width="35%"
-              tbody
                 tr
                   td.name
                     | 昵称

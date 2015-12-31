@@ -1,40 +1,152 @@
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 测试情景(必填)
     span.hint-info v-show="!validated.step_3 && !situation"
+      .fa.fa-exclamation-triangle
       | 请填写测试情景
   .panel-body
-    .form-group v-class="has-error: !validated.step_3 && !situation"
-      textarea.form-control rows="4" v-model="situation" placeholder="例如：想象一下你现在想给自己买一套新衣裳" v-on="keyup: textareaLengthLimit('situation',$event, 140)"
-    p.js-len-control
-      | 还可以输入
-      span.js-len-count v-class="situation.length >= 135 ? 'warn' : ''"
-        | {{situation ? (140 - situation.length) : 140}}
-      | 字
-.panel.panel-default
+    .textarea-field v-class="has-error: !validated.step_3 && !situation"
+      textarea.form-control rows="4" v-model="situation" v-on="keyup: textareaLengthLimit('situation',$event, 140)"
+      .js-len-control
+        | 还可以输入
+        span.js-len-count v-class="situation.length >= 135 ? 'warn' : ''"
+          | {{situation ? (140 - situation.length) : 140}}
+        | 字
+      .input-prompt
+        .prompt-title
+          | 介绍用户需要想象的测试场景
+        .prompt-example
+          h6
+            | 例如:
+          ul
+            li
+              | 想象一下你现在准备去看一些有趣的视频
+            li
+              | 想象一下你现在想去发现一些身边的美食
+        .prompt-triangle
+.panel.project-panel
   .panel-heading
     span.name
       | 测试任务(必填)
     span.hint-info v-show="!validated.step_3 && !tasks[0].content"
+      .fa.fa-exclamation-triangle
       | 请填写测试任务
+    span.hint-info v-show="tasksLimited"
+      .fa.fa-exclamation-triangle
+      | 最多只能添加8个任务
+    .task-example
+      span
+        | 参考案例
+      .fa.fa-exclamation-circle
+      .task-example-detail
+        table.table.zebra
+          colgroup
+            col width="20%"
+            col width="20%"
+            col width="60%"
+          tbody
+            tr
+            tr
+              td
+                | 测试标题(平台)
+              td
+                | 测试情景
+              td
+                | 测试任务
+            tr
+              td
+                | 心潮Stress(APP)
+              td
+                | 想象一下最近你压力比较大，想给自己减减压
+              td
+                ul
+                  li
+                    img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
+                    span
+                      | 随便用用, 然后聊一下这个应用是什么, 你觉得可以用它来做什么?
+                  li
+                    img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
+                    span
+                      | 使用手机号注册一个新用户, 并完善你的个人信息。
+                  li
+                    img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
+                    span
+                      | 使用首屏中临阵减压的功能(请认真完整的体验)，然聊一聊你对这
+                      | 个这个功能的看法。
+                  li
+                    img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
+                    span
+                      | 再体验一下首屏中"乐呼"、"监测"、"心事"的功能，然后说说你的感受。
+                  li
+                    img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
+                    span
+                      | 你用过其它类似的产品吗? 你觉得这款产品有什么特别之处吗?
+                  li
+                    img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
+                    span
+                      | 从使用角度出发, 你认为需要做什么改进: 如现有功能如何优化、需
+                      | 要开发什么新功能
+            tr
+              td
+                | 酷加网(Web)
+              td
+                | 想象一下，你现在需要了解一些新奇的智能硬件产品
+              td
+                ul
+                  li
+                    img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
+                    span
+                      | 随便用用, 然后聊一下这个网站, 你觉得它怎么样, 它吸引你吗? 你
+                      | 用过其他类似的平台产品吗?
+                  li
+                    img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
+                    span
+                      | 使用邮箱、QQ、微信任意一种方式进行注册一个新用户，并且补充好基本资料
+                  li
+                    img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
+                    span
+                      | 在"活动"栏目中浏览一下, 选择一个你觉得还不错的活动, 并完成报名全过程
+                  li
+                    img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
+                    span
+                      | 在"评测"频道或"科技38"频道中阅读一篇你感兴趣的文章, 并给文章点赞+评论。
+                  li
+                    img.task-icon src="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
+                    span
+                      | 在"商店"频道中浏览一下, 选择一个你喜欢的智能商品, 并点击购
+                      | 买按钮, 成功下单, 但不需付款
+        .task-example-triangle
+
   .panel-body
-    ul.sortable
-      li v-repeat="tasks"
-        .form-group v-class="has-error: !validated.step_3 && !content"
+    #task-list.sortable
+      .sortable-item v-repeat="tasks"
+        .textarea-field v-class="has-error: !validated.step_3 && !content"
           textarea.form-control rows="4" v-model="content" v-on="keyup: textareaLengthLimit($index, $event, 50)"
-          p.js-len-control
+          .js-len-control
             | 还可以输入
             span.js-len-count v-class="content.length >= 45 ? 'warn' : ''"
               | {{50 - content.length}}
             | 字
-        .handle
-          .drag-handle
-            i.fa.fa-arrows-v.fa-2x
-          .delete-handle v-on="click: deleteTask(this, $event)"
-            i.fa.fa-trash-o.fa-2x
-    button.btn.btn-gray.add-task v-on="click: addTask"
-      i.fa.fa-plus style="font-size: 1.5em"
-    p.task-limit v-show="tasksLimited"
-      span
-        | 最多添加8个任务
+          .handle
+            .drag-handle
+              i.fa.fa-arrows-v.fa-2x
+            .delete-handle v-on="click: deleteTask(this, $event)"
+              i.fa.fa-trash-o.fa-2x
+    .hot-tasks.clearfix v-show="showHotTasks"
+      .tasks-header
+        span
+          | 快捷添加热门任务
+        .fa.fa-close v-on="click: showHotTasks = false"
+      - for task in get_hot_tasks
+        .task-item
+          .item-content v-on="click: addHotTask(this, $event)"
+            = task
+          .fa.fa-plus
+    .add-task
+      button.btn.btn-flat.blue.btn-rounded.btn-m v-on="click: addTask"
+        | 空白任务
+        .fa.fa-plus
+      button.btn.btn-flat.blue.btn-rounded.btn-m v-on="click: showHotTask(this, $event)"
+        | 热门任务
+        .fa.fa-plus

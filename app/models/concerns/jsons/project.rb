@@ -59,7 +59,6 @@ module Jsons
         profile: profile,
         device: device,
         demand: demand,
-        requirement: requirement,
         qr_code: qr_code.try(:url),
         platform: platform,
         desc: desc,

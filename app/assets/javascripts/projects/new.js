@@ -7,7 +7,7 @@ $(function () {
   // range slider
   var userSlider = $('#slider-user');
   userSlider.noUiSlider({
-    start: 10,
+    start: 3,
     range: {
       min: 1,
       max: 15
@@ -25,7 +25,12 @@ $(function () {
   userSlider.Link('lower').to('-inline-<div class="slider-value"></div>', function (value) {
     $(this).html(
       '<span>' + value + '个</span><div class="fa fa-edit"></div><input class="count-input" type="text" onchange="Geeklab.setUserCount(event)" onblur="Geeklab.loseFocus()">'
-    )
+    );
+    if(value > 3) {
+      $('#usercount-pay').css('opacity', 1);
+    } else {
+      $('#usercount-pay').css('opacity', 0);
+    }
   });
   Geeklab = window.Geeklab || {};
   window.Geeklab = Geeklab;

@@ -179,6 +179,9 @@ $(function () {
       vm.step_4 = true;
       postData();
     } else {
+      if (!vm.name) {
+        scrollToTop(0);
+      }
       vm.validated.step_4 = false;
       return false;
     }

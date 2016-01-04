@@ -313,7 +313,7 @@ $(function () {
 
   function previousStep (event) {
     event.preventDefault();
-    scrollToTop(0);
+    scrollToTop(0, 0);
     vm.step--;
   }
   function nextStep (event) {
@@ -322,7 +322,7 @@ $(function () {
       case 1:
         if(vm.introduction && qrcode) {
           vm.validated.step_1 = true;
-          scrollToTop(0)
+          scrollToTop(0, 0)
           vm.step++;
         } else {
           vm.validated.step_1 = false;
@@ -343,7 +343,7 @@ $(function () {
         });
         if(vm.validated.step_2) {
           vm.step++;
-          scrollToTop(0);
+          scrollToTop(0, 0);
         } else {
           var topPoint = $('.step-2').find('.project-panel').eq(firstErrorIndex + 3).position().top;
           scrollToTop(topPoint - 100);
@@ -354,7 +354,7 @@ $(function () {
         if(vm.situation && vm.hasChecked.tasks) {
           vm.validated.step_3 = true;
           vm.step++;
-          scrollToTop(0);
+          scrollToTop(0, 0);
         } else {
           vm.validated.step_3 = false;
           scrollToTop(0);
@@ -464,10 +464,14 @@ $(function () {
     }
   };
 
-  function scrollToTop (topPoint) {
-    $('html, body').animate({
-      scrollTop: topPoint,
-    }, 800);
+  function scrollToTop (topPoint, duration) {
+    if(duration === 0) {
+      $('html, body').scrollTop(0);
+    } else {
+      $('html, body').animate({
+        scrollTop: topPoint,
+      }, duration || 800);
+    }
   }
 
 });

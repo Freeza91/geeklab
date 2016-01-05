@@ -34,5 +34,7 @@ module Geeklab
 
     # redirect error url
     config.exceptions_app = self.routes
+
+    config.autoload_paths += %W(#{Rails.root}/lib)
   end
 end

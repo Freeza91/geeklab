@@ -10,7 +10,7 @@ class WechatsAccessToken
     begin
       response = RestClient.get URL
       if response.code == 200
-        p json = JSON.parse(response.body)
+        json = JSON.parse(response.body)
         $redis.set "wechats_access_token", json['access_token']
         $redis.expire "wechats_access_token", json['expires_in']
       end

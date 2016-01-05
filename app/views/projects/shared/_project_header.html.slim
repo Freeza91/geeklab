@@ -1,0 +1,18 @@
+.project-header.clearfix
+  .input-field.project-title v-class="has-error: !validated.step_4 && !name"
+    input.form-input type="text" maxlength="20" placeholder="请输入测试任务标题..." v-model="name"
+    .js-len-control
+      | 还可以输入
+      span.js-len-count v-class="name.length >= 15 ? 'warn' : ''"
+        | {{name ? (20 - name.length) : 20}}
+      | 字
+  .hint-info v-show="!validated.step_4 && !name" style="float: left; height: 38px; line-height: 38px; margin-left: 10px"
+    .fa.fa-exclamation-triangle
+    span
+      | 请输入测试标题
+  .project-pagination
+    img src="#{image_path('projects/project-pagination-1.png')}" v-show="step === 1"
+    img src="#{image_path('projects/project-pagination-2.png')}" v-show="step === 2"
+    img src="#{image_path('projects/project-pagination-3.png')}" v-show="step === 3"
+    img src="#{image_path('projects/project-pagination-4.png')}" v-show="step === 4"
+

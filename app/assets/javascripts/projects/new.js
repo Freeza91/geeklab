@@ -4,75 +4,10 @@ $(function () {
   }
 
   var incomeMap = [0, 2, 5, 8, 10, 15, 30, 50, 100];
-  var androidMap = ['2.2', '2.3', '2.3.3', '3.0', '3.1', '3.2', '4.0', '4.0.3', '4.1', '4.2', '4.3', '4.4', '4.5', '5.0', '5.1'];
-  var iosMap = ['6.0', '7.0', '8.0'];
   // range slider
-  if($('.slider-sys')) {
-    $('#slider-android').noUiSlider({
-      start: 0,
-      range: {
-        min: 0,
-        max: 13
-      },
-      step: 1,
-      connect: 'upper',
-      format: {
-        to: function (value) {
-          return androidMap[value];
-        },
-        from: function (value) {
-          return value;
-        }
-      }
-    });
-    $('#slider-android').noUiSlider_pips({
-      mode: 'steps',
-      density: 2,
-      filter: function (value) {
-        return value % 2 ? 2 :1;
-      },
-      format: {
-        to: function (value) {
-          value = value === 0 ? "Android" + androidMap[value] : androidMap[value];
-          return value;
-        },
-        from: function (value) {
-          return value;
-        }
-      }
-    });
-    $('#slider-ios').noUiSlider({
-      start: 0,
-      range: {
-        min: 0,
-        max: 2
-      },
-      step: 1,
-      connect: 'upper',
-      format: {
-        to: function (value) {
-          return iosMap[value];
-        },
-        from: function (value) {
-          return value;
-        }
-      }
-    });
-    $('#slider-ios').noUiSlider_pips({
-      mode: 'steps',
-      format: {
-        to: function (value) {
-          return 'iOS' + iosMap[value]
-        },
-        from: function (value) {
-          return value;
-        }
-      }
-    });
-  }
-
-  $('#slider-user').noUiSlider({
-    start: 10,
+  var userSlider = $('#slider-user');
+  userSlider.noUiSlider({
+    start: 3,
     range: {
       min: 1,
       max: 15
@@ -87,17 +22,38 @@ $(function () {
       }
     }
   });
-  $('#slider-user').noUiSlider_pips({
-    mode: 'steps',
-    format: {
-      to: function (value) {
-        return value + '个';
-      },
-      from: function (value) {
-        return value;
-      }
+  userSlider.Link('lower').to('-inline-<div class="slider-value"></div>', function (value) {
+    $(this).html(
+      '<span>' + value + '个</span><div class="fa fa-edit"></div><input class="count-input" type="text" onchange="Geeklab.setUserCount(event)" onblur="Geeklab.loseFocus()">'
+    );
+    if(value > 3) {
+      $('#usercount-pay').css('opacity', 1);
+    } else {
+      $('#usercount-pay').css('opacity', 0);
     }
   });
+  Geeklab = window.Geeklab || {};
+  window.Geeklab = Geeklab;
+  Geeklab.setUserCount = function (event) {
+    var value = event.target.value;
+    userSlider.val(value);
+  }
+  Geeklab.loseFocus = function () {
+    userSlider.find('.slider-value input').css({
+      'visibility': 'hidden',
+      'z-index': 0
+    });
+  };
+
+  $('#slider-user .slider-value').on('click', function (event, value) {
+    var $this = $(this),
+        value = value || '';
+    $this.find('input').css({
+      'visibility': 'visible',
+      'z-index': 10
+    }).focus();
+  });
+
   $('#slider-age').noUiSlider({
     start: [18, 48],
     margin: 5,
@@ -157,5 +113,13 @@ $(function () {
       '<span>' + value + '万</span>'
     )
   });
+
+  // init sortable task list
+  var sortEl = document.getElementById('task-list');
+  var sortable = Sortable.create(sortEl, {
+    handle: '.drag-handle'
+  });
+
+  Vue.transition('expand');
 
 });

@@ -27,8 +27,8 @@
 // noUiSlider, a range slider plugin
 //= require jquery.nouislider
 
-// html5sortable
-//= require jquery.sortable
+// sortable
+//= require Sortable.min
 
 // 生成二维码插件
 //= require qrcode

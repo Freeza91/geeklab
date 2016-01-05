@@ -1,55 +1,58 @@
-.panel.panel-default
+.panel.project-panel
   .panel-heading
     span.name
       | 姓名(必填)
     span.hint-info v-show="!validated.step_4 && !username"
+      .fa.fa-exclamation-triangle
       | 请填写姓名
   .panel-body
-    .form-group v-class="has-error: !validated.step_4 && !username"
-      input.form-control type="text" maxlength="15" v-model="username"
-    p.js-len-control
-      | 还可以输入
-      span.js-len-count v-class="username.length >= 10 ? 'warn' : ''"
-        | {{username ? (15 - username.length) : 15}}
-      | 字
-.panel.panel-default
+    .input-field v-class="has-error: !validated.step_4 && !username"
+      input.form-input type="text" maxlength="15" v-model="username"
+      .js-len-control
+        | 还可以输入
+        span.js-len-count v-class="username.length >= 10 ? 'warn' : ''"
+          | {{username ? (15 - username.length) : 15}}
+        | 字
+.panel.project-panel
   .panel-heading
     span.name
       | 手机(必填)
     span.hint-info v-show="!validated.step_4 && !mobile.content"
+      .fa.fa-exclamation-triangle
       | 请填写手机
     span.hint-info v-show="!validated.step_4 && !mobile.validated"
+      .fa.fa-exclamation-triangle
       | 手机格式错误
   .panel-body
-    .form-group v-class="has-error: !validated.step_4 && !mobile"
-      input.form-control type="text" maxlength="11" v-model="mobile.content" v-on="focus: mobile.validated = true"
-    /p.js-len-control
-      /| 还可以输入
-      /span.js-len-count
-        /| {{11 - mobile.content.length}}
-      /| 字
-.panel.panel-default
+    .input-field v-class="has-error: !validated.step_4 && !mobile"
+      input.form-input type="text" maxlength="11" v-model="mobile.content" v-on="focus: mobile.validated = true"
+.panel.project-panel
   .panel-heading
     span.name
       | 邮箱(必填)
     span.hint-info v-show="!validated.step_4 && !email.content"
+      .fa.fa-exclamation-triangle
       | 请填写邮箱
     span.hint-info v-show="!validated.step_4 && !email.validated"
+      .fa.fa-exclamation-triangle
       | 邮箱格式错误
+    span.panel-label
+      | *不区分大小写格式
   .panel-body
-    .form-group v-class="has-error: !validated.step_4 && !email"
-      input.form-control type="text" v-model="email.content" v-on="focus: email.validated = true"
-.panel.panel-default
+    .input-field v-class="has-error: !validated.step_4 && !email"
+      input.form-input type="text" v-model="email.content" v-on="focus: email.validated = true"
+.panel.project-panel
   .panel-heading
     span.name
       | 公司(必填)
     span.hint-info v-show="!validated.step_4 && !company"
+      .fa.fa-exclamation-triangle
       | 请填写公司
   .panel-body
-    .form-group v-class="has-error: !validated.step_4 && !company"
-      input.form-control type="text" maxlength="30" v-model="company"
-    p.js-len-control
-      | 还可以输入
-      span.js-len-count v-class="company.length >= 25 ? 'warn' : ''"
-        | {{company ? (30 - company.length) : 30}}
-      | 字
+    .input-field v-class="has-error: !validated.step_4 && !company"
+      input.form-input type="text" maxlength="30" v-model="company"
+      .js-len-control
+        | 还可以输入
+        span.js-len-count v-class="company.length >= 25 ? 'warn' : ''"
+          | {{company ? (30 - company.length) : 30}}
+        | 字

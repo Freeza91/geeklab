@@ -12,6 +12,7 @@ $(function () {
     city: ['一线城市', '省会城市', '其它']
   };
 
+  Geeklab.showLoading();
   $.ajax({
     url: url,
     dataType: 'json'
@@ -23,10 +24,13 @@ $(function () {
         el: '.project',
         data: generateVmData(data.project),
         methods: {
+          transformSex: transformSex,
           previousStep: previousStep,
           nextStep: nextStep,
           addTask: addTask,
           deleteTask: deleteTask,
+          addHotTask: addHotTask,
+          showHotTask: showHotTask,
           toggleCheckAll: toggleCheckAll,
           checkAllEffect: checkAllEffect,
           uploadQrcode: uploadQrcode,
@@ -35,6 +39,7 @@ $(function () {
           submit: submit
         }
       });
+      Geeklab.removeLoading();
     }
   })
   .error(function (errors, status) {
@@ -44,8 +49,6 @@ $(function () {
 
   function generateVmData (project) {
     var incomeMap = [0, 2, 5, 8, 10, 15, 30, 50, 100];
-    var androidMap = ['2.2', '2.3', '2.3.3', '3.0', '3.1', '3.2', '4.0', '4.0.3', '4.1', '4.2', '4.3', '4.4', '4.5', '5.0', '5.1'];
-    var iosMap = ['6.0', '7.0', '8.0'];
 
     var vmData = {};
     vmData.step = 1;
@@ -68,7 +71,8 @@ $(function () {
       city: true,
       education: true,
       emotion: true,
-      orientation: true
+      orientation: true,
+      tasks: true
     };
 
     // 基本信息
@@ -82,7 +86,7 @@ $(function () {
     } else {
       vmData.platform = project.platform;
     }
-    
+
     // target user
     vmData.sex = generateVmCheckArr(['男', '女'], project.user_feature.sex);
     vmData.city = generateVmCheckArr(['北上广深', '省会城市', '其它'], project.user_feature.city_level, 'index');
@@ -101,6 +105,7 @@ $(function () {
       });
     });
     vmData.deletedTask = [];
+    vmData.showHotTasks = false;
 
     // 联系方式
     vmData.mobile = {
@@ -121,27 +126,15 @@ $(function () {
     });
     $('#slider-income').val(income);
     $('#slider-user').val(project.demand);
-    // app时设置系统要求
-    if(project.device != 'web') {
-      switch(project.platform) {
-        case 'android':
-          $('#slider-android').val(androidMap[project.requirement]);
-        break;
-        case 'ios':
-          $('#slider-ios').val(iosMap[project.requirement]);
-        break;
-      }
-    }
     // 是否全选
     for (key in vmData.checkAll) {
-      vmData.checkAll[key] = isCheckAll(vmData[key]); 
+      vmData.checkAll[key] = isCheckAll(vmData[key]);
     }
     // 显示二维码图片
     if(project.qr_code) {
-      $('.qrcode-preview').attr('src', project.qr_code).show();
-      $('.fa-upload').hide();
+      $('.qrcode-preview img').attr('src', project.qr_code).show();
       vmData.qrcode = project.qr_code;
-    } 
+    }
     console.log(vmData);
     return vmData;
   }
@@ -172,16 +165,23 @@ $(function () {
     });
   }
 
-  
+
   function submit(event) {
     event.preventDefault();
+    if(vm.mobile.content) {
+      vm.mobile.validated = inputValid(vm.mobile.content, 'mobile_phone');
+    }
+    if(vm.email.content) {
+      vm.email.validated = inputValid(vm.email.content, 'email');
+    }
 
-    vm.mobile.validated = inputValid(vm.mobile.content, 'mobile_phone');
-    vm.email.validated = inputValid(vm.email.content, 'email');
     if(vm.name && vm.username && vm.mobile.validated && vm.email.validated && vm.company) {
       vm.step_4 = true;
       postData();
     } else {
+      if (!vm.name) {
+        scrollToTop(0);
+      }
       vm.validated.step_4 = false;
       return false;
     }
@@ -253,6 +253,7 @@ $(function () {
       qrcode ? data.append('qr_code', qrcode) : data.append('qr_code', vmData.qrcode);
     }
 
+    Geeklab.showLoading();
     $.ajax({
       url: uploadUrl,
       method: 'put',
@@ -270,6 +271,15 @@ $(function () {
       console.log(errors);
     });
   }
+
+  function transformSex (sex) {
+    var sexMap = {
+      '男': 'male',
+      '女': 'female'
+    };
+    return sexMap[sex];
+  }
+
   function getVmCheckboxArr (vmArr, valueType) {
     valueType = valueType || 'value';
     var result = [];
@@ -298,13 +308,12 @@ $(function () {
     vm.qrcode = input.value;
     var url = window.URL.createObjectURL(qrcode);
     input.value = '';
-    $('.qrcode-preview').attr('src', url);
-    $('.fa-upload').hide();
+    $('.qrcode-preview img').attr('src', url);
   }
 
   function previousStep (event) {
     event.preventDefault();
-    scrollToTop();
+    scrollToTop(0, 0);
     vm.step--;
   }
   function nextStep (event) {
@@ -315,48 +324,64 @@ $(function () {
           if(vm.website && vm.introduction) {
             vm.validated.step_1 = true;
             vm.step++;
-            scrollToTop();
           } else {
             vm.validated.step_1 = false;
           }
         } else {
           if(vm.introduction && vm.qrcode) {
             vm.validated.step_1 = true;
+            scrollToTop(0, 0);
             vm.step++;
-            scrollToTop();
           } else {
             vm.validated.step_1 = false;
           }
         }
       break;
       case 2:
-        var cates = ['sex', 'city', 'education', 'emotion', 'orientation'];
-        vm.validated.step_2 = cates.every(function (cate) {
+        var cates = ['sex', 'city', 'education', 'emotion', 'orientation'],
+            firstErrorIndex = 0;
+        cates.forEach(function (cate) {
           vm.hasChecked[cate] = vm[cate].some(isCheck);
+          return vm.hasChecked[cate];
+        });
+        vm.validated.step_2 = cates.every(function (cate, index) {
+          if(!cate) {
+            firstErrorIndex = index;
+          }
           return vm.hasChecked[cate];
         });
         if(vm.validated.step_2) {
           vm.step++;
-          scrollToTop();
+          scrollToTop(0, 0);
+        } else {
+          var topPoint = $('.step-2').find('.project-panel').eq(firstErrorIndex + 3).position().top;
+          scrollToTop(topPoint - 100);
         }
       break;
       case 3:
-        if(vm.situation && vm.tasks[0].content) {
+        vm.hasChecked.tasks = vm.tasks.some(isTaskFilled);
+        if(vm.situation && vm.hasChecked.tasks) {
           vm.validated.step_3 = true;
           vm.step++;
-          scrollToTop();
+          scrollToTop(0, 0);
         } else {
           vm.validated.step_3 = false;
+          scrollToTop(0);
         }
       break;
     }
     return false;
   }
-  function addTask (event) {
+
+  function isTaskFilled (task) {
+    return task.content.length > 0
+  }
+
+  function addTask (event, taskContent) {
     event.preventDefault();
     if(vm.tasks.length < 5) {
       vm.tasks.push({
-        content: ''
+        content: taskContent || ''
       });
     } else {
       vm.tasksLimited = true;
@@ -364,7 +389,6 @@ $(function () {
         vm.tasksLimited = false;
       }, 2000);
     }
-    updateSort();
   }
 
   function deleteTask (task, event) {
@@ -372,6 +396,19 @@ $(function () {
     vm.tasks.$remove(task.$index);
     if(task.id) {
       vm.deletedTask.push(task.id);
+    }
+  }
+
+  function addHotTask (vm, event) {
+    event.preventDefault();
+    var taskContent = event.target.innerText;
+    addTask(event, taskContent);
+  }
+
+  function showHotTask (vm, event) {
+    event.preventDefault();
+    if(!vm.showHotTasks) {
+      vm.showHotTasks = true;
     }
   }
 
@@ -402,26 +439,10 @@ $(function () {
   function isCheck(item) {
     return item.checked;
   }
- 
-  // init task sortable
-  function initSortable () {
-    $('.sortable').sortable({
-      handle: '.drag-handle'
-    });
-  }
-  initSortable ();
-
-  // 动态插入task之后的拖动
-  function updateSort () {
-    $('.sortable').on('DOMNodeInserted', function () {
-      initSortable();
-      $('.sortable').unbind('DOMNodeInserted');
-    });
-  }
 
   // 上传二维码
   function uploadQrcode (event) {
-    event.preventDefault(); 
+    event.preventDefault();
     $('[name="qrcode"]').click();
   }
 
@@ -429,9 +450,9 @@ $(function () {
     var result;
     switch(type){
       case 'email':
-        var emailReg = /^[0-9a-zA-Z_-]+@([0-9a-zA-Z]+.)+[a-zA-Z]$/;
+        var emailReg = /^(\w)+(\.?[a-zA-Z0-9_-])*@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
         result = emailReg.test(value);
-      break; 
+      break;
       case 'mobile_phone':
         var mobileReg = /^1[3|5|7|8][0-9]{9}$/;
         result = mobileReg.test(value);
@@ -456,8 +477,14 @@ $(function () {
     }
   };
 
-  function scrollToTop () {
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
+  function scrollToTop (topPoint, duration) {
+    if(duration === 0) {
+      $('html, body').scrollTop(0);
+    } else {
+      $('html, body').animate({
+        scrollTop: topPoint,
+      }, duration || 800);
+    }
   }
+
 });

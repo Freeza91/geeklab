@@ -33,6 +33,11 @@ gem 'mini_magick'
 gem 'sendgrid'
 gem 'redis'
 
+# wx
+gem 'wechat'
+gem 'whenever', :require => false
+gem 'rest-client'
+
 gem 'sidekiq'
 gem 'sinatra', require: false
 

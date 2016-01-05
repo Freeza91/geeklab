@@ -26,6 +26,7 @@ set :shared_paths, [
   'config/secrets.yml',
   'config/application.yml',
   'config/newrelic.yml',
+  'config/wechat.yml',
   'tmp',
   'log'
 ]
@@ -41,8 +42,8 @@ when 'release' || 'bugs'
   set :unicorn_config, lambda { "#{app_path}/config/unicorn_release.rb" }
 else
   set :domain, '119.254.101.120'
-  set :branch, 'develop'
-  set :unicorn_config, lambda { "#{app_path}/config/unicorn_release.rb" }
+  set :branch, 'wx'
+  set :unicorn_config, lambda { "#{app_path}/config/unicorn_master.rb" }
 end
 
 task :environment do
@@ -67,6 +68,7 @@ task setup: :environment do
   queue! %[touch "#{deploy_to}/shared/config/secrets.yml"]
   queue! %[touch "#{deploy_to}/shared/config/application.yml"]
   queue! %[touch "#{deploy_to}/shared/config/newrelic.yml"]
+  queue! %[touch "#{deploy_to}/shared/config/wechat.yml"]
 end
 
 desc "Deploys the current version to the server."

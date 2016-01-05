@@ -1,6 +1,5 @@
  Rails.application.routes.draw do
 
-  #root 'pages#home'
   root 'testers#index'
 
   namespace :users do
@@ -33,6 +32,11 @@
         get 'send_novice_task'
       end
     end
+
+    get '/id_cards',  to: 'id_cards#show'
+    post '/id_cards', to: 'id_cards#create'
+    put '/id_cards',  to: 'id_cards#update'
+
   end
 
   resources :pms
@@ -83,7 +87,6 @@
     end
 
   end
-
 
   namespace :stores do
     root to: "base#index"
@@ -142,6 +145,8 @@
       resources :addresses, only: :update
     end
   end
+
+  resource :wechat, only: [:show, :create]
 
   require 'sidekiq/web'
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|

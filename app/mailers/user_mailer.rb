@@ -59,4 +59,19 @@ class UserMailer < ApplicationMailer
     render 'user_mailer/subscribe_notify'
   end
 
+  def project_error
+    email = "yuanyegreat@163.com"
+    mail to: email, subject: "新手任务添加错误"
+    render "user_mailer/project_error"
+  end
+
+  def send_reward_error(doc)
+    @content = doc
+
+    @email = 'yuanyegreat@163.com'
+    mail to: @email, subject: '红包发送错误'
+
+    render "user_mailer/send_reward_error.html.slim"
+  end
+
 end

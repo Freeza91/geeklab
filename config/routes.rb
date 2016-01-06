@@ -37,6 +37,8 @@
     post '/id_cards', to: 'id_cards#create'
     put '/id_cards',  to: 'id_cards#update'
 
+    resources :rewards
+
   end
 
   resources :pms

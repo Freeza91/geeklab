@@ -1,5 +1,10 @@
 class WechatsController < ActionController::Base
-  include Wechatsable
+
+  include WechatsClickable
+  include WechatsRewardable
+  include WechatsScanable
+  include WechatsSubscribeable
+
   wechat_responder
 
   # default text responder when no other match
@@ -17,33 +22,16 @@ class WechatsController < ActionController::Base
     request.reply.text 'help content'
   end
 
-  # When receive '<n>news', will match and will got count as <n> as parameter
-  on :text, with: /^(\d+) news$/ do |request, count|
-    # Wechat article can only contain max 10 items, large than 10 will dropped.
-    news = (1..count.to_i).each_with_object([]) { |n, memo| memo << { title: 'News title', content: "No. #{n} news content" } }
-    request.reply.news(news) do |article, n, index| # article is return object
-      article.item title: "#{index} #{n[:title]}", description: n[:content], pic_url: 'http://www.baidu.com/img/bdlogo.gif', url: 'http://www.baidu.com/'
-    end
-  end
-
   on :event, with: 'subscribe' do |request|
     request.reply.text "#{request[:FromUserName]} subscribe now"
   end
 
-  # When unsubscribe user scan qrcode qrscene_xxxxxx to subscribe in public account
-  # notice user will subscribe public account at same time, so wechat won't trigger subscribe event any more
-  on :scan, with: 'qrscene_xxxxxx' do |request, ticket|
-    request.reply.text "Unsubscribe user #{request[:FromUserName]} Ticket #{ticket}"
-  end
-
-  # When subscribe user scan scene_id in public account
-  on :scan, with: 'scene_id' do |request, ticket|
-    request.reply.text "Subscribe user #{request[:FromUserName]} Ticket #{ticket}"
-  end
 
   # When no any on :scan responder can match subscribe user scaned scene_id
   on :event, with: 'scan' do |request|
     if request[:EventKey].present?
+
+      scan(request[:EventKey])
       request.reply.text "event scan got EventKey #{request[:EventKey]} Ticket #{request[:Ticket]}"
     end
   end

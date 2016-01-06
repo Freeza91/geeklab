@@ -1,6 +1,6 @@
 require 'active_support/concern'
 
-module Wechatsable
+module WechatsRewardable
   extend ActiveSupport::Concern
 
   URL = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack'

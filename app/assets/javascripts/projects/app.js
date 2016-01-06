@@ -389,9 +389,6 @@ $(function () {
         content: taskContent || ''
       }); } else {
       vm.tasksLimited = true;
-      setTimeout(function () {
-        vm.tasksLimited = false;
-      }, 2000);
     }
   }
 

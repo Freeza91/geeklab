@@ -118,6 +118,8 @@ $(function () {
         content: item.content
       });
     });
+    vmData.tasksLimited = false;
+    vmData.showHotTasks = false;
     vmData.deletedTask = [];
     vmData.showHotTasks = false;
 
@@ -149,7 +151,6 @@ $(function () {
       $('.qrcode-preview img').attr('src', project.qr_code).show();
       vmData.qrcode = project.qr_code;
     }
-    console.log(vmData);
     return vmData;
   }
 
@@ -393,15 +394,12 @@ $(function () {
 
   function addTask (event, taskContent) {
     event.preventDefault();
-    if(vm.tasks.length < 5) {
+    if(vm.tasks.length < 8) {
       vm.tasks.push({
         content: taskContent || ''
       });
     } else {
       vm.tasksLimited = true;
-      setTimeout(function () {
-        vm.tasksLimited = false;
-      }, 2000);
     }
   }
 

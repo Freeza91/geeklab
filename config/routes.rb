@@ -146,6 +146,7 @@
       resources :skus, only: :update
       resources :addresses, only: :update
     end
+    resources :rewards
   end
 
   resource :wechat, only: [:show, :create]

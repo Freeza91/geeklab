@@ -1,2 +1,5 @@
 h1 Users::Rewards#index
-p Find me in app/views/users/rewards/index.html.slim
+- @records.each do |record|
+  = record.size
+
+= paginate @records

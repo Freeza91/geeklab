@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160106085259) do
+ActiveRecord::Schema.define(version: 20160106090039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -174,9 +174,10 @@ ActiveRecord::Schema.define(version: 20160106085259) do
   add_index "reward_records", ["secret"], name: "index_reward_records_on_secret", using: :btree
 
   create_table "rewards", force: :cascade do |t|
-    t.string "name"
-    t.text   "describle"
-    t.float  "cost"
+    t.string  "name"
+    t.text    "describle"
+    t.float   "cost"
+    t.boolean "publish",   default: false
   end
 
   create_table "skus", force: :cascade do |t|

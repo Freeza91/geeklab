@@ -6,10 +6,11 @@ class Order < ActiveRecord::Base
   belongs_to :user
   belongs_to :sku
   has_one    :address, dependent: :destroy
+  has_one    :reward_record, dependent: :destroy
 
   accepts_nested_attributes_for :address, update_only: true
 
-  validates :good_id, :sku_id, :user_id, presence: true
+  validates :good_id, :user_id, presence: true # sku_id is't necessary for reward
 
   include ::Callbacks::Order
   include ::Jsons::Order

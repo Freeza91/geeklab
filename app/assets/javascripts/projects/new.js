@@ -114,12 +114,6 @@ $(function () {
     )
   });
 
-  // init sortable task list
-  var sortEl = document.getElementById('task-list');
-  var sortable = Sortable.create(sortEl, {
-    handle: '.drag-handle'
-  });
-
   Vue.transition('expand');
 
 });

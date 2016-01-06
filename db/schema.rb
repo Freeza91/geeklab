@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160106082510) do
+ActiveRecord::Schema.define(version: 20160106085259) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,12 +106,14 @@ ActiveRecord::Schema.define(version: 20160106082510) do
     t.string   "good_name"
     t.float    "total_cost"
     t.integer  "good_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.integer  "user_id"
     t.string   "order_id"
     t.string   "good_url"
     t.integer  "sku_id"
+    t.integer  "reward_id"
+    t.string   "type",       default: "good"
   end
 
   create_table "pictures", force: :cascade do |t|
@@ -170,6 +172,12 @@ ActiveRecord::Schema.define(version: 20160106082510) do
 
   add_index "reward_records", ["id_num"], name: "index_reward_records_on_id_num", using: :btree
   add_index "reward_records", ["secret"], name: "index_reward_records_on_secret", using: :btree
+
+  create_table "rewards", force: :cascade do |t|
+    t.string "name"
+    t.text   "describle"
+    t.float  "cost"
+  end
 
   create_table "skus", force: :cascade do |t|
     t.json     "attr"

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160106090039) do
+ActiveRecord::Schema.define(version: 20160107081835) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,7 +113,7 @@ ActiveRecord::Schema.define(version: 20160106090039) do
     t.string   "good_url"
     t.integer  "sku_id"
     t.integer  "reward_id"
-    t.string   "type",       default: "good"
+    t.string   "kind",       default: "good"
   end
 
   create_table "pictures", force: :cascade do |t|

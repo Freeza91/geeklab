@@ -4,4 +4,6 @@ class Reward < ActiveRecord::Base
 
   scope :show,  -> { where(publish: true) }
 
+  validates :name, :cost, presence: true
+
 end

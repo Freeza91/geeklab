@@ -13,6 +13,11 @@ class Dashboard::RewardsController < Dashboard::BaseController
 
   def create
     @reward = Reward.new(reward_params)
+    if @reward.save
+      redirect_to dashboard_reward_path(@reward)
+    else
+      render :new
+    end
   end
 
   def show
@@ -22,15 +27,24 @@ class Dashboard::RewardsController < Dashboard::BaseController
   end
 
   def update
+    if @reward.update_attributes(reward_params)
+      redirect_to dashboard_reward_path(@reward)
+    else
+      render :edit
+    end
   end
 
   def destroy
+    @reward.destroy
+
+    redirect_to dashboard_rewards_path
   end
 
 
 private
 
   def reward_params
+    params.require(:reward).permit(:name, :cost, :describle, :publish)
   end
 
   def get_reward

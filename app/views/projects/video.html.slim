@@ -19,7 +19,7 @@ main role="main"
               - (5 - @assignment.rating_from_pm).times
                 .fa.fa-star-o
           - else
-            - if @assignment.rating_from_admin
+            - if @assignment.credit_record.try(:used)
               input#is-rating type="hidden" value="true"
               p
                 span
@@ -33,7 +33,7 @@ main role="main"
                   | 评分
                 span
                   | (客观的评分能帮助进一步的提高视频质量)
-            .stars class=(@assignment.rating_from_admin ? "" : "un-rating")
+            .stars class=(@assignment.credit_record.try(:used) ? "" : "un-rating")
               - 5.times do |index|
                 input id=("rating-" + "#{index}") type="radio" name="rating"
                 label.rating-star for=("rating-" + "#{index}") data-rating="#{index}"

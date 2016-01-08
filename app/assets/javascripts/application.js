@@ -11,7 +11,6 @@
 // about supported directives.
 //
 //  jquery
-//= require jquery
 //= require jquery_ujs
 
 //  cityselect

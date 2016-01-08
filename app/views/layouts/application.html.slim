@@ -15,8 +15,6 @@ html lang=session[:locale]
     link rel="shortcut icon" href="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
     = stylesheet_link_tag 'application', media: 'all'
     = csrf_meta_tags
-    <!-- 最后加载js文件 -->
-    = javascript_include_tag 'application'
 
   body class=(controller_name + ' ' + controller_name + '_' + action_name + ' ' + locale.to_s)
     .wrapper
@@ -42,3 +40,5 @@ html lang=session[:locale]
       <!-- 登陆框结束 -->
 
     = render '/shared/info_modal'
+    <!-- 最后加载js文件 -->
+    = javascript_include_tag 'main_bundle', 'application'

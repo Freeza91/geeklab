@@ -12,10 +12,8 @@ class CheckRewardFromWechatsJob < ActiveJob::Base
     http = build_cert_http
     http.start do
       http.request_post(@uri.path, xml.to_xml) do |res|
-        doc = Hash.from_xml(res.body)['xml']
-        if doc['return_code'] == "SUCCESS"
-          @record.update_attributes(record_params(doc))
-        end
+        @doc = Hash.from_xml(res.body)['xml']
+        @record.update_columns(record_params) if @doc['return_code'] == "SUCCESS"
       end
     end
 
@@ -73,10 +71,20 @@ class CheckRewardFromWechatsJob < ActiveJob::Base
     Nokogiri::XML xml
   end
 
-  def record_params(doc)
-    doc.permit(:mch_billno, :detail_id, :status,
-               :send_time, :refund_time, :refund_amount,
-               :openid, :amount, :rcv_time)
+  def record_params
+    # 此处并没有涉及到裂变红包，故hblist只有一个
+    hbinfo = @doc['hblist']['hbinfo']
+    {
+      mch_billno: @doc['mch_billno'],
+      detail_id: @doc['detail_id'],
+      status: @doc['status'],
+      send_time: @doc['send_time'],
+      refund_time: @doc['refund_time'],
+      refund_amount: @doc['refund_amount'].to_i,
+      amount: hbinfo['amount'].to_i,
+      openid: hbinfo['openid'],
+      rcv_time: hbinfo['rcv_time']
+    }
   end
 
 end

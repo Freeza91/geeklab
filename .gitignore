@@ -24,3 +24,5 @@
 
 # use npm
 /node_modules
+# use webpack
+/app/assets/javascripts

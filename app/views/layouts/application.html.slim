@@ -41,9 +41,10 @@ html lang=session[:locale]
 
     = render '/shared/info_modal'
     <!-- js start -->
-    = javascript_include_tag 'main-bundle', 'application'
     - if !current_user
-      script src="#{asset_path('sign-bundle')}"
+      = javascript_include_tag 'main-bundle', 'sign-bundle', 'application'
+    - else
+      = javascript_include_tag 'main-bundle', 'application'
     <!-- js end-->
     <!-- page js&css start -->
     = yield :assets

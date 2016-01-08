@@ -7,7 +7,11 @@ module WechatsScanable
 
   def scan(scene_id, openid)
 
-    return send_reward(openid, @reward.amount, @reward.num) if check(scene_id)
+    if check(scene_id)
+      return '已经发放成功无法在使用!' unless @record.status == 'CREATED' # 创建完成
+      return '账号异常，禁止发红包' if @record.limit?
+      return send_reward(openid, @record.amount, @record.secret, scene_id)
+    end
 
     "这个二维码已经过期，无法兑换！！"
 
@@ -16,7 +20,10 @@ module WechatsScanable
   private
 
   def check(scene_id)
-    order_id = $reids.get scene_id
+    secret = $redis.get scene_id
+    @record = RewardRecord.find_by(secret: secret)
+
+    @record.present?
   end
 
 end

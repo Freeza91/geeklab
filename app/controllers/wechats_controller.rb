@@ -23,16 +23,20 @@ class WechatsController < ActionController::Base
   end
 
   on :event, with: 'subscribe' do |request|
-    request.reply.text "#{request[:FromUserName]} subscribe now"
+    if request[:EventKey].present?
+      reply_text = scan(request[:EventKey].split('-').last.to_i, request[:FromUserName])
+      request.reply.text "#{reply_text}"
+    else
+      request.reply.text "欢迎关注极客实验室"
+    end
   end
 
 
   # When no any on :scan responder can match subscribe user scaned scene_id
   on :event, with: 'scan' do |request|
     if request[:EventKey].present?
-
-      scan(request[:EventKey])
-      request.reply.text "event scan got EventKey #{request[:EventKey]} Ticket #{request[:Ticket]}"
+      reply_text = scan(request[:EventKey], request[:FromUserName])
+      request.reply.text "#{reply_text}"
     end
   end
 

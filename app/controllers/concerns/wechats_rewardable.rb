@@ -7,12 +7,8 @@ module WechatsRewardable
 
   private
 
-  def send_reward(openid, secret)
-
-    return '连续输错5次将在1小时内无法在进行兑换!' if limit_openid?(openid, secret)
-    return '已经发放成功无法在使用!' unless @record.status == 'SENDING' # 待发放
-
-    params = build_params(openid, @record.amount, 1)
+  def send_reward(openid, amount, sceret, scene_id)
+    params = build_params(openid, amount, 1)
     xml = build_xml_body(params)
     http = build_cert_http
 
@@ -108,26 +104,6 @@ module WechatsRewardable
     XML
 
     Nokogiri::XML xml
-  end
-
-  # 连续输错5次将在1小时内无法在进行兑换
-  def limit_openid?(openid, secret)
-    value = $redis.get openid
-    return true if value.to_i >= 5
-
-    @record = RewardRecord.find_by(secret: secret).first
-    if record
-      $redis.del openid
-    else
-      if value.to_i == 0
-        $redis.set openid, 0
-        $redis.expire openid, 1.hours.to_i
-      end
-
-      $redis.incr openid
-    end
-
-    false
   end
 
 end

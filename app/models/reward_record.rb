@@ -6,7 +6,7 @@ class RewardRecord < ActiveRecord::Base
   validates :order_id, :user_id, :id_num, :name, :amount, presence: true
 
   def limit?
-    !limit
+    limit
   end
 
 end

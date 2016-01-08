@@ -17,4 +17,5 @@ Rails.application.config.assets.precompile += %w( upload/mobile_upload.js )
 Rails.application.config.assets.precompile += %w( dashboard.js)
 Rails.application.config.assets.precompile += %w( dashboard.css )
 
-Rails.application.config.assets.precompile += ['main_bundle.js']
+Rails.application.config.assets.precompile += ['main-bundle.js',
+                                               'sign-bundle.js']

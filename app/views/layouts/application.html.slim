@@ -35,13 +35,15 @@ html lang=session[:locale]
         = render '/shared/footer'
 
     - if !current_user
-      <!-- 未登录时才加载登陆框 -->
+      <!-- login & regist start -->
       = render 'users/sign'
-      <!-- 登陆框结束 -->
+      <!-- login & regist end -->
 
     = render '/shared/info_modal'
     <!-- js start -->
-    = javascript_include_tag 'main_bundle', 'application'
+    = javascript_include_tag 'main-bundle', 'application'
+    - if !current_user
+      script src="#{asset_path('sign-bundle')}"
     <!-- js end-->
     <!-- page js&css start -->
     = yield :assets

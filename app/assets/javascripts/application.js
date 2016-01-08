@@ -38,7 +38,6 @@
 
 //= require share/base
 //= require share/google_analytics
-//= require_tree ./users
 //= require_tree ./assignments
 //= require_tree ./projects
 //= require testers/info

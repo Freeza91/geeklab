@@ -5,7 +5,7 @@ var config = module.exports = {
   context: __dirname,
   entry: {
     main: './app/frontend/javascripts/main.js',
-    //sign: './app/frontend/javascripts/users/sign.js',
+    sign: './app/frontend/javascripts/user/sign.js',
     //password: './app/frontend/javascripts/users/password.js',
     //assignment_index: './app/frontend/javascripts/assignments/assignment_index.js',
     //assignment_join: './app/frontend/javascripts/assignments/assignment_join.js',
@@ -15,7 +15,7 @@ var config = module.exports = {
 config.output = {
   // 编译完成的文件的文件名和存放路径
   path: path.join(__dirname, 'app', 'assets', 'javascripts'),
-  filename: '[name]_bundle.js',
+  filename: '[name]-bundle.js',
   publicPaht: '/assets'
 };
 

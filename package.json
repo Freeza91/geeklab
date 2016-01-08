@@ -1,0 +1,12 @@
+{
+  "name": "geeklab",
+  "description": "a platform for app test",
+  "version": "1.0.0",
+  "devDependencies": {
+    "expose-loader": "^0.7.1",
+    "webpack": "^1.12.9"
+  },
+  "dependencies": {
+    "jquery": "^2.1.4"
+  }
+}

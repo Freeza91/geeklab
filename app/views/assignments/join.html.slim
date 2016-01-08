@@ -245,3 +245,6 @@ main role="main"
 = render partial: 'assignments/shared/video_player'
 .user-info
   input#tester-id type="hidden" value="#{@current_user.to_tester.id}"
+
+= content_for :assets
+  script src="#{asset_path('assignment-join-bundle.js')}"

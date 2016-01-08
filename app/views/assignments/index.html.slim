@@ -185,3 +185,6 @@ main role="main"
 = render partial: 'assignments/shared/assignment_detail'
 .user-info
   input#tester-id type="hidden" value="#{@current_user.to_tester.to_params}"
+
+= content_for :assets
+  script src="#{asset_path('assignment-index-bundle.js')}"

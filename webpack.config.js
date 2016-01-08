@@ -4,11 +4,11 @@ var path = require('path'),
 var config = module.exports = {
   context: __dirname,
   entry: {
-    main: './app/frontend/javascripts/main.js',
-    sign: './app/frontend/javascripts/user/sign.js',
+    'main': './app/frontend/javascripts/main.js',
+    'sign': './app/frontend/javascripts/user/sign.js',
     //password: './app/frontend/javascripts/users/password.js',
-    //assignment_index: './app/frontend/javascripts/assignments/assignment_index.js',
-    //assignment_join: './app/frontend/javascripts/assignments/assignment_join.js',
+    'assignment-index': './app/frontend/javascripts/assignment/assignment-index.js',
+    'assignment-join': './app/frontend/javascripts/assignment/assignment-join.js'
   }
 };
 

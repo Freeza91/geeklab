@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160107081835) do
+ActiveRecord::Schema.define(version: 20160108061822) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -178,6 +178,7 @@ ActiveRecord::Schema.define(version: 20160107081835) do
     t.text    "describle"
     t.float   "cost"
     t.boolean "publish",   default: false
+    t.float   "amount",    default: 1.0
   end
 
   create_table "skus", force: :cascade do |t|

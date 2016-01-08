@@ -34,7 +34,8 @@ class Users::RewardRecordsController < ApplicationController
                                            reward_id: reward.id)
         if @order.save
           @reward_record = current_user.reward_records.build(order_id: @order.id,
-                                                             amount: reward.cost,
+                                                             amount: reward.amount,
+                                                             cost: reward.cost,
                                                              id_num: current_user.id_card.id_num,
                                                              name: current_user.id_card.name,
                                                              status: 'CREATED')

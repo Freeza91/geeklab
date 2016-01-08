@@ -18,9 +18,6 @@
 //  dateselect
 //= require jquery.dateselect
 
-// vue
-//= require vue
-
 //= require selectize
 
 // noUiSlider, a range slider plugin

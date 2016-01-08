@@ -1,4 +1,4 @@
-class Users::RewardsController < ApplicationController
+class Users::RewardRecordsController < ApplicationController
 
   include WechatsTicketable
 
@@ -12,36 +12,35 @@ class Users::RewardsController < ApplicationController
     json = { status: 0, code: 1, msg: '兑换成功' }
 
     unless current_user.id_card&.status == true
-      json[:code], json[:msg] = 0, '还未认证成功！'
+      json[:code], json[:msg] = -1, '还未认证成功！'
       return render json: json
     end
 
     reward = Reward.where(id: params[:id]).first
     unless reward
-      json[:code], json[:mgs] = -1, '没有这个红包'
+      json[:code], json[:msg] = -2, '没有这个红包'
       return render json: json
     end
 
     ActiveRecord::Base.transaction do
       credits = current_user.credits - reward.cost
       if credits < 0
-        json[:code], json[:mgs] = -2, '积分不足'
-        return json
+        json[:code], json[:msg] = -3, '积分不足'
+        return render json: json
       else
-        @order = current_user.orders.build(total_cost: reward.cost,
-                                           type: 'reward',
+        @order = current_user.orders.build(good_name: reward.name,
+                                           total_cost: reward.cost,
+                                           kind: 'reward',
                                            reward_id: reward.id)
-
-        get_ticket
-
         if @order.save
           @reward_record = current_user.reward_records.build(order_id: @order.id,
                                                              amount: reward.cost,
                                                              id_num: current_user.id_card.id_num,
                                                              name: current_user.id_card.name,
-                                                             secret: @secret)
+                                                             secret: @secret, status: 'CREATED')
           if @reward_record.save
             current_user.update_column(:credits, credits)
+            json[:id] = $hashids.encode(@reward_record.id)
           else
             json[:code], json[:msg] = -3, '兑换失败'
           end
@@ -60,5 +59,4 @@ class Users::RewardsController < ApplicationController
 
   def destroy
   end
-
 end

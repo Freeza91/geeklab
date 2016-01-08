@@ -37,10 +37,10 @@
     post '/id_cards', to: 'id_cards#create'
     put '/id_cards',  to: 'id_cards#update'
 
-    resources :rewards
-
+    resources :reward_records
   end
 
+  resources :rewards, only: :index
   resources :pms
   resources :projects do
     collection do

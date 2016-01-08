@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
       respond_to do |format|
         format.html { redirect_to root_path }
         format.any do
-          json = {status: 0, code: 1, msg: '哥们，登陆后再试！' }
+          json = {status: 0, code: 0, msg: '哥们，登陆后再试！' }
           render json: json
         end
       end

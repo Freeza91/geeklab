@@ -40,5 +40,9 @@ html lang=session[:locale]
       <!-- 登陆框结束 -->
 
     = render '/shared/info_modal'
-    <!-- 最后加载js文件 -->
+    <!-- js start -->
     = javascript_include_tag 'main_bundle', 'application'
+    <!-- js end-->
+    <!-- page js&css start -->
+    = yield :assets
+    <!-- page js&css end -->

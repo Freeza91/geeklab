@@ -6,34 +6,44 @@ module WechatsTicketable
   URL = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token="
 
   def get_ticket
-    check_access_token!
-    get_ticket_from_wechat
+    return get_ticket_from_wechat if check_access_token!
+    false
   end
 
   private
 
-  def check_access_token
-    @access_token = $redis.access_token
+  def check_access_token!
+    @access_token = $redis.get "wechats_access_token"
+
     unless @access_token
-      WechatsAccessToken.get_or_update
-      @access_token = $redis.access_token
+      if WechatsAccessToken.get_or_update
+        @access_token = $redis.get("wechats_access_token")
+      end
     end
+
+    return true if @access_token
+
+    false
   end
 
   def get_ticket_from_wechat
-    response = RestClient.post URL + @access_token, ticket_params,
-                               content_type: :json, accept: :json
-    if response.code == 200
-      json = JSON.parse(response.body)
-      if json['errcode'] == 42001 || # access_token 失效
-         json['errcode'].present?
-        WechatsAccessToken.get_or_update
-        @access_token = $redis.access_token
-        get_ticket_from_wechat(@access_token)
-      elsif json['ticket'].present?
-        @ticket = json['ticket']
+    begin
+      response = RestClient.post URL + @access_token, ticket_params,
+                                 content_type: :json, accept: :json
+      if response.code == 200
+        json = JSON.parse(response.body)
+        if json['ticket'].present?
+          @ticket = json['ticket']
+        else
+          return false
+        end
       end
+    rescue => e
+      e.response
+      return false
     end
+
+    true
   end
 
   def ticket_params
@@ -45,8 +55,7 @@ module WechatsTicketable
           "scene_id": generate_scene_id
         }
       }
-
-    }
+    }.to_json
   end
 
   def generate_scene_id
@@ -57,6 +66,8 @@ module WechatsTicketable
         @scene_id = r
         @secret = SecureRandom.uuid
         $redis.set r, @secret
+
+        break
       end
     end
 

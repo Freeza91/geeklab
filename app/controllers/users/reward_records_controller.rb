@@ -37,7 +37,7 @@ class Users::RewardRecordsController < ApplicationController
                                                              amount: reward.cost,
                                                              id_num: current_user.id_card.id_num,
                                                              name: current_user.id_card.name,
-                                                             secret: @secret, status: 'CREATED')
+                                                             status: 'CREATED')
           if @reward_record.save
             current_user.update_column(:credits, credits)
             json[:id] = $hashids.encode(@reward_record.id)
@@ -54,7 +54,24 @@ class Users::RewardRecordsController < ApplicationController
   end
 
   def show
-    get_ticket
+    json = { status:0, code: 1, msg: '成功查看' }
+
+    record = current_user.reward_records.find_by(id: params[:id])
+
+    unless record
+      json[:code], json[:msg] = 0, '不存在这个红包记录'
+      return render json: json
+    end
+
+    if get_ticket
+      record.update_column(:secret, @secret)
+      json[:ticket] = @ticket
+    else
+      json[:code], json[:msg] = -1, '获取ticket失败，请重试！'
+    end
+
+    render json: json
+
   end
 
   def destroy

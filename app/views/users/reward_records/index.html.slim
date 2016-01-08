@@ -1,1 +1,5 @@
-index.html.slim
+- @records.each do |record|
+  div
+    = record.name
+
+= paginate @records

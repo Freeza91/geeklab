@@ -19,6 +19,7 @@ Rails.application.config.assets.precompile += %w( dashboard.css )
 
 Rails.application.config.assets.precompile += ['main-bundle.js',
                                                'sign-bundle.js',
+                                               'tester-info-bundle.js',
                                                'assignment-index-bundle.js',
                                                'assignment-join-bundle.js',
                                                'project-index-bundle.js',

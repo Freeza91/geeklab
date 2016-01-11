@@ -467,3 +467,6 @@ input#id type="hidden" value="#{current_user.to_params}"
         | 即刻出发
       a.btn.btn-flat.blue.btn-rounded.btn-s href="#{testers_path}"
         | 稍后再去
+
+= content_for :assets
+  script src="#{asset_path('tester-info-bundle.js')}"

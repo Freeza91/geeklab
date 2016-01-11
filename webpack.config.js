@@ -7,6 +7,7 @@ var config = module.exports = {
     'main': './app/frontend/javascripts/main.js',
     'sign': './app/frontend/javascripts/user/sign.js',
     //password: './app/frontend/javascripts/users/password.js',
+    'tester-info': './app/frontend/javascripts/tester/info.js',
     'assignment-index': './app/frontend/javascripts/assignment/assignment-index.js',
     'assignment-join': './app/frontend/javascripts/assignment/assignment-join.js',
     'project-index': './app/frontend/javascripts/project/project-index.js',

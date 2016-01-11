@@ -1,8 +1,4 @@
 $(function () {
-  if(!$('body').hasClass('projects_video')) {
-    return false;
-  }
-
   var player = $('#video')[0],
       isRating = $('#is-rating').val(),
       projectId = $('#project-id').val(),

@@ -24,4 +24,5 @@ Rails.application.config.assets.precompile += ['main-bundle.js',
                                                'project-index-bundle.js',
                                                'project-web-bundle.js',
                                                'project-app-bundle.js',
-                                               'project-edit-bundle.js']
+                                               'project-edit-bundle.js',
+                                               'project-video-bundle.js']

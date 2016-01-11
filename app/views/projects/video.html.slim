@@ -149,3 +149,6 @@ main role="main"
       input#assignment-id type="hidden" value="#{@assignment.to_params}"
 
 = render partial: "projects/shared/confirm_with_hint"
+
+= content_for :assets
+  script src="#{asset_path('project-video-bundle.js')}"

@@ -12,7 +12,8 @@ var config = module.exports = {
     'project-index': './app/frontend/javascripts/project/project-index.js',
     'project-web': './app/frontend/javascripts/project/project-web.js',
     'project-app': './app/frontend/javascripts/project/project-app.js',
-    'project-edit': './app/frontend/javascripts/project/project-edit.js'
+    'project-edit': './app/frontend/javascripts/project/project-edit.js',
+    'project-video': './app/frontend/javascripts/project/project-video.js'
   }
 };
 

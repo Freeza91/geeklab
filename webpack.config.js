@@ -8,7 +8,11 @@ var config = module.exports = {
     'sign': './app/frontend/javascripts/user/sign.js',
     //password: './app/frontend/javascripts/users/password.js',
     'assignment-index': './app/frontend/javascripts/assignment/assignment-index.js',
-    'assignment-join': './app/frontend/javascripts/assignment/assignment-join.js'
+    'assignment-join': './app/frontend/javascripts/assignment/assignment-join.js',
+    'project-index': './app/frontend/javascripts/project/project-index.js',
+    'project-web': './app/frontend/javascripts/project/project-web.js',
+    'project-app': './app/frontend/javascripts/project/project-app.js',
+    'project-edit': './app/frontend/javascripts/project/project-edit.js'
   }
 };
 

@@ -138,3 +138,6 @@ main role="main"
 
 = render 'shared/confirm_modal'
 = render 'projects/shared/add_modal'
+
+= content_for :assets
+  script src="#{asset_path('project-index-bundle.js')}"

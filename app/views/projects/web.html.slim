@@ -16,3 +16,6 @@ main role="main"
         .step-4 v-show="step === 4"
           = render partial: 'projects/steps/contact'
         = render partial: 'projects/shared/step_switch'
+
+= content_for :assets
+  script src="#{asset_path('project-web-bundle.js')}"

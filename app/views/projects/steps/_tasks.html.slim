@@ -7,7 +7,7 @@
       | 请填写测试情景
   .panel-body
     .textarea-field v-class="has-error: !validated.step_3 && !situation"
-      textarea.form-control rows="4" v-model="situation" v-on="keyup: textareaLengthLimit('situation',$event, 140)"
+      textarea.form-control rows="4" v-model="situation" v-on="keyup: textareaLengthLimit(this, 'situation', 140, $event)"
       .js-len-control
         | 还可以输入
         span.js-len-count v-class="situation.length >= 135 ? 'warn' : ''"
@@ -120,18 +120,18 @@
 
   .panel-body
     #task-list.sortable
-      .sortable-item v-repeat="tasks" v-transition="expand"
+      .sortable-item v-repeat="task: tasks" v-transition="expand"
         .textarea-field v-class="has-error: !validated.step_3 && !hasChecked.tasks && !content"
-          textarea.form-control rows="4" v-model="content" v-on="keyup: textareaLengthLimit($index, $event, 50)"
+          textarea.form-control rows="4" v-model="task.content" v-on="keyup: textareaLengthLimit(this, $index, 50, $event)"
           .js-len-control
             | 还可以输入
-            span.js-len-count v-class="content.length >= 45 ? 'warn' : ''"
-              | {{50 - content.length}}
+            span.js-len-count v-class="task.content.length >= 45 ? 'warn' : ''"
+              | {{50 - task.content.length}}
             | 字
           .handle
             .drag-handle
               i.fa.fa-arrows-v.fa-2x
-            .delete-handle v-on="click: deleteTask(this, $event)"
+            .delete-handle v-on="click: deleteTask(this, task, $event)"
               i.fa.fa-trash-o.fa-2x
     .hot-tasks.clearfix v-show="showHotTasks"
       .tasks-header
@@ -144,7 +144,7 @@
             = task
           .fa.fa-plus
     .add-task
-      button.btn.btn-flat.blue.btn-rounded.btn-m v-on="click: addTask"
+      button.btn.btn-flat.blue.btn-rounded.btn-m v-on="click: addTask(this, '', $event)"
         | 空白任务
         .fa.fa-plus
       button.btn.btn-flat.blue.btn-rounded.btn-m v-on="click: showHotTask(this, $event)"

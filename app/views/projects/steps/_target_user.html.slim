@@ -28,12 +28,12 @@
       .fa.fa-exclamation-triangle
       | 请选择性别
     label.checkbox-default.checkbox-rounded.checkall
-      input type="checkbox" value="checkall" v-model="checkAll.sex" v-on="change: toggleCheckAll('sex')"
+      input type="checkbox" value="checkall" v-model="checkAll.sex" v-on="change: toggleCheckAll(this, 'sex')"
       span
         | 全选
   .panel-body
     label.checkbox-default.checkbox-with-icon v-repeat="sex"
-      input type="checkbox" v-model="checked" v-on="change: checkAllEffect('sex', checked)"
+      input type="checkbox" v-model="checked" v-on="change: checkAllEffect(this, 'sex', checked)"
       span
         div v-attr="class: 'edit-icon edit-icon-' + transformSex(key)"
       h6
@@ -46,12 +46,12 @@
       .fa.fa-exclamation-triangle
       | 请选择城市级别
     label.checkbox-default.checkbox-rounded.checkall
-      input type="checkbox" value="checkall" v-model="checkAll.city" v-on="change: toggleCheckAll('city')"
+      input type="checkbox" value="checkall" v-model="checkAll.city" v-on="change: toggleCheckAll(this, 'city')"
       span
         | 全选
   .panel-body
     label.checkbox-default.checkbox-rounded v-repeat="city"
-      input type="checkbox" v-model="checked" v-on="change: checkAllEffect('city', checked)"
+      input type="checkbox" v-model="checked" v-on="change: checkAllEffect(this, 'city', checked)"
       span
         | {{key}}
 .panel.project-panel
@@ -62,12 +62,12 @@
       .fa.fa-exclamation-triangle
       | 请选择学历
     label.checkbox-default.checkbox-rounded.checkall
-      input type="checkbox" value="checkall" v-model="checkAll.education" v-on="change: toggleCheckAll('education')"
+      input type="checkbox" value="checkall" v-model="checkAll.education" v-on="change: toggleCheckAll(this, 'education')"
       span
         | 全选
   .panel-body
     label.checkbox-default.checkbox-rounded v-repeat="education"
-      input type="checkbox" v-model="checked" v-on="change: checkAllEffect('education', checked)"
+      input type="checkbox" v-model="checked" v-on="change: checkAllEffect(this, 'education', checked)"
       span
         | {{key}}
 .panel.project-panel
@@ -78,12 +78,12 @@
       .fa.fa-exclamation-triangle
       | 请选择情感状况
     label.checkbox-default.checkbox-rounded.checkall
-      input type="checkbox" value="checkall" v-model="checkAll.emotion" v-on="change: toggleCheckAll('emotion')"
+      input type="checkbox" value="checkall" v-model="checkAll.emotion" v-on="change: toggleCheckAll(this, 'emotion')"
       span
         | 全选
   .panel-body
     label.checkbox-default.checkbox-rounded v-repeat="emotion"
-      input type="checkbox" v-model="checked" v-on="change: checkAllEffect('emotion', checked)"
+      input type="checkbox" v-model="checked" v-on="change: checkAllEffect(this, 'emotion', checked)"
       span
         | {{key}}
 .panel.project-panel
@@ -94,12 +94,12 @@
       .fa.fa-exclamation-triangle
       | 请选择性取向
     label.checkbox-default.checkbox-rounded.checkall
-      input type="checkbox" value="checkall" v-model="checkAll.orientation" v-on="change: toggleCheckAll('orientation')"
+      input type="checkbox" value="checkall" v-model="checkAll.orientation" v-on="change: toggleCheckAll(this, 'orientation')"
       span
         | 全选
   .panel-body
     label.checkbox-default.checkbox-rounded v-repeat="orientation"
-      input type="checkbox" v-model="checked" v-on="change: checkAllEffect('orientation', checked)"
+      input type="checkbox" v-model="checked" v-on="change: checkAllEffect(this, 'orientation', checked)"
       span
         | {{key}}
 .panel.project-panel

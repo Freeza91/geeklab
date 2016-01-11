@@ -12,7 +12,10 @@ module WechatsRewardable
     xml = build_xml_body(params)
     http = build_cert_http
 
+    reply_text = ""
+
     http.start do
+
       http.request_post(@uri.path, xml.to_xml) do |res|
         doc = Hash.from_xml(res.body)['xml']
         if doc['return_code'] == 'SUCCESS'
@@ -23,17 +26,19 @@ module WechatsRewardable
           t = Time.now + 24.hours + 5.minutes
           CheckRewardFromWechatsJob.set(wait_until: t).perform_later(@record.id)
 
-          return '恭喜你获得红包'
+          reply_text =  '恭喜你获得红包'
         else
           # 1. 余额不足
           # 2. API发送受限
           # 3. .......
           UserMailer.send_reward_error(doc)
-          return '红包没有发送成功，请稍后再试或者联系管理员'
+          reply_text = '红包没有发送成功，请稍后再试或者联系管理员'
         end
       end
+
     end
 
+    reply_text
   end
 
   def build_params(openid, amount, num)

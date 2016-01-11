@@ -26,60 +26,61 @@ main
       | 选好了
   img src="#{image_url("testers/device_choose_bg.png")}"
 
-javascript:
-  $(function() {
-    var chooseDeviceVm = new Vue({
-      el: '#device-choose',
-      data: {
-        device: [
-          {
-            value: 'iPhone',
-            checked: false
-          },
-          {
-            value: 'Android Phone',
-            checked: false
-          },
-          {
-            value: 'iPad',
-            checked: false
-          },
-          {
-            value: 'Android Pad',
-            checked: false
-          },
-        ],
-        error: false
-      },
-      methods: {
-        submit: submit
-      }
-    });
-
-    function submit(vm) {
-      var device = [];
-      for(var i = 0; i < 4; i++){
-        if(vm.device[i].checked) {
-          device.push(vm.device[i].value);
+= content_for :assets
+  javascript:
+    window.onload = function () {
+      var chooseDeviceVm = new Vue({
+        el: '#device-choose',
+        data: {
+          device: [
+            {
+              value: 'iPhone',
+              checked: false
+            },
+            {
+              value: 'Android Phone',
+              checked: false
+            },
+            {
+              value: 'iPad',
+              checked: false
+            },
+            {
+              value: 'Android Pad',
+              checked: false
+            },
+          ],
+          error: false
+        },
+        methods: {
+          submit: submit
         }
-      }
-      console.log(device);
-      if(device.length === 0) {
-        //未选择device， 给出提示
-        vm.error = true;
-      }
-      $.ajax({
-        url: '/testers',
-        method: 'post',
-        data: {device: device}
-      })
-      .done(function (data) {
-        if(data.status === 0 && data.code === 1) {
-          location.href = '/assignments';
-        }
-      })
-      .error(function (errors) {
-        console.log(errors);
       });
+
+      function submit(vm) {
+        var device = [];
+        for(var i = 0; i < 4; i++){
+          if(vm.device[i].checked) {
+            device.push(vm.device[i].value);
+          }
+        }
+        console.log(device);
+        if(device.length === 0) {
+          //未选择device， 给出提示
+          vm.error = true;
+        }
+        $.ajax({
+          url: '/testers',
+          method: 'post',
+          data: {device: device}
+        })
+        .done(function (data) {
+          if(data.status === 0 && data.code === 1) {
+            location.href = '/assignments';
+          }
+        })
+        .error(function (errors) {
+          console.log(errors);
+        });
+      }
     }
-  });

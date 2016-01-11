@@ -19,12 +19,6 @@ main.bg-green.with-top-bg role='main'
         div
           a href=get_assignment_url(current_user) target="_blank"
             img u="image" src=image_path("stores/index_bg_2.png")
-      /span u="arrowleft" class="jssora13l" style="top: 123px; left: 30px;"
-        /span.icon-img.icon-outer-34
-          /i.icon-inner.icon-arrow-left
-      /span u="arrowright" class="jssora13r" style="top: 123px; right: 30px;"
-        /span.icon-img.icon-outer-34
-          /i.icon-inner.icon-arrow-right
       #good-list
         ul.clearfix
           li v-repeat="good: goods"
@@ -45,3 +39,6 @@ main.bg-green.with-top-bg role='main'
           i.fa.fa-arrow-left
         .next.pagination v-on="click: nextPage" v-class="lastPage ? 'disable' : ''" v-show="!lastPage"
           i.fa.fa-arrow-right
+
+= content_for :assets
+  script src="#{asset_path('store-index-bundle.js')}"

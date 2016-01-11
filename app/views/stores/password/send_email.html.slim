@@ -26,3 +26,6 @@ main role="main"
               span.color-yellow v-text="countDown" v-show="countDown !== 60"
               span v-show="countDown !== 60"
                 | 秒后重新发送
+
+= content_for :assets
+  script src="#{asset_path('password-bundle.js')}"

@@ -9,16 +9,13 @@ Rails.application.config.assets.version = '1.0'
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 # Rails.application.config.assets.precompile += %w( search.js )
-Rails.application.config.assets.precompile += %w( store.js )
-Rails.application.config.assets.precompile += %w( store.css )
-Rails.application.config.assets.precompile += %w( upload/mobile_upload.js )
-
 
 Rails.application.config.assets.precompile += %w( dashboard.js)
 Rails.application.config.assets.precompile += %w( dashboard.css )
 
 Rails.application.config.assets.precompile += ['main-bundle.js',
                                                'sign-bundle.js',
+                                               'password-bundle.js',
                                                'tester-info-bundle.js',
                                                'assignment-index-bundle.js',
                                                'assignment-join-bundle.js',
@@ -27,3 +24,12 @@ Rails.application.config.assets.precompile += ['main-bundle.js',
                                                'project-app-bundle.js',
                                                'project-edit-bundle.js',
                                                'project-video-bundle.js']
+
+Rails.application.config.assets.precompile += %w( store.js )
+Rails.application.config.assets.precompile += %w( store.css )
+Rails.application.config.assets.precompile += %w( upload/mobile_upload.js )
+
+Rails.application.config.assets.precompile += ['store-index-bundle.js',
+                                               'good-bundle.js',
+                                               'order-bundle.js']
+

@@ -29,3 +29,6 @@ main role="main"
               | 秒后返回首页
             a.btn.btn-base.btn-rounded.btn-m href=stores_root_path
               | 立即返回
+
+= content_for :assets
+  script src="#{asset_path('password-bundle.js')}"

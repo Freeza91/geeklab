@@ -6,7 +6,7 @@ var config = module.exports = {
   entry: {
     'main': './app/frontend/javascripts/main.js',
     'sign': './app/frontend/javascripts/user/sign.js',
-    //password: './app/frontend/javascripts/users/password.js',
+    'password': './app/frontend/javascripts/user/password.js',
     'tester-info': './app/frontend/javascripts/tester/info.js',
     'assignment-index': './app/frontend/javascripts/assignment/assignment-index.js',
     'assignment-join': './app/frontend/javascripts/assignment/assignment-join.js',
@@ -14,7 +14,10 @@ var config = module.exports = {
     'project-web': './app/frontend/javascripts/project/project-web.js',
     'project-app': './app/frontend/javascripts/project/project-app.js',
     'project-edit': './app/frontend/javascripts/project/project-edit.js',
-    'project-video': './app/frontend/javascripts/project/project-video.js'
+    'project-video': './app/frontend/javascripts/project/project-video.js',
+    'store-index': './app/frontend/javascripts/stores/index.js',
+    'good': './app/frontend/javascripts/stores/good.js',
+    'order': './app/frontend/javascripts/stores/order.js'
   }
 };
 

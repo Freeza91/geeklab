@@ -92,3 +92,5 @@ main role="main"
   <!-- 兑换成功 -->
   = render "stores/modals/exchange_success"
 
+= content_for :assets
+  script src="#{asset_path('good-bundle.js')}"

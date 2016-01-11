@@ -62,9 +62,12 @@ main.with-brand role="main"
           i.icon-inner.icon-score-shadow
         = current_user.credits
 
-<!-- 删除订单记录 -->
+j<!-- 删除订单记录 -->
 = render "stores/modals/order_delete"
 <!-- 电话充值卡信息 -->
 = render "stores/modals/order_detail"
 <!-- 暂无物流信息提示 -->
 = render "stores/modals/express_hint"
+
+= content_for :assets
+  script src="#{asset_path('order-bundle.js')}"

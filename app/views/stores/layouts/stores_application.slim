@@ -14,8 +14,6 @@ html lang=session[:locale]
     link rel="shortcut icon" href="http://7xjciz.com2.z0.glb.qiniucdn.com/favicon-32.png"
     = stylesheet_link_tag 'store', media: 'all'
     = csrf_meta_tags
-    <!-- 在最后加载js -->
-    = javascript_include_tag 'store'
 
   body class=(controller_name + ' ' + controller_name + '_' + action_name + ' ' + 'store')
     .wrapper
@@ -34,3 +32,6 @@ html lang=session[:locale]
     - else
       <!-- 退出登录确认 -->
       = render "stores/modals/logout_hint"
+    <!-- 在最后加载js -->
+    = javascript_include_tag 'main-bundle', 'store'
+    = yield :assets

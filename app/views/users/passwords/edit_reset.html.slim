@@ -30,3 +30,6 @@ main role="main"
               | 秒后返回首页
           a.btn.btn-flat.blue.btn-rounded.btn-m v-attr="href: redirect" style="margin-top: 30px"
             | 立即返回
+
+= content_for :assets
+  script src="#{asset_path('password-bundle.js')}"

@@ -38,6 +38,8 @@
     put '/id_cards',  to: 'id_cards#update'
 
     resources :reward_records, only: [:show, :create]
+    resources :integral_records, path: :records, only: :index
+
   end
 
   resources :rewards, only: :index

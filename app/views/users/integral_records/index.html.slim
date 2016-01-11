@@ -1,0 +1,7 @@
+h1 Users::IntegralRecords#index
+- @records.each do |record|
+  = record.cost
+  = record.describle
+  = record.created_at
+
+= paginate @records

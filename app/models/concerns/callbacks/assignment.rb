@@ -60,6 +60,11 @@ module Callbacks
                                       credits: project.credit || 0,
                                       bonus_credits: project.basic_bonus || 0)
 
+            # 记录积分
+            integral_record = IntegralRecord.new(cost: project_credit,
+                                                 describe: project.name + '审核通过',
+                                                 user_id: tester.id, assignment_id: id,
+                                                 kind_of: 'basic')
             if project.beginner # 新手任务
                 record.rating_type = 'new'
                 record.used = true
@@ -67,7 +72,9 @@ module Callbacks
                 project_credit = project.credit || 0
                 credits += project_credit
 
-                record.save && tester.update_column(:credits, credits)
+
+
+                record.save && integral_record.save && tester.update_column(:credits, credits)
             else # 不是新手任务
 
               # 基础分累加
@@ -82,13 +89,15 @@ module Callbacks
 
                 bonus_credits = rating_from_pm * project.basic_bonus
 
-                record.save && tester.update_column(:credits, credits + bonus_credits)
+                record.save && integral_record.save && tester.update_column(:credits, credits + bonus_credits)
               else
                 # 累加基础分
                 tester.update_column(:credits, credits)
                 # 设置过期自动评分
                 time = Time.now + project.rating_duration * 3600
                 AddBonusCreditJob.set(wait_until: time).perform_later(id, tester.id)
+
+                integral_record.save
               end
             end
           end

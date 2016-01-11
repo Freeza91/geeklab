@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160111064906) do
+ActiveRecord::Schema.define(version: 20160111070919) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,8 +105,11 @@ ActiveRecord::Schema.define(version: 20160111064906) do
   create_table "integral_records", force: :cascade do |t|
     t.float    "cost"
     t.string   "describe"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.integer  "user_id"
+    t.integer  "assignment_id"
+    t.string   "kind_of",       default: "basic"
   end
 
   create_table "orders", force: :cascade do |t|

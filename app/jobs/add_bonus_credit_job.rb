@@ -22,7 +22,12 @@ class AddBonusCreditJob < ActiveJob::Base
                                   rating_type: 'admin',
                                   rating: rating)
 
-        record.save && tester.update_column(:credits, bonus + origin_credits)
+        integral_record = IntegralRecord.new(cost: project_credit,
+                                             describe: project.name + '评价' + rating + '星',
+                                             user_id: tester.id, assignment_id: id,
+                                             kind_of: 'rating')
+
+        record.save && integral_record.save && tester.update_column(:credits, bonus + origin_credits)
       end
     end
 

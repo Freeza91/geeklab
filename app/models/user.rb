@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
 
   has_one :id_card
   has_many :reward_records
+  has_many :integral_records
 
   def to_tester
     @tester ||= Tester.find_by(id: self.to_params)

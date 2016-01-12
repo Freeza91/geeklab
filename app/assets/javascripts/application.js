@@ -13,11 +13,6 @@
 //  jquery
 //= require jquery_ujs
 
-//  cityselect
-//= require jquery.cityselect
-//  dateselect
-//= require jquery.dateselect
-
 //= require selectize
 
 // noUiSlider, a range slider plugin

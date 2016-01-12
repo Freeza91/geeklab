@@ -2,9 +2,18 @@
 .id_cards
   background: $blue
 
-.user-content
+.user-body
+  padding-left: 150px
   background: $light-yellow
+.user-aside
+  float: left
+  width: 150px
+  margin-left: -150px
 .user-main
+  float: right
+  width: 100%
+  padding-left: 20px
+  padding-right: 20px
   background: $white
 
 // user side nav menu
@@ -34,3 +43,62 @@
       border-top: 10px solid transparent
       border-left: 10px solid $dark-blue
       border-bottom: 10px solid transparent
+
+// user center main-header
+.user-main-header
+  padding-bottom: 5px
+  border-bottom: 1px solid $gray
+
+// user center main-content
+.user-main-content
+  padding-top: 20px
+  padding-bottom: 40px
+
+// idcard status
+.idcard-status
+  color: $blue
+  .status-text
+    padding-left: 10px
+    color: $dark-gray
+
+// idcard form customize
+.id_cards
+  .form
+    .field-name
+      width: 110px
+    .field-content
+      padding-left: 130px
+    .form-input
+      text-align: left
+.idcard-hint
+  color: $gray
+  .field-name
+    color: $gray
+  li
+    padding-top: 3px
+    padding-bottom: 3px
+
+// idcard-image
+.idcard-image
+  position: relative
+  display: inline-block
+  width: 340px
+  height: 210px
+  background: $gray
+  .upload-warn
+    position: absolute
+    top: 50%
+    width: 100%
+    margin-top: -10px
+    color: $warn-red
+    text-align: center
+  .button
+    position: absolute
+    bottom: 20px
+    left: 50%
+    margin-left: -80px
+.idcard-image.face
+  margin-right: 30px
+  background-image: url('http://7xjciz.com2.z0.glb.qiniucdn.com/idcard-image-face.png')
+.idcard-image
+  background-image: url('http://7xjciz.com2.z0.glb.qiniucdn.com/idcard-image-back.png')

@@ -1,0 +1,36 @@
+@import ./helpers/variables
+.id_cards
+  background: $blue
+
+.user-content
+  background: $light-yellow
+.user-main
+  background: $white
+
+// user side nav menu
+.user-sidenav
+  padding: 0
+  list-style: none
+  margin-top: 30px
+  > li
+    > a
+      display: block
+      padding-top: 8px
+      padding-bottom: 8px
+      color: $blue
+      text-align: center
+    > a:hover
+      color: $dark-blue
+  > li.active
+    position: relative
+    > a
+      color: $dark-blue
+    > a::after
+      position: absolute
+      top: 8px
+      left: 0
+      display: block
+      content: ''
+      border-top: 10px solid transparent
+      border-left: 10px solid $dark-blue
+      border-bottom: 10px solid transparent

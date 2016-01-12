@@ -39,7 +39,13 @@ class Users::RewardRecordsController < ApplicationController
                                                              id_num: current_user.id_card.id_num,
                                                              name: current_user.id_card.name,
                                                              status: 'CREATED')
-          if @reward_record.save
+          @integral_record = current_user.integral_records
+                                         .build(cost: reward.cost,
+                                                describle: reward.name,
+                                                kind_of: 'order',
+                                                order_id: @order.id)
+
+          if @reward_record.save && @integral_record.save
             current_user.update_column(:credits, credits)
             json[:id] = $hashids.encode(@reward_record.id)
           else

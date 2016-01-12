@@ -44,6 +44,12 @@ class Stores::OrdersController < Stores::BaseController
             current_user.update_column(:credits, current_user.credits - good.cost)
             sku.update_column(:num, sku.num - 1) # skip inc_good_stock validate
             good.update_attributes(stock: good.stock - 1, used_num: good.used_num + 1 )
+            @integral_record = current_user.integral_records
+                                           .build(cost: good.cost,
+                                                  describle: good.name,
+                                                  kind_of: 'order',
+                                                  order_id: @order.id)
+            @integral_record.save
         else
           json[:code], json['msg'] = 2, '库存不足'
         end

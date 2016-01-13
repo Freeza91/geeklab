@@ -4,17 +4,37 @@ class Users::IdCardsController < ApplicationController
 
   def show
     @id_card = current_user.id_card
+    json = { status: 0, code: 1 }
     if @id_card
-      if @id_card.status == 'failed'
-        render 'edit'
-      else
-        render 'show'
+      respond_to do |format|
+        format.html do
+          render 'show'
+        end
+        format.json do
+          json[:id_card] = @id_card.to_json
+          render json: json
+        end
       end
-    else
-      @id_card = current_user.build_id_card
-      render 'new'
+      #if @id_card.status == 'failed'
+        #render 'edit'
+      #else
+        #render 'show'
+      #if @id_card.status
+        #render 'show'
+      #else
+        #render 'edit'
+      #end
+    #else
+      #@id_card = current_user.build_id_card
+      #render 'new'
     end
+  end
 
+  def edit
+    @edit = false
+    if current_user.id_card
+      @edit = true
+    end
   end
 
   def create
@@ -30,16 +50,24 @@ class Users::IdCardsController < ApplicationController
 
   def update
     @id_card = current_user.id_card
+    json =  { status: 0, code: 1 }
     if @id_card
-      if @id_card.status = 'success'# 已经不能再做修改
-        render 'show'
+      if @id_card.status == 'success' # 已经不能再做修改
+        #render 'show'
+        json[:code], json[:msg] = 2, '不能再修改'
+        render json:json
       elsif @id_card.update_attributes(id_cards_params)
-        render 'show'
+        #render 'show'
+        render json: json
       else
-        render 'edit'
+        #render 'edit'
+        json[:code], json[:msg] = 3, '保存失败'
+        render json: json
       end
     else
-      render 'new'
+      json[:code], json[:msg] = 4, '未创建'
+      render json: json
+      #render 'new'
     end
   end
 

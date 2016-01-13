@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160112055034) do
+ActiveRecord::Schema.define(version: 20160113075602) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -97,9 +97,10 @@ ActiveRecord::Schema.define(version: 20160112055034) do
     t.string  "face"
     t.string  "back"
     t.string  "id_num"
-    t.boolean "status",  default: false
     t.string  "name"
     t.integer "user_id"
+    t.string  "reason"
+    t.string  "status",  default: "wait_check"
   end
 
   create_table "integral_records", force: :cascade do |t|

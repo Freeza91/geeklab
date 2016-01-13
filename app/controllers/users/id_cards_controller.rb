@@ -5,10 +5,10 @@ class Users::IdCardsController < ApplicationController
   def show
     @id_card = current_user.id_card
     if @id_card
-      if @id_card.status
-        render 'show'
-      else
+      if @id_card.status == 'failed'
         render 'edit'
+      else
+        render 'show'
       end
     else
       @id_card = current_user.build_id_card
@@ -29,7 +29,7 @@ class Users::IdCardsController < ApplicationController
   def update
     @id_card = current_user.id_card
     if @id_card
-      if @id_card.status # 已经不能再做修改
+      if @id_card.status = 'success'# 已经不能再做修改
         render 'show'
       elsif @id_card.update_attributes(id_cards_params)
         render 'show'

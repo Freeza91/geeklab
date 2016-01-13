@@ -43,12 +43,12 @@ when 'release' || 'bugs'
 else
   set :domain, '119.254.101.120'
   set :branch, 'withdrawal'
-  set :unicorn_config, lambda { "#{app_path}/config/unicorn_master.rb" }
+  set :unicorn_config, lambda { "#{app_path}/config/unicorn_release.rb" }
 end
 
 task :environment do
   queue! 'source ~/.bashrc'
-  invoke :'rvm:use[ruby-2.2.0]'
+  invoke :'rvm:use[ruby-2.3.0]'
 end
 
 task setup: :environment do

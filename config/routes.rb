@@ -33,7 +33,8 @@
       end
     end
 
-    get '/id_cards',  to: 'id_cards#show'
+    get '/id_cards', to: 'id_cards#edit'
+    get '/id_cards/show',  to: 'id_cards#show'
     post '/id_cards', to: 'id_cards#create'
     put '/id_cards',  to: 'id_cards#update'
 

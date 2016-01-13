@@ -59,7 +59,12 @@
   color: $blue
   .status-text
     padding-left: 10px
+  .status-text.not-upload
     color: $dark-gray
+  .status-text.checking
+    color: $dark-blue
+  .status-text.failed
+    color: $warn-red
 
 // idcard form customize
 .id_cards
@@ -71,9 +76,12 @@
     .form-input
       text-align: left
 .idcard-hint
+  margin-top: 30px
   color: $gray
   .field-name
     color: $gray
+  ol
+    padding-left: 23px
   li
     padding-top: 3px
     padding-bottom: 3px

@@ -22,7 +22,9 @@ class Users::IdCardsController < ApplicationController
     if @id_card.save
       render 'edit'
     else
-      render 'new'
+      #render 'new'
+      json =  { status: 0, code: 2, msg: '保存失败' }
+      render json: json
     end
   end
 
@@ -44,7 +46,7 @@ class Users::IdCardsController < ApplicationController
   private
 
   def id_cards_params
-    params.require(:id_card).permit(:name, :face, :back, :id_num)
+    params.permit(:name, :face, :back, :id_num)
   end
 
 end

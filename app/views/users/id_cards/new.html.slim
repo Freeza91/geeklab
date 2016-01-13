@@ -8,39 +8,39 @@
             span.status-text
               | 未认证
         .user-main-content
-          form.form
+          form#idcard.form
             .form-field style="width: 500px"
               .field-name.middle
                 span
                   | 真实姓名
               .field-content
-                input.form-input type="text" name="name"
-                span.hint-text
+                input.form-input type="text" name="name" v-model="name"
+                span.hint-text v-show="error && !name"
                   | 请输入昵称
             .form-field style="width: 500px"
               .field-name.middle
                 span
                   | 身份证号
               .field-content
-                input.form-input type="text" name="id-num"
-                span.hint-text
+                input.form-input type="text" name="id-num" v-model="idNum"
+                span.hint-text v-show="error && !idNum"
                   | 请输入身份证号
             .form-field
               .field-name.top
                 span
                   | 上传身份证图片
               .field-content
-                .idcard-image.face
-                  .upload-warn
+                .idcard-image.face v-style="background-image: idcardImageFaceUrl"
+                  .upload-warn v-show="error && !idcardImageFace"
                     | *请上传正面照片
-                  .button.btn.btn-flat.blue.btn-rounded.btn-m
+                  .button.btn.btn-flat.blue.btn-rounded.btn-m v-on="click: chooseIdcardImage(this, 'idcardImageFace')"
                     | 上传正面
-                .idcard-image.back
-                  .upload-warn
+                .idcard-image.back v-style="background-image: idcardImageBackUrl"
+                  .upload-warn v-show="error && !idcardImageBack"
                     | *请上传反面照片
-                  .button.btn.btn-flat.blue.btn-rounded.btn-m
+                  .button.btn.btn-flat.blue.btn-rounded.btn-m v-on="click: chooseIdcardImage(this, 'idcardImageBack')"
                     | 上传反面
-                input#idcard-image type="file" accept="image/*" style="display: none"
+                input#idcard-image type="file" accept="image/*" style="display: none" v-on="change: setIdcardImage(this, $event)"
               .form-field.idcard-hint
                 .field-name
                   | 温馨提示
@@ -56,18 +56,7 @@
                     li
                       | 实名认证审核通过后不可修改。如果您在实名验证过程中，出现任何问题，请咨询极客实验室qq群473994636.
             .form-field style="text-align: center"
-              button.btn.btn-flat.blue.btn-rounded.btn-m
+              button.btn.btn-flat.blue.btn-rounded.btn-m v-on="click: submit(this, $event)"
                 | 提交
-
-          = form_for [:users, @id_card] do |f|
-            = f.label '真实姓名'
-            = f.text_field :name
-            = f.label '身份证号'
-            = f.text_field :id_num
-            = f.label '身份证正面'
-            = f.file_field :face
-            = f.label '身份证反面'
-            = f.file_field :back
-            = f.submit '提交'
       .user-aside
         = render partial: 'users/shared/side_nav', locals: {curr_view: 'id_card'}

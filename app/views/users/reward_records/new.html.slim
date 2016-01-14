@@ -1,0 +1,62 @@
+.geeklab-container
+  .reward-record
+    .reward-record-header.clearfix
+      .reward-record-title
+        span
+          | 红包兑换
+        span.exchange-exp
+          | (兑换公式: 100积分 = 10 元红包)
+      .credit-record
+        span
+          | 我的剩余积分
+        span.icon-img.icon-outer-18 style="margin: 0 5px -4px 10px"
+          i.icon-inner.icon-score-old
+        span
+          = current_user.to_tester.credits
+    .reward-record-content.clearfix
+      .clearfix
+        .reward-exchange-list
+          .reward-item
+            .reward-icon
+              img src="http://7xjciz.com2.z0.glb.qiniucdn.com/reward-20.png"
+            .reward-form-control
+              .radio-cos
+                input#reward-20 type="radio" name="reward"
+                .radio-icon
+              label for="reward-20"
+                span.icon-img.icon-outer-18 style="margin: 0 5px -4px 5px"
+                  i.icon-inner.icon-score-old
+                | 200
+          .reward-item
+            .reward-icon
+              img src="http://7xjciz.com2.z0.glb.qiniucdn.com/reward-50.png"
+            .reward-form-control
+              .radio-cos
+                input#reward-50 type="radio" name="reward"
+                .radio-icon
+              label for="reward-50"
+                span.icon-img.icon-outer-18 style="margin: 0 5px -4px 5px"
+                  i.icon-inner.icon-score-old
+                | 500
+          .reward-item
+            .reward-icon
+              img src="http://7xjciz.com2.z0.glb.qiniucdn.com/reward-100.png"
+            .reward-form-control
+              .radio-cos
+                input#reward-100 type="radio" name="reward"
+                .radio-icon
+              label for="reward-100"
+                span.icon-img.icon-outer-18 style="margin: 0 5px -4px 5px"
+                  i.icon-inner.icon-score-old
+                | 1000
+      .reward-exchange-tools
+        .reward-exchange-button
+          - if current_user.id_card && current_user.id_card.status === 'success'
+            a.btn.btn-flat.blue.btn-rounded.btn-m
+              | 先去实名认证
+          - else
+            .btn.btn-flat.blue.btn-rounded.btn-m
+              | 我要兑换
+        .reward-exchange-link
+          a href="/stores"
+            | 兑换其它礼品

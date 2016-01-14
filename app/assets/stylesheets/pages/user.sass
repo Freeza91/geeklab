@@ -1,5 +1,6 @@
 @import ./helpers/variables
-.id_cards
+.id_cards,
+.reward_records
   background: $blue
 
 .user-body
@@ -108,3 +109,50 @@
     margin-left: -80px
 .idcard-image.face
   margin-right: 30px
+
+// reward-record  exchange
+.reward-record
+  background: #fff
+  .reward-record-header
+    padding: 15px 20px
+    background: $light-yellow
+  .reward-record-title
+    float: left
+    .exchange-exp
+      margin-left: 10px
+      color: $dark-gray
+      font-size: .8rem
+  .credit-record
+    float: right
+  .reward-record-content
+    padding: 30px
+// reward-item
+.reward-exchange-list
+  position: relative
+  left: 50%
+  float: left
+  margin-bottom: 40px
+.reward-item
+  position: relative
+  right: 50%
+  float: left
+  padding-left: 20px
+  padding-right: 20px
+  .reward-icon
+    width: 200px
+    height: 200px
+    margin-bottom: 20px
+    img
+      width: 200px
+      height: 200px
+  .reward-form-control
+    text-align: center
+    label
+      margin-bottom: 0
+      color: $dark-blue
+      font-size: 1rem
+      font-weight: normal
+.reward-exchange-tools
+  text-align: center
+  .reward-exchange-button,
+    margin-bottom: 20px

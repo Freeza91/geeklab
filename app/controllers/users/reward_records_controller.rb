@@ -8,10 +8,13 @@ class Users::RewardRecordsController < ApplicationController
     @records = current_user.reward_records.page(params[:page])
   end
 
+  def new
+  end
+
   def create
     json = { status: 0, code: 1, msg: '兑换成功' }
 
-    unless current_user.id_card&.status == 'success'
+    unless current_user.id_card && current_user.id_card.status == 'success'
       json[:code], json[:msg] = -1, '还未认证成功！'
       return render json: json
     end

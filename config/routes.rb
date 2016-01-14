@@ -150,6 +150,7 @@
       resources :addresses, only: :update
     end
     resources :rewards
+    resources :id_cards
   end
 
   resource :wechat, only: [:show, :create]

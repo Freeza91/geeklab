@@ -1,0 +1,28 @@
+div
+  table.ui.celled.table
+    thead
+      tr
+        th ID
+        th 姓名
+        th 身份证号
+        th 认证状态
+        th 操作
+    tbody
+      - @id_cards.each do |card|
+        tr
+          td
+            | #{card.id}
+          td
+            | #{card.name}
+          td
+            | #{card.id_num}
+          td
+            = dashboard_id_cards_status(card.status)
+          td
+            = link_to("编辑", edit_dashboard_id_card_path(card))
+            span |
+            = link_to("删除", dashboard_id_card_path(card), method: 'delete', data: {confirm: "你确定要删除？#{card.name}"})
+
+div.ui.container
+  p
+    = paginate @id_cards

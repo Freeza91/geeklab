@@ -49,16 +49,16 @@ $(function () {
             })
           break;
           case -1:
-            console.log('未实名认证');
+            Geeklab.showInfoModal('兑换失败, 未实名认证');
           break;
           case -2:
-            console.log('没有这个红包')
+            Geeklab.showInfoModal('兑换失败, 没有这个红包');
           break;
           case -3:
-            console.log('积分不足')
+            Geeklab.showInfoModal('兑换失败, 你的积分不足');
           break;
           case -4:
-            console.log('兑换失败')
+            Geeklab.showInfoModal('兑换失败');
           break;
         }
       }

@@ -8,7 +8,7 @@ module WechatsRewardable
   private
 
   def send_reward(openid, amount, sceret, scene_id)
-    params = build_params(openid, amount, 1)
+    params = build_params(openid, amount * 100, 1)
     xml = build_xml_body(params)
     http = build_cert_http
 

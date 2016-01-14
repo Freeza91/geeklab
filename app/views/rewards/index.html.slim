@@ -22,7 +22,7 @@
                 img src="#{icon_href(reward.amount)}"
               .reward-form-control
                 .radio-cos
-                  input id=("reward-#{reward.amount.to_i}") type="radio" name="reward" value="#{reward.amount}"
+                  input id=("reward-#{reward.amount.to_i}") type="radio" name="reward" value="#{reward.to_params}"
                   .radio-icon
                 label for=("reward-#{reward.amount.to_i}")
                   span.icon-img.icon-outer-18 style="margin: 0 5px -4px 5px"
@@ -33,11 +33,11 @@
           | 请选择兑换金额
         .reward-exchange-button
           - if current_user.id_card && current_user.id_card.status === 'success'
-            a.btn.btn-flat.blue.btn-rounded.btn-m
-              | 先去实名认证
-          - else
             #reward-submit.btn.btn-flat.blue.btn-rounded.btn-m
               | 我要兑换
+          - else
+            a.btn.btn-flat.blue.btn-rounded.btn-m
+              | 先去实名认证
         .reward-exchange-link
           a href="/stores"
             | 兑换其它礼品

@@ -19,7 +19,7 @@ class Users::RewardRecordsController < ApplicationController
       return render json: json
     end
 
-    reward = Reward.where(id: params[:id]).first
+    reward = Reward.find_by(id: params[:id])
     unless reward
       json[:code], json[:msg] = -2, '没有这个红包'
       return render json: json
@@ -36,15 +36,15 @@ class Users::RewardRecordsController < ApplicationController
                                            kind: 'reward',
                                            reward_id: reward.id)
         if @order.save
+          p reward.cost
           @reward_record = current_user.reward_records.build(order_id: @order.id,
                                                              amount: reward.amount,
-                                                             cost: reward.cost,
                                                              id_num: current_user.id_card.id_num,
                                                              name: current_user.id_card.name,
                                                              status: 'CREATED')
           @integral_record = current_user.integral_records
                                          .build(cost: reward.cost,
-                                                describle: reward.name,
+                                                describe: reward.name,
                                                 kind_of: 'order',
                                                 order_id: @order.id)
 
@@ -52,10 +52,10 @@ class Users::RewardRecordsController < ApplicationController
             current_user.update_column(:credits, credits)
             json[:id] = $hashids.encode(@reward_record.id)
           else
-            json[:code], json[:msg] = -3, '兑换失败'
+            json[:code], json[:msg] = -4, '兑换失败'
           end
         else
-          json[:code], json[:msg] = -3, '兑换失败'
+          json[:code], json[:msg] = -4, '兑换失败'
         end
       end
     end

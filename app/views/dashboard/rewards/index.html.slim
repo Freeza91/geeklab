@@ -4,26 +4,30 @@ div
       tr
         th ID
         th 红包名称
+        th 红包金额
         th 红包消费
         th 是否发布
         th 操作
     tbody
       - @rewards.each do |reward|
-        td
-          | #{reward.id}
-        td
-          | #{reward.name}
-        td
-          | #{reward.cost}
-        td
-          - if reward.publish
-            | 否
-          - else
-            | 是
-        td
-          = link_to("编辑", edit_dashboard_reward_path(reward))
-          span |
-          = link_to("删除", dashboard_reward_path(reward), method: 'delete', data: {confirm: "你确定要删除？#{reward.name}"})
+        tr
+          td
+            | #{reward.id}
+          td
+            | #{reward.name}
+          td
+            | #{reward.amount}
+          td
+            | #{reward.cost}
+          td
+            - if reward.publish
+              | 是
+            - else
+              | 否
+          td
+            = link_to("编辑", edit_dashboard_reward_path(reward))
+            span |
+            = link_to("删除", dashboard_reward_path(reward), method: 'delete', data: {confirm: "你确定要删除？#{reward.name}"})
 
 div.ui.container
   p

@@ -1,7 +1,7 @@
 class RewardsController < ApplicationController
 
   def index
-    @rewards = Reward.page(params[:page])
+    @rewards = Reward.show
   end
 
 end

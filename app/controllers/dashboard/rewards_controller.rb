@@ -28,7 +28,7 @@ class Dashboard::RewardsController < Dashboard::BaseController
 
   def update
     if @reward.update_attributes(reward_params)
-      redirect_to dashboard_reward_path(@reward)
+      redirect_to dashboard_rewards_path
     else
       render :edit
     end
@@ -44,7 +44,7 @@ class Dashboard::RewardsController < Dashboard::BaseController
 private
 
   def reward_params
-    params.require(:reward).permit(:name, :cost, :describle, :publish)
+    params.require(:reward).permit(:name, :cost, :amount, :publish)
   end
 
   def get_reward

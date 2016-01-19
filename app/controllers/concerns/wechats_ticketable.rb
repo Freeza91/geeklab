@@ -61,11 +61,12 @@ module WechatsTicketable
   def generate_scene_id
 
     while true
-      r = Random.rand(1..100_000_000_000)
+      r = Random.rand(1..1_000_000) # redis key is not avaiable for big num
       unless $redis.get r
         @scene_id = r
         @secret = SecureRandom.uuid
         $redis.set r, @secret
+        $redis.expire r, 604800 # expire time is the same as wechats_qr_code
 
         break
       end

@@ -1,76 +1,81 @@
 .geeklab-container
-  .user-body.clearfix
+  .user-body.clearfix#reward
     .user-main
       .user-main-header.clearfix
         ul.user-top-nav
-          li.active data-target="#unuse"
+          li v-class="active: curr === 'unuse'" v-on="click: curr = 'unuse'"
             | 未领取
-          li data-target="#used"
+          li v-class="active: curr === 'used'" v-on="click: curr = 'used'"
             | 已领取
       .user-main-content
-        .record-table#reward
-          table#unuse.table.zebra.active
-            colgroup
-              col width="20%"
-              col width="20%"
-              col width="20%"
-              col width="20%"
-              col width="20%"
-            tbody
-              tr
-                td
-                  | 兑换时间
-                td
-                  | 订单号
-                td
-                  | 红包金额
-                td
-                  | 红包状态
-                td
-                  | 兑换二维码
-              /- @records.each do |record|
-              tr v-repeat="record: unuse.records"
-                td v-text="record.created_at"
-                  /= record.created_at.strftime('%F %T')
-                td v-text="record.order_id"
-                  /= record.order_id
-                td v-text="record.amount"
-                  /= record.amount.to_i
-                td
-                  /= record.status
-                  | 未领取
-                td
-                  span.js-get-qrcode v-on="click: showQrcode(record.id)"
-                    | 查看
-          table#used.table.zebra
-            colgroup
-              col width="20%"
-              col width="20%"
-              col width="20%"
-              col width="20%"
-              col width="20%"
-            tbody
-              tr
-                td
-                  | 兑换时间
-                td
-                  | 订单号
-                td
-                  | 红包金额
-                td
-                  | 红包状态
-                td
-                  | 兑换二维码
-              tr v-repeat="record: used.records"
-                td v-text="record.created_at"
-                td v-text="record.order_id"
-                td v-text="record.amount"
-                td
-                  | 已领取
-                td
-                  | -
-        .record-pagination
-          = paginate @records
+        #unuse v-show="curr === 'unuse'"
+          .record-table
+            table#unuse.table.zebra.active
+              colgroup
+                col width="20%"
+                col width="20%"
+                col width="20%"
+                col width="20%"
+                col width="20%"
+              tbody
+                tr
+                  td
+                    | 兑换时间
+                  td
+                    | 订单号
+                  td
+                    | 红包金额
+                  td
+                    | 红包状态
+                  td
+                    | 兑换二维码
+                tr v-repeat="record: unuse.records"
+                  td v-text="record.created_at"
+                  td v-text="record.order_id"
+                  td v-text="record.amount"
+                  td
+                    | 未领取
+                  td
+                    span.js-get-qrcode v-on="click: showQrcode(record.id)"
+                      | 查看
+          .record-pagination
+            span 1
+            span 2
+            span 3
+        #used v-show="curr === 'used'"
+          .record-table
+            table.table.zebra
+              colgroup
+                col width="20%"
+                col width="20%"
+                col width="20%"
+                col width="20%"
+                col width="20%"
+              tbody
+                tr
+                  td
+                    | 兑换时间
+                  td
+                    | 订单号
+                  td
+                    | 红包金额
+                  td
+                    | 红包状态
+                  td
+                    | 兑换二维码
+                tr v-repeat="record: used.records"
+                  td v-text="record.created_at"
+                  td v-text="record.order_id"
+                  td v-text="record.amount"
+                  td
+                    | 已领取
+                  td
+                    | -
+          .record-pagination
+            span 1
+            span 2
+            span 3
+
     .user-aside
       = render partial: 'users/shared/side_nav', locals: {curr_view: 'reward_record'}
 
@@ -79,15 +84,6 @@
 = content_for :assets
   javascript:
     $(function () {
-      $('.user-top-nav li').on('click', function () {
-        var $this = $(this),
-            target = $this.data('target');
-        $this.parents('ul').find('.active').removeClass('active');
-        $this.addClass('active');
-        $('.record-table .active').hide().removeClass('active');
-        $(target).fadeIn().addClass('active');
-      });
-
       function fetchQrcodeTicket (recordID, callback, errorHandle) {
         $.ajax({
           url: '/users/reward_records/' + recordID,
@@ -155,6 +151,7 @@
       var vm = new Vue({
         el: '#reward',
         data: {
+          curr: 'unuse',
           unuse: {
             page: 1,
             pages: 1,

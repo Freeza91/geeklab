@@ -1,65 +1,65 @@
 .geeklab-container
-  .user-body.clearfix
+  .user-body.clearfix#integral
     .user-main
       .user-main-header.clearfix
         ul.user-top-nav
-          li.active data-target="#income"
+          li v-class="active: curr === 'income'" v-on="click: curr = 'income'"
             | 积分收入
-          li data-target="#cost"
+          li v-class="active: curr === 'cost'" v-on="click: curr = 'cost'"
             | 积分支出
       .user-main-content
-        .record-table#integral
-          table#income.table.zebra.active
-            colgroup
-              col width="33.3%"
-              col width="33.3%"
-              col width="33.3%"
-            tbody
-              tr
-                td
-                  | 时间
-                td
-                  | 事件
-                td
-                  | 积分
-              tr v-repeat="record: income.records"
-                td v-text="record.created_at"
-                td v-text="record.type"
-                td v-text="record.income"
-          table#cost.table.zebra
-            colgroup
-              col width="33.3%"
-              col width="33.3%"
-              col width="33.3%"
-            tbody
-              tr
-                td
-                  | 时间
-                td
-                  | 事件
-                td
-                  | 积分
-              tr v-repeat="record: cost.records"
-                td v-text="record.created_at"
-                td v-text="record.type"
-                td v-text="record.income"
-        .record-pagination
-          = paginate @records
+        #income v-show="curr === 'income'"
+          .record-table
+            table.table.zebra.active
+              colgroup
+                col width="33.3%"
+                col width="33.3%"
+                col width="33.3%"
+              tbody
+                tr
+                  td
+                    | 时间
+                  td
+                    | 事件
+                  td
+                    | 积分
+                tr v-repeat="record: income.records"
+                  td v-text="record.created_at"
+                  td v-text="record.type"
+                  td v-text="record.income"
+          .record-pagination
+            span 1
+            span 2
+            span 3
+        #cost v-show="curr === 'cost'"
+          .record-table
+            table#cost.table.zebra
+              colgroup
+                col width="33.3%"
+                col width="33.3%"
+                col width="33.3%"
+              tbody
+                tr
+                  td
+                    | 时间
+                  td
+                    | 事件
+                  td
+                    | 积分
+                tr v-repeat="record: cost.records"
+                  td v-text="record.created_at"
+                  td v-text="record.type"
+                  td v-text="record.income"
+          .record-pagination
+            span 1
+            span 2
+            span 3
     .user-aside
       = render partial: 'users/shared/side_nav', locals: {curr_view: 'integral_record'}
 
 = content_for :assets
   javascript:
     $(function () {
-      $('.user-top-nav li').on('click', function () {
-        var $this = $(this),
-            target = $this.data('target');
-        $this.parents('ul').find('.active').removeClass('active');
-        $this.addClass('active');
-        $('.record-table .active').hide().removeClass('active');
-        $(target).fadeIn().addClass('active');
-      });
-
       function fetchRecordPaging (page, type, callback, errorHandle) {
         $.ajax({
           url: '/users/records',
@@ -94,6 +94,7 @@
       var vm = new Vue({
         el: '#integral',
         data: {
+          curr: 'income',
           income: {
             page: 1,
             pages: 1,

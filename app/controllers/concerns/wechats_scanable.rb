@@ -12,7 +12,7 @@ module WechatsScanable
       return '已经发放成功无法在使用!' unless @record.status == 'CREATED' # 创建完成
       return '账号异常，禁止发红包' if @record.limit?
       return '正在发放红包中，请耐心等待！' if $redis.get "user-#{scene_id}"
-      used = $redis.get "user-#{scene_id}", true
+      used = $redis.set "user-#{scene_id}", true
 
       reply_text = ''
       begin
@@ -23,7 +23,7 @@ module WechatsScanable
         $redis.del "user-#{scene_id}"
       end
 
-      reply_text
+      return reply_text
 
     end
 

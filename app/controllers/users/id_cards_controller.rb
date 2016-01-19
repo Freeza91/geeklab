@@ -8,7 +8,6 @@ class Users::IdCardsController < ApplicationController
     if @id_card
       respond_to do |format|
         format.html do
-          render 'show'
         end
         format.json do
           json[:id_card] = @id_card.to_json

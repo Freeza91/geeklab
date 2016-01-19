@@ -10,8 +10,16 @@ class IntegralRecord < ActiveRecord::Base
   scope :pay,    -> { where(kind_of: 'order') }
 
   def income
-    return "-#{cost}" if kind_of == 'order'
-    "+#{cost}"
+    return "-#{cost.to_i}" if kind_of == 'order'
+    "+#{cost.to_i}"
+  end
+
+  def to_json_for_index
+    {
+      created_at: created_at.strftime('%F %T'),
+      type: kind_of,
+      income: income
+    }
   end
 
 end

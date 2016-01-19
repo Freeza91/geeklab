@@ -5,7 +5,25 @@ class Users::RewardRecordsController < ApplicationController
   before_action :require_login?
 
   def index
-    @records = current_user.reward_records.page(params[:page]).per(2)
+    json = { status: 0, code: 1, records: [] }
+    case params[:type]
+    when 'unuse'
+      @records = current_user.reward_records.unuse.page(params[:page]).per(20)
+    when 'used'
+      @records = current_user.reward_records.used.page(params[:page]).per(20)
+    else
+      @records = current_user.reward_records.page(params[:page]).per(20)
+    end
+    respond_to do |format|
+      format.html do
+      end
+      format.json do
+        @records.each do |record|
+          json[:records] << record.to_json_for_index
+        end
+        render json: json
+      end
+    end
   end
 
   def create

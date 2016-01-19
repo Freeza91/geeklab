@@ -8,7 +8,7 @@
           li data-target="#used"
             | 已领取
       .user-main-content
-        .record-table
+        .record-table#reward
           table#unuse.table.zebra.active
             colgroup
               col width="20%"
@@ -28,19 +28,20 @@
                   | 红包状态
                 td
                   | 兑换二维码
-              - @records.each do |record|
-                tr
-                  td
-                    = record.created_at.strftime('%F %T')
-                  td
-                    = record.order_id
-                  td
-                    = record.amount.to_i
-                  td
-                    = record.status
-                  td
-                    span.js-get-qrcode data-id="#{record.to_params}"
-                      | 查看
+              /- @records.each do |record|
+              tr v-repeat="record: unuse.records"
+                td v-text="record.created_at"
+                  /= record.created_at.strftime('%F %T')
+                td v-text="record.order_id"
+                  /= record.order_id
+                td v-text="record.amount"
+                  /= record.amount.to_i
+                td
+                  /= record.status
+                  | 未领取
+                td
+                  span.js-get-qrcode v-on="click: showQrcode(record.id)"
+                    | 查看
           table#used.table.zebra
             colgroup
               col width="20%"
@@ -60,18 +61,14 @@
                   | 红包状态
                 td
                   | 兑换二维码
-              - @records.each do |record|
-                tr
-                  td
-                    = record.created_at.strftime('%F %T')
-                  td
-                    = record.order_id
-                  td
-                    = record.amount.to_i
-                  td
-                    = record.status
-                  td
-                    | -
+              tr v-repeat="record: used.records"
+                td v-text="record.created_at"
+                td v-text="record.order_id"
+                td v-text="record.amount"
+                td
+                  | 已领取
+                td
+                  | -
         .record-pagination
           = paginate @records
     .user-aside
@@ -90,6 +87,7 @@
         $('.record-table .active').hide().removeClass('active');
         $(target).fadeIn().addClass('active');
       });
+
       function fetchQrcodeTicket (recordID, callback, errorHandle) {
         $.ajax({
           url: '/users/reward_records/' + recordID,
@@ -101,10 +99,8 @@
           }
         });
       }
-      $('.js-get-qrcode').on('click', function () {
-        var $this = $(this);
-            id = $this.data('id');
-        fetchQrcodeTicket (id, function (data) {
+      function showQrcode (recordID) {
+        fetchQrcodeTicket (recordID, function (data) {
           if(data.status === 0) {
             switch (data.code) {
               case 1:
@@ -116,12 +112,67 @@
                 $modal.addClass('show');
               break;
               case -1:
-                Geeklab.showInfoModal('兑换成功, 获取二维码失败, 请稍后到红包记录中重试');
+                Geeklab.showInfoModal('获取二维码失败, 请稍后重试');
               break;
             }
           }
         }, function (errors) {
           console.log(errors);
         });
+      }
+
+      function fetchRecordPaging (page, type, callback, errorHandle) {
+        $.ajax({
+          url: '/users/reward_records',
+          data: {
+            page: page,
+            type: type
+          },
+          dataType: 'json',
+          success: function (data) {
+            callback(data);
+          },
+          error: function (xhr, textStatus, errors) {
+            errorHandle(errors);
+          }
+        });
+      }
+
+      function setRecordPage (vm, page, type) {
+        fetchRecordPaging(page, type, function (data) {
+          if(data.status === 0 && data.code === 1) {
+            if(data.records.length > 0) {
+              vm[type].records = data.records;
+            }
+            if(data.records.length < 20) {
+              vm[type].pages = page;
+            }
+          }
+        }, function () {
+          console.log(errors);
+        });
+      }
+      var vm = new Vue({
+        el: '#reward',
+        data: {
+          unuse: {
+            page: 1,
+            pages: 1,
+            records: [],
+          },
+          used: {
+            page: 1,
+            pages: 1,
+            records: []
+          }
+        },
+        methods: {
+          setRecordPage: setRecordPage,
+          showQrcode: showQrcode
+        }
       });
+      // init
+      setRecordPage(vm, 1, 'unuse');
+      setRecordPage(vm, 1, 'used');
+
     });

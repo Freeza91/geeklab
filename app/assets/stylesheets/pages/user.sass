@@ -192,11 +192,15 @@
     border-bottom: 10px solid $dark-blue
     border-left: 10px solid transparent
 .record-table
+  .table
+    display: none
+  .table.active
+    display: table
   .table > tbody > tr > td
     text-align: center
 .js-get-qrcode
   color: $blue
-  cursor: hover
+  cursor: pointer
 .js-get-qrcode:hover
   color: $dark-blue
 

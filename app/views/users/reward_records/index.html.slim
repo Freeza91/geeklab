@@ -3,20 +3,20 @@
     .user-main
       .user-main-header.clearfix
         ul.user-top-nav
-          li.active
+          li.active data-target="#unuse"
             | 未领取
-          li
+          li data-target="#used"
             | 已领取
       .user-main-content
         .record-table
-          table.table.zebra
+          table#unuse.table.zebra.active
             colgroup
               col width="20%"
               col width="20%"
               col width="20%"
               col width="20%"
               col width="20%"
-            .tbody
+            tbody
               tr
                 td
                   | 兑换时间
@@ -39,11 +39,39 @@
                   td
                     = record.status
                   td
-                    - if record.status === 'success'
-                      | -
-                    - else
-                      span.js-get-qrcode data-id="#{record.to_params}"
-                        | 查看
+                    span.js-get-qrcode data-id="#{record.to_params}"
+                      | 查看
+          table#used.table.zebra
+            colgroup
+              col width="20%"
+              col width="20%"
+              col width="20%"
+              col width="20%"
+              col width="20%"
+            tbody
+              tr
+                td
+                  | 兑换时间
+                td
+                  | 订单号
+                td
+                  | 红包金额
+                td
+                  | 红包状态
+                td
+                  | 兑换二维码
+              - @records.each do |record|
+                tr
+                  td
+                    = record.created_at.strftime('%F %T')
+                  td
+                    = record.order_id
+                  td
+                    = record.amount.to_i
+                  td
+                    = record.status
+                  td
+                    | -
         .record-pagination
           = paginate @records
     .user-aside
@@ -54,6 +82,14 @@
 = content_for :assets
   javascript:
     $(function () {
+      $('.user-top-nav li').on('click', function () {
+        var $this = $(this),
+            target = $this.data('target');
+        $this.parents('ul').find('.active').removeClass('active');
+        $this.addClass('active');
+        $('.record-table .active').hide().removeClass('active');
+        $(target).fadeIn().addClass('active');
+      });
       function fetchQrcodeTicket (recordID, callback, errorHandle) {
         $.ajax({
           url: '/users/reward_records/' + recordID,
@@ -88,5 +124,4 @@
           console.log(errors);
         });
       });
-
     });

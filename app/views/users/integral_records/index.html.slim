@@ -1,23 +1,41 @@
-= paginate @records
 .geeklab-container
   .user-body.clearfix
     .user-main
       .user-main-header.clearfix
         ul.user-top-nav
-          li.active
+          li.active data-target="#income"
             | 积分收入
-          li
+          li data-target="#cost"
             | 积分支出
       .user-main-content
         .record-table
-          table.table.zebra
+          table#income.table.zebra.active
             colgroup
-              col width="20%"
-              col width="20%"
-              col width="20%"
-              col width="20%"
-              col width="20%"
-            .tbody
+              col width="33.3%"
+              col width="33.3%"
+              col width="33.3%"
+            tbody
+              tr
+                td
+                  | 时间
+                td
+                  | 事件
+                td
+                  | 积分
+              - @records.each do |record|
+                tr
+                  td
+                    = record.created_at.strftime('%F %T')
+                  td
+                    = record.kind_of
+                  td
+                    = record.cost.to_i
+          table#cost.table.zebra
+            colgroup
+              col width="33.3%"
+              col width="33.3%"
+              col width="33.3%"
+            tbody
               tr
                 td
                   | 时间
@@ -37,3 +55,16 @@
           = paginate @records
     .user-aside
       = render partial: 'users/shared/side_nav', locals: {curr_view: 'integral_record'}
+
+= content_for :assets
+  javascript:
+    $(function () {
+      $('.user-top-nav li').on('click', function () {
+        var $this = $(this),
+            target = $this.data('target');
+        $this.parents('ul').find('.active').removeClass('active');
+        $this.addClass('active');
+        $('.record-table .active').hide().removeClass('active');
+        $(target).fadeIn().addClass('active');
+      });
+    });

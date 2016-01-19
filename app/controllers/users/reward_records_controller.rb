@@ -5,10 +5,7 @@ class Users::RewardRecordsController < ApplicationController
   before_action :require_login?
 
   def index
-    @records = current_user.reward_records.page(params[:page])
-  end
-
-  def new
+    @records = current_user.reward_records.page(params[:page]).per(2)
   end
 
   def create

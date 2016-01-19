@@ -1,7 +1,36 @@
-h1 Users::IntegralRecords#index
-- @records.each do |record|
-  = record.cost
-  = record.describle
-  = record.created_at
-
 = paginate @records
+.geeklab-container
+  .user-body.clearfix
+    .user-main
+      .user-main-header
+        span
+          | 积分记录
+      .user-main-content
+        .record-table
+          table.table.zebra
+            colgroup
+              col width="20%"
+              col width="20%"
+              col width="20%"
+              col width="20%"
+              col width="20%"
+            .tbody
+              tr
+                td
+                  | 时间
+                td
+                  | 事件
+                td
+                  | 积分
+              - @records.each do |record|
+                tr
+                  td
+                    = record.created_at.strftime('%F %T')
+                  td
+                    = record.kind_of
+                  td
+                    = record.cost.to_i
+        .record-pagination
+          = paginate @records
+    .user-aside
+      = render partial: 'users/shared/side_nav', locals: {curr_view: 'integral_record'}

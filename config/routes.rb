@@ -38,8 +38,7 @@
     post '/id_cards', to: 'id_cards#create'
     put '/id_cards',  to: 'id_cards#update'
 
-    get '/reward_records', to: 'reward_records#new'
-    resources :reward_records, only: [:show, :create]
+    resources :reward_records, only: [:index, :show, :create]
     resources :integral_records, path: :records, only: :index
 
   end

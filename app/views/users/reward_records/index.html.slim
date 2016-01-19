@@ -1,5 +1,46 @@
-- @records.each do |record|
-  div
-    = record.name
-
-= paginate @records
+.geeklab-container
+  .user-body.clearfix
+    .user-main
+      .user-main-header
+        span
+          | 红包兑换记录
+      .user-main-content
+        .record-table
+          table.table.zebra
+            colgroup
+              col width="20%"
+              col width="20%"
+              col width="20%"
+              col width="20%"
+              col width="20%"
+            .tbody
+              tr
+                td
+                  | 兑换时间
+                td
+                  | 订单号
+                td
+                  | 红包金额
+                td
+                  | 红包状态
+                td
+                  | 兑换二维码
+              - @records.each do |record|
+                tr
+                  td
+                    = record.created_at.strftime('%F %T')
+                  td
+                    = record.order_id
+                  td
+                    = record.amount.to_i
+                  td
+                    = record.status
+                  td
+                    - if record.status === 'success'
+                      | -
+                    - else
+                      | 查看
+        .record-pagination
+          = paginate @records
+    .user-aside
+      = render partial: 'users/shared/side_nav', locals: {curr_view: 'reward_record'}

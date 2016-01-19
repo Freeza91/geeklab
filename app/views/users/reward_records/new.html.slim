@@ -21,7 +21,7 @@
               img src="http://7xjciz.com2.z0.glb.qiniucdn.com/reward-20.png"
             .reward-form-control
               .radio-cos
-                input#reward-20 type="radio" name="reward"
+                input#reward-20 type="radio" name="reward" value="20"
                 .radio-icon
               label for="reward-20"
                 span.icon-img.icon-outer-18 style="margin: 0 5px -4px 5px"
@@ -32,7 +32,7 @@
               img src="http://7xjciz.com2.z0.glb.qiniucdn.com/reward-50.png"
             .reward-form-control
               .radio-cos
-                input#reward-50 type="radio" name="reward"
+                input#reward-50 type="radio" name="reward" value="50"
                 .radio-icon
               label for="reward-50"
                 span.icon-img.icon-outer-18 style="margin: 0 5px -4px 5px"
@@ -43,19 +43,21 @@
               img src="http://7xjciz.com2.z0.glb.qiniucdn.com/reward-100.png"
             .reward-form-control
               .radio-cos
-                input#reward-100 type="radio" name="reward"
+                input#reward-100 type="radio" name="reward" value="100"
                 .radio-icon
               label for="reward-100"
                 span.icon-img.icon-outer-18 style="margin: 0 5px -4px 5px"
                   i.icon-inner.icon-score-old
                 | 1000
       .reward-exchange-tools
+        .reward-hint style="display: none"
+          | 请选择兑换金额
         .reward-exchange-button
           - if current_user.id_card && current_user.id_card.status === 'success'
             a.btn.btn-flat.blue.btn-rounded.btn-m
               | 先去实名认证
           - else
-            .btn.btn-flat.blue.btn-rounded.btn-m
+            #reward-submit.btn.btn-flat.blue.btn-rounded.btn-m
               | 我要兑换
         .reward-exchange-link
           a href="/stores"

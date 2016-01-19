@@ -1,15 +1,22 @@
 nav
   ul.user-sidenav
     li class=('active' if curr_view == 'reward_record')
-      a href="#"
+      a href="#{users_reward_records_path}"
         | 红包记录
     li class=('active' if curr_view == 'integral_record')
-      a href="#"
+      a href="#{users_integral_records_path}"
         | 积分明细
     li class=('active' if curr_view == 'user_info')
       a href="#"
         | 个人资料
     li class=('active' if curr_view == 'id_card')
-      a href="#"
-        | 实名认证
-
+      - if !current_user.id_card
+        a href="#{users_id_cards_path}"
+          | 实名认证
+      - else
+        - if current_user.id_card.status === 'failed'
+          a href="#{users_id_cards_path}"
+            | 实名认证
+        - else
+          a href="#{users_id_cards_show_path}"
+            | 实名认证

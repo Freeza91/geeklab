@@ -15,24 +15,12 @@ class Users::IdCardsController < ApplicationController
           render json: json
         end
       end
-      #if @id_card.status == 'failed'
-        #render 'edit'
-      #else
-        #render 'show'
-      #if @id_card.status
-        #render 'show'
-      #else
-        #render 'edit'
-      #end
-    #else
-      #@id_card = current_user.build_id_card
-      #render 'new'
     end
   end
 
   def edit
     @edit = false
-    if current_user.id_card
+    if current_user.id_card && current_user.id_card.status == 'failed'
       @edit = true
     end
   end

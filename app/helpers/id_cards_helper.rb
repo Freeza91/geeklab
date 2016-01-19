@@ -1,8 +1,8 @@
 module IdCardsHelper
 
   INFO = {
-    failed: '认证失败',
-    success: '认证成功',
+    failed: '审核不通过',
+    success: '已认证',
     wait_check: '等待审核'
   }
 
@@ -12,6 +12,14 @@ module IdCardsHelper
 
   def dashboard_select_options
     INFO.map {|hash| [hash.last, hash.first] }
+  end
+
+  def idcardStatus(id_card)
+    if id_card
+      INFO[id_card.status.to_sym]
+    else
+      '未认证'
+    end
   end
 
 end

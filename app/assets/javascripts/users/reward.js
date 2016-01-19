@@ -46,7 +46,7 @@ $(function () {
               var qrcode = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=' + data.ticket;
             }, function (errors) {
               console.log(errors);
-            })
+            });
           break;
           case -1:
             Geeklab.showInfoModal('兑换失败, 未实名认证');

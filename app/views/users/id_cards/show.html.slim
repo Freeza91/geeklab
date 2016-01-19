@@ -5,8 +5,8 @@
           .idcard-status
             span
               | 状态:
-            span.status-text
-              | 已认证
+            span.status-text class=(current_user.id_card ? "#{current_user.id_card.status}" : "not-upload")
+              = idcardStatus(@id_card)
         .user-main-content
           form.form
             .form-field style="width: 500px"

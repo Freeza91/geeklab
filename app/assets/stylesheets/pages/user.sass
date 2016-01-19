@@ -1,6 +1,8 @@
 @import ./helpers/variables
 .id_cards,
-.rewards_index
+.rewards_index,
+.reward_records,
+.integral_records
   background: $blue
 
 .user-body
@@ -47,8 +49,10 @@
 
 // user center main-header
 .user-main-header
+  padding-top: 15px
   padding-bottom: 5px
   border-bottom: 1px solid $gray
+  color: $dark-blue
 
 // user center main-content
 .user-main-content
@@ -62,7 +66,7 @@
     padding-left: 10px
   .status-text.not-upload
     color: $dark-gray
-  .status-text.checking
+  .status-text.wait_check
     color: $dark-blue
   .status-text.failed
     color: $warn-red
@@ -159,3 +163,8 @@
     color: $warn-red
   .reward-exchange-button,
     margin-bottom: 20px
+
+// reward-record index
+.reward_records
+  .table > tbody > tr > td
+    text-align: center

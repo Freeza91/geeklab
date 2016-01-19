@@ -39,8 +39,51 @@
                     - if record.status === 'success'
                       | -
                     - else
-                      | 查看
+                      span.js-get-qrcode data-id="#{record.to_params}"
+                        | 查看
         .record-pagination
           = paginate @records
     .user-aside
       = render partial: 'users/shared/side_nav', locals: {curr_view: 'reward_record'}
+
+= render 'users/shared/reward_qrcode'
+
+= content_for :assets
+  javascript:
+    $(function () {
+      function fetchQrcodeTicket (recordID, callback, errorHandle) {
+        $.ajax({
+          url: '/users/reward_records/' + recordID,
+          success:  function (data) {
+            callback(data);
+          },
+          error: function (xhr, textStatus, errors) {
+            errorHandle(errors);
+          }
+        });
+      }
+      $('.js-get-qrcode').on('click', function () {
+        var $this = $(this);
+            id = $this.data('id');
+        fetchQrcodeTicket (id, function (data) {
+          if(data.status === 0) {
+            switch (data.code) {
+              case 1:
+                var qrcode = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=' + data.ticket;
+                console.log(qrcode);
+                var $modal = $('#reward-qrcode');
+                $('body').append('<div class="main-mask" onclick="Geeklab.clearMask()"></div>')
+                $modal.find('img').attr('src', qrcode);
+                $modal.addClass('show');
+              break;
+              case -1:
+                Geeklab.showInfoModal('兑换成功, 获取二维码失败, 请稍后到红包记录中重试');
+              break;
+            }
+          }
+        }, function (errors) {
+          console.log(errors);
+        });
+      });
+
+    });

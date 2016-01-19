@@ -19,7 +19,7 @@ table.ui.celled.table
       tr
         td
           | #{order.order_id}
-        - if order.kind == 'reward'
+        - if order.kind == 'reward' && order.reward_record
           td
             | #{order.good_name}
           td
@@ -30,7 +30,7 @@ table.ui.celled.table
             | 微信红包
           td
             | #{dashboard_order_reward_status(order.reward_record.status)}
-        - elsif order.kind == 'good'
+        - elsif order.kind == 'good' && order.good
           - if order.good
             td
               | #{order.good.name}
@@ -52,6 +52,17 @@ table.ui.celled.table
               - else
                 td
                   | 订单地址被删除
+        - else
+          td
+            | 已经被删除
+          td
+            | 已经被删除
+          td
+            | 已经被删除
+          td
+            | 已经被删除
+          td
+            | 已经被删除
         td
           = link_to("编辑", edit_dashboard_order_path(order))
           span |

@@ -1,0 +1,26 @@
+table.ui.celled.table
+  thead
+    tr
+      th 微信单号
+      th 兑换额/元
+      th 兑换人姓名
+      th 兑换人身份证号
+      th 兑换状态
+      th 兑换是否受限
+  tbody
+    tr
+      td
+        | #{@record.mch_billno}
+      td
+        | #{@record.amount}
+      td
+        | #{@record.name}
+      td
+        | #{@record.id_num}
+      td
+        | #{dashboard_status(@record.status)}
+      td
+        - if @record.limit?
+          | 受限不能兑换
+        - else
+          | 可以正常兑换

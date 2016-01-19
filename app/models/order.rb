@@ -5,7 +5,7 @@ class Order < ActiveRecord::Base
   belongs_to :good
   belongs_to :user
   belongs_to :sku
-  belongs_to :reward
+  belongs_to :reward, dependent: :destroy
   has_one    :address, dependent: :destroy
   has_one    :reward_record, dependent: :destroy
   has_one    :integral_record, dependent: :destroy

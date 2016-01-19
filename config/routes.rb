@@ -151,6 +151,7 @@
     end
     resources :rewards
     resources :id_cards
+    resources :reward_records
   end
 
   resource :wechat, only: [:show, :create]

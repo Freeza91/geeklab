@@ -7,8 +7,12 @@ nav
       a href="#{users_integral_records_path}"
         | 积分明细
     li class=('active' if curr_view == 'user_info')
-      a href="#"
-        | 个人资料
+      - if current_user.to_tester.tester_infor.try(:already_finish)
+        a href="#{edit_tester_path(current_user.to_params)}"
+          | 个人资料
+      - else
+        a href="#{new_tester_path}"
+          | 个人资料
     li class=('active' if curr_view == 'id_card')
       - if !current_user.id_card
         a href="#{users_id_cards_path}"

@@ -1,28 +1,16 @@
 @import ../helpers/variables
 @import ../helpers/mixin
 
+.testers_edit
+  background: $blue
 #tester-info
   fieldset
-    padding-top: 15px
-    text-align: center
     padding-bottom: 20px
-  fieldset:nth-child(1)
-    background: $light-yellow
-    padding-bottom: 100px
-  fieldset:nth-child(2)
-    background: #fff
-    .fieldset-name
-      margin-top: -60px
-      background-color: #fff
   .fieldset-name
-    width: 100px
-    height: 100px
-    margin-left: auto
-    margin-right: auto
     margin-bottom: 20px
-    border-bottom: none
-    +border-radius(50px)
-    text-align: center
+    padding-bottom: 5px
+    border-bottom: 1px solid $gray
+    color: $blue
     .name-text
       color: $blue
       font-size: 1rem

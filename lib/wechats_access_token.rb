@@ -12,7 +12,7 @@ class WechatsAccessToken
       if response.code == 200
         json = JSON.parse(response.body)
         $redis.set "wechats_access_token", json['access_token']
-        $redis.expire "wechats_access_token", json['expires_in']
+        # $redis.expire "wechats_access_token", json['expires_in']
       end
 
     rescue => e

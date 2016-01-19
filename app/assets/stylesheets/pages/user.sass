@@ -164,15 +164,41 @@
   .reward-exchange-button,
     margin-bottom: 20px
 
-// reward-record index
-.reward_records
+// record table
+.user-top-nav
+  list-style: none
+  float: left
+  margin: 0
+  padding: 0
+  > li
+    position: relative
+    float: left
+    padding-bottom: 5px
+    color: $blue
+    cursor: pointer
+  > li + li
+    padding-left: 20px
+  > li:hover,
+  > li.active
+    color: $dark-blue
+  > li.active::after
+    position: absolute
+    bottom: -5px
+    left: 50%
+    margin-left: -10px
+    display: block
+    content: ''
+    border-right: 10px solid transparent
+    border-bottom: 10px solid $dark-blue
+    border-left: 10px solid transparent
+.record-table
   .table > tbody > tr > td
     text-align: center
-  .js-get-qrcode
-    color: $blue
-    cursor: hover
-  .js-get-qrcode:hover
-    color: $dark-blue
+.js-get-qrcode
+  color: $blue
+  cursor: hover
+.js-get-qrcode:hover
+  color: $dark-blue
 
 // qrcode modal
 #reward-qrcode

@@ -43,7 +43,21 @@ $(function () {
         switch(data.code) {
           case 1:
             fetchQrcodeTicket(data.id, function (data) {
-              var qrcode = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=' + data.ticket;
+              if(data.status === 0) {
+                switch (data.code) {
+                  case 1:
+                    var qrcode = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=' + data.ticket;
+                    console.log(qrcode);
+                    var $modal = $('#reward-qrcode');
+                    $('body').append('<div class="main-mask" onclick="Geeklab.clearMask()"></div>')
+                    $modal.find('img').attr('src', qrcode);
+                    $modal.addClass('show');
+                  break;
+                  case -1:
+                    Geeklab.showInfoModal('兑换成功, 获取二维码失败, 请稍后到红包记录中重试');
+                  break;
+                }
+              }
             }, function (errors) {
               console.log(errors);
             });
@@ -68,4 +82,7 @@ $(function () {
   }
 
   $('#reward-submit').on('click', submit)
+  $('.js-operate-cancel').on('click', function () {
+    Geeklab.clearMask();
+  });
 });

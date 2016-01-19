@@ -27,11 +27,11 @@ class Users::IdCardsController < ApplicationController
 
   def create
     @id_card = current_user.build_id_card(id_cards_params)
+    json =  { status: 0, code: 1}
     if @id_card.save
-      render 'edit'
+      render json: json
     else
-      #render 'new'
-      json =  { status: 0, code: 2, msg: '保存失败' }
+      json[:code], json[:msg] = 2, '保存失败'
       render json: json
     end
   end
@@ -41,21 +41,17 @@ class Users::IdCardsController < ApplicationController
     json =  { status: 0, code: 1 }
     if @id_card
       if @id_card.status == 'success' # 已经不能再做修改
-        #render 'show'
-        json[:code], json[:msg] = 2, '不能再修改'
+        json[:code], json[:msg] = 3, '不能再修改'
         render json:json
       elsif @id_card.update_attributes(id_cards_params)
-        #render 'show'
         render json: json
       else
-        #render 'edit'
-        json[:code], json[:msg] = 3, '保存失败'
+        json[:code], json[:msg] = 2, '保存失败'
         render json: json
       end
     else
       json[:code], json[:msg] = 4, '未创建'
       render json: json
-      #render 'new'
     end
   end
 

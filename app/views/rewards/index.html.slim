@@ -36,8 +36,16 @@
             #reward-submit.btn.btn-flat.blue.btn-rounded.btn-m
               | 我要兑换
           - else
-            a.btn.btn-flat.blue.btn-rounded.btn-m
-              | 先去实名认证
+            - if !current_user.id_card
+              a.btn.btn-flat.blue.btn-rounded.btn-m href="#{users_id_cards_path}"
+                | 先去实名认证
+            - else
+              - if current_user.id_card.status === 'failed'
+                a.btn.btn-flat.blue.btn-rounded.btn-m href="#{users_id_cards_path}"
+                  | 先去实名认证
+              - else
+                a.btn.btn-flat.blue.btn-rounded.btn-m href="#{users_id_cards_show_path}"
+                  | 先去实名认证
         .reward-exchange-link
           a href="/stores"
             | 兑换其它礼品

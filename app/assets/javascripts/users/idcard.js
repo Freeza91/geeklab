@@ -47,10 +47,10 @@ $(function () {
                   location.href = '/users/id_cards/show'
               break;
               case 2:
-                console.log('不能再修改');
+                console.log('保存失败, 请稍后重试');
               break;
               case 3:
-                console.log('保存失败, 请稍后重试');
+                console.log('不能再修改');
               break;
               case 4:
                 console.log('还未创建');

@@ -4,13 +4,14 @@ header#header class=(current_user ? '' : 'no-logged')
       a.logo-text href="#{tester_homepage_url(@current_user)}"
         img src="http://7xjciz.com2.z0.glb.qiniucdn.com/geeklab.png"
     .header-navbar.clearfix
-      ul.nav.navbar-nav#main-nav style="margin-left: 300px"
-        li class=('active' if controller_name == 'assignments')
-          a href="#{assignments_path}"
-            | 任务列表
-        li class=('active' if controller_name == 'rewards')
-          a href="#{rewards_path}"
-            | 红包兑换
+      - if current_user
+        ul.nav.navbar-nav#main-nav style="margin-left: 300px"
+          li class=('active' if controller_name == 'assignments')
+            a href="#{assignments_path}"
+              | 任务列表
+          li class=('active' if controller_name == 'rewards')
+            a href="#{rewards_path}"
+              | 红包兑换
       ul.nav.navbar-nav.navbar-right.top-nav-right.login
         li
           button.btn.btn-line.blue.btn-rounded.btn-s.js-change-role data-href="#{pms_path}"

@@ -20,15 +20,9 @@ html lang=session[:locale]
 
   body class=(controller_name + ' ' + controller_name + '_' + action_name + ' ' + locale.to_s)
     .wrapper
-      - if controller_name == 'testers' || controller_name == "assignments"
-        = render '/shared/header_tester'
-      - if controller_name == "pms" || controller_name == 'projects'
-        = render 'shared/header_pm'
-      - if controller_name == "stores"
-        = render 'shared/header_store'
-      - if controller_name == "pages"
-        = render 'shared/header'
-        <!--= render '/shared/flash'-->
+      - if "#{choose_header(controller_name)}".try(:size) > 0
+        = render choose_header(controller_name)
+      <!--= render '/shared/flash'-->
 
       = yield
 

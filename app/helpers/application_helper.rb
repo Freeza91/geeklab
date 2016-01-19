@@ -32,10 +32,14 @@ module ApplicationHelper
     ['温柔', '粗犷', '活泼', '老成', '内向', '开朗', '豪爽', '沉默', '急躁', '稳重']
   end
 
+  def tester_scope
+    ['testers', 'assignments', 'rewards', 'reward_records', 'id_cards', 'integral_records']
+  end
+
   def choose_header(controller_name)
     tester = ['testers', 'assignments', 'rewards', 'reward_records', 'id_cards', 'integral_records']
     pm = ['pms', 'projects']
-    if tester.include?(controller_name)
+    if tester_scope.include?(controller_name)
       'shared/header_tester'
     elsif pm.include?(controller_name)
       'shared/header_pm'

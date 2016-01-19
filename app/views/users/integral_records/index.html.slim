@@ -28,9 +28,14 @@
                   td v-text="record.type"
                   td v-text="record.income"
           .record-pagination
-            span 1
-            span 2
-            span 3
+            nav
+              span.prev
+                | <
+              span.curr 1
+              span 2
+              span 3
+              span.next
+                | >
         #cost v-show="curr === 'cost'"
           .record-table
             table#cost.table.zebra
@@ -51,9 +56,14 @@
                   td v-text="record.type"
                   td v-text="record.income"
           .record-pagination
-            span 1
-            span 2
-            span 3
+            nav
+              span.prev
+                | <
+              span.curr 1
+              span 2
+              span 3
+              span.next
+                | >
     .user-aside
       = render partial: 'users/shared/side_nav', locals: {curr_view: 'integral_record'}
 

@@ -39,9 +39,14 @@
                     span.js-get-qrcode v-on="click: showQrcode(record.id)"
                       | 查看
           .record-pagination
-            span 1
-            span 2
-            span 3
+            nav
+              span.prev
+                | <
+              span.curr 1
+              span 2
+              span 3
+              span.next
+                | >
         #used v-show="curr === 'used'"
           .record-table
             table.table.zebra
@@ -72,9 +77,14 @@
                   td
                     | -
           .record-pagination
-            span 1
-            span 2
-            span 3
+            nav
+              span.prev
+                | <
+              span.curr 1
+              span 2
+              span 3
+              span.next
+                | >
 
     .user-aside
       = render partial: 'users/shared/side_nav', locals: {curr_view: 'reward_record'}
@@ -140,9 +150,7 @@
             if(data.records.length > 0) {
               vm[type].records = data.records;
             }
-            if(data.records.length < 20) {
-              vm[type].pages = page;
-            }
+            vm[type].pages = page;
           }
         }, function () {
           console.log(errors);

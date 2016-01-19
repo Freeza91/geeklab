@@ -27,14 +27,12 @@
                   td v-text="record.created_at"
                   td v-text="record.type"
                   td v-text="record.income"
-          .record-pagination
+          .record-pagination v-if="income.pages > 1"
             nav
-              span.prev
+              span.prev v-class="disable: income.page === 1" v-on="click: setRecordPage(this,income.page - 1, 'income')"
                 | <
-              span.curr 1
-              span 2
-              span 3
-              span.next
+              span v-class="curr: income.page === $index + 1" v-repeat="income.pages" v-text="$index + 1" v-on="click: setRecordPage(this, $index + 1, 'income')"
+              span.next v-class="disable: income.page === income.pages" v-on="click:income setRecordPage(this, .page + 1, 'income')"
                 | >
         #cost v-show="curr === 'cost'"
           .record-table
@@ -55,14 +53,12 @@
                   td v-text="record.created_at"
                   td v-text="record.type"
                   td v-text="record.income"
-          .record-pagination
+          .record-pagination v-if="cost.pages > 1"
             nav
-              span.prev
+              span.prev v-class="disable: cost.page === 1" v-on="click: setRecordPage(this, cost.page - 1, 'cost')"
                 | <
-              span.curr 1
-              span 2
-              span 3
-              span.next
+              span v-class="curr: cost.page === $index + 1" v-repeat="cost.pages" v-text="$index + 1" v-on="click: setRecordPage(this, $index + 1, 'cost')"
+              span.next v-class="disable: cost.page === cost.pages" v-on="click:cost setRecordPage(this, cost.page + 1, 'cost')"
                 | >
     .user-aside
       = render partial: 'users/shared/side_nav', locals: {curr_view: 'integral_record'}
@@ -92,10 +88,9 @@
           if(data.status === 0 && data.code === 1) {
             if(data.records.length > 0) {
               vm[type].records = data.records;
+              vm[type].pages = data.pages;
             }
-            if(data.records.length < 20) {
-              vm[type].pages = page;
-            }
+            vm[type].page = page;
           }
         }, function () {
           console.log(errors);

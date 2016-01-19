@@ -38,14 +38,12 @@
                   td
                     span.js-get-qrcode v-on="click: showQrcode(record.id)"
                       | 查看
-          .record-pagination
+          .record-pagination v-if="unuse.pages > 1"
             nav
-              span.prev
+              span.prev v-class="disable: unuse.page === 1" v-on="click: setRecordPage(this, unuse.page - 1, 'unuse')"
                 | <
-              span.curr 1
-              span 2
-              span 3
-              span.next
+              span v-class="curr: unuse.page === $index + 1" v-repeat="unuse.pages" v-text="$index + 1" v-on="click: setRecordPage(this, $index + 1, 'unuse')"
+              span.next v-class="disable: unuse.page === unuse.pages" v-on="click: setRecordPage(this, unuse.page + 1, 'unuse')"
                 | >
         #used v-show="curr === 'used'"
           .record-table
@@ -76,14 +74,12 @@
                     | 已领取
                   td
                     | -
-          .record-pagination
+          .record-pagination v-if="used.pages > 1"
             nav
-              span.prev
+              span.prev v-class="disable: used.page === 1" v-on="click: setRecordPage(this, used.page - 1, 'used')"
                 | <
-              span.curr 1
-              span 2
-              span 3
-              span.next
+              span v-class="curr: used.page === $index + 1" v-repeat="used.pages" v-text="$index + 1" v-on="click: setRecordPage(this, $index + 1, 'used')"
+              span.next v-class="disable: used.page === used.pages" v-on="click: setRecordPage(this, used.page + 1, 'used')"
                 | >
 
     .user-aside
@@ -145,12 +141,17 @@
       }
 
       function setRecordPage (vm, page, type) {
+        if(page < 1 || page > vm[type].pages) {
+          return false;
+        }
         fetchRecordPaging(page, type, function (data) {
           if(data.status === 0 && data.code === 1) {
             if(data.records.length > 0) {
               vm[type].records = data.records;
+              console.log(page);
+              vm[type].page = page;
             }
-            vm[type].pages = page;
+            vm[type].pages = data.pages;
           }
         }, function () {
           console.log(errors);

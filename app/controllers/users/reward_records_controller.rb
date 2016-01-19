@@ -5,12 +5,15 @@ class Users::RewardRecordsController < ApplicationController
   before_action :require_login?
 
   def index
-    json = { status: 0, code: 1, records: [] }
+    json = { status: 0, code: 1, records: [], pages: 1 }
     case params[:type]
     when 'unuse'
       @records = current_user.reward_records.unuse.page(params[:page]).per(20)
+      json[:pages] = current_user.reward_records.unuse.size / 20
     when 'used'
       @records = current_user.reward_records.used.page(params[:page]).per(20)
+      json[:pages] = current_user.reward_records.used.size / 20
+    when 'used'
     else
       @records = current_user.reward_records.page(params[:page]).per(20)
     end

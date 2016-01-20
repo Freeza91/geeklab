@@ -90,6 +90,7 @@
 = content_for :assets
   javascript:
     $(function () {
+      $('.js-operate-cancel').on('click', Geeklab.clearMask);
       function fetchQrcodeTicket (recordID, callback, errorHandle) {
         $.ajax({
           url: '/users/reward_records/' + recordID,
@@ -107,7 +108,6 @@
             switch (data.code) {
               case 1:
                 var qrcode = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=' + data.ticket;
-                console.log(qrcode);
                 var $modal = $('#reward-qrcode');
                 $('body').append('<div class="main-mask" onclick="Geeklab.clearMask()"></div>')
                 $modal.find('img').attr('src', qrcode);
@@ -148,7 +148,6 @@
           if(data.status === 0 && data.code === 1) {
             if(data.records.length > 0) {
               vm[type].records = data.records;
-              console.log(page);
               vm[type].page = page;
             }
             vm[type].pages = data.pages;

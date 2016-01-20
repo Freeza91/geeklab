@@ -3,6 +3,8 @@ $(function () {
     return false;
   }
 
+  $('.js-operate-cancel').on('click', Geeklab.clearMask);
+
   function chooseIdcardImage (vm, imageName) {
     vm.imageName = imageName;
     $('#idcard-image').click();
@@ -63,13 +65,13 @@ $(function () {
                   location.href = '/users/id_cards/show'
               break;
               case 2:
-                console.log('保存失败, 请稍后重试');
+                Geeklab.showInfoModal('保存失败, 请稍后重试');
               break;
               case 3:
-                console.log('不能再修改');
+                Geeklab.showInfoModal('不能再修改');
               break;
               case 4:
-                console.log('还未创建');
+                Geeklab.showInfoModal('还未创建');
                 location.reload();
               break;
             }

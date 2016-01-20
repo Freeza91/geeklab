@@ -15,20 +15,36 @@ $(function () {
     vm[vm.imageName + 'Url'] = 'url("' + url + '")';
   }
 
-  function checkData (data) {
-    if(data.name && data.idNum && data.idcardImageFace && data.idcardImageBack) {
-      return true;
+  function checkData (vm) {
+    var data = vm.$data,
+        error = data.error,
+        result = true;
+    if(!data.name) {
+      erro.name = true;
+      result = false;
     }
-    return false;
+    if(!data.idnum || !Geeklab.formValueValid(data.idnum, 'idcard')) {
+      error.idnum = true;
+      result = false;
+    }
+    if(!data.idcardImageFaceUrl) {
+      error.face = true;
+      result = false;
+    }
+    if(!data.idcardImageBackUrl) {
+       error.back = true;
+      result = false;
+    }
+    return result;
   }
 
   function submit (vm, evt) {
-    Geeklab.showLoading();
     evt.preventDefault();
-    if(checkData(vm.$data)) {
+    if(checkData(vm)) {
+      Geeklab.showLoading();
       var data =  new FormData();
       data.append('name', vm.name);
-      data.append('id_num', vm.idNum);
+      data.append('id_num', vm.idnum);
       data.append('face', vm.idcardImageFace);
       data.append('back', vm.idcardImageBack);
 
@@ -63,8 +79,6 @@ $(function () {
           console.log(errors);
         }
       });
-    } else {
-      vm.error = true;
     }
   }
 
@@ -74,13 +88,18 @@ $(function () {
         el: '#idcard',
         data: {
           name: '',
-          idNum: '',
+          idnum: '',
           idcardImageFace: '',
           idcardImageBack: '',
           idcardImageFaceUrl: 'url("http://7xjciz.com2.z0.glb.qiniucdn.com/idcard-image-face.png")',
           idcardImageBackUrl: 'url("http://7xjciz.com2.z0.glb.qiniucdn.com/idcard-image-back.png")',
           imageName: '',
-          error: false,
+          error: {
+            name: false,
+            idnum: false,
+            face: false,
+            back: false
+          },
           isEdit: false
         },
         methods: {
@@ -98,7 +117,7 @@ $(function () {
       dataType: 'json',
       success: function (data) {
         idcardVmOpt.data.name = data.id_card.name;
-        idcardVmOpt.data.idNum = data.id_card.id_num;
+        idcardVmOpt.data.idnum = data.id_card.id_num;
         idcardVmOpt.data.idcardImageFaceUrl = 'url("' + data.id_card.face + '")';
         idcardVmOpt.data.idcardImageBackUrl = 'url("' + data.id_card.back + '")';
         idcardVmOpt.data.isEdit = true;

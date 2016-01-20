@@ -19,28 +19,30 @@
                 | 真实姓名
             .field-content
               input.form-input type="text" name="name" v-model="name"
-              span.hint-text v-show="error && !name"
+              span.hint-text v-show="error.name"
                 | 请输入昵称
           .form-field style="width: 500px"
             .field-name.middle
               span
                 | 身份证号
             .field-content
-              input.form-input type="text" name="id-num" v-model="idNum"
-              span.hint-text v-show="error && !idNum"
+              input.form-input type="text" name="id-num" v-model="idnum"
+              span.hint-text v-show="error.idnum && !idnum"
                 | 请输入身份证号
+              span.hint-text v-show="error.idnum && idnum"
+                | 格式错误
           .form-field
             .field-name.top
               span
                 | 上传身份证图片
             .field-content
               .idcard-image.face v-style="background-image: idcardImageFaceUrl"
-                .upload-warn v-show="error && !idcardImageFace"
+                .upload-warn v-show="error.face"
                   | *请上传正面照片
                 .button.btn.btn-flat.blue.btn-rounded.btn-m v-on="click: chooseIdcardImage(this, 'idcardImageFace')"
                   | 上传正面
               .idcard-image.back v-style="background-image: idcardImageBackUrl"
-                .upload-warn v-show="error && !idcardImageBack"
+                .upload-warn v-show="error.back"
                   | *请上传反面照片
                 .button.btn.btn-flat.blue.btn-rounded.btn-m v-on="click: chooseIdcardImage(this, 'idcardImageBack')"
                   | 上传反面

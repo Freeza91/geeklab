@@ -17,6 +17,9 @@ $(function () {
         var mobileReg = /^1[3|5|7|8][0-9]{9}$/;
         result = mobileReg.test(value);
         break;
+      case 'idcard':
+        var idcardReg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+        result = idcardReg.test(value);
       case 'required':
         result = (value.length > 0);
         break;

@@ -2,11 +2,14 @@ table.ui.celled.table
   thead
     tr
       th 微信单号
-      th 兑换额/元
-      th 兑换人姓名
-      th 兑换人身份证号
-      th 兑换状态
-      th 兑换是否受限
+      th 金额
+      th 邮箱
+      th 姓名
+      th 身份证号
+      th 状态
+      / th 兑换是否受限
+      th 兑换时间
+      th 领取时间
       / th 操作
   tbody
     - @records.each do |record|
@@ -16,16 +19,33 @@ table.ui.celled.table
         td
           | #{record.amount}
         td
+          | #{record.email || record.user.email}
+        td
           | #{record.name}
         td
           | #{record.id_num}
         td
           | #{dashboard_status(record.status)}
-        td
-          - if record.limit?
-            | 受限不能兑换
-          - else
-            | 可以正常兑换
+        - if record.status == 'SENT'
+          td
+            | 还未和微信核对
+          td
+            | 还未和微信核对
+        - else
+          td
+            | #{record.send_time || "暂无信息"}
+          td
+            - if record.status == 'RECEIVED' # 成功领取
+              | #{record.rcv_time}
+            - elsif record.status == 'REFUND' # 退款
+              | #{record.refund_time}
+            - else
+              | 暂无信息
+        / td
+        /   - if record.limit?
+        /     | 受限不能兑换
+        /   - else
+        /     | 可以正常兑换
         / td
           / = link_to("查看", dashboard_reward_record_path(record))
 

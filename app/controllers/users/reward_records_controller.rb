@@ -58,6 +58,7 @@ class Users::RewardRecordsController < ApplicationController
                                                              amount: reward.amount,
                                                              id_num: current_user.id_card.id_num,
                                                              name: current_user.id_card.name,
+                                                             email: current_user.email,
                                                              status: 'CREATED')
           @integral_record = current_user.integral_records
                                          .build(cost: reward.cost,

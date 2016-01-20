@@ -29,10 +29,10 @@
                   td v-text="record.income"
           .record-pagination v-if="income.pages > 1"
             nav
-              span.prev v-class="disable: income.page === 1" v-on="click: setRecordPage(this,income.page - 1, 'income')"
+              span.prev v-class="disable: income.page === 1" v-on="click: setRecordPage(this, income.page - 1, 'income')"
                 | <
               span v-class="curr: income.page === $index + 1" v-repeat="income.pages" v-text="$index + 1" v-on="click: setRecordPage(this, $index + 1, 'income')"
-              span.next v-class="disable: income.page === income.pages" v-on="click:income setRecordPage(this, .page + 1, 'income')"
+              span.next v-class="disable: income.page === income.pages" v-on="click: setRecordPage(this, income.page + 1, 'income')"
                 | >
         #cost v-show="curr === 'cost'"
           .record-table
@@ -58,7 +58,7 @@
               span.prev v-class="disable: cost.page === 1" v-on="click: setRecordPage(this, cost.page - 1, 'cost')"
                 | <
               span v-class="curr: cost.page === $index + 1" v-repeat="cost.pages" v-text="$index + 1" v-on="click: setRecordPage(this, $index + 1, 'cost')"
-              span.next v-class="disable: cost.page === cost.pages" v-on="click:cost setRecordPage(this, cost.page + 1, 'cost')"
+              span.next v-class="disable: cost.page === cost.pages" v-on="click: setRecordPage(this, cost.page + 1, 'cost')"
                 | >
     .user-aside
       = render partial: 'users/shared/side_nav', locals: {curr_view: 'integral_record'}

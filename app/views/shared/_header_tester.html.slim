@@ -23,30 +23,35 @@ header#header class=(current_user ? '' : 'no-logged')
             ul.dropdown-menu role='menu'
               li
                 a href="#{users_reward_records_path}"
+                  .profile-icon.reward
                   | 红包记录
               li
                 a href="#{users_integral_records_path}"
+                  .profile-icon.integral
                   | 积分明细
               - if current_user.to_tester.try(:tester_infor)
                 li
                   - if current_user.to_tester.tester_infor.try(:already_finish)
                     a href="#{edit_tester_path(current_user.to_params)}"
-                      .profile-icon.info-card
+                      .profile-icon.user
                       | 个人资料
                   - else
                     a href="#{new_tester_path}"
-                      .profile-icon.info-card
+                      .profile-icon.user
                       | 个人资料
               li
                 - if !current_user.id_card
                   a href="#{users_id_cards_path}"
+                    .profile-icon.idcard
                     | 实名认证
                 - else
                   - if current_user.id_card.status === 'failed'
                     a href="#{users_id_cards_path}"
+                      .profile-icon.idcard
                       | 实名认证
                   - else
                     a href="#{users_id_cards_show_path}"
+                      .profile-icon.idcard
                       | 实名认证
               li
                 a rel="noflow" data-method="delete" href=users_session_path(current_user.to_params)

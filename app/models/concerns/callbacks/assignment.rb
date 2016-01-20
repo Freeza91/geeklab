@@ -62,7 +62,7 @@ module Callbacks
 
             # 记录积分
             integral_record = IntegralRecord.new(cost: project_credit,
-                                                 describe: project.name + '审核通过',
+                                                 describe: "#{project.name}审核通过",
                                                  user_id: tester.id, assignment_id: id,
                                                  kind_of: 'basic')
             if project.beginner # 新手任务

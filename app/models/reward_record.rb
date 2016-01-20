@@ -16,7 +16,7 @@ class RewardRecord < ActiveRecord::Base
     {
       id: to_params,
       created_at: created_at.strftime('%F %T'),
-      order_id: order_id,
+      order_id: order.order_id,
       amount: amount.to_i
     }
   end

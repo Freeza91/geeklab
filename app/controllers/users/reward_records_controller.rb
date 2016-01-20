@@ -54,7 +54,6 @@ class Users::RewardRecordsController < ApplicationController
                                            kind: 'reward',
                                            reward_id: reward.id)
         if @order.save
-          p reward.cost
           @reward_record = current_user.reward_records.build(order_id: @order.id,
                                                              amount: reward.amount,
                                                              id_num: current_user.id_card.id_num,
@@ -62,7 +61,7 @@ class Users::RewardRecordsController < ApplicationController
                                                              status: 'CREATED')
           @integral_record = current_user.integral_records
                                          .build(cost: reward.cost,
-                                                describe: reward.name,
+                                                describe: "兑换#{reward.cost}红包",
                                                 kind_of: 'order',
                                                 order_id: @order.id)
 

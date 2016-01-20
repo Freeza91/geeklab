@@ -46,7 +46,7 @@ class Stores::OrdersController < Stores::BaseController
             good.update_attributes(stock: good.stock - 1, used_num: good.used_num + 1 )
             @integral_record = current_user.integral_records
                                            .build(cost: good.cost,
-                                                  describle: good.name,
+                                                  describe: "兑换#{good.name}",
                                                   kind_of: 'order',
                                                   order_id: @order.id)
             @integral_record.save

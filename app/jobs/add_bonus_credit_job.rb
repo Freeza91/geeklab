@@ -23,7 +23,7 @@ class AddBonusCreditJob < ActiveJob::Base
                                   rating: rating)
 
         integral_record = IntegralRecord.new(cost: project.credit,
-                                             describe: project.name + '评价' + "#{rating}" + '星',
+                                             describe: "#{project.name}评价#{rating}星",
                                              user_id: tester.id, assignment_id: assignment_id,
                                              kind_of: 'rating')
 

@@ -17,7 +17,7 @@ class IntegralRecord < ActiveRecord::Base
   def to_json_for_index
     {
       created_at: created_at.strftime('%F %T'),
-      type: kind_of,
+      type: describe,
       income: income
     }
   end

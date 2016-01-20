@@ -1,4 +1,4 @@
-require 'active_support/concern'
+ 'active_support/concern'
 
 module Callbacks
 
@@ -61,9 +61,10 @@ module Callbacks
                                       bonus_credits: project.basic_bonus || 0)
 
             # 记录积分
-            integral_record = IntegralRecord.new(cost: project_credit,
+            integral_record = IntegralRecord.new(cost: project.credit,
                                                  describe: "#{project.name}审核通过",
-                                                 user_id: tester.id, assignment_id: id,
+                                                 user_id: tester.id,
+                                                 assignment_id: id,
                                                  kind_of: 'basic')
             if project.beginner # 新手任务
                 record.rating_type = 'new'

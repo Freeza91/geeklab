@@ -9,7 +9,7 @@ class IdCardUploader < CarrierWave::Uploader::Base
   self.qiniu_bucket_domain = "#{Settings.qiniu_id_card_domain}"
 
   def store_dir
-    "#{model.id}-" + SecureRandom.uuid
+    "#{model.id}-" + "#{mounted_as}"
   end
 
 end

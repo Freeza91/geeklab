@@ -5,6 +5,8 @@ class IdCard < ActiveRecord::Base
   mount_uploader :face, IdCardUploader
   mount_uploader :back, IdCardUploader
 
+  validates :id_num, length: {is: 18}, allow_blank: false
+
   def secret_id_num
     id_num[-12...-4] = '*' * 8 if id_num.present?
     id_num

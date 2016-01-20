@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160113075602) do
+ActiveRecord::Schema.define(version: 20160120031048) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -127,6 +127,8 @@ ActiveRecord::Schema.define(version: 20160113075602) do
     t.integer  "reward_id"
     t.string   "kind",       default: "good"
   end
+
+  add_index "orders", ["order_id"], name: "index_orders_on_order_id", using: :btree
 
   create_table "pictures", force: :cascade do |t|
     t.integer  "pictureable_id"

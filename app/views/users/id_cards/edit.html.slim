@@ -7,7 +7,7 @@
             | 状态:
           span.status-text class=(current_user.id_card ? "#{current_user.id_card.status}" : "not-upload")
             = idcardStatus(current_user.id_card)
-        - if current_user.id_card.status == 'failed'
+        - if current_user.id_card.try(:status) == 'failed'
           .idcard-failed-reason
             | *
             = current_user.id_card.reason

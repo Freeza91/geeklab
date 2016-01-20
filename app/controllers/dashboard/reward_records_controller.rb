@@ -22,6 +22,14 @@ class Dashboard::RewardRecordsController < Dashboard::BaseController
     end
   end
 
+   def export
+    @records = RewardRecord.all
+    respond_to do |format|
+      format.csv { send_data @records.to_csv }
+      # format.xls { send_data @products.to_csv(col_sep: "\t") }
+    end
+  end
+
 private
 
   def get_resource

@@ -151,7 +151,10 @@
     end
     resources :rewards
     resources :id_cards
-    resources :reward_records
+    resources :reward_records do
+      get 'export', on: :collection
+    end
+
   end
 
   resource :wechat, only: [:show, :create]

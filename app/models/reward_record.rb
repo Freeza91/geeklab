@@ -23,4 +23,18 @@ class RewardRecord < ActiveRecord::Base
     }
   end
 
+  def self.to_csv(options = {})
+    CSV.generate(options) do |csv|
+      csv << ["金额", "邮箱", "姓名", "身份证号"]
+      all.each do |record|
+        csv << [
+          record.amount,
+          record.email || record.user.email,
+          record.name,
+          record.id_num
+        ]
+      end
+    end
+  end
+
 end

@@ -20,7 +20,7 @@ module WechatsRewardable
         doc = Hash.from_xml(res.body)['xml']
         if doc['return_code'] == 'SUCCESS'
 
-          @record.update_attributes(status: 'SENT', mch_billno: params[:mch_billno])
+          @record.update_attributes(status: 'SENT', mch_billno: params[:mch_billno], openid: openid)
 
           # 在24小时候查询这个红包状态
           t = Time.now + 24.hours + 5.minutes

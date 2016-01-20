@@ -20,6 +20,7 @@ $(function () {
       case 'idcard':
         var idcardReg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
         result = idcardReg.test(value);
+        break;
       case 'required':
         result = (value.length > 0);
         break;

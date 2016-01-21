@@ -1,43 +1,44 @@
 require 'active_support/concern'
 
-module Wechatsable
+module WechatsRewardable
   extend ActiveSupport::Concern
 
   URL = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack'
 
   private
 
-  def send_reward(openid, secret)
-
-    return '连续输错5次将在1小时内无法在进行兑换!' if limit_openid?(openid, secret)
-    return '已经发放成功无法在使用!' unless @record.status == 'SENDING' # 待发放
-
-    params = build_params(openid, @record.amount, 1)
+  def send_reward(openid, amount, sceret, scene_id)
+    params = build_params(openid, amount * 100, 1)
     xml = build_xml_body(params)
     http = build_cert_http
 
+    reply_text = ""
+
     http.start do
+
       http.request_post(@uri.path, xml.to_xml) do |res|
         doc = Hash.from_xml(res.body)['xml']
         if doc['return_code'] == 'SUCCESS'
 
-          @record.update_attributes(status: 'SENT', mch_billno: params[:mch_billno])
+          @record.update_attributes(status: 'SENT', mch_billno: params[:mch_billno], openid: openid)
 
           # 在24小时候查询这个红包状态
           t = Time.now + 24.hours + 5.minutes
           CheckRewardFromWechatsJob.set(wait_until: t).perform_later(@record.id)
 
-          return '恭喜你获得红包'
+          reply_text =  '请在24小时之内领取红包，过期作废！'
         else
           # 1. 余额不足
           # 2. API发送受限
           # 3. .......
           UserMailer.send_reward_error(doc)
-          return '红包没有发送成功，请稍后再试或者联系管理员'
+          reply_text = '红包没有发送成功，请稍后再试或者联系管理员'
         end
       end
+
     end
 
+    reply_text
   end
 
   def build_params(openid, amount, num)
@@ -50,10 +51,10 @@ module Wechatsable
       re_openid: openid, # 用户openid
       total_amount: amount, # 付款金额
       total_num: num, # 红包发放总人数
-      wishing: '现金红包奖励', # 红包祝福语
+      wishing: '恭喜发财，大吉大利', # 红包祝福语
       client_ip: Settings.domain_ip, # Ip地址
       act_name: '现金红包', # 活动名称
-      remark: '现金红包奖励' # 备注
+      remark: '红包奖励' # 备注
     }
     options[:sign] = md5_with_partner_key(options)
 
@@ -108,26 +109,6 @@ module Wechatsable
     XML
 
     Nokogiri::XML xml
-  end
-
-  # 连续输错5次将在1小时内无法在进行兑换
-  def limit_openid?(openid, secret)
-    value = $redis.get openid
-    return true if value.to_i >= 5
-
-    @record = RewardRecord.find_by(secret: secret).first
-    if record
-      $redis.del openid
-    else
-      if value.to_i == 0
-        $redis.set openid, 0
-        $redis.expire openid, 1.hours.to_i
-      end
-
-      $redis.incr openid
-    end
-
-    false
   end
 
 end

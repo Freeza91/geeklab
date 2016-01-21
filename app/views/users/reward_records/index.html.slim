@@ -1,0 +1,183 @@
+.geeklab-container
+  .user-body.clearfix#reward
+    .user-main
+      .user-main-header.clearfix
+        ul.user-top-nav
+          li v-class="active: curr === 'unuse'" v-on="click: curr = 'unuse'"
+            | 未领取
+          li v-class="active: curr === 'used'" v-on="click: curr = 'used'"
+            | 已领取
+      .user-main-content
+        #unuse v-show="curr === 'unuse'"
+          .record-table
+            table#unuse.table.zebra.active
+              colgroup
+                col width="20%"
+                col width="20%"
+                col width="20%"
+                col width="20%"
+                col width="20%"
+              tbody
+                tr
+                  td
+                    | 兑换时间
+                  td
+                    | 订单号
+                  td
+                    | 红包金额
+                  td
+                    | 红包状态
+                  td
+                    | 兑换二维码
+                tr v-repeat="record: unuse.records"
+                  td v-text="record.created_at"
+                  td v-text="record.order_id"
+                  td v-text="record.amount"
+                  td
+                    | 未领取
+                  td
+                    span.js-get-qrcode v-on="click: showQrcode(record.id)"
+                      | 查看
+          .record-pagination v-if="unuse.pages > 1"
+            nav
+              span.prev v-class="disable: unuse.page === 1" v-on="click: setRecordPage(this, unuse.page - 1, 'unuse')"
+                | <
+              span v-class="curr: unuse.page === $index + 1" v-repeat="unuse.pages" v-text="$index + 1" v-on="click: setRecordPage(this, $index + 1, 'unuse')"
+              span.next v-class="disable: unuse.page === unuse.pages" v-on="click: setRecordPage(this, unuse.page + 1, 'unuse')"
+                | >
+        #used v-show="curr === 'used'"
+          .record-table
+            table.table.zebra
+              colgroup
+                col width="20%"
+                col width="20%"
+                col width="20%"
+                col width="20%"
+                col width="20%"
+              tbody
+                tr
+                  td
+                    | 兑换时间
+                  td
+                    | 订单号
+                  td
+                    | 红包金额
+                  td
+                    | 红包状态
+                  td
+                    | 兑换二维码
+                tr v-repeat="record: used.records"
+                  td v-text="record.created_at"
+                  td v-text="record.order_id"
+                  td v-text="record.amount"
+                  td
+                    | 已领取
+                  td
+                    | -
+          .record-pagination v-if="used.pages > 1"
+            nav
+              span.prev v-class="disable: used.page === 1" v-on="click: setRecordPage(this, used.page - 1, 'used')"
+                | <
+              span v-class="curr: used.page === $index + 1" v-repeat="used.pages" v-text="$index + 1" v-on="click: setRecordPage(this, $index + 1, 'used')"
+              span.next v-class="disable: used.page === used.pages" v-on="click: setRecordPage(this, used.page + 1, 'used')"
+                | >
+
+    .user-aside
+      = render partial: 'users/shared/side_nav', locals: {curr_view: 'reward_record'}
+
+= render 'users/shared/reward_qrcode'
+
+= content_for :assets
+  javascript:
+    $(function () {
+      $('.js-operate-cancel').on('click', Geeklab.clearMask);
+      function fetchQrcodeTicket (recordID, callback, errorHandle) {
+        $.ajax({
+          url: '/users/reward_records/' + recordID,
+          success:  function (data) {
+            callback(data);
+          },
+          error: function (xhr, textStatus, errors) {
+            errorHandle(errors);
+          }
+        });
+      }
+      function showQrcode (recordID) {
+        fetchQrcodeTicket (recordID, function (data) {
+          if(data.status === 0) {
+            switch (data.code) {
+              case 1:
+                var qrcode = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=' + data.ticket;
+                var $modal = $('#reward-qrcode');
+                $('body').append('<div class="main-mask" onclick="Geeklab.clearMask()"></div>')
+                $modal.find('img').attr('src', qrcode);
+                $modal.addClass('show');
+              break;
+              case -1:
+                Geeklab.showInfoModal('获取二维码失败, 请稍后重试');
+              break;
+            }
+          }
+        }, function (errors) {
+          console.log(errors);
+        });
+      }
+
+      function fetchRecordPaging (page, type, callback, errorHandle) {
+        $.ajax({
+          url: '/users/reward_records',
+          data: {
+            page: page,
+            type: type
+          },
+          dataType: 'json',
+          success: function (data) {
+            callback(data);
+          },
+          error: function (xhr, textStatus, errors) {
+            errorHandle(errors);
+          }
+        });
+      }
+
+      function setRecordPage (vm, page, type) {
+        if(page < 1 || page > vm[type].pages) {
+          return false;
+        }
+        fetchRecordPaging(page, type, function (data) {
+          if(data.status === 0 && data.code === 1) {
+            if(data.records.length > 0) {
+              vm[type].records = data.records;
+              vm[type].page = page;
+            }
+            vm[type].pages = data.pages;
+          }
+        }, function () {
+          console.log(errors);
+        });
+      }
+      var vm = new Vue({
+        el: '#reward',
+        data: {
+          curr: 'unuse',
+          unuse: {
+            page: 1,
+            pages: 1,
+            records: [],
+          },
+          used: {
+            page: 1,
+            pages: 1,
+            records: []
+          }
+        },
+        methods: {
+          setRecordPage: setRecordPage,
+          showQrcode: showQrcode
+        }
+      });
+      // init
+      setRecordPage(vm, 1, 'unuse');
+      setRecordPage(vm, 1, 'used');
+
+    });

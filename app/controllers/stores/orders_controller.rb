@@ -10,7 +10,7 @@ class Stores::OrdersController < Stores::BaseController
       format.json do
         json = { status: 0, code: 1, orders:[] }
 
-        @orders = current_user.orders.includes(:good).page(params[:page]).per(4)
+        @orders = current_user.orders.good?.includes(:good).page(params[:page]).per(4)
         @orders.each do |order|
           json[:orders] << order.to_json
         end
@@ -24,32 +24,39 @@ class Stores::OrdersController < Stores::BaseController
     json = { status: 0, code: 1, msg: '创建订单成功' }
 
     good = Good.find_by(id: params[:order][:good_id])
-    if good && good.stock > 0
-      if current_user.credits < good.cost
-        json[:code], json[:msg] = 3, '你的积分不够'
-        return render json: json
-      end
-      @order = current_user.orders.build(order_params)
-      sku = good.skus.can_sell.last
-      if sku
-        @order.sku_id = sku.id
+    @order = current_user.orders.build(order_params)
 
-        ActiveRecord::Base.transaction do
-          @order.save
-          if !good.virtual? && save_address?
-            address = @order.build_address(address_params)
-            address.user_id = current_user.id
-            address.save
-          end
-          current_user.update_column(:credits, current_user.credits - good.cost)
-          sku.update_column(:num, sku.num - 1) # skip inc_good_stock validate
-          good.update_attributes(stock: good.stock - 1, used_num: good.used_num + 1 )
+    ActiveRecord::Base.transaction do
+      if good && good.stock > 0
+        if current_user.credits < good.cost
+          json[:code], json[:msg] = 3, '你的积分不够'
+          return render json: json
+        end
+        sku = good.skus.can_sell.last
+        if sku
+          @order.sku_id = sku.id
+            @order.save
+            if !good.virtual? && save_address?
+              address = @order.build_address(address_params)
+              address.user_id = current_user.id
+              address.save
+            end
+            current_user.update_column(:credits, current_user.credits - good.cost)
+            sku.update_column(:num, sku.num - 1) # skip inc_good_stock validate
+            good.update_attributes(stock: good.stock - 1, used_num: good.used_num + 1 )
+            @integral_record = current_user.integral_records
+                                           .build(cost: good.cost,
+                                                  describe: "兑换#{good.name}",
+                                                  kind_of: 'order',
+                                                  order_id: @order.id)
+            @integral_record.save
+        else
+          json[:code], json['msg'] = 2, '库存不足'
         end
       else
         json[:code], json['msg'] = 2, '库存不足'
       end
-    else
-      json[:code], json['msg'] = 2, '库存不足'
+
     end
 
     render json: json

@@ -1,0 +1,55 @@
+.geeklab-container
+  .reward-record
+    .reward-record-header.clearfix
+      .reward-record-title
+        span
+          | 红包兑换
+        span.exchange-exp
+          | (兑换公式: 100积分 = 10 元红包)
+      .credit-record
+        a href="#{users_reward_records_path}" target="_blank" style="margin-right: 10px"
+          | 积分记录
+        span
+          | 我的积分
+        span.icon-img.icon-outer-18 style="margin: 0 5px -4px 10px"
+          i.icon-inner.icon-score-old
+        span
+          = current_user.to_tester.credits
+    .reward-record-content.clearfix
+      .clearfix
+        .reward-exchange-list
+          - @rewards.each do |reward|
+            .reward-item
+              .reward-icon
+                img src="#{icon_href(reward.amount)}"
+              .reward-form-control
+                .radio-cos
+                  input id=("reward-#{reward.amount.to_i}") type="radio" name="reward" value="#{reward.to_params}"
+                  .radio-icon
+                label for=("reward-#{reward.amount.to_i}")
+                  span.icon-img.icon-outer-18 style="margin: 0 5px -4px 5px"
+                    i.icon-inner.icon-score-old
+                  = reward.cost.to_i
+      .reward-exchange-tools
+        .reward-hint style="display: none"
+          | 请选择兑换金额
+        .reward-exchange-button
+          - if current_user.id_card && current_user.id_card.status === 'success'
+            #reward-submit.btn.btn-flat.blue.btn-rounded.btn-m
+              | 我要兑换
+          - else
+            - if !current_user.id_card
+              a.btn.btn-flat.blue.btn-rounded.btn-m href="#{users_id_cards_path}"
+                | 先去实名认证
+            - else
+              - if current_user.id_card.status === 'failed'
+                a.btn.btn-flat.blue.btn-rounded.btn-m href="#{users_id_cards_path}"
+                  | 先去实名认证
+              - else
+                a.btn.btn-flat.blue.btn-rounded.btn-m href="#{users_id_cards_show_path}"
+                  | 先去实名认证
+        .reward-exchange-link
+          a href="#{stores_root_path}" target="_blank"
+            | 兑换其它礼品
+
+= render 'users/shared/reward_qrcode'

@@ -19,36 +19,55 @@ table.ui.celled.table
       tr
         td
           | #{order.order_id}
-        - if order.good
+        - if order.kind == 'reward' && order.reward_record
           td
-            | #{order.good.name}
+            | #{order.good_name}
           td
-            | #{order.good.cost}
+            a(href="#{dashboard_reward_record_path(order.reward_id)}")
+              | #{order.total_cost}
           td
             | #{order.user.email}
-          - if order.good.virtual?
+          td
+            | 微信红包
+          td
+            | #{dashboard_order_reward_status(order.reward_record.status)}
+        - elsif order.kind == 'good' && order.good
+          - if order.good
             td
-              | 虚拟商品
+              | #{order.good.name}
             td
-              | 不涉及
-          - else
+              | #{order.good.cost}
             td
-              | 实体商品
-            - if order.address
+              | #{order.user.email}
+            - if order.good.virtual?
               td
-                | #{order.address.parse_status}
+                | 虚拟商品
+              td
+                | 不涉及
             - else
               td
-                | 订单地址被删除
-          td
-            = link_to("编辑", edit_dashboard_order_path(order))
-            span |
-            = link_to("删除", dashboard_order_path(order), method: 'delete', data: {confirm: "你确定要删除？#{order.order_id}"})
+                | 实体商品
+              - if order.address
+                td
+                  | #{order.address.parse_status}
+              - else
+                td
+                  | 订单地址被删除
         - else
-          - 0.upto(5) do
-            td
-              | 订单无商品，不涉及
-
+          td
+            | 已经被删除
+          td
+            | 已经被删除
+          td
+            | 已经被删除
+          td
+            | 已经被删除
+          td
+            | 已经被删除
+        td
+          = link_to("编辑", edit_dashboard_order_path(order))
+          span |
+          = link_to("删除", dashboard_order_path(order), method: 'delete', data: {confirm: "你确定要删除？#{order.order_id}"})
 
 ui.container
   p

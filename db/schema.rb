@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151231025446) do
+ActiveRecord::Schema.define(version: 20160120064537) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -97,22 +97,38 @@ ActiveRecord::Schema.define(version: 20151231025446) do
     t.string  "face"
     t.string  "back"
     t.string  "id_num"
-    t.boolean "status",  default: false
     t.string  "name"
     t.integer "user_id"
+    t.string  "reason"
+    t.string  "status",  default: "wait_check"
+  end
+
+  create_table "integral_records", force: :cascade do |t|
+    t.float    "cost"
+    t.string   "describe"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.integer  "user_id"
+    t.integer  "assignment_id"
+    t.string   "kind_of",       default: "basic"
+    t.integer  "order_id"
   end
 
   create_table "orders", force: :cascade do |t|
     t.string   "good_name"
     t.float    "total_cost"
     t.integer  "good_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.integer  "user_id"
     t.string   "order_id"
     t.string   "good_url"
     t.integer  "sku_id"
+    t.integer  "reward_id"
+    t.string   "kind",       default: "good"
   end
+
+  add_index "orders", ["order_id"], name: "index_orders_on_order_id", using: :btree
 
   create_table "pictures", force: :cascade do |t|
     t.integer  "pictureable_id"
@@ -163,12 +179,23 @@ ActiveRecord::Schema.define(version: 20151231025446) do
     t.string   "secret"
     t.string   "id_num"
     t.string   "name"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.integer  "order_id"
+    t.boolean  "limit",         default: false
+    t.string   "email"
   end
 
   add_index "reward_records", ["id_num"], name: "index_reward_records_on_id_num", using: :btree
   add_index "reward_records", ["secret"], name: "index_reward_records_on_secret", using: :btree
+
+  create_table "rewards", force: :cascade do |t|
+    t.string  "name"
+    t.text    "describle"
+    t.float   "cost"
+    t.boolean "publish",   default: false
+    t.float   "amount",    default: 1.0
+  end
 
   create_table "skus", force: :cascade do |t|
     t.json     "attr"

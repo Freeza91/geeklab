@@ -1,0 +1,67 @@
+- if action_name == 'index'
+  p Download
+  = link_to "导出到表格", export_dashboard_reward_records_path(format: "csv")
+
+ui.grid
+  = search_form_for @q, url: search_dashboard_reward_records_path, method: :get do |f|
+    div
+      = f.search_field :id_num_or_name_or_email_cont, placeholder: '身份证号码或者姓名或者邮箱', class: "search_field"
+      = f.submit "搜索"
+
+table.ui.celled.table
+  thead
+    tr
+      th 微信单号
+      th 金额
+      th 邮箱
+      th 姓名
+      th 身份证号
+      th OpenId
+      th 状态
+      / th 兑换是否受限
+      th 兑换时间
+      th 领取时间
+      / th 操作
+  tbody
+    - @records.each do |record|
+      tr
+        td
+          | #{record.mch_billno}
+        td
+          | #{record.amount}
+        td
+          | #{record.email || record.user.email}
+        td
+          | #{record.name}
+        td
+          | #{record.id_num}
+        td
+          | #{record.openid}
+        td
+          | #{dashboard_status(record.status)}
+        - if record.status == 'SENT'
+          td
+            | 还未和微信核对
+          td
+            | 还未和微信核对
+        - else
+          td
+            | #{record.send_time || "暂无信息"}
+          td
+            - if record.status == 'RECEIVED' # 成功领取
+              | #{record.rcv_time}
+            - elsif record.status == 'REFUND' # 退款
+              | #{record.refund_time}
+            - else
+              | 暂无信息
+        / td
+        /   - if record.limit?
+        /     | 受限不能兑换
+        /   - else
+        /     | 可以正常兑换
+        / td
+          / = link_to("查看", dashboard_reward_record_path(record))
+
+ui.container
+  p
+    = paginate @records

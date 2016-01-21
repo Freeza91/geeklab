@@ -88,6 +88,28 @@ input[type='checkbox']
   height: 80px
   +border-radius(50%)
 
+// customize radio & checkbox
+.radio-cos
+  position: relative
+  display: inline-block
+  width: 17px
+  height: 17px
+  vertical-align: text-bottom
+  [type="radio"]
+    position: absolute
+    top: 2px
+    left: 2px
+    margin: 0
+    opacity: 0
+  .radio-icon
+    display: inline-block
+    width: 17px
+    height: 17px
+    background: url('http://7xjciz.com2.z0.glb.qiniucdn.com/checkbox.png')
+    background-position: 0 0
+  [type="radio"]:checked + .radio-icon
+    background-position: -17px 0
+
 .form
   margin-bottom: 50px
   .form-field

@@ -42,7 +42,7 @@ when 'release' || 'bugs'
   set :unicorn_config, lambda { "#{app_path}/config/unicorn_release.rb" }
 else
   set :domain, '119.254.101.120'
-  set :branch, 'withdrawal'
+  set :branch, 'develop'
   set :unicorn_config, lambda { "#{app_path}/config/unicorn_release.rb" }
 end
 

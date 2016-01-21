@@ -6,6 +6,7 @@ class Dashboard::RewardRecordsController < Dashboard::BaseController
 
   def index
     @records = RewardRecord.page(params[:page])
+    @q = RewardRecord.ransack(params[:q])
   end
 
   def show
@@ -32,6 +33,14 @@ class Dashboard::RewardRecordsController < Dashboard::BaseController
       format.csv { send_data @records.to_csv }
       # format.xls { send_data @products.to_csv(col_sep: "\t") }
     end
+  end
+
+  def search
+    @records = RewardRecord.ransack(params[:q])
+                          .result.page(params[:page]).per(10)
+    @q = RewardRecord.ransack(params[:q])
+
+    render :index
   end
 
 private

@@ -23,7 +23,8 @@ table.ui.celled.table
           td
             | #{order.good_name}
           td
-            | #{order.total_cost}
+            a(href="#{dashboard_reward_record_path(order.reward_id)}")
+              | #{order.total_cost}
           td
             | #{order.user.email}
           td

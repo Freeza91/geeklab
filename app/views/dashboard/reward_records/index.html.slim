@@ -1,5 +1,12 @@
-p Download
-= link_to "导出到表格", export_dashboard_reward_records_path(format: "csv")
+- if action_name == 'index'
+  p Download
+  = link_to "导出到表格", export_dashboard_reward_records_path(format: "csv")
+
+ui.grid
+  = search_form_for @q, url: search_dashboard_reward_records_path, method: :get do |f|
+    div
+      = f.search_field :id_num_or_name_or_email_cont, placeholder: '身份证号码或者姓名或者邮箱', class: "search_field"
+      = f.submit "搜索"
 
 table.ui.celled.table
   thead
@@ -9,6 +16,7 @@ table.ui.celled.table
       th 邮箱
       th 姓名
       th 身份证号
+      th OpenId
       th 状态
       / th 兑换是否受限
       th 兑换时间
@@ -27,6 +35,8 @@ table.ui.celled.table
           | #{record.name}
         td
           | #{record.id_num}
+        td
+          | #{record.openid}
         td
           | #{dashboard_status(record.status)}
         - if record.status == 'SENT'

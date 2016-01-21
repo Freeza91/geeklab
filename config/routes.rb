@@ -152,7 +152,10 @@
     resources :rewards
     resources :id_cards
     resources :reward_records do
-      get 'export', on: :collection
+      collection do
+        get 'export'
+        get 'search'
+      end
     end
 
   end

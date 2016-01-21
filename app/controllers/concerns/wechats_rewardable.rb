@@ -26,7 +26,7 @@ module WechatsRewardable
           t = Time.now + 24.hours + 5.minutes
           CheckRewardFromWechatsJob.set(wait_until: t).perform_later(@record.id)
 
-          reply_text =  '恭喜你获得红包'
+          reply_text =  '请在24小时之内领取红包，过期作废！'
         else
           # 1. 余额不足
           # 2. API发送受限
@@ -51,10 +51,10 @@ module WechatsRewardable
       re_openid: openid, # 用户openid
       total_amount: amount, # 付款金额
       total_num: num, # 红包发放总人数
-      wishing: '现金红包奖励', # 红包祝福语
+      wishing: '恭喜发财，大吉大利', # 红包祝福语
       client_ip: Settings.domain_ip, # Ip地址
       act_name: '现金红包', # 活动名称
-      remark: '现金红包奖励' # 备注
+      remark: '红包奖励' # 备注
     }
     options[:sign] = md5_with_partner_key(options)
 

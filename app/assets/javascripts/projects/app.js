@@ -183,6 +183,20 @@ $(function () {
       submit: submit
     }
   });
+  // init sortable task list
+  var sortEl = document.getElementById('task-list');
+  var sortable = Sortable.create(sortEl, {
+    handle: '.drag-handle',
+    onEnd: function (evt) {
+      var oldIndex = evt.oldIndex,
+          newIndex = evt.newIndex;
+      if(oldIndex !== newIndex) {
+        // 更改数据位置
+        var task = vm.tasks.splice(oldIndex, 1)[0];
+        vm.tasks.splice(newIndex, 0, task);
+      }
+    }
+  });
 
   function submit(event) {
     event.preventDefault();
@@ -375,9 +389,6 @@ $(function () {
         content: taskContent || ''
       }); } else {
       vm.tasksLimited = true;
-      setTimeout(function () {
-        vm.tasksLimited = false;
-      }, 2000);
     }
   }
 

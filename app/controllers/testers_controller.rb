@@ -2,6 +2,7 @@ class TestersController < ApplicationController
 
   before_action :require_login?, except: :index
   before_action :require_create, only: [:edit, :update]
+  before_action :already_create, only: :create
 
   def index
     current_user.update_attribute(:role, 'both') if current_user.try(:role) == 'pm'
@@ -171,6 +172,10 @@ private
 
   def require_create
     redirect_to choose_device_testers_path unless current_user.to_tester.tester_infor
+  end
+
+  def already_create
+    redirect_to ing_assignments_path if current_user.to_tester.assignments.present?
   end
 
 end

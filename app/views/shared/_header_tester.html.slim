@@ -1,7 +1,7 @@
 header#header class=(current_user ? '' : 'no-logged')
   .headers.clearfix
     .logo
-      a.logo-text href="#{tester_homepage_url(@current_user)}"
+      a.logo-text href="#{tester_homepage_url(current_user)}"
         img src="http://7xjciz.com2.z0.glb.qiniucdn.com/geeklab.png"
     .header-navbar.clearfix
       - if current_user
@@ -16,7 +16,7 @@ header#header class=(current_user ? '' : 'no-logged')
         - if !current_user
           li
             button.btn.btn-line.blue.btn-rounded.btn-s.js-change-role data-href="#{pms_path}"
-            | 提高产品体验
+              | 提高产品体验
         - if current_user
           li.dropdown
             a role='button'

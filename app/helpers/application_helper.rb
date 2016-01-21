@@ -5,10 +5,18 @@ module ApplicationHelper
   end
 
   def tester_homepage_url(current_user)
-    if current_user && current_user.to_tester.approved
+    if current_user
       assignments_path
     else
       testers_path
+    end
+  end
+
+  def pm_homepage_url(current_user)
+    if current_user
+      projects_path
+    else
+      pms_path
     end
   end
 

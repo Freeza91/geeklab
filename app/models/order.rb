@@ -13,6 +13,7 @@ class Order < ActiveRecord::Base
   accepts_nested_attributes_for :address, update_only: true
 
   validates :user_id, presence: true # sku_id, good_id is't necessary for reward
+  scope :good?, -> { where(kind: 'good') }
 
   include ::Callbacks::Order
   include ::Jsons::Order

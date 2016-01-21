@@ -23,7 +23,11 @@ class Dashboard::RewardRecordsController < Dashboard::BaseController
   end
 
    def export
-    @records = RewardRecord.all
+    @records = RewardRecord.unscoped
+                           .select('id_num, name, sum(amount) as amount')
+                           .group('id_num, name')
+                           # .having
+                           # .where()
     respond_to do |format|
       format.csv { send_data @records.to_csv }
       # format.xls { send_data @products.to_csv(col_sep: "\t") }

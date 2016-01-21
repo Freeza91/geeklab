@@ -5,4 +5,4 @@
 Mime::Type.register "phone/ios",        :ios
 Mime::Type.register "phone/android",    :android
 Mime::Type.register "phone/windows",    :windows
-Mime::Type.register "application/xls",  :xls
+# Mime::Type.register "application/xls",  :xls

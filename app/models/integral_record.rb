@@ -1,5 +1,7 @@
 class IntegralRecord < ActiveRecord::Base
 
+  default_scope -> { order('id desc') }
+
   validates :cost, :describe, :user_id, presence: true
 
   belongs_to :assignment

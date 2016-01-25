@@ -1,7 +1,7 @@
  Rails.application.routes.draw do
 
-  #root 'pages#home'
-  root 'testers#index'
+  #root 'testers#index'
+  root 'pms#index'
 
   namespace :users do
 

@@ -3,7 +3,7 @@ module IdCardsHelper
   INFO = {
     failed: '审核不通过',
     success: '已认证',
-    wait_check: '等待审核'
+    wait_check: '正在审核'
   }
 
   def dashboard_id_cards_status(status)

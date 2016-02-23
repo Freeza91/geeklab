@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'mina/unicorn'
 require 'mina/bundler'
 require 'mina/rails'
@@ -42,7 +44,7 @@ when 'release' || 'bugs'
   set :unicorn_config, lambda { "#{app_path}/config/unicorn_release.rb" }
 else
   set :domain, '119.254.101.120'
-  set :branch, 'develop'
+  set :branch, 'pay'
   set :unicorn_config, lambda { "#{app_path}/config/unicorn_release.rb" }
 end
 

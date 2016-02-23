@@ -47,6 +47,9 @@ gem 'newrelic_rpm'
 gem 'rails_admin', :git => 'git://github.com/sferik/rails_admin.git'
 gem 'ransack'
 
+# pay
+gem 'alipay'
+
 group :development, :test do
   gem 'byebug'
   gem 'pry'

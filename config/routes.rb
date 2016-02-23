@@ -33,8 +33,18 @@
         get 'send_novice_task'
       end
     end
+
+    get '/id_cards', to: 'id_cards#edit'
+    get '/id_cards/show',  to: 'id_cards#show'
+    post '/id_cards', to: 'id_cards#create'
+    put '/id_cards',  to: 'id_cards#update'
+
+    resources :reward_records, only: [:index, :show, :create]
+    resources :integral_records, path: :records, only: :index
+
   end
 
+  resources :rewards, only: :index
   resources :pms
   resources :projects do
     collection do
@@ -83,7 +93,6 @@
     end
 
   end
-
 
   namespace :stores do
     root to: "base#index"
@@ -141,7 +150,18 @@
       resources :skus, only: :update
       resources :addresses, only: :update
     end
+    resources :rewards
+    resources :id_cards
+    resources :reward_records do
+      collection do
+        get 'export'
+        get 'search'
+      end
+    end
+
   end
+
+  resource :wechat, only: [:show, :create]
 
   require 'sidekiq/web'
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|

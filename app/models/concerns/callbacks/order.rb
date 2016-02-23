@@ -15,7 +15,7 @@ module Callbacks
     end
 
     def generate_order_id
-      "%.10s" % SecureRandom.uuid
+      Time.now.strftime('%Y%-m%-d') + Time.now.to_i.to_s + ( "%.8s" % SecureRandom.uuid )
     end
 
   end

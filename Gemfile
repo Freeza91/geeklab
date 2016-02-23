@@ -33,10 +33,12 @@ gem 'mini_magick'
 gem 'sendgrid'
 gem 'redis'
 
+# wx
+gem 'wechat'
+gem 'whenever', :require => false
+
 gem 'sidekiq'
 gem 'sinatra', require: false
-
-gem 'whenever'
 
 gem 'font-awesome-rails'
 
@@ -52,7 +54,7 @@ group :development, :test do
   gem 'web-console', '~> 2.0'
   gem 'spring'
 
-  gem 'mina', git: "https://github.com/Freeza91/mina.git"
+  gem 'mina'
   gem 'mina-sidekiq'
   gem 'mina-unicorn', :require => false
 

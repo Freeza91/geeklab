@@ -29,13 +29,9 @@ class Users::SessionsController < ApplicationController
       p request.referer
       json[:url] =
         if /pms/i.match(request.referer)
-          pms_path
+          projects_path
         else
-          if @user.to_tester.approved
-            assignments_path
-          else
-            testers_path
-          end
+          assignments_path
         end
 
       render json: json

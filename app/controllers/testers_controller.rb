@@ -43,7 +43,7 @@ class TestersController < ApplicationController
 
           return render json: json
         else
-          NotificationAdmin.project_error.deliver_later
+          UserMailer.project_error.deliver_later
         end
       end
     end

@@ -1,0 +1,70 @@
+.geeklab-container
+  .user-body.clearfix
+    .user-main
+      .user-main-header.clearfix
+        .idcard-status
+          span
+            | 状态:
+          span.status-text class=(current_user.id_card ? "#{current_user.id_card.status}" : "not-upload")
+            = idcardStatus(current_user.id_card)
+        - if current_user.id_card.try(:status) == 'failed'
+          .idcard-failed-reason
+            | *
+            = current_user.id_card.reason
+      .user-main-content
+        form#idcard.form
+          .form-field style="width: 500px"
+            .field-name.middle
+              span
+                | 真实姓名
+            .field-content
+              input.form-input type="text" name="name" v-model="name"
+              span.hint-text v-show="error.name"
+                | 请输入昵称
+          .form-field style="width: 500px"
+            .field-name.middle
+              span
+                | 身份证号
+            .field-content
+              input.form-input type="text" name="id-num" v-model="idnum"
+              span.hint-text v-show="error.idnum && !idnum"
+                | 请输入身份证号
+              span.hint-text v-show="error.idnum && idnum"
+                | 格式错误
+          .form-field
+            .field-name.top
+              span
+                | 上传身份证图片
+            .field-content
+              .idcard-image.face v-style="background-image: idcardImageFaceUrl"
+                .upload-warn v-show="error.face"
+                  | *请上传正面照片
+                .button.btn.btn-flat.blue.btn-rounded.btn-m v-on="click: chooseIdcardImage(this, 'idcardImageFace')"
+                  | 上传正面
+              .idcard-image.back v-style="background-image: idcardImageBackUrl"
+                .upload-warn v-show="error.back"
+                  | *请上传反面照片
+                .button.btn.btn-flat.blue.btn-rounded.btn-m v-on="click: chooseIdcardImage(this, 'idcardImageBack')"
+                  | 上传反面
+              input#idcard-image type="file" accept="image/*" style="display: none" v-on="change: setIdcardImage(this, $event)"
+          .form-field.idcard-hint
+            .field-name
+              | 温馨提示
+            .field-content
+              ol
+                li
+                  | 实名认证是您成功兑换红包的必要前提条件,仅作为极客实验室的兑换红包功能的报销凭证;
+                li
+                  | 我们将通过全国公民身份信息中心(NCIIC)系统对您提交的身份进行审核，请提交自己真实的姓名和身份证号码;
+                li
+                  | 上传的身份证图片必须是正反面清晰彩色原件电子版，可以是扫描件或者数码拍摄照片(手持拍摄时不可遮挡任何文字信息且清晰可识别).
+                  | 图片上的身份证信息禁止人为ps修改、打码、加水印等任何遮挡措施。图片格式不限，分辨率不限，大小不限;
+                li
+                  | 实名认证审核通过后不可修改。如果您在实名验证过程中，出现任何问题，请咨询极客实验室qq群473994636.
+          .form-field style="text-align: center"
+            button.btn.btn-flat.blue.btn-rounded.btn-m v-on="click: submit(this, $event)"
+              | 提交
+    .user-aside
+      = render partial: 'users/shared/side_nav', locals: {curr_view: 'id_card'}
+
+  input#isEdit type="hidden" value="#{@edit}"

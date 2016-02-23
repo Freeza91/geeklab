@@ -1,30 +1,43 @@
-main
-  form.form#device-choose
-    p.device-choose-title
-      | 选择你拥有的设备
-    .device-choose-box
-      .device-choose-item
-        input#iphone type="checkbox" v-model="device[0].checked"
-        label.btn.btn-ghost.darkblue.btn-rounded.btn-s for="iphone"
-          | iPhone
-      .device-choose-item
-        input#aphone type="checkbox" v-model="device[1].checked"
-        label.btn.btn-ghost.darkblue.btn-rounded.btn-s for="aphone"
-          | Android Phone
-    .device-choose-box
-      .device-choose-item
-        input#ipad type="checkbox" v-model="device[2].checked"
-        label.btn.btn-ghost.darkblue.btn-rounded.btn-s for="ipad"
-          | iPad
-      .device-choose-item
-        input#apad type="checkbox" v-model="device[3].checked"
-        label.btn.btn-ghost.darkblue.btn-rounded.btn-s for="apad"
-          | Android Pad
-    p.form-hint.error v-show="error"
-      | 请至少选择一个设备
-    .btn.btn-ghost.white.btn-rounded.btn-s v-on="click: submit(this)"
-      | 选好了
-  img src="#{image_url("testers/device_choose_bg.png")}"
+.geeklab-container
+  .panel.project-panel#device-choose
+    .panel-heading
+      span.name
+        | 你拥有下面那些移动设备?
+      span.hint-info v-show="error"
+        .fa.fa-exclamation-triangle
+        | 请至少选择一个设备
+    .panel-body
+      form
+        fieldset
+          label.checkbox-default.checkbox-with-icon
+            input type="checkbox" v-model="device[0].checked"
+            span
+              .edit-icon.edit-icon-iphone
+            h6
+              | iPhone
+          label.checkbox-default.checkbox-with-icon
+            input type="checkbox" v-model="device[1].checked"
+            span
+              .edit-icon.edit-icon-aphone
+            h6
+              | Android Phone
+          label.checkbox-default.checkbox-with-icon
+            input type="checkbox" v-model="device[2].checked"
+            span
+              .edit-icon.edit-icon-ipad
+            h6
+              | iPad
+          label.checkbox-default.checkbox-with-icon
+            input type="checkbox" v-model="device[3].checked"
+            span
+              .edit-icon.edit-icon-apad
+            h6
+              | Android Pad
+        fieldset style="margin-top: 20px"
+          .btn.btn-flat.blue.btn-rounded.btn-m v-on="click: submit(this, $event)"
+            | 选好了
+  .choose-device-bg
+    img src="#{image_url("testers/device_choose_bg.png")}"
 
 javascript:
   $(function() {
@@ -56,7 +69,8 @@ javascript:
       }
     });
 
-    function submit(vm) {
+    function submit(vm, evt) {
+      evt.preventDefault();
       var device = [];
       for(var i = 0; i < 4; i++){
         if(vm.device[i].checked) {

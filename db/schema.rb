@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151217063612) do
+ActiveRecord::Schema.define(version: 20160120064537) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,27 +82,53 @@ ActiveRecord::Schema.define(version: 20151217063612) do
     t.string   "name"
     t.text     "describle"
     t.float    "cost"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
     t.string   "status"
-    t.boolean  "is_publish", default: false
-    t.boolean  "is_limit",   default: false
-    t.integer  "stock",      default: 0
-    t.integer  "used_num",   default: 0
+    t.boolean  "is_publish",   default: false
+    t.boolean  "is_limit",     default: false
+    t.integer  "stock",        default: 0
+    t.integer  "used_num",     default: 0
     t.string   "label"
+    t.integer  "lock_version"
+  end
+
+  create_table "id_cards", force: :cascade do |t|
+    t.string  "face"
+    t.string  "back"
+    t.string  "id_num"
+    t.string  "name"
+    t.integer "user_id"
+    t.string  "reason"
+    t.string  "status",  default: "wait_check"
+  end
+
+  create_table "integral_records", force: :cascade do |t|
+    t.float    "cost"
+    t.string   "describe"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.integer  "user_id"
+    t.integer  "assignment_id"
+    t.string   "kind_of",       default: "basic"
+    t.integer  "order_id"
   end
 
   create_table "orders", force: :cascade do |t|
     t.string   "good_name"
     t.float    "total_cost"
     t.integer  "good_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.integer  "user_id"
     t.string   "order_id"
     t.string   "good_url"
     t.integer  "sku_id"
+    t.integer  "reward_id"
+    t.string   "kind",       default: "good"
   end
+
+  add_index "orders", ["order_id"], name: "index_orders_on_order_id", using: :btree
 
   create_table "pictures", force: :cascade do |t|
     t.integer  "pictureable_id"
@@ -137,6 +163,38 @@ ActiveRecord::Schema.define(version: 20151217063612) do
     t.integer  "basic_bonus",      default: 0
     t.float    "rating_duration",  default: 168.0
     t.float    "expired_duration", default: 72.0
+  end
+
+  create_table "reward_records", force: :cascade do |t|
+    t.string   "mch_billno"
+    t.string   "detail_id"
+    t.string   "status"
+    t.string   "send_time"
+    t.string   "refund_time"
+    t.integer  "refund_amount"
+    t.string   "openid"
+    t.integer  "amount"
+    t.string   "rcv_time"
+    t.integer  "user_id"
+    t.string   "secret"
+    t.string   "id_num"
+    t.string   "name"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.integer  "order_id"
+    t.boolean  "limit",         default: false
+    t.string   "email"
+  end
+
+  add_index "reward_records", ["id_num"], name: "index_reward_records_on_id_num", using: :btree
+  add_index "reward_records", ["secret"], name: "index_reward_records_on_secret", using: :btree
+
+  create_table "rewards", force: :cascade do |t|
+    t.string  "name"
+    t.text    "describle"
+    t.float   "cost"
+    t.boolean "publish",   default: false
+    t.float   "amount",    default: 1.0
   end
 
   create_table "skus", force: :cascade do |t|
@@ -208,7 +266,7 @@ ActiveRecord::Schema.define(version: 20151217063612) do
     t.datetime "updated_at"
     t.datetime "last_view_time",         default: '2015-05-21 11:37:35'
     t.integer  "credits",                default: 0
-    t.datetime "approved_time",          default: '2015-07-31 11:54:50'
+    t.datetime "approved_time",          default: '2015-07-28 18:03:00'
     t.integer  "admin",                  default: 0
     t.datetime "last_login"
     t.boolean  "limit_user",             default: false

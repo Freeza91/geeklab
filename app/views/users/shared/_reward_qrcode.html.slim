@@ -1,0 +1,13 @@
+.operate#reward-qrcode data-backdrop='static'
+  .handle
+  .operate-content
+    - if controller_name == 'rewards'
+      .qrcode-title
+        | 兑换成功, 微信扫描下方二维码领取红包
+    - if controller_name == 'reward_records'
+      .qrcode-title style="padding-bottom: 15px"
+        | 微信扫描下方二维码领取红包
+    .qrcode-hint style="padding-bottom: 20px"
+      | 如若没有关注微信公众号, 扫码后请先点关注!
+    .qrcode-img
+      img src=""

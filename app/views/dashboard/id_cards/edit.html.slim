@@ -1,0 +1,21 @@
+= form_for [:dashboard, @id_card] do |f|
+  div
+    = f.label '姓名'
+    = f.label "#{@id_card.name}"
+  div
+    = f.label '身份证号:'
+    = f.label "#{@id_card.id_num}"
+  div
+    = f.label '状态:'
+    = f.select :status, dashboard_select_options
+  div
+    = f.label '原因'
+    = f.text_area :reason
+  div
+    = f.label '身份证正面:'
+    = image_tag @id_card.private_face_url
+  div
+    = f.label '身份证背面:'
+    = image_tag @id_card.private_back_url
+  div
+    = f.submit '提交'

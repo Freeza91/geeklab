@@ -1,44 +1,64 @@
 header#header class=(current_user ? '' : 'no-logged')
   .headers.clearfix
     .logo
-      a.logo-text href="#{tester_homepage_url(@current_user)}"
+      a.logo-text href="#{tester_homepage_url(current_user)}"
         img src="http://7xjciz.com2.z0.glb.qiniucdn.com/geeklab.png"
-    ul.nav.navbar-nav.navbar-right.top-nav-right.login
-      li
-        button.btn.btn-line.blue.btn-rounded.btn-s.js-change-role data-href="#{pms_path}"
-          | 提高产品体验
+    .header-navbar.clearfix
       - if current_user
-        li.dropdown
-          a role='button'
-            =current_user.email
-          ul.dropdown-menu role='menu'
-            - if current_user.to_tester.try(:tester_infor)
+        ul.nav.navbar-nav#main-nav style="margin-left: 300px"
+          li class=('active' if controller_name == 'assignments')
+            a href="#{assignments_path}"
+              | 任务列表
+          li class=('active' if controller_name == 'rewards')
+            a href="#{rewards_path}"
+              | 红包兑换
+      ul.nav.navbar-nav.navbar-right.top-nav-right.login
+        - if !current_user
+          li
+            button.btn.btn-line.blue.btn-rounded.btn-s.js-change-role data-href="#{pms_path}"
+              | 提高产品体验
+        - if current_user
+          li.dropdown
+            a role='button'
+              =current_user.email
+            ul.dropdown-menu role='menu'
               li
-                - if current_user.to_tester.tester_infor.try(:already_finish)
-                  a href="#{edit_tester_path(current_user.to_params)}"
-                    .profile-icon.info-card
-                    | 个人信息
+                a href="#{users_reward_records_path}"
+                  .profile-icon.reward
+                  | 红包记录
+              li
+                a href="#{users_integral_records_path}"
+                  .profile-icon.integral
+                  | 积分明细
+              - if current_user.to_tester.try(:tester_infor)
+                li
+                  - if current_user.to_tester.tester_infor.try(:already_finish)
+                    a href="#{edit_tester_path(current_user.to_params)}"
+                      .profile-icon.user
+                      | 个人资料
+                  - else
+                    a href="#{new_tester_path}"
+                      .profile-icon.user
+                      | 个人资料
+              li
+                - if !current_user.id_card
+                  a href="#{users_id_cards_path}"
+                    .profile-icon.idcard
+                    | 实名认证
                 - else
-                  a href="#{new_tester_path}"
-                    .profile-icon.info-card
-                    | 个人信息
-            li
-              a href=assignments_path
-                .profile-icon.home
-                | 任务列表
-            li
-              a href="#{help_testers_path}" target="_blank"
-                .profile-icon.bulb
-                | 如何录制
-            li
-              a href=stores_root_path target="_blank"
-                .profile-icon.geekcoin
-                | 极客商城
-            li
-              a rel="noflow" data-method="delete" href=users_session_path(current_user.to_params)
-                .profile-icon.poweroff
-                | 退出登录
-      - else
-        li
-          button.btn.btn-flat.blue.btn-rounded.btn-s data-toggle='modal' data-target='#sign'
-            | 登录/注册
+                  - if current_user.id_card.status === 'failed'
+                    a href="#{users_id_cards_path}"
+                      .profile-icon.idcard
+                      | 实名认证
+                  - else
+                    a href="#{users_id_cards_show_path}"
+                      .profile-icon.idcard
+                      | 实名认证
+              li
+                a rel="noflow" data-method="delete" href=users_session_path(current_user.to_params)
+                  .profile-icon.poweroff
+                  | 退出登录
+        - else
+          li
+            button.btn.btn-flat.blue.btn-rounded.btn-s data-toggle='modal' data-target='#sign'
+              | 登录/注册

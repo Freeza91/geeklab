@@ -1,0 +1,24 @@
+= form_for [:dashboard, @reward] do |f|
+  div
+    = f.label '红包名称:'
+    = f.text_field :name
+  div
+    = f.label '红包金额'
+    = f.text_field :amount
+  div
+    = f.label '红包消耗:'
+    = f.text_field :cost
+  div
+    = f.label '是否发布这个红包:'
+    span
+      | &nbsp;&nbsp;&nbsp;
+    span
+      | 是
+    = f.radio_button :publish, true
+    span
+      | &nbsp;&nbsp;&nbsp;
+    span
+      | 否
+    = f.radio_button :publish, false
+  div
+    = f.submit '提交'

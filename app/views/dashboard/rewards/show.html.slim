@@ -1,0 +1,21 @@
+h1 Dashboard::Rewards#show
+
+div
+  span
+    | 名字： #{@reward.name}
+div
+  span
+    | 描述： #{@reward.describle}
+div
+  span
+    | 消耗： #{@reward.cost}
+div
+  span
+    - if @reward.publish
+      | 已经发布
+    - else
+      | 暂未发布
+
+
+div
+  = link_to '编辑', edit_dashboard_reward_path(@reward)

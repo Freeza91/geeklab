@@ -1,12 +1,13 @@
 header#header class=(current_user ? '' : 'no-logged')
   .headers.clearfix
     .logo
-      a.logo-text href="#{pms_path}"
+      a.logo-text href="#{pm_homepage_url(current_user)}"
         img src="http://7xjciz.com2.z0.glb.qiniucdn.com/geeklab.png"
     ul.nav.navbar-nav.navbar-right.top-nav-right.login
-      li
-        button.btn.btn-line.blue.btn-rounded.btn-s.js-change-role data-href="#{testers_path}"
-          | 兼职体验产品
+      - if !current_user
+        li
+          button.btn.btn-line.blue.btn-rounded.btn-s.js-change-role data-href="#{testers_path}"
+            | 兼职体验产品
       - if current_user
         li.dropdown
           a role='button'

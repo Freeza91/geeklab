@@ -1,0 +1,246 @@
+@import ./helpers/variables
+.id_cards,
+.rewards_index,
+.reward_records,
+.integral_records
+  background: $blue
+
+.user-body
+  padding-left: 150px
+  background: $light-yellow
+.user-aside
+  float: left
+  width: 150px
+  margin-left: -150px
+.user-main
+  float: right
+  width: 100%
+  min-height: 200px
+  padding-left: 20px
+  padding-right: 20px
+  background: $white
+
+// user side nav menu
+.user-sidenav
+  padding: 0
+  list-style: none
+  margin-top: 30px
+  > li
+    > a
+      display: block
+      padding-top: 8px
+      padding-bottom: 8px
+      color: $blue
+      text-align: center
+    > a:hover
+      color: $dark-blue
+  > li.active
+    position: relative
+    > a
+      color: $dark-blue
+    > a::after
+      position: absolute
+      top: 8px
+      left: 0
+      display: block
+      content: ''
+      border-top: 10px solid transparent
+      border-left: 10px solid $dark-blue
+      border-bottom: 10px solid transparent
+
+// user center main-header
+.user-main-header
+  padding-top: 15px
+  padding-bottom: 5px
+  border-bottom: 1px solid $gray
+  color: $dark-blue
+
+// user center main-content
+.user-main-content
+  padding-top: 20px
+  padding-bottom: 40px
+
+// idcard status
+.idcard-status
+  float: left
+  color: $blue
+  .status-text
+    padding-left: 10px
+  .status-text.not-upload
+    color: $dark-gray
+  .status-text.wait_check
+    color: $dark-blue
+  .status-text.failed
+    color: $warn-red
+.idcard-failed-reason
+  float: right
+  color: $warn-red
+
+// idcard form customize
+.id_cards
+  .form
+    .field-name
+      width: 110px
+    .field-content
+      padding-left: 130px
+    .form-input
+      text-align: left
+.idcard-hint
+  margin-top: 30px
+  color: $gray
+  .field-name
+    color: $gray
+  ol
+    padding-left: 23px
+  li
+    padding-top: 3px
+    padding-bottom: 3px
+
+// idcard-image
+.idcard-image
+  position: relative
+  display: inline-block
+  width: 340px
+  height: 210px
+  background: $gray
+  background-size: 100% 100%
+  .upload-warn
+    position: absolute
+    top: 50%
+    width: 100%
+    margin-top: -10px
+    color: $warn-red
+    text-align: center
+  .button
+    position: absolute
+    bottom: 20px
+    left: 50%
+    margin-left: -80px
+.idcard-image.face
+  margin-right: 30px
+
+// reward-record  exchange
+.reward-record
+  background: #fff
+  .reward-record-header
+    padding: 15px 20px
+    background: $light-yellow
+  .reward-record-title
+    float: left
+    .exchange-exp
+      margin-left: 10px
+      color: $dark-gray
+      font-size: .8rem
+  .credit-record
+    float: right
+  .reward-record-content
+    padding: 30px
+// reward-item
+.reward-exchange-list
+  position: relative
+  left: 50%
+  float: left
+  margin-bottom: 40px
+.reward-item
+  position: relative
+  right: 50%
+  float: left
+  padding-left: 20px
+  padding-right: 20px
+  .reward-icon
+    width: 200px
+    height: 200px
+    margin-bottom: 20px
+    img
+      width: 200px
+      height: 200px
+  .reward-form-control
+    text-align: center
+    label
+      margin-bottom: 0
+      color: $dark-blue
+      font-size: 1rem
+      font-weight: normal
+.reward-exchange-tools
+  text-align: center
+  .reward-hint
+    padding-bottom: 10px
+    color: $warn-red
+  .reward-exchange-button,
+    margin-bottom: 20px
+
+// record table
+.user-top-nav
+  list-style: none
+  float: left
+  margin: 0
+  padding: 0
+  > li
+    position: relative
+    float: left
+    padding-bottom: 5px
+    color: $blue
+    cursor: pointer
+  > li + li
+    padding-left: 20px
+  > li:hover,
+  > li.active
+    color: $dark-blue
+  > li.active::after
+    position: absolute
+    bottom: -5px
+    left: 50%
+    margin-left: -10px
+    display: block
+    content: ''
+    border-right: 10px solid transparent
+    border-bottom: 10px solid $dark-blue
+    border-left: 10px solid transparent
+
+.record-table
+  .table > tbody > tr > td
+    text-align: center
+.js-get-qrcode
+  color: $blue
+  cursor: pointer
+.js-get-qrcode:hover
+  color: $dark-blue
+// record table pagination
+.record-pagination
+  nav
+    text-align: center
+    span
+      padding: 3px 20px
+      color: $blue
+      cursor: pointer
+    .curr
+      position: relative
+      color: $dark-blue
+    .curr::after
+      position: absolute
+      top: 100%
+      left: 50%
+      margin-left: -8px
+      display: block
+      content: ''
+      border-right: 8px solid transparent
+      border-bottom: 8px solid $dark-blue
+      border-left: 8px solid transparent
+    .disable
+      color: $gray
+      cursor: default
+
+// qrcode modal
+#reward-qrcode
+  .operate-content
+    background: $light-yellow
+  .qrcode-title
+    color: $dark-blue
+  .qrcode-hint
+    color: $gray
+  .qrcode-img
+    img
+      width: 100px
+      height: 100px
+
+

@@ -5,11 +5,15 @@ class Order < ActiveRecord::Base
   belongs_to :good
   belongs_to :user
   belongs_to :sku
-  has_one    :address, dependent: :destroy
+  belongs_to :reward
+  has_one    :address
+  has_one    :reward_record
+  has_one    :integral_record
 
   accepts_nested_attributes_for :address, update_only: true
 
-  validates :good_id, :sku_id, :user_id, presence: true
+  validates :user_id, presence: true # sku_id, good_id is't necessary for reward
+  scope :good?, -> { where(kind: 'good') }
 
   include ::Callbacks::Order
   include ::Jsons::Order

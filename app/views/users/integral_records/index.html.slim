@@ -1,0 +1,121 @@
+.geeklab-container
+  .user-body.clearfix#integral
+    .user-main
+      .user-main-header.clearfix
+        ul.user-top-nav
+          li v-class="active: curr === 'income'" v-on="click: curr = 'income'"
+            | 积分收入
+          li v-class="active: curr === 'cost'" v-on="click: curr = 'cost'"
+            | 积分支出
+      .user-main-content
+        #income v-show="curr === 'income'"
+          .record-table
+            table.table.zebra.active
+              colgroup
+                col width="33.3%"
+                col width="33.3%"
+                col width="33.3%"
+              tbody
+                tr
+                  td
+                    | 时间
+                  td
+                    | 事件
+                  td
+                    | 积分
+                tr v-repeat="record: income.records"
+                  td v-text="record.created_at"
+                  td v-text="record.type"
+                  td v-text="record.income"
+          .record-pagination v-if="income.pages > 1"
+            nav
+              span.prev v-class="disable: income.page === 1" v-on="click: setRecordPage(this, income.page - 1, 'income')"
+                | <
+              span v-class="curr: income.page === $index + 1" v-repeat="income.pages" v-text="$index + 1" v-on="click: setRecordPage(this, $index + 1, 'income')"
+              span.next v-class="disable: income.page === income.pages" v-on="click: setRecordPage(this, income.page + 1, 'income')"
+                | >
+        #cost v-show="curr === 'cost'"
+          .record-table
+            table#cost.table.zebra
+              colgroup
+                col width="33.3%"
+                col width="33.3%"
+                col width="33.3%"
+              tbody
+                tr
+                  td
+                    | 时间
+                  td
+                    | 事件
+                  td
+                    | 积分
+                tr v-repeat="record: cost.records"
+                  td v-text="record.created_at"
+                  td v-text="record.type"
+                  td v-text="record.income"
+          .record-pagination v-if="cost.pages > 1"
+            nav
+              span.prev v-class="disable: cost.page === 1" v-on="click: setRecordPage(this, cost.page - 1, 'cost')"
+                | <
+              span v-class="curr: cost.page === $index + 1" v-repeat="cost.pages" v-text="$index + 1" v-on="click: setRecordPage(this, $index + 1, 'cost')"
+              span.next v-class="disable: cost.page === cost.pages" v-on="click: setRecordPage(this, cost.page + 1, 'cost')"
+                | >
+    .user-aside
+      = render partial: 'users/shared/side_nav', locals: {curr_view: 'integral_record'}
+
+= content_for :assets
+  javascript:
+    $(function () {
+      function fetchRecordPaging (page, type, callback, errorHandle) {
+        $.ajax({
+          url: '/users/records',
+          data: {
+            page: page,
+            type: type
+          },
+          dataType: 'json',
+          success: function (data) {
+            callback(data);
+          },
+          error: function (xhr, textStatus, errors) {
+            errorHandle(errors);
+          }
+        });
+      }
+
+      function setRecordPage (vm, page, type) {
+        fetchRecordPaging(page, type, function (data) {
+          if(data.status === 0 && data.code === 1) {
+            if(data.records.length > 0) {
+              vm[type].records = data.records;
+              vm[type].pages = data.pages;
+            }
+            vm[type].page = page;
+          }
+        }, function () {
+          console.log(errors);
+        });
+      }
+      var vm = new Vue({
+        el: '#integral',
+        data: {
+          curr: 'income',
+          income: {
+            page: 1,
+            pages: 1,
+            records: [],
+          },
+          cost: {
+            page: 1,
+            pages: 1,
+            records: []
+          }
+        },
+        methods: {
+          setRecordPage: setRecordPage
+        }
+      });
+      // init
+      setRecordPage(vm, 1, 'income');
+      setRecordPage(vm, 1, 'cost');
+    });

@@ -7,8 +7,8 @@ footer#footer
         a href="http://geekpark.net" target="_blank"
           | 极客公园
       li
-        a href="http://geeklab.cc" target="_blank"
-          | 极客实验室
+        a href="#{stores_root_path}" target="_blank"
+          | 极客商城
   .col
     .footer-title
       | 联系我们
@@ -27,10 +27,10 @@ footer#footer
         a href="http://www.8dol.com/" target="_blank"
           img src="http://7xjciz.com2.z0.glb.qiniucdn.com/8doltit.png"
   .wechat-group
-    - if controller_name == 'testers' || controller_name == 'assignments'
+    - if tester_scope.include?(controller_name)
        img src="http://7xjciz.com2.z0.glb.qiniucdn.com/tester-group-qrcode.png"
        p
-         | 微信扫一扫加入测试群
+         | 扫码联系客服
     - if controller_name == 'pms' || controller_name == 'projects'
        img src="http://7xjciz.com2.z0.glb.qiniucdn.com/pm-qrcode.png"
        p

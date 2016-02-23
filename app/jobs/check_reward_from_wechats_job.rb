@@ -81,7 +81,6 @@ class CheckRewardFromWechatsJob < ActiveJob::Base
       send_time: @doc['send_time'],
       refund_time: @doc['refund_time'],
       refund_amount: @doc['refund_amount'].to_i,
-      amount: hbinfo['amount'].to_i,
       openid: hbinfo['openid'],
       rcv_time: hbinfo['rcv_time']
     }

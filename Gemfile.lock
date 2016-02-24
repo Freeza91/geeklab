@@ -346,6 +346,9 @@ GEM
       thor
     whenever (0.9.4)
       chronic (>= 0.6.3)
+    wx_pay (0.5.0)
+      activesupport (>= 3.2)
+      rest-client (>= 1.7)
 
 PLATFORMS
   ruby
@@ -404,6 +407,7 @@ DEPENDENCIES
   web-console (~> 2.0)
   wechat
   whenever
+  wx_pay
 
 BUNDLED WITH
    1.11.2

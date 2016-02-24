@@ -38,6 +38,13 @@
     post '/id_cards', to: 'id_cards#create'
     put '/id_cards',  to: 'id_cards#update'
 
+    get 'alipay', to: 'pays#alipay'
+    post 'alipay_callback', to: 'pays#alipay_callback'
+    post 'alipay_exception_callback', to: 'alipay_exception_callback'
+
+    get 'wxpay',  to: 'pays#wxpay'
+    post 'wxpay_callback', to: 'pays#wxpay_callback'
+
     resources :reward_records, only: [:index, :show, :create]
     resources :integral_records, path: :records, only: :index
 

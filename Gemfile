@@ -49,6 +49,7 @@ gem 'ransack'
 
 # pay
 gem 'alipay'
+gem 'wx_pay'
 
 group :development, :test do
   gem 'byebug'
